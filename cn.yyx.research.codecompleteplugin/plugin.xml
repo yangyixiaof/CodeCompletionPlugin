@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+  <extension point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
+    id="IntelliCC_Proposals"
+    name="IntelliCC_Proposals_By_Yyx">
+    <proposalCategory icon="icons/cc.png"/>
+  </extension>
+  <extension point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
+    id="CodeCompletionProposalComputer"
+    name="Code_Completion_Proposal_Computer">
+    <javaCompletionProposalComputer
+      activate="true"
+      class="cn.yyx.contentassist.codecompletion.IntelliJavaProposalComputer"
+      categoryId="IntelliCC.IntelliCC_Proposals">
+      <!--<partition type="__dftl_partition_content_type"/>-->
+      <!--<partition type="__java_string"/>-->
+      <!--<partition type="__java_singleline_comment"/>-->
+      <!--<partition type="__java_multiline_comment"/>-->
+      <!--<partition type="__java_javadoc"/>-->
+    </javaCompletionProposalComputer>
+  </extension>
+</plugin>
