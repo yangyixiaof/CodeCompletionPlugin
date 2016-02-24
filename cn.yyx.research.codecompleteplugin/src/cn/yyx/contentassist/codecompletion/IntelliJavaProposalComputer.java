@@ -8,8 +8,6 @@ import org.eclipse.jdt.ui.text.java.ContentAssistInvocationContext;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContextInformation;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import cn.yyx.contentassist.codepredict.CodePredict;
 import cn.yyx.contentassist.codepredict.CodePredictTest;
@@ -33,10 +31,6 @@ public class IntelliJavaProposalComputer implements IJavaCompletionProposalCompu
 			IProgressMonitor monitor) {
 		ArrayList<ICompletionProposal> proposal = null;
 		// proposal = cpt.PredictCodes(context, monitor);
-		
-		//Document doc = Jsoup.parse("<html>hello world</html>");
-		//System.out.println(doc);
-		
 		proposal = cpu.PredictCodes(context, monitor);
 		return proposal;
 	}

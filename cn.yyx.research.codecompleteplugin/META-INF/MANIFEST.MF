@@ -17,4 +17,5 @@ Import-Package: org.eclipse.core.resources,
  org.eclipse.jdt.internal.codeassist,
  org.eclipse.jdt.internal.compiler.env,
  org.eclipse.jdt.internal.core
-Bundle-ClassPath: jsoup-1.8.3.jar,.
+Bundle-ClassPath: .,
+ aerospike-client-3.1.9.jar
