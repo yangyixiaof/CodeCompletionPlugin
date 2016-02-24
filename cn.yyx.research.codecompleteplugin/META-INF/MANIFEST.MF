@@ -18,4 +18,5 @@ Import-Package: org.eclipse.core.resources,
  org.eclipse.jdt.internal.compiler.env,
  org.eclipse.jdt.internal.core
 Bundle-ClassPath: .,
- aerospike-client-3.1.9.jar
+ aerospike-client-3.1.9.jar,
+ program-processor.jar
