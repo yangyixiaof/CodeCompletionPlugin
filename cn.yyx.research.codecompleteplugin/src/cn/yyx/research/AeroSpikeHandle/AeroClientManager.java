@@ -21,11 +21,6 @@ public class AeroClientManager {
 		return paramManager.get(id);
 	}
 	
-	public boolean Contains(Integer id)
-	{
-		return clientManager.containsKey(id);
-	}
-	
 	public AeroClientManager() {
 	}
 	
@@ -50,6 +45,14 @@ public class AeroClientManager {
 		clientManager.get(id).close();
 		clientManager.remove(id);
 		paramManager.remove(id);
+	}
+
+	public boolean Contains(Integer id) {
+		if (clientManager.containsKey(id))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 }

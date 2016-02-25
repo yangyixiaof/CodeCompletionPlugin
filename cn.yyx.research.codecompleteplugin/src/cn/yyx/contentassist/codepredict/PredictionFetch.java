@@ -2,7 +2,6 @@ package cn.yyx.contentassist.codepredict;
 
 import java.util.ArrayList;
 
-import cn.yyx.research.AeroSpikeHandle.AeroHelper;
 import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 
 public class PredictionFetch {
@@ -12,7 +11,10 @@ public class PredictionFetch {
 		AeroLifeCycle.Initialize();
 		
 		try {
-			AeroHelper.testListStrings(1);
+			// AeroHelper.testListStrings(1);
+			
+			
+			
 		} catch (Exception e) {
 			
 			e.printStackTrace();
