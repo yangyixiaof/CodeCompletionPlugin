@@ -7,6 +7,8 @@ public class PredictionFetch {
 	public static void FetchPrediction(ArrayList<String> analist, ArrayList<String> result)
 	{
 		
+		
+		
 	}
 	
 }
