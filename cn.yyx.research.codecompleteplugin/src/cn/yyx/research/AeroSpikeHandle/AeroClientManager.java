@@ -21,6 +21,11 @@ public class AeroClientManager {
 		return paramManager.get(id);
 	}
 	
+	public boolean Contains(Integer id)
+	{
+		return clientManager.containsKey(id);
+	}
+	
 	public AeroClientManager() {
 	}
 	

@@ -16,6 +16,10 @@ public class AeroHelper {
 	public static void ANewClient(Integer id, Parameters param)
 	{
 		// new Parameters("127.0.0.1", 3000, null, null, "test", "demoset");
+		if (acm.Contains(id))
+		{
+			return;
+		}
 		acm.ANewClient(id, param);
 	}
 	
