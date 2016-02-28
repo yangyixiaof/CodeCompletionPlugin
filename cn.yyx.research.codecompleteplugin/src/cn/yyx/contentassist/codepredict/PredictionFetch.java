@@ -5,6 +5,8 @@ import java.util.List;
 
 import cn.yyx.contentassist.commonutils.ListHelper;
 
+import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
+
 public class PredictionFetch {
 	
 	public static int PrePredictWindow = 10;
@@ -17,6 +19,23 @@ public class PredictionFetch {
 		}
 		System.out.println("ArrayListType:" + analist.getClass());
 		System.out.println("ArrayListRealSize:" + analist.size() + ";OSize;" + size + ";They should be the same.");
+	}
+	
+	public static void FetchPrediction(ArrayList<String> analist, ArrayList<String> result)
+	{
+		AeroLifeCycle.Initialize();
+		
+		try {
+			// AeroHelper.testListStrings(1);
+			
+			
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		AeroLifeCycle.Destroy();
 	}
 	
 	public static void main(String[] args) {

@@ -46,5 +46,13 @@ public class AeroClientManager {
 		clientManager.remove(id);
 		paramManager.remove(id);
 	}
+
+	public boolean Contains(Integer id) {
+		if (clientManager.containsKey(id))
+		{
+			return true;
+		}
+		return false;
+	}
 	
 }

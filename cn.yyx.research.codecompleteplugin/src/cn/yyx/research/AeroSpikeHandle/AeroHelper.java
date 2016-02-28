@@ -1,6 +1,7 @@
 package cn.yyx.research.AeroSpikeHandle;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.aerospike.client.AerospikeClient;
@@ -16,12 +17,38 @@ public class AeroHelper {
 	public static void ANewClient(Integer id, Parameters param)
 	{
 		// new Parameters("127.0.0.1", 3000, null, null, "test", "demoset");
+		if (acm.Contains(id))
+		{
+			return;
+		}
 		acm.ANewClient(id, param);
 	}
 	
 	public static void CloseClient(Integer id)
 	{
 		acm.CloseClient(id);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<PredictProbPair> GetNGramInAero(Integer id, String key, int strictedSize, ChooseStrategy strategy)
+	{
+		AerospikeClient client = acm.GetClient(id);
+		Parameters param = acm.GetParameters(id);
+		Record record = client.get(param.policy, new Key(param.getNamespace(), param.getSet(), key), AeroMetaData.BinPredictName, AeroMetaData.BinProbabilityName);
+		
+		List<String> receivedPredList = (List<String>) record.getValue(AeroMetaData.BinPredictName);
+		List<Double> receivedProbList = (List<Double>) record.getValue(AeroMetaData.BinProbabilityName);
+		
+		List<PredictProbPair> result = new ArrayList<PredictProbPair>();
+		Iterator<Double> itr = receivedProbList.iterator();
+		Iterator<String> itr2 = receivedPredList.iterator();
+		while (itr.hasNext())
+		{
+			Double prob = itr.next();
+			String pred = itr2.next();
+			result.add(new PredictProbPair(pred, prob));
+		}
+		return result;
 	}
 	
 	public static void PutIntoAero(Integer id, String key, Bin bin1)
