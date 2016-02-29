@@ -20,4 +20,5 @@ Import-Package: org.eclipse.core.resources,
 Bundle-ClassPath: .,
  aerospike-client-3.1.9.jar,
  program-processor.jar,
- special-parse.jar
+ special-parse.jar,
+ antlr-4.5.2-complete.jar

@@ -5,6 +5,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="aerospike-client-3.1.9.jar"/>
 	<classpathentry exported="true" kind="lib" path="program-processor.jar"/>
-	<classpathentry kind="lib" path="special-parse.jar"/>
+	<classpathentry exported="true" kind="lib" path="special-parse.jar"/>
+	<classpathentry exported="true" kind="lib" path="antlr-4.5.2-complete.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
