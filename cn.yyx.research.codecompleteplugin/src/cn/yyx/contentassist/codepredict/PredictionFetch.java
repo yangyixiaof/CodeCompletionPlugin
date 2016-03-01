@@ -9,10 +9,6 @@ import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 
 public class PredictionFetch {
 	
-	public static final int PrePredictWindow = 10;
-	public static final double SequenceSimilarThreshold = 0.7;
-	public static final double OneSentenceSimilarThreshold = 0.7;
-	
 	// public static final int ParallelSize = 10;
 	
 	public static void FetchPrediction(List<String> analist, ArrayList<String> result) {
@@ -21,9 +17,9 @@ public class PredictionFetch {
 		alc.Initialize();
 		
 		int size = analist.size();
-		if (size > PrePredictWindow) {
-			analist = analist.subList(size - PrePredictWindow, size);
-			size = PrePredictWindow;
+		if (size > PredictMetaInfo.PrePredictWindow) {
+			analist = analist.subList(size - PredictMetaInfo.PrePredictWindow, size);
+			size = PredictMetaInfo.PrePredictWindow;
 		}
 		
 		SequenceManager manager = new SequenceManager();
