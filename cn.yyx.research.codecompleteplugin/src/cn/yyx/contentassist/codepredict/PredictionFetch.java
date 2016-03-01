@@ -27,10 +27,16 @@ public class PredictionFetch {
 		}
 		
 		Iterator<String> itr = analist.iterator();
+		boolean first = true;
 		while (itr.hasNext())
 		{
 			String ons = itr.next();
 			// TODO
+			if (first)
+			{
+				first = false;
+				
+			}
 			
 		}
 		
@@ -43,10 +49,17 @@ public class PredictionFetch {
 	}
 	
 	// must invoke in the environment of AeroLifeCycle.
-	private static void OnlyOnePredict(String one, int neededSize, String oraclePredict)
+	private static List<PredictProbPair> OnlyOnePredict(String one, int neededSize, String oraclePredict)
 	{
 		List<PredictProbPair> result = AeroHelper.GetNGramInAero(AeroLifeCycle.codengram, one, neededSize, null);
 		result.sort(new ProbPredictComparator());
+		result = result.subList(0, neededSize);
+		boolean containOPP = result.contains(oraclePredict);
+		if (!containOPP)
+		{
+			result.set(neededSize-1, new PredictProbPair(oraclePredict, (double)0));
+		}
+		return result;
 	}
 	
 	private static void TwoOrMorePredict(ArrayList<String> ctx, int neededSize, String oraclePredict)
