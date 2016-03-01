@@ -1,5 +1,5 @@
 package cn.yyx.contentassist.codepredict;
 
-public class OneSequence {
+public class Sequence {
 	
 }
