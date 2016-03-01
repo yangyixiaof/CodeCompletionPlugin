@@ -51,6 +51,18 @@ public class AeroHelper {
 		return result;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static List<String> Get1SimInAero(Integer id, String key)
+	{
+		AerospikeClient client = acm.GetClient(id);
+		Parameters param = acm.GetParameters(id);
+		Record record = client.get(param.policy, new Key(param.getNamespace(), param.getSet(), key), AeroMetaData.BinSimilarName);
+		
+		List<String> result = (List<String>) record.getValue(AeroMetaData.BinSimilarName);
+		
+		return result;
+	}
+	
 	public static void PutIntoAero(Integer id, String key, Bin bin1)
 	{
 		AerospikeClient client = acm.GetClient(id);
