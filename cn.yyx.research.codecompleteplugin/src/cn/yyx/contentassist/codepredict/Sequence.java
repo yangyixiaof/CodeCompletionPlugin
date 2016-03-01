@@ -18,5 +18,10 @@ public class Sequence implements Comparator<Sequence>{
 	public int compare(Sequence o1, Sequence o2) {
 		return o1.prob.compareTo(o2.prob);
 	}
+
+	public SequenceManager HandleNewInSentence(String ons, int neededSize) {
+		SequenceManager result = new SequenceManager();
+		return result;
+	}
 	
 }
