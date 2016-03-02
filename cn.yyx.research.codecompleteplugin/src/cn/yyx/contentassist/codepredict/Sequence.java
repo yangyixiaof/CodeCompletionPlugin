@@ -13,6 +13,11 @@ public class Sequence implements Comparator<Sequence>{
 	
 	public void AddOneSentence(String ons) {
 		getSequence().add(ons);
+		int qsize = sequence.size();
+		if (qsize > PredictMetaInfo.PrePredictWindow)
+		{
+			sequence.poll();
+		}
 	}
 
 	@Override
@@ -22,6 +27,10 @@ public class Sequence implements Comparator<Sequence>{
 
 	public SequenceManager HandleNewInSentence(String ons, int neededSize) {
 		SequenceManager result = new SequenceManager();
+		// TODO
+		
+		
+		
 		return result;
 	}
 	

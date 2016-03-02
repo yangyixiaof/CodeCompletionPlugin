@@ -22,7 +22,7 @@ public class SequenceManager {
 		this.setExactmatch(exactmatch);
 		this.setNotexactmatch(notexactmatch);
 	}
-
+	
 	public SequenceManager(ArrayList<SequenceManager> smarray, Sequence oracle) {
 		Sequence match = null;
 		Map<Integer, Sequence> unique = new TreeMap<Integer, Sequence>();
@@ -68,7 +68,7 @@ public class SequenceManager {
 			this.notexactmatch.add(sq);
 		}
 	}
-
+	
 	public SequenceManager HandleANewInSentence(String ons) {
 		if (getExactseq() == null)
 		{
