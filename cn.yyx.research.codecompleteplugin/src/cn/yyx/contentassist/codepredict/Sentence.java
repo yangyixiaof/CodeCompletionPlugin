@@ -10,6 +10,7 @@ public class Sentence implements Comparable<Sentence> {
 	
 	@Override
 	public int compareTo(Sentence o) {
+		// TODO
 		return 0;
 	}
 	

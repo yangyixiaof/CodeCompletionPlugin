@@ -11,4 +11,9 @@ public class PredictMetaInfo {
 	public static final int PrePredictWindow = 10;
 	
 	public static final int NgramMaxSize = 5;
+	
+	// predict
+	public static final int ifcond = 1;
+	public static final int whilecond = 2;
+	// TODO ...
 }

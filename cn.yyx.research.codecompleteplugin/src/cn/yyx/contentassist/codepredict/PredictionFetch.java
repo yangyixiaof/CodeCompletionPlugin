@@ -30,6 +30,8 @@ public class PredictionFetch {
 			manager = DoSequenceManager(alc, manager, ons);
 		}
 		
+		PredictManager pm = DoSequencePredict(alc, manager);
+		
 		// AeroHelper.testListStrings(2);
 		// System.out.println("ArrayListType:" + analist.getClass());
 		// System.out.println("ArrayListRealSize:" + analist.size() + ";OSize;" + size + ";They should be the same.");
@@ -38,6 +40,12 @@ public class PredictionFetch {
 		alc = null;
 	}
 	
+	private static PredictManager DoSequencePredict(AeroLifeCycle alc, SequenceManager manager) {
+		// TODO Auto-generated method stub
+		
+		return null;
+	}
+
 	private static SequenceManager DoSequenceManager(AeroLifeCycle alc, SequenceManager manager, String ons)
 	{
 		SequenceManager managerresult = manager.HandleANewInSentence(alc, ons);
