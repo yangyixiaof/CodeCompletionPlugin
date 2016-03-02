@@ -40,7 +40,7 @@ public class PredictionFetch {
 	
 	private static SequenceManager DoSequenceManager(AeroLifeCycle alc, SequenceManager manager, String ons)
 	{
-		SequenceManager managerresult = manager.HandleANewInSentence(ons);
+		SequenceManager managerresult = manager.HandleANewInSentence(alc, ons);
 		return managerresult;
 	}
 	

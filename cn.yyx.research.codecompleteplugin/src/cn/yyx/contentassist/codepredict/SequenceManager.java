@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.TreeMap;
 
+import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
+
 public class SequenceManager {
 	
 	private static Sequence exactseq = null;
@@ -69,18 +71,18 @@ public class SequenceManager {
 		}
 	}
 	
-	public SequenceManager HandleANewInSentence(String ons) {
+	public SequenceManager HandleANewInSentence(AeroLifeCycle alc, String ons) {
 		if (getExactseq() == null)
 		{
-			setExactseq(new Sequence());
+			setExactseq(new Sequence(true));
 		}
-		getExactseq().AddOneSentence(ons);
+		getExactseq().HandleNewInDirectlyToAddOneSentence(ons);
 		
 		if (getExactmatch() == null)
 		{
 			// first line.
-			setExactmatch(new Sequence());
-			getExactmatch().AddOneSentence(ons);
+			setExactmatch(new Sequence(true));
+			getExactmatch().HandleNewInDirectlyToAddOneSentence(ons);
 			return this;
 		}
 		else
@@ -88,7 +90,7 @@ public class SequenceManager {
 			ArrayList<SequenceManager> smarray = new ArrayList<SequenceManager>();
 			int existSize = 1 + getNotexactmatch().size();
 			int averagePredict = PredictMetaInfo.PredictMaxSequence / existSize;
-			SequenceManager sm = getExactmatch().HandleNewInSentence(ons, averagePredict + 5);
+			SequenceManager sm = getExactmatch().HandleNewInSentence(alc, ons, averagePredict + 5);
 			smarray.add(sm);
 			
 			Iterator<Sequence> itr = getNotexactmatch().iterator();
@@ -97,7 +99,7 @@ public class SequenceManager {
 			{
 				isize--;
 				Sequence seq = itr.next();
-				smarray.add(seq.HandleNewInSentence(ons, averagePredict + (int)(5*(isize*1.0/(existSize*1.0)))));
+				smarray.add(seq.HandleNewInSentence(alc, ons, averagePredict + (int)(5*(isize*1.0/(existSize*1.0)))));
 			}
 			return new SequenceManager(smarray, getExactseq());
 		}

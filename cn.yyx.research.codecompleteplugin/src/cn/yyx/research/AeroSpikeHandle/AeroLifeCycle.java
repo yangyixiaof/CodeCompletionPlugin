@@ -1,7 +1,8 @@
 package cn.yyx.research.AeroSpikeHandle;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import cn.yyx.contentassist.codepredict.PredictMetaInfo;
 
 public class AeroLifeCycle {
 
@@ -26,20 +27,28 @@ public class AeroLifeCycle {
 	}
 
 	// must invoke in the environment of AeroLifeCycle.
-	public List<PredictProbPair> OnlyOnePredict(String one, int neededSize, String oraclePredict) {
+	public List<PredictProbPair> AeroModelPredict(String key, int neededSize, String oraclePredict) {
 		CheckInitialized();
-		List<PredictProbPair> result = AeroHelper.GetNGramInAero(AeroLifeCycle.codengram, one, neededSize, null);
+		List<PredictProbPair> result = AeroHelper.GetNGramInAero(AeroLifeCycle.codengram, key, neededSize, null);
 		result.sort(new ProbPredictComparator());
-		result = result.subList(0, neededSize);
-		boolean containOPP = result.contains(oraclePredict);
-		if (!containOPP) {
-			result.set(neededSize - 1, new PredictProbPair(oraclePredict, (double) 0));
+		int realsize = result.size();
+		if (realsize > neededSize)
+		{
+			result = result.subList(0, neededSize);
+			realsize = neededSize;
+		}
+		int idx = result.indexOf(oraclePredict);
+		if (idx == -1) {
+			result.set(realsize - 1, new PredictProbPair(oraclePredict, PredictMetaInfo.NotExistProbability));
+		}
+		else
+		{
+			PredictProbPair obj = result.get(realsize - 1);
+			PredictProbPair specified = result.get(idx);
+			result.set(idx, obj);
+			result.set(realsize - 1, specified);
 		}
 		return result;
-	}
-	
-	public void TwoOrMorePredict(ArrayList<String> ctx, int neededSize, String oraclePredict) {
-		CheckInitialized();
 	}
 	
 	private void CheckInitialized()
