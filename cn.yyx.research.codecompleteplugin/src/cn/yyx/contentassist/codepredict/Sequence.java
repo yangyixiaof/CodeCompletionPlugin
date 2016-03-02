@@ -11,23 +11,22 @@ import java.util.Queue;
 import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 import cn.yyx.research.AeroSpikeHandle.PredictProbPair;
 
-public class Sequence implements Comparator<Sequence>{
-	
+public class Sequence implements Comparator<Sequence> {
+
 	private Queue<String> sequence = new LinkedList<String>();
-	
+
 	private Double prob = (double) 0;
-	
+
 	private boolean exactmatch = false;
-	
+
 	public Sequence(boolean exactmatch) {
 		this.exactmatch = exactmatch;
 	}
-	
+
 	public void HandleNewInDirectlyToAddOneSentence(String ons) {
 		getSequence().add(ons);
 		int qsize = sequence.size();
-		if (qsize > PredictMetaInfo.PrePredictWindow)
-		{
+		if (qsize > PredictMetaInfo.PrePredictWindow) {
 			sequence.poll();
 		}
 	}
@@ -41,82 +40,120 @@ public class Sequence implements Comparator<Sequence>{
 		SequenceManager result = new SequenceManager();
 		Sequence exactmatch = null;
 		PriorityQueue<Sequence> notexactmatch = new PriorityQueue<Sequence>();
-		
-		// TODO
-		int ssize = sequence.size();
-		int maxsize = Math.min(ssize-1, PredictMetaInfo.NgramMaxSize);
-		ArrayList<String> analysislist = LastOfSentenceQueue(maxsize);
-		for (int i = maxsize; i > 0; i--)
+
+		if (!this.exactmatch)
 		{
+			neededSize--;
+		}
+		int ssize = sequence.size();
+		int maxsize = Math.min(ssize - 1, PredictMetaInfo.NgramMaxSize);
+		ArrayList<String> analysislist = LastOfSentenceQueue(maxsize);
+		for (int i = maxsize; i > 0; i--) {
 			String key = ConcatJoinLast(i, analysislist);
 			List<PredictProbPair> predicts = alc.AeroModelPredict(key, neededSize, ons);
-			if (i == 1)
-			{
-				
+			Iterator<PredictProbPair> itr = predicts.iterator();
+			while (itr.hasNext()) {
+				PredictProbPair ppp = itr.next();
+				if (!itr.hasNext()) {
+					// last exact match
+					if (this.exactmatch)
+					{
+						exactmatch = NewSequenceInExactMatch(ppp);
+					}
+					else
+					{
+						NewSequenceInNotExactMatch(ppp, notexactmatch, -1);
+					}
+				}
+				else
+				{
+					if (neededSize == 0)
+					{
+						continue;
+					}
+				}
+				neededSize = NewSequenceInNotExactMatch(ppp, notexactmatch, neededSize);
 			}
-			else
+			if (neededSize == 0)
 			{
-				
+				break;
 			}
 		}
-		
+
 		result.setExactmatch(exactmatch);
 		result.setNotexactmatch(notexactmatch);
 		return result;
 	}
 	
-	private String ConcatJoinLast(int size, ArrayList<String> analysislist)
+	private int NewSequenceInNotExactMatch(PredictProbPair ppp, PriorityQueue<Sequence> notexactmatch, int neededSize)
 	{
+		Sequence s = NewSequence(ppp);
+		notexactmatch.add(s);
+		neededSize--;
+		return neededSize;
+	}
+
+	private Sequence NewSequenceInExactMatch(PredictProbPair ppp)
+	{
+		return NewSequence(ppp);
+	}
+	
+	private Sequence NewSequence(PredictProbPair ppp)
+	{
+		Sequence s = (Sequence) this.clone();
+		s.HandleNewInDirectlyToAddOneSentence(ppp.getPred());
+		s.AddProbability(ppp.getProb());
+		return s;
+	}
+	
+	public void AddProbability(Double prob2) {
+		this.prob += prob2;
+	}
+
+	private String ConcatJoinLast(int size, ArrayList<String> analysislist) {
 		StringBuffer sb = new StringBuffer("");
 		int end = analysislist.size() - 1;
 		int start = end + 1 - size;
-		for (int i = start; i <= end; i++)
-		{
+		for (int i = start; i <= end; i++) {
 			String split = " ";
-			if (i == end)
-			{
+			if (i == end) {
 				split = "";
 			}
 			sb.append(analysislist.get(i) + split);
 		}
 		return sb.toString().trim();
 	}
-	
-	private ArrayList<String> LastOfSentenceQueue(int neededSize)
-	{
+
+	private ArrayList<String> LastOfSentenceQueue(int neededSize) {
 		ArrayList<String> result = new ArrayList<String>();
 		int seqsize = sequence.size();
 		int skipsize = seqsize - neededSize;
 		int hasskipped = 0;
 		Iterator<String> itr = sequence.iterator();
 		boolean shouldadd = false;
-		while (itr.hasNext())
-		{
-			if (hasskipped >= skipsize)
-			{
+		while (itr.hasNext()) {
+			if (hasskipped >= skipsize) {
 				shouldadd = true;
 			}
 			String sentence = itr.next();
 			hasskipped++;
-			if (shouldadd)
-			{
+			if (shouldadd) {
 				result.add(sentence);
 			}
 		}
 		return result;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer("");
 		Iterator<String> itr = getSequence().iterator();
-		while (itr.hasNext())
-		{
+		while (itr.hasNext()) {
 			sb.append(" " + itr.next());
 		}
 		return sb.toString();
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return toString().hashCode();
@@ -145,5 +182,17 @@ public class Sequence implements Comparator<Sequence>{
 	public void setExactmatch(boolean exactmatch) {
 		this.exactmatch = exactmatch;
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	public Object clone() {
+		Sequence o = null;
+		try {
+			o = (Sequence) super.clone();
+			o.sequence = (Queue<String>) (((LinkedList<String>) sequence).clone());
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return o;
+	}
+
 }
