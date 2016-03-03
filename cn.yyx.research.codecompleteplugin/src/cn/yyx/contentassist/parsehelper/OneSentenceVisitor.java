@@ -6,6 +6,7 @@ import java.util.Queue;
 import SJ8Parse.Java8BaseVisitor;
 import SJ8Parse.Java8Parser;
 import cn.yyx.contentassist.codeutils.assignmentStatement;
+import cn.yyx.contentassist.codeutils.referedExpression;
 import cn.yyx.contentassist.codeutils.statement;
 
 public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
@@ -27,7 +28,9 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	@Override
 	public Integer visitAssignmentStatement(Java8Parser.AssignmentStatementContext ctx) {
 		// do nothing.
+		
 		Integer res = visitChildren(ctx);
+		
 		Object right = usedobj.poll();
 		Object optr = usedobj.poll();
 		Object left = usedobj.poll();
