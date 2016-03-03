@@ -2,10 +2,11 @@ package cn.yyx.contentassist.parsehelper;
 
 import SJ8Parse.Java8BaseVisitor;
 import SJ8Parse.Java8Parser;
+import cn.yyx.contentassist.codeutils.statement;
 
 public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	
-	
+	statement state = null;
 	
 	@Override
 	public Integer visitStatement(Java8Parser.StatementContext ctx) {
