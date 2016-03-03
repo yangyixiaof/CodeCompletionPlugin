@@ -6,8 +6,10 @@ import java.util.Queue;
 import SJ8Parse.Java8BaseVisitor;
 import SJ8Parse.Java8Parser;
 import cn.yyx.contentassist.codeutils.assignmentStatement;
+import cn.yyx.contentassist.codeutils.castExpressionStatement;
 import cn.yyx.contentassist.codeutils.referedExpression;
 import cn.yyx.contentassist.codeutils.statement;
+import cn.yyx.contentassist.codeutils.type;
 
 public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	
@@ -46,12 +48,19 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitCastExpressionStatement(Java8Parser.CastExpressionStatementContext ctx) {
+		// do nothing.
 		
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		
+		Object rexp = usedobj.poll();
+		Object type = usedobj.poll();
+		smt = new castExpressionStatement((type)type, (referedExpression)rexp);
+		return res;
 	}
 
 	@Override
 	public Integer visitMethodInvocationStatement(Java8Parser.MethodInvocationStatementContext ctx) {
+		
 		return visitChildren(ctx);
 	}
 
