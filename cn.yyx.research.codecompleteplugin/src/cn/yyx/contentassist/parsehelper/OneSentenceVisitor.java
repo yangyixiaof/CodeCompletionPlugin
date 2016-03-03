@@ -40,11 +40,13 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitLiteralStatement(Java8Parser.LiteralStatementContext ctx) {
-		return visitChildren(ctx);
+		usedobj.add(ctx.literal().getText());
+		return 0;
 	}
 
 	@Override
 	public Integer visitCastExpressionStatement(Java8Parser.CastExpressionStatementContext ctx) {
+		
 		return visitChildren(ctx);
 	}
 
