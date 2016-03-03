@@ -1,6 +1,7 @@
 package cn.yyx.contentassist.codepredict;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.ui.text.java.ContentAssistInvocationContext;
@@ -32,7 +33,7 @@ public class CodePredictUtil implements CodePredict {
 			if (lastchar == ';' || lastchar == '}' || lastchar == '{') {
 				// detailed completion will be realized later. this is difficult in technique.
 				//  || lastchar == ',' || lastchar == '(' || lastchar == ')'
-				ArrayList<String> proposalcnt = CodeNGramAnalyzer.PossibleCodes(javacontext);
+				List<String> proposalcnt = CodeNGramAnalyzer.PossibleCodes(javacontext);
 				ProposalHelper.ProposalContentToFormalFormat(javacontext, proposalcnt, proposals);
 			} else {
 				proposals.add(new CompletionProposal(IntelliJavaProposalComputer.OnlyExpressionSupport,

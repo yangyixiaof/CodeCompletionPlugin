@@ -1,6 +1,7 @@
 package cn.yyx.contentassist.codepredict;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
@@ -17,7 +18,7 @@ import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVi
 public class CodeNGramAnalyzer {
 
 	@SuppressWarnings("unchecked")
-	public static ArrayList<String> PossibleCodes(JavaContentAssistInvocationContext javacontext) {
+	public static List<String> PossibleCodes(JavaContentAssistInvocationContext javacontext) {
 		// TODO Auto-generated method stub
 		System.err.println("HaHa Test!!!!!!!!!!!!!!");
 		ArrayList<String> list = new ArrayList<String>();
@@ -45,7 +46,7 @@ public class CodeNGramAnalyzer {
 			atype.accept(fmastv);
 			ArrayList<String> analist = fmastv.GetMainAnalyseList(aoi.isInAnonymousClass());
 			
-			PredictionFetch.FetchPrediction(analist, list);
+			return PredictionFetch.FetchPrediction(fmastv, analist, list);
 			
 		} catch (JavaModelException e) {
 			e.printStackTrace();
