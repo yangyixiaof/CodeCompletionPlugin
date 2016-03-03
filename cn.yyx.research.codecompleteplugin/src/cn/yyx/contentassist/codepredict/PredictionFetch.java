@@ -42,18 +42,18 @@ public class PredictionFetch {
 		return list;
 	}
 	
-	private static List<String> DoRealCodeSynthesis(SimplifiedCodeGenerateASTVisitor fmastv, PredictManager pm) {
-		// TODO Auto-generated method stub
-		
-		return null;
-	}
-
 	private static PredictManager DoSequencePredict(AeroLifeCycle alc, SequenceManager manager) {
 		// TODO Auto-generated method stub
 		
 		return null;
 	}
-
+	
+	private static List<String> DoRealCodeSynthesis(SimplifiedCodeGenerateASTVisitor fmastv, PredictManager pm) {
+		// TODO Auto-generated method stub
+		
+		return null;
+	}
+	
 	private static SequenceManager DoSequenceManager(AeroLifeCycle alc, SequenceManager manager, String ons)
 	{
 		SequenceManager managerresult = manager.HandleANewInSentence(alc, ons);
