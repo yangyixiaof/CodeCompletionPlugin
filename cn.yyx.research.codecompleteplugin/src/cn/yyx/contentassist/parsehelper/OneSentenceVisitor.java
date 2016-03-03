@@ -1,12 +1,18 @@
 package cn.yyx.contentassist.parsehelper;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import SJ8Parse.Java8BaseVisitor;
 import SJ8Parse.Java8Parser;
+import cn.yyx.contentassist.codeutils.assignmentStatement;
 import cn.yyx.contentassist.codeutils.statement;
 
 public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	
-	statement state = null;
+	private statement smt = null;
+	
+	private Queue<Object> usedobj = new LinkedList<Object>();
 	
 	@Override
 	public Integer visitStatement(Java8Parser.StatementContext ctx) {
@@ -20,7 +26,13 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitAssignmentStatement(Java8Parser.AssignmentStatementContext ctx) {
-		return visitChildren(ctx);
+		// do nothing.
+		Integer res = visitChildren(ctx);
+		Object right = usedobj.poll();
+		Object optr = usedobj.poll();
+		Object left = usedobj.poll();
+		smt = new assignmentStatement((referedExpression)left, (String)optr, (referedExpression)right);
+		return res;
 	}
 
 	@Override
@@ -473,6 +485,14 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	@Override
 	public Integer visitAssignmentOperator(Java8Parser.AssignmentOperatorContext ctx) {
 		return visitChildren(ctx);
+	}
+
+	public statement getSmt() {
+		return smt;
+	}
+
+	public void setSmt(statement smt) {
+		this.smt = smt;
 	}
 
 }
