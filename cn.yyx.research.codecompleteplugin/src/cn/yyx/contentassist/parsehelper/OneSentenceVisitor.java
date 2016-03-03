@@ -61,7 +61,11 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	@Override
 	public Integer visitMethodInvocationStatement(Java8Parser.MethodInvocationStatementContext ctx) {
 		
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		
+		
+		
+		return res;
 	}
 
 	@Override
