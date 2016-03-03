@@ -3,6 +3,7 @@ package cn.yyx.contentassist.codepredict;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVisitor;
@@ -30,7 +31,7 @@ public class PredictionFetch {
 			manager = DoSequenceManager(alc, manager, ons);
 		}
 		
-		PredictManager pm = DoSequencePredict(alc, manager);
+		PredictManager pm = DoSequencesPredict(alc, manager);
 		List<String> list = DoRealCodeSynthesis(fmastv, pm);
 		// AeroHelper.testListStrings(2);
 		// System.out.println("ArrayListType:" + analist.getClass());
@@ -42,10 +43,28 @@ public class PredictionFetch {
 		return list;
 	}
 	
-	private static PredictManager DoSequencePredict(AeroLifeCycle alc, SequenceManager manager) {
+	private static PredictManager DoSequencesPredict(AeroLifeCycle alc, SequenceManager manager)
+	{
+		Sequence exactmatch = manager.getExactmatch();
+		PredictManager pm = DoOneSequencePredict(alc, exactmatch, PredictMetaInfo.ExtendFinalMaxSequence, PredictMetaInfo.ExtendTempMaxSequence);
+		PriorityQueue<Sequence> nemqueue = manager.getNotexactmatch();
+		Iterator<Sequence> itr = nemqueue.iterator();
+		while (itr.hasNext())
+		{
+			Sequence s = itr.next();
+			PredictManager temppm = DoOneSequencePredict(alc, s, PredictMetaInfo.ExtendFinalMaxSequence, PredictMetaInfo.ExtendTempMaxSequence);
+			pm.Merge(temppm);
+		}
+		pm.Restrain();
+		return pm;
+	}
+	
+	private static PredictManager DoOneSequencePredict(AeroLifeCycle alc, Sequence oneseq, int finalsize, int maxextendsize)
+	{
 		// TODO Auto-generated method stub
+		PredictManager pm = new PredictManager();
 		
-		return null;
+		return pm;
 	}
 	
 	private static List<String> DoRealCodeSynthesis(SimplifiedCodeGenerateASTVisitor fmastv, PredictManager pm) {
