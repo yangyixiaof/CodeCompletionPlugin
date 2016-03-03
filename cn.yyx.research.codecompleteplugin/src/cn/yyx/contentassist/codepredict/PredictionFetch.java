@@ -61,10 +61,7 @@ public class PredictionFetch {
 	
 	private static PredictManager DoOneSequencePredict(AeroLifeCycle alc, Sequence oneseq, int finalsize, int maxextendsize)
 	{
-		// TODO Auto-generated method stub
-		PredictManager pm = new PredictManager();
-		
-		return pm;
+		return oneseq.HandleExtendPredict(alc, finalsize, maxextendsize);
 	}
 	
 	private static List<String> DoRealCodeSynthesis(SimplifiedCodeGenerateASTVisitor fmastv, PredictManager pm) {

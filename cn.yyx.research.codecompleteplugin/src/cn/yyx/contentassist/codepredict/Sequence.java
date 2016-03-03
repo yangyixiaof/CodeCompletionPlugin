@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Stack;
 
 import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 import cn.yyx.research.AeroSpikeHandle.PredictProbPair;
@@ -193,6 +194,26 @@ public class Sequence implements Comparator<Sequence> {
 			e.printStackTrace();
 		}
 		return o;
+	}
+
+	@SuppressWarnings("unchecked")
+	public PredictManager HandleExtendPredict(AeroLifeCycle alc, int finalsize, int maxextendsize) {
+		PredictManager pm = new PredictManager();
+		int ssize = sequence.size();
+		Queue<String> useq = (LinkedList<String>) ((LinkedList<String>)sequence).clone();
+		int maxsize = Math.min(ssize, PredictMetaInfo.NgramMaxSize);
+		int skip = ssize - maxsize;
+		for (int i=0;i<skip;i++)
+		{
+			useq.poll();
+		}
+		Stack<Sentence> cstack = new Stack<Sentence>();
+		boolean canterminate = false;
+		while (!canterminate)
+		{
+			
+		}
+		return pm;
 	}
 
 }
