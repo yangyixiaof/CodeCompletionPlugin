@@ -13,21 +13,31 @@ import cn.yyx.contentassist.codeutils.anonymousClassPreStatement;
 import cn.yyx.contentassist.codeutils.argumentList;
 import cn.yyx.contentassist.codeutils.arrayAccessStatement;
 import cn.yyx.contentassist.codeutils.arrayCreationStatement;
+import cn.yyx.contentassist.codeutils.arrayInitializerStartStatement;
 import cn.yyx.contentassist.codeutils.assignmentStatement;
 import cn.yyx.contentassist.codeutils.breakStatement;
 import cn.yyx.contentassist.codeutils.castExpressionStatement;
 import cn.yyx.contentassist.codeutils.catchClauseStatement;
 import cn.yyx.contentassist.codeutils.classDeclarationStatement;
 import cn.yyx.contentassist.codeutils.classInnerDeclarationStatement;
+import cn.yyx.contentassist.codeutils.condExpBeginStatement;
+import cn.yyx.contentassist.codeutils.condExpColonMarkStatement;
+import cn.yyx.contentassist.codeutils.condExpQuestionMarkStatement;
 import cn.yyx.contentassist.codeutils.continueStatement;
 import cn.yyx.contentassist.codeutils.defaultStatement;
+import cn.yyx.contentassist.codeutils.doStatement;
 import cn.yyx.contentassist.codeutils.doWhileStatement;
+import cn.yyx.contentassist.codeutils.endOfStatement;
 import cn.yyx.contentassist.codeutils.enhancedForStatement;
 import cn.yyx.contentassist.codeutils.enumConstantDeclarationStatement;
 import cn.yyx.contentassist.codeutils.enumDeclarationStatement;
 import cn.yyx.contentassist.codeutils.expressionStatement;
 import cn.yyx.contentassist.codeutils.fieldAccess;
 import cn.yyx.contentassist.codeutils.fieldAccessStatement;
+import cn.yyx.contentassist.codeutils.forExpOverStatement;
+import cn.yyx.contentassist.codeutils.forIniOverStatement;
+import cn.yyx.contentassist.codeutils.forStatement;
+import cn.yyx.contentassist.codeutils.forUpdOverStatement;
 import cn.yyx.contentassist.codeutils.identifier;
 import cn.yyx.contentassist.codeutils.ifStatement;
 import cn.yyx.contentassist.codeutils.infixExpressionStatement;
@@ -35,6 +45,8 @@ import cn.yyx.contentassist.codeutils.initializerStatement;
 import cn.yyx.contentassist.codeutils.instanceofExpressionStatement;
 import cn.yyx.contentassist.codeutils.labeledStatement;
 import cn.yyx.contentassist.codeutils.lambdaExpressionStatement;
+import cn.yyx.contentassist.codeutils.leftBraceStatement;
+import cn.yyx.contentassist.codeutils.leftParentheseStatement;
 import cn.yyx.contentassist.codeutils.methodDeclarationStatement;
 import cn.yyx.contentassist.codeutils.methodInvocationStatement;
 import cn.yyx.contentassist.codeutils.methodReferenceStatement;
@@ -43,6 +55,8 @@ import cn.yyx.contentassist.codeutils.postfixExpressionStatement;
 import cn.yyx.contentassist.codeutils.prefixExpressionStatement;
 import cn.yyx.contentassist.codeutils.referedExpression;
 import cn.yyx.contentassist.codeutils.returnStatement;
+import cn.yyx.contentassist.codeutils.rightBraceStatement;
+import cn.yyx.contentassist.codeutils.rightParentheseStatement;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.codeutils.switchCaseStatement;
 import cn.yyx.contentassist.codeutils.switchStatement;
@@ -491,72 +505,132 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitLeftParentheseStatement(Java8Parser.LeftParentheseStatementContext ctx) {
-		
+		String text = ctx.getText();
+		int tlen = text.length();
+		int count = 0;
+		for (int i=0;i<tlen;i++)
+		{
+			if (text.charAt(i) == '(')
+			{
+				count++;
+			}
+		}
+		smt = new leftParentheseStatement(count);
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitRightParentheseStatement(Java8Parser.RightParentheseStatementContext ctx) {
+		String text = ctx.getText();
+		int tlen = text.length();
+		int count = 0;
+		for (int i=0;i<tlen;i++)
+		{
+			if (text.charAt(i) == ')')
+			{
+				count++;
+			}
+		}
+		smt = new rightParentheseStatement(count);
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitLeftBraceStatement(Java8Parser.LeftBraceStatementContext ctx) {
+		String text = ctx.getText();
+		int tlen = text.length();
+		int count = 0;
+		for (int i=0;i<tlen;i++)
+		{
+			if (text.charAt(i) == '{')
+			{
+				count++;
+			}
+		}
+		smt = new leftBraceStatement(count);
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitRightBraceStatement(Java8Parser.RightBraceStatementContext ctx) {
+		String text = ctx.getText();
+		int tlen = text.length();
+		int count = 0;
+		for (int i=0;i<tlen;i++)
+		{
+			if (text.charAt(i) == '}')
+			{
+				count++;
+			}
+		}
+		smt = new rightBraceStatement(count);
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitDoStatement(Java8Parser.DoStatementContext ctx) {
+		smt = new doStatement();
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitArrayInitializerStartStatement(Java8Parser.ArrayInitializerStartStatementContext ctx) {
+		smt = new arrayInitializerStartStatement();
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitForStatement(Java8Parser.ForStatementContext ctx) {
+		smt = new forStatement();
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitForIniOverStatement(Java8Parser.ForIniOverStatementContext ctx) {
+		smt = new forIniOverStatement();
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitForExpOverStatement(Java8Parser.ForExpOverStatementContext ctx) {
+		smt = new forExpOverStatement();
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitForUpdOverStatement(Java8Parser.ForUpdOverStatementContext ctx) {
+		smt = new forUpdOverStatement();
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitCondExpBeginStatement(Java8Parser.CondExpBeginStatementContext ctx) {
+		smt = new condExpBeginStatement();
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitCondExpQuestionMarkStatement(Java8Parser.CondExpQuestionMarkStatementContext ctx) {
+		smt = new condExpQuestionMarkStatement();
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitCondExpColonMarkStatement(Java8Parser.CondExpColonMarkStatementContext ctx) {
+		smt = new condExpColonMarkStatement();
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitEndOfStatement(Java8Parser.EndOfStatementContext ctx) {
+		if (ctx.fullEnd() != null)
+		{
+			smt = new endOfStatement(true);
+		}
+		else
+		{
+			smt = new endOfStatement(false);
+		}
 		return visitChildren(ctx);
 	}
 
@@ -572,6 +646,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitArgumentList(Java8Parser.ArgumentListContext ctx) {
+		
 		return visitChildren(ctx);
 	}
 
