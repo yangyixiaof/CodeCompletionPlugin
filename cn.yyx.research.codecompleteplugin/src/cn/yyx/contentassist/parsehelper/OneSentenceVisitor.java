@@ -665,7 +665,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitNumberLiteral(Java8Parser.NumberLiteralContext ctx) {
-		
+
 		return visitChildren(ctx);
 	}
 
@@ -716,31 +716,31 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitIntersectionFirstType(IntersectionFirstTypeContext ctx) {
-		
+
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitIntersectionSecondType(IntersectionSecondTypeContext ctx) {
-		
+
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitIntersectionType(Java8Parser.IntersectionTypeContext ctx) {
-		
+
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitUnionFirstType(UnionFirstTypeContext ctx) {
-		
+
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitUnionSecondType(UnionSecondTypeContext ctx) {
-		
+
 		return visitChildren(ctx);
 	}
 
@@ -751,6 +751,41 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitIdentifier(Java8Parser.IdentifierContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public Integer visitIdRawLetter(Java8Parser.IdRawLetterContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public Integer visitClassRef(Java8Parser.ClassRefContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public Integer visitFinalFieldRef(Java8Parser.FinalFieldRefContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public Integer visitFinalVarRef(Java8Parser.FinalVarRefContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public Integer visitCommonFieldRef(Java8Parser.CommonFieldRefContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public Integer visitCommonVarRef(Java8Parser.CommonVarRefContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public Integer visitOffset(Java8Parser.OffsetContext ctx) {
 		return visitChildren(ctx);
 	}
 
