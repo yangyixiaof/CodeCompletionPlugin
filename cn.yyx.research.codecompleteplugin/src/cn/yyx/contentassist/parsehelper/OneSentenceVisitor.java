@@ -21,6 +21,7 @@ import cn.yyx.contentassist.codeutils.fieldAccessStatement;
 import cn.yyx.contentassist.codeutils.identifier;
 import cn.yyx.contentassist.codeutils.infixExpressionStatement;
 import cn.yyx.contentassist.codeutils.instanceofExpressionStatement;
+import cn.yyx.contentassist.codeutils.labeledStatement;
 import cn.yyx.contentassist.codeutils.methodDeclarationStatement;
 import cn.yyx.contentassist.codeutils.methodInvocationStatement;
 import cn.yyx.contentassist.codeutils.methodReferenceStatement;
@@ -31,6 +32,7 @@ import cn.yyx.contentassist.codeutils.referedExpression;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.codeutils.type;
 import cn.yyx.contentassist.codeutils.typeList;
+import cn.yyx.contentassist.codeutils.variableDeclarationStatement;
 
 public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
@@ -257,17 +259,43 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitLabeledStatement(Java8Parser.LabeledStatementContext ctx) {
-		
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		Object name = usedobj.poll();
+		smt = new labeledStatement((identifier)name);
+		return res;
 	}
 
 	@Override
 	public Integer visitVariableDeclarationStatement(Java8Parser.VariableDeclarationStatementContext ctx) {
-		return visitChildren(ctx);
+		int count = 0;
+		if (ctx.dims() != null)
+		{
+			String ds = ctx.dims().getText();
+			count = CountDims(ds);
+		}
+		Integer res = visitChildren(ctx);
+		Object tp = usedobj.poll();
+		smt = new variableDeclarationStatement((type)tp, count);
+		return res;
+	}
+	
+	protected int CountDims(String ds)
+	{
+		int count = 0;
+		int dslen = ds.length();
+		for (int i=0;i<dslen;i++)
+		{
+			if (ds.charAt(i) == '[')
+			{
+				count++;
+			}
+		}
+		return count;
 	}
 
 	@Override
 	public Integer visitLambdaExpressionStatement(Java8Parser.LambdaExpressionStatementContext ctx) {
+		
 		return visitChildren(ctx);
 	}
 
@@ -322,7 +350,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	}
 
 	@Override
-	public Integer visitCatchClause(Java8Parser.CatchClauseContext ctx) {
+	public Integer visitCatchClauseStatement(Java8Parser.CatchClauseStatementContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -450,17 +478,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	public Integer visitTypeList(Java8Parser.TypeListContext ctx) {
 		return visitChildren(ctx);
 	}
-
-	@Override
-	public Integer visitLambdaParameters(Java8Parser.LambdaParametersContext ctx) {
-		return visitChildren(ctx);
-	}
-
-	@Override
-	public Integer visitFormalParameterList(Java8Parser.FormalParameterListContext ctx) {
-		return visitChildren(ctx);
-	}
-
+	
 	@Override
 	public Integer visitLiteral(Java8Parser.LiteralContext ctx) {
 		return visitChildren(ctx);
