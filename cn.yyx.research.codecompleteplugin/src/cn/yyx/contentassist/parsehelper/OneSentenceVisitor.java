@@ -6,22 +6,33 @@ import java.util.Queue;
 import SJ8Parse.Java8BaseVisitor;
 import SJ8Parse.Java8Parser;
 import SJ8Parse.Java8Parser.ArgumentListContext;
+import SJ8Parse.Java8Parser.TypeListContext;
 import cn.yyx.contentassist.codeutils.annotationTypeMemberDeclarationStatement;
 import cn.yyx.contentassist.codeutils.anonymousClassBeginStatement;
 import cn.yyx.contentassist.codeutils.anonymousClassPreStatement;
 import cn.yyx.contentassist.codeutils.argumentList;
+import cn.yyx.contentassist.codeutils.arrayCreationStatement;
 import cn.yyx.contentassist.codeutils.assignmentStatement;
+import cn.yyx.contentassist.codeutils.breakStatement;
 import cn.yyx.contentassist.codeutils.castExpressionStatement;
+import cn.yyx.contentassist.codeutils.catchClauseStatement;
 import cn.yyx.contentassist.codeutils.classDeclarationStatement;
 import cn.yyx.contentassist.codeutils.classInnerDeclarationStatement;
+import cn.yyx.contentassist.codeutils.continueStatement;
+import cn.yyx.contentassist.codeutils.defaultStatement;
+import cn.yyx.contentassist.codeutils.doWhileStatement;
+import cn.yyx.contentassist.codeutils.enhancedForStatement;
 import cn.yyx.contentassist.codeutils.enumConstantDeclarationStatement;
 import cn.yyx.contentassist.codeutils.enumDeclarationStatement;
 import cn.yyx.contentassist.codeutils.fieldAccess;
 import cn.yyx.contentassist.codeutils.fieldAccessStatement;
 import cn.yyx.contentassist.codeutils.identifier;
+import cn.yyx.contentassist.codeutils.ifStatement;
 import cn.yyx.contentassist.codeutils.infixExpressionStatement;
+import cn.yyx.contentassist.codeutils.initializerStatement;
 import cn.yyx.contentassist.codeutils.instanceofExpressionStatement;
 import cn.yyx.contentassist.codeutils.labeledStatement;
+import cn.yyx.contentassist.codeutils.lambdaExpressionStatement;
 import cn.yyx.contentassist.codeutils.methodDeclarationStatement;
 import cn.yyx.contentassist.codeutils.methodInvocationStatement;
 import cn.yyx.contentassist.codeutils.methodReferenceStatement;
@@ -29,10 +40,17 @@ import cn.yyx.contentassist.codeutils.nameStatement;
 import cn.yyx.contentassist.codeutils.postfixExpressionStatement;
 import cn.yyx.contentassist.codeutils.prefixExpressionStatement;
 import cn.yyx.contentassist.codeutils.referedExpression;
+import cn.yyx.contentassist.codeutils.returnStatement;
 import cn.yyx.contentassist.codeutils.statement;
+import cn.yyx.contentassist.codeutils.switchCaseStatement;
+import cn.yyx.contentassist.codeutils.switchStatement;
+import cn.yyx.contentassist.codeutils.synchronizedStatement;
+import cn.yyx.contentassist.codeutils.throwStatement;
 import cn.yyx.contentassist.codeutils.type;
 import cn.yyx.contentassist.codeutils.typeList;
+import cn.yyx.contentassist.codeutils.variableDeclarationHolderStatement;
 import cn.yyx.contentassist.codeutils.variableDeclarationStatement;
+import cn.yyx.contentassist.codeutils.whileStatement;
 
 public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
@@ -295,92 +313,161 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitLambdaExpressionStatement(Java8Parser.LambdaExpressionStatementContext ctx) {
-		
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		TypeListContext tl = ctx.typeList();
+		Object tlist = null;
+		if (tl != null)
+		{
+			tlist = usedobj.poll();
+		}
+		smt = new lambdaExpressionStatement((typeList)tlist);
+		return res;
 	}
 
 	@Override
 	public Integer visitBreakStatement(Java8Parser.BreakStatementContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		Object name = null;
+		if (ctx.identifier() != null)
+		{
+			name = usedobj.poll();
+		}
+		smt = new breakStatement((identifier)name);
+		return res;
 	}
 
 	@Override
 	public Integer visitContinueStatement(Java8Parser.ContinueStatementContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		Object name = null;
+		if (ctx.identifier() != null)
+		{
+			name = usedobj.poll();
+		}
+		smt = new continueStatement((identifier)name);
+		return res;
 	}
 
 	@Override
 	public Integer visitDoWhileStatement(Java8Parser.DoWhileStatementContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		Object rexp = usedobj.poll();
+		smt = new doWhileStatement((referedExpression)rexp);
+		return res;
 	}
 
 	@Override
 	public Integer visitWhileStatement(Java8Parser.WhileStatementContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		Object rexp = usedobj.poll();
+		smt = new whileStatement((referedExpression)rexp);
+		return res;
 	}
 
 	@Override
 	public Integer visitReturnStatement(Java8Parser.ReturnStatementContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		Object rexp = null;
+		if (ctx.referedExpression() != null)
+		{
+			rexp = usedobj.poll();
+		}
+		smt = new returnStatement((referedExpression)rexp);
+		return res;
 	}
 
 	@Override
 	public Integer visitSwitchStatement(Java8Parser.SwitchStatementContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		Object rexp = usedobj.poll();
+		smt = new switchStatement((referedExpression)rexp);
+		return res;
 	}
 
 	@Override
 	public Integer visitSwitchCaseStatement(Java8Parser.SwitchCaseStatementContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		Object rexp = usedobj.poll();
+		smt = new switchCaseStatement((referedExpression)rexp);
+		return res;
 	}
 
 	@Override
 	public Integer visitDefaultStatement(Java8Parser.DefaultStatementContext ctx) {
+		smt = new defaultStatement();
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitSynchronizedStatement(Java8Parser.SynchronizedStatementContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		Object rexp = usedobj.poll();
+		smt = new synchronizedStatement((referedExpression)rexp);
+		return res;
 	}
 
 	@Override
 	public Integer visitThrowStatement(Java8Parser.ThrowStatementContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		Object rexp = usedobj.poll();
+		smt = new throwStatement((referedExpression)rexp);
+		return res;
 	}
 
 	@Override
 	public Integer visitCatchClauseStatement(Java8Parser.CatchClauseStatementContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		Object rt = usedobj.poll();
+		smt = new catchClauseStatement((type)rt);
+		return res;
 	}
 
 	@Override
 	public Integer visitIfStatement(Java8Parser.IfStatementContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		Object rexp = usedobj.poll();
+		smt = new ifStatement((referedExpression)rexp);
+		return res;
 	}
 
 	@Override
 	public Integer visitArrayCreationStatement(Java8Parser.ArrayCreationStatementContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		Object rt = usedobj.poll();
+		smt = new arrayCreationStatement((type)rt);
+		return res;
 	}
 
 	@Override
 	public Integer visitInitializerStatement(Java8Parser.InitializerStatementContext ctx) {
+		smt = new initializerStatement();
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitVariableDeclarationHolderStatement(Java8Parser.VariableDeclarationHolderStatementContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		Object rexp = null;
+		if (ctx.referedExpression() != null)
+		{
+			rexp = usedobj.poll();
+		}
+		smt = new variableDeclarationHolderStatement((referedExpression)rexp);
+		return res;
 	}
 
 	@Override
 	public Integer visitEnhancedForStatement(Java8Parser.EnhancedForStatementContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		Object rexp = usedobj.poll();
+		Object rt = usedobj.poll();
+		smt = new enhancedForStatement((type)rt, (referedExpression)rexp);
+		return res;
 	}
 
 	@Override
 	public Integer visitArrayAccessStatement(Java8Parser.ArrayAccessStatementContext ctx) {
+		
 		return visitChildren(ctx);
 	}
 
