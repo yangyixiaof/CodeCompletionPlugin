@@ -1,5 +1,5 @@
 package cn.yyx.contentassist.codeutils;
 
-public class literal {
+public class literal extends referedExpression{
 
 }

@@ -5,8 +5,20 @@ import java.util.Queue;
 
 import SJ8Parse.Java8BaseVisitor;
 import SJ8Parse.Java8Parser;
+import SJ8Parse.Java8Parser.ArgumentListContext;
+import cn.yyx.contentassist.codeutils.argumentList;
 import cn.yyx.contentassist.codeutils.assignmentStatement;
 import cn.yyx.contentassist.codeutils.castExpressionStatement;
+import cn.yyx.contentassist.codeutils.fieldAccess;
+import cn.yyx.contentassist.codeutils.fieldAccessStatement;
+import cn.yyx.contentassist.codeutils.identifier;
+import cn.yyx.contentassist.codeutils.infixExpressionStatement;
+import cn.yyx.contentassist.codeutils.instanceofExpressionStatement;
+import cn.yyx.contentassist.codeutils.methodDeclarationStatement;
+import cn.yyx.contentassist.codeutils.methodReferenceStatement;
+import cn.yyx.contentassist.codeutils.nameStatement;
+import cn.yyx.contentassist.codeutils.postfixExpressionStatement;
+import cn.yyx.contentassist.codeutils.prefixExpressionStatement;
 import cn.yyx.contentassist.codeutils.referedExpression;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.codeutils.type;
@@ -63,53 +75,135 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		
 		Integer res = visitChildren(ctx);
 		
+		ArgumentListContext arg = ctx.argumentList();
 		
+		Object argList = null;
+		if (arg != null)
+		{
+			argList = usedobj.poll();
+		}
+		Object name = usedobj.poll();
+		
+		smt = new methodDeclarationStatement((identifier)name, (argumentList)argList);
 		
 		return res;
 	}
 
 	@Override
 	public Integer visitFieldAccessStatement(Java8Parser.FieldAccessStatementContext ctx) {
-		return visitChildren(ctx);
+		
+		Integer res = visitChildren(ctx);
+		
+		Object fa = usedobj.poll();
+		
+		smt = new fieldAccessStatement((fieldAccess)fa);
+		
+		return res;
 	}
 
 	@Override
 	public Integer visitFieldAccess(Java8Parser.FieldAccessContext ctx) {
-		return visitChildren(ctx);
+		
+		Integer res = visitChildren(ctx);
+		
+		Object rexp = usedobj.poll();
+		
+		Object name = usedobj.poll();
+		
+		usedobj.add(new fieldAccess((identifier)name, (referedExpression)rexp));
+		
+		return res;
 	}
 
 	@Override
 	public Integer visitInfixExpressionStatement(Java8Parser.InfixExpressionStatementContext ctx) {
-		return visitChildren(ctx);
+		
+		Integer res = visitChildren(ctx);
+		
+		Object rexp = usedobj.poll();
+		
+		Object optr = usedobj.poll();
+		
+		Object lexp = usedobj.poll();
+		
+		smt = new infixExpressionStatement((referedExpression)rexp, (String)optr, (referedExpression)lexp);
+		
+		return res;
 	}
 
 	@Override
 	public Integer visitInstanceofExpressionStatement(Java8Parser.InstanceofExpressionStatementContext ctx) {
-		return visitChildren(ctx);
+		
+		Integer res = visitChildren(ctx);
+		
+		Object type = usedobj.poll();
+		
+		Object rexp = usedobj.poll();
+		
+		smt = new instanceofExpressionStatement((referedExpression)rexp, (type)type);
+		
+		return res;
 	}
 
 	@Override
 	public Integer visitMethodReferenceStatement(Java8Parser.MethodReferenceStatementContext ctx) {
-		return visitChildren(ctx);
+		
+		Integer res = visitChildren(ctx);
+		
+		Object rexp = usedobj.poll();
+		
+		Object name = usedobj.poll();
+		
+		smt = new methodReferenceStatement((identifier)name, (referedExpression)rexp);
+		
+		return res;
 	}
 
 	@Override
 	public Integer visitNameStatement(Java8Parser.NameStatementContext ctx) {
-		return visitChildren(ctx);
+		
+		Integer res = visitChildren(ctx);
+		
+		Object name = usedobj.poll();
+		
+		smt = new nameStatement((identifier)name);
+		
+		return res;
 	}
 
 	@Override
 	public Integer visitPrefixExpressionStatement(Java8Parser.PrefixExpressionStatementContext ctx) {
-		return visitChildren(ctx);
+		
+		Integer res = visitChildren(ctx);
+		
+		Object rexp = usedobj.poll();
+		
+		Object optr = usedobj.poll();
+		
+		smt = new prefixExpressionStatement((String)optr, (referedExpression)rexp);
+		
+		return res;
 	}
 
 	@Override
 	public Integer visitPostfixExpressionStatement(Java8Parser.PostfixExpressionStatementContext ctx) {
-		return visitChildren(ctx);
+		
+		Integer res = visitChildren(ctx);
+		
+		Object optr = usedobj.poll();
+		
+		Object rexp = usedobj.poll();
+		
+		smt = new postfixExpressionStatement((referedExpression)rexp, (String)optr);
+		
+		return res;
 	}
 
 	@Override
 	public Integer visitReferedExpression(Java8Parser.ReferedExpressionContext ctx) {
+		
+		
+		
 		return visitChildren(ctx);
 	}
 
