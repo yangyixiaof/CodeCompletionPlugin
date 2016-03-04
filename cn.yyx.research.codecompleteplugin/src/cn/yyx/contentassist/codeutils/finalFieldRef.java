@@ -1,5 +1,5 @@
 package cn.yyx.contentassist.codeutils;
 
-public class ClassRef extends type{
+public class finalFieldRef extends identifier{
 
 }
