@@ -6,6 +6,9 @@ import java.util.Queue;
 import SJ8Parse.Java8BaseVisitor;
 import SJ8Parse.Java8Parser;
 import SJ8Parse.Java8Parser.ArgumentListContext;
+import SJ8Parse.Java8Parser.FieldAccessContext;
+import SJ8Parse.Java8Parser.IdentifierContext;
+import SJ8Parse.Java8Parser.LiteralContext;
 import cn.yyx.contentassist.codeutils.argumentList;
 import cn.yyx.contentassist.codeutils.assignmentStatement;
 import cn.yyx.contentassist.codeutils.castExpressionStatement;
@@ -201,10 +204,10 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitReferedExpression(Java8Parser.ReferedExpressionContext ctx) {
+		// do nothing.
+		Integer res = visitChildren(ctx);
 		
-		
-		
-		return visitChildren(ctx);
+		return res;
 	}
 
 	@Override
