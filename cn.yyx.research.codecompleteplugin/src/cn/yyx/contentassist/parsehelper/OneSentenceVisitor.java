@@ -11,6 +11,7 @@ import cn.yyx.contentassist.codeutils.annotationTypeMemberDeclarationStatement;
 import cn.yyx.contentassist.codeutils.anonymousClassBeginStatement;
 import cn.yyx.contentassist.codeutils.anonymousClassPreStatement;
 import cn.yyx.contentassist.codeutils.argumentList;
+import cn.yyx.contentassist.codeutils.arrayAccessStatement;
 import cn.yyx.contentassist.codeutils.arrayCreationStatement;
 import cn.yyx.contentassist.codeutils.assignmentStatement;
 import cn.yyx.contentassist.codeutils.breakStatement;
@@ -24,6 +25,7 @@ import cn.yyx.contentassist.codeutils.doWhileStatement;
 import cn.yyx.contentassist.codeutils.enhancedForStatement;
 import cn.yyx.contentassist.codeutils.enumConstantDeclarationStatement;
 import cn.yyx.contentassist.codeutils.enumDeclarationStatement;
+import cn.yyx.contentassist.codeutils.expressionStatement;
 import cn.yyx.contentassist.codeutils.fieldAccess;
 import cn.yyx.contentassist.codeutils.fieldAccessStatement;
 import cn.yyx.contentassist.codeutils.identifier;
@@ -467,17 +469,29 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitArrayAccessStatement(Java8Parser.ArrayAccessStatementContext ctx) {
-		
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		Object rexp = usedobj.poll();
+		Object rarr = usedobj.poll();
+		smt = new arrayAccessStatement((referedExpression)rarr, (referedExpression)rexp);
+		return res;
 	}
 
 	@Override
 	public Integer visitPartialEndArrayAccessStatement(Java8Parser.PartialEndArrayAccessStatementContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		if (smt == null || !(smt instanceof expressionStatement))
+		{
+			System.err.println("PartialEndArrayAccessStatement does handle expressionStatement.");
+			new Exception().printStackTrace();
+			System.exit(1);
+		}
+		((expressionStatement)smt).setArrayAccessEnd(true);
+		return res;
 	}
 
 	@Override
 	public Integer visitLeftParentheseStatement(Java8Parser.LeftParentheseStatementContext ctx) {
+		
 		return visitChildren(ctx);
 	}
 

@@ -1,5 +1,5 @@
 package cn.yyx.contentassist.codeutils;
 
-public class statement {
+public class statement extends OneCode{
 
 }
