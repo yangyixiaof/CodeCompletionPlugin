@@ -1,11 +1,15 @@
 package cn.yyx.contentassist.parsehelper;
 
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import SJ8Parse.Java8BaseVisitor;
 import SJ8Parse.Java8Parser;
 import SJ8Parse.Java8Parser.ArgumentListContext;
+import SJ8Parse.Java8Parser.ReferedExpressionContext;
+import SJ8Parse.Java8Parser.TypeContext;
 import SJ8Parse.Java8Parser.TypeListContext;
 import cn.yyx.contentassist.codeutils.annotationTypeMemberDeclarationStatement;
 import cn.yyx.contentassist.codeutils.anonymousClassBeginStatement;
@@ -646,13 +650,32 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitArgumentList(Java8Parser.ArgumentListContext ctx) {
-		
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		argumentList al = new argumentList();
+		List<ReferedExpressionContext> rl = ctx.referedExpression();
+		Iterator<ReferedExpressionContext> itr = rl.iterator();
+		while (itr.hasNext())
+		{
+			Object o = usedobj.poll();
+			al.AddToFirst((referedExpression) o);
+		}
+		usedobj.add(al);
+		return res;
 	}
 
 	@Override
 	public Integer visitTypeList(Java8Parser.TypeListContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		typeList al = new typeList();
+		List<TypeContext> rl = ctx.type();
+		Iterator<TypeContext> itr = rl.iterator();
+		while (itr.hasNext())
+		{
+			Object o = usedobj.poll();
+			al.AddToFirst((TypeContext) o);
+		}
+		usedobj.add(al);
+		return res;
 	}
 	
 	@Override
@@ -660,6 +683,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		return visitChildren(ctx);
 	}
 
+	// TODO
 	@Override
 	public Integer visitReferenceType(Java8Parser.ReferenceTypeContext ctx) {
 		return visitChildren(ctx);
