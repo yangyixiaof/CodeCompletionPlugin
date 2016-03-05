@@ -8,8 +8,11 @@ import java.util.Queue;
 import SJ8Parse.Java8BaseVisitor;
 import SJ8Parse.Java8Parser;
 import SJ8Parse.Java8Parser.ArgumentListContext;
+import SJ8Parse.Java8Parser.BothTypeContext;
+import SJ8Parse.Java8Parser.ExtendBoundContext;
 import SJ8Parse.Java8Parser.IntersectionFirstTypeContext;
 import SJ8Parse.Java8Parser.IntersectionSecondTypeContext;
+import SJ8Parse.Java8Parser.OffsetContext;
 import SJ8Parse.Java8Parser.ParameterizedTypeContext;
 import SJ8Parse.Java8Parser.ReferedExpressionContext;
 import SJ8Parse.Java8Parser.SimpleTypeContext;
@@ -17,6 +20,7 @@ import SJ8Parse.Java8Parser.TypeContext;
 import SJ8Parse.Java8Parser.TypeListContext;
 import SJ8Parse.Java8Parser.UnionFirstTypeContext;
 import SJ8Parse.Java8Parser.UnionSecondTypeContext;
+import SJ8Parse.Java8Parser.WildcardBoundsContext;
 import cn.yyx.contentassist.codeutils.annotationTypeMemberDeclarationStatement;
 import cn.yyx.contentassist.codeutils.anonymousClassBeginStatement;
 import cn.yyx.contentassist.codeutils.anonymousClassPreStatement;
@@ -24,12 +28,22 @@ import cn.yyx.contentassist.codeutils.argumentList;
 import cn.yyx.contentassist.codeutils.arrayAccessStatement;
 import cn.yyx.contentassist.codeutils.arrayCreationStatement;
 import cn.yyx.contentassist.codeutils.arrayInitializerStartStatement;
+import cn.yyx.contentassist.codeutils.arrayType;
+import cn.yyx.contentassist.codeutils.assignmentOperator;
 import cn.yyx.contentassist.codeutils.assignmentStatement;
+import cn.yyx.contentassist.codeutils.binaryOperator;
+import cn.yyx.contentassist.codeutils.booleanLiteral;
 import cn.yyx.contentassist.codeutils.breakStatement;
 import cn.yyx.contentassist.codeutils.castExpressionStatement;
 import cn.yyx.contentassist.codeutils.catchClauseStatement;
+import cn.yyx.contentassist.codeutils.characterLiteral;
 import cn.yyx.contentassist.codeutils.classDeclarationStatement;
 import cn.yyx.contentassist.codeutils.classInnerDeclarationStatement;
+import cn.yyx.contentassist.codeutils.classOrInterfaceType;
+import cn.yyx.contentassist.codeutils.classRef;
+import cn.yyx.contentassist.codeutils.codeHole;
+import cn.yyx.contentassist.codeutils.commonFieldRef;
+import cn.yyx.contentassist.codeutils.commonVarRef;
 import cn.yyx.contentassist.codeutils.condExpBeginStatement;
 import cn.yyx.contentassist.codeutils.condExpColonMarkStatement;
 import cn.yyx.contentassist.codeutils.condExpQuestionMarkStatement;
@@ -44,15 +58,21 @@ import cn.yyx.contentassist.codeutils.enumDeclarationStatement;
 import cn.yyx.contentassist.codeutils.expressionStatement;
 import cn.yyx.contentassist.codeutils.fieldAccess;
 import cn.yyx.contentassist.codeutils.fieldAccessStatement;
+import cn.yyx.contentassist.codeutils.finalFieldRef;
+import cn.yyx.contentassist.codeutils.finalVarRef;
+import cn.yyx.contentassist.codeutils.floatingPointLiteral;
 import cn.yyx.contentassist.codeutils.forExpOverStatement;
 import cn.yyx.contentassist.codeutils.forIniOverStatement;
 import cn.yyx.contentassist.codeutils.forStatement;
 import cn.yyx.contentassist.codeutils.forUpdOverStatement;
+import cn.yyx.contentassist.codeutils.idRawLetter;
 import cn.yyx.contentassist.codeutils.identifier;
 import cn.yyx.contentassist.codeutils.ifStatement;
 import cn.yyx.contentassist.codeutils.infixExpressionStatement;
 import cn.yyx.contentassist.codeutils.initializerStatement;
 import cn.yyx.contentassist.codeutils.instanceofExpressionStatement;
+import cn.yyx.contentassist.codeutils.integerLiteral;
+import cn.yyx.contentassist.codeutils.intersectionType;
 import cn.yyx.contentassist.codeutils.labeledStatement;
 import cn.yyx.contentassist.codeutils.lambdaExpressionStatement;
 import cn.yyx.contentassist.codeutils.leftBraceStatement;
@@ -61,13 +81,17 @@ import cn.yyx.contentassist.codeutils.methodDeclarationStatement;
 import cn.yyx.contentassist.codeutils.methodInvocationStatement;
 import cn.yyx.contentassist.codeutils.methodReferenceStatement;
 import cn.yyx.contentassist.codeutils.nameStatement;
+import cn.yyx.contentassist.codeutils.nullLiteral;
+import cn.yyx.contentassist.codeutils.parameterizedType;
 import cn.yyx.contentassist.codeutils.postfixExpressionStatement;
+import cn.yyx.contentassist.codeutils.preExist;
 import cn.yyx.contentassist.codeutils.prefixExpressionStatement;
 import cn.yyx.contentassist.codeutils.primitiveType;
 import cn.yyx.contentassist.codeutils.referedExpression;
 import cn.yyx.contentassist.codeutils.returnStatement;
 import cn.yyx.contentassist.codeutils.rightBraceStatement;
 import cn.yyx.contentassist.codeutils.rightParentheseStatement;
+import cn.yyx.contentassist.codeutils.simpleType;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.codeutils.stringLiteral;
 import cn.yyx.contentassist.codeutils.switchCaseStatement;
@@ -76,9 +100,12 @@ import cn.yyx.contentassist.codeutils.synchronizedStatement;
 import cn.yyx.contentassist.codeutils.throwStatement;
 import cn.yyx.contentassist.codeutils.type;
 import cn.yyx.contentassist.codeutils.typeList;
+import cn.yyx.contentassist.codeutils.unaryOperator;
+import cn.yyx.contentassist.codeutils.unionType;
 import cn.yyx.contentassist.codeutils.variableDeclarationHolderStatement;
 import cn.yyx.contentassist.codeutils.variableDeclarationStatement;
 import cn.yyx.contentassist.codeutils.whileStatement;
+import cn.yyx.contentassist.codeutils.wildCardType;
 
 public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
@@ -310,14 +337,9 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitVariableDeclarationStatement(Java8Parser.VariableDeclarationStatementContext ctx) {
-		int count = 0;
-		if (ctx.dims() != null) {
-			String ds = ctx.dims().getText();
-			count = CountDims(ds);
-		}
 		Integer res = visitChildren(ctx);
 		Object tp = usedobj.poll();
-		smt = new variableDeclarationStatement((type) tp, count);
+		smt = new variableDeclarationStatement((type) tp);
 		return res;
 	}
 
@@ -639,6 +661,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		List<ReferedExpressionContext> rl = ctx.referedExpression();
 		Iterator<ReferedExpressionContext> itr = rl.iterator();
 		while (itr.hasNext()) {
+			itr.next();
 			Object o = usedobj.poll();
 			al.AddToFirst((referedExpression) o);
 		}
@@ -653,6 +676,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		List<TypeContext> rl = ctx.type();
 		Iterator<TypeContext> itr = rl.iterator();
 		while (itr.hasNext()) {
+			itr.next();
 			Object o = usedobj.poll();
 			al.AddToFirst((TypeContext) o);
 		}
@@ -689,25 +713,49 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitSimpleType(SimpleTypeContext ctx) {
-		
+		usedobj.add(new simpleType(ctx.getText()));
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitParameterizedType(ParameterizedTypeContext ctx) {
-		
+		Integer res = visitChildren(ctx);
+		Object tlist = usedobj.poll();
+		Object id = usedobj.poll();
+		usedobj.add(new parameterizedType((identifier) id, (typeList) tlist));
+		return res;
+	}
+
+	@Override
+	public Integer visitBothType(BothTypeContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitClassOrInterfaceType(Java8Parser.ClassOrInterfaceTypeContext ctx) {
-
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		List<BothTypeContext> slist = ctx.bothType();
+		Iterator<BothTypeContext> itr = slist.iterator();
+		List<type> result = new LinkedList<type>();
+		while (itr.hasNext()) {
+			itr.next();
+			result.add(0, (type)usedobj.poll());
+		}
+		usedobj.add(new classOrInterfaceType(result));
+		return res;
 	}
 
 	@Override
 	public Integer visitArrayType(Java8Parser.ArrayTypeContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		int count = 0;
+		if (ctx.dims() != null) {
+			String ds = ctx.dims().getText();
+			count = CountDims(ds);
+		}
+		Object tp = usedobj.poll();
+		usedobj.add(new arrayType((type)tp, count));
+		return res;
 	}
 
 	@Override
@@ -716,13 +764,21 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	}
 
 	@Override
-	public Integer visitTypeArguments(Java8Parser.TypeArgumentsContext ctx) {
-		return visitChildren(ctx);
-	}
-
-	@Override
 	public Integer visitWildCardType(Java8Parser.WildCardTypeContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		WildcardBoundsContext wb = ctx.wildcardBounds();
+		Object tp = usedobj.poll();
+		boolean extended = false;
+		if (wb != null)
+		{
+			ExtendBoundContext eb = wb.extendBound();
+			if (eb != null)
+			{
+				extended = true;
+			}
+		}
+		usedobj.add(new wildCardType(extended, (type)tp));
+		return res;
 	}
 
 	@Override
@@ -732,37 +788,56 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitIntersectionFirstType(IntersectionFirstTypeContext ctx) {
-
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitIntersectionSecondType(IntersectionSecondTypeContext ctx) {
-
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitIntersectionType(Java8Parser.IntersectionTypeContext ctx) {
-
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		List<IntersectionSecondTypeContext> list = ctx.intersectionSecondType();
+		Iterator<IntersectionSecondTypeContext> itr = list.iterator();
+		List<type> tps = new LinkedList<type>();
+		while (itr.hasNext())
+		{
+			itr.next();
+			tps.add(0, (type)usedobj.poll());
+		}
+		// for intersectionFirstType()
+		tps.add(0, (type)usedobj.poll());
+		usedobj.add(new intersectionType(tps));
+		return res;
 	}
 
 	@Override
 	public Integer visitUnionFirstType(UnionFirstTypeContext ctx) {
-
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitUnionSecondType(UnionSecondTypeContext ctx) {
-
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitUnionType(Java8Parser.UnionTypeContext ctx) {
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		List<UnionSecondTypeContext> list = ctx.unionSecondType();
+		Iterator<UnionSecondTypeContext> itr = list.iterator();
+		List<type> tps = new LinkedList<type>();
+		while (itr.hasNext())
+		{
+			itr.next();
+			tps.add(0, (type)usedobj.poll());
+		}
+		// for intersectionFirstType()
+		tps.add(0, (type)usedobj.poll());
+		usedobj.add(new unionType(tps));
+		return res;
 	}
 
 	@Override
@@ -772,31 +847,67 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitIdRawLetter(Java8Parser.IdRawLetterContext ctx) {
+		usedobj.add(new idRawLetter(ctx.getText()));
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitClassRef(Java8Parser.ClassRefContext ctx) {
+		List<OffsetContext> list = ctx.offset();
+		Iterator<OffsetContext> itr = list.iterator();
+		OffsetContext scopelevel = itr.next();
+		int scope = Integer.parseInt(scopelevel.getText());
+		OffsetContext offsetlevel = itr.next();
+		int off = Integer.parseInt(offsetlevel.getText());
+		usedobj.add(new classRef(scope, off));
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitFinalFieldRef(Java8Parser.FinalFieldRefContext ctx) {
+		List<OffsetContext> list = ctx.offset();
+		Iterator<OffsetContext> itr = list.iterator();
+		OffsetContext scopelevel = itr.next();
+		int scope = Integer.parseInt(scopelevel.getText());
+		OffsetContext offsetlevel = itr.next();
+		int off = Integer.parseInt(offsetlevel.getText());
+		usedobj.add(new finalFieldRef(scope, off));
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitFinalVarRef(Java8Parser.FinalVarRefContext ctx) {
+		List<OffsetContext> list = ctx.offset();
+		Iterator<OffsetContext> itr = list.iterator();
+		OffsetContext scopelevel = itr.next();
+		int scope = Integer.parseInt(scopelevel.getText());
+		OffsetContext offsetlevel = itr.next();
+		int off = Integer.parseInt(offsetlevel.getText());
+		usedobj.add(new finalVarRef(scope, off));
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitCommonFieldRef(Java8Parser.CommonFieldRefContext ctx) {
+		List<OffsetContext> list = ctx.offset();
+		Iterator<OffsetContext> itr = list.iterator();
+		OffsetContext scopelevel = itr.next();
+		int scope = Integer.parseInt(scopelevel.getText());
+		OffsetContext offsetlevel = itr.next();
+		int off = Integer.parseInt(offsetlevel.getText());
+		usedobj.add(new commonFieldRef(scope, off));
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitCommonVarRef(Java8Parser.CommonVarRefContext ctx) {
+		List<OffsetContext> list = ctx.offset();
+		Iterator<OffsetContext> itr = list.iterator();
+		OffsetContext scopelevel = itr.next();
+		int scope = Integer.parseInt(scopelevel.getText());
+		OffsetContext offsetlevel = itr.next();
+		int off = Integer.parseInt(offsetlevel.getText());
+		usedobj.add(new commonVarRef(scope, off));
 		return visitChildren(ctx);
 	}
 
@@ -807,11 +918,13 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitCodeHole(Java8Parser.CodeHoleContext ctx) {
+		usedobj.add(new codeHole());
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitPreExist(Java8Parser.PreExistContext ctx) {
+		usedobj.add(new preExist());
 		return visitChildren(ctx);
 	}
 
@@ -823,41 +936,49 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitIntegerLiteral(Java8Parser.IntegerLiteralContext ctx) {
+		usedobj.add(new integerLiteral(Integer.parseInt(ctx.getText())));
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitFloatingPointLiteral(Java8Parser.FloatingPointLiteralContext ctx) {
+		usedobj.add(new floatingPointLiteral(Double.parseDouble(ctx.getText())));
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitBooleanLiteral(Java8Parser.BooleanLiteralContext ctx) {
+		usedobj.add(new booleanLiteral(Boolean.parseBoolean(ctx.getText())));
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitCharacterLiteral(Java8Parser.CharacterLiteralContext ctx) {
+		usedobj.add(new characterLiteral(ctx.getText()));
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitNullLiteral(Java8Parser.NullLiteralContext ctx) {
+		usedobj.add(new nullLiteral());
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitUnaryOperator(Java8Parser.UnaryOperatorContext ctx) {
+		usedobj.add(new unaryOperator(ctx.getText()));
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitBinaryOperator(Java8Parser.BinaryOperatorContext ctx) {
+		usedobj.add(new binaryOperator(ctx.getText()));
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitAssignmentOperator(Java8Parser.AssignmentOperatorContext ctx) {
+		usedobj.add(new assignmentOperator(ctx.getText()));
 		return visitChildren(ctx);
 	}
 

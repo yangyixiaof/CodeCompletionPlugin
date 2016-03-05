@@ -3,11 +3,9 @@ package cn.yyx.contentassist.codeutils;
 public class variableDeclarationStatement extends statement{
 	
 	type tp = null;
-	int count = 0;
 	
-	public variableDeclarationStatement(type tp, int count) {
+	public variableDeclarationStatement(type tp) {
 		this.tp = tp;
-		this.count = count;
 	}
 	
 }
