@@ -10,7 +10,9 @@ import SJ8Parse.Java8Parser;
 import SJ8Parse.Java8Parser.ArgumentListContext;
 import SJ8Parse.Java8Parser.IntersectionFirstTypeContext;
 import SJ8Parse.Java8Parser.IntersectionSecondTypeContext;
+import SJ8Parse.Java8Parser.ParameterizedTypeContext;
 import SJ8Parse.Java8Parser.ReferedExpressionContext;
+import SJ8Parse.Java8Parser.SimpleTypeContext;
 import SJ8Parse.Java8Parser.TypeContext;
 import SJ8Parse.Java8Parser.TypeListContext;
 import SJ8Parse.Java8Parser.UnionFirstTypeContext;
@@ -61,11 +63,13 @@ import cn.yyx.contentassist.codeutils.methodReferenceStatement;
 import cn.yyx.contentassist.codeutils.nameStatement;
 import cn.yyx.contentassist.codeutils.postfixExpressionStatement;
 import cn.yyx.contentassist.codeutils.prefixExpressionStatement;
+import cn.yyx.contentassist.codeutils.primitiveType;
 import cn.yyx.contentassist.codeutils.referedExpression;
 import cn.yyx.contentassist.codeutils.returnStatement;
 import cn.yyx.contentassist.codeutils.rightBraceStatement;
 import cn.yyx.contentassist.codeutils.rightParentheseStatement;
 import cn.yyx.contentassist.codeutils.statement;
+import cn.yyx.contentassist.codeutils.stringLiteral;
 import cn.yyx.contentassist.codeutils.switchCaseStatement;
 import cn.yyx.contentassist.codeutils.switchStatement;
 import cn.yyx.contentassist.codeutils.synchronizedStatement;
@@ -661,16 +665,14 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		return visitChildren(ctx);
 	}
 
-	// TODO
-
 	@Override
 	public Integer visitNumberLiteral(Java8Parser.NumberLiteralContext ctx) {
-
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitStringLiteral(Java8Parser.StringLiteralContext ctx) {
+		usedobj.add(new stringLiteral());
 		return visitChildren(ctx);
 	}
 
@@ -681,11 +683,25 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitPrimitiveType(Java8Parser.PrimitiveTypeContext ctx) {
+		usedobj.add(new primitiveType(ctx.getText()));
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public Integer visitSimpleType(SimpleTypeContext ctx) {
+		
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public Integer visitParameterizedType(ParameterizedTypeContext ctx) {
+		
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public Integer visitClassOrInterfaceType(Java8Parser.ClassOrInterfaceTypeContext ctx) {
+
 		return visitChildren(ctx);
 	}
 
