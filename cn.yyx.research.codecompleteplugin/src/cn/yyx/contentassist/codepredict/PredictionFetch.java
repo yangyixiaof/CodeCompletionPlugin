@@ -31,7 +31,7 @@ public class PredictionFetch {
 			manager = DoPreTrySequencePredict(alc, manager, ons);
 		}
 		
-		PredictManager pm = DoSequencesPredict(alc, manager);
+		PredictSequenceManager pm = DoSequencesPredict(alc, manager);
 		List<String> list = DoRealCodeSynthesis(fmastv, pm);
 		// AeroHelper.testListStrings(2);
 		// System.out.println("ArrayListType:" + analist.getClass());
@@ -43,42 +43,47 @@ public class PredictionFetch {
 		return list;
 	}
 	
-	private PredictManager DoSequencesPredict(AeroLifeCycle alc, SequenceManager manager)
+	private PredictSequenceManager DoSequencesPredict(AeroLifeCycle alc, SequenceManager manager)
 	{
-		Sequence exactmatch = manager.getExactmatch();
-		PredictManager pm = DoOneSequencePredict(alc, exactmatch, PredictMetaInfo.ExtendFinalMaxSequence, PredictMetaInfo.ExtendTempMaxSequence);
-		PriorityQueue<Sequence> nemqueue = manager.getNotexactmatch();
-		Iterator<Sequence> itr = nemqueue.iterator();
+		Iterator<Sequence> itr = manager.Iterator();
+		PredictSequenceManager pm = null;
 		while (itr.hasNext())
 		{
 			Sequence s = itr.next();
-			PredictManager temppm = DoOneSequencePredict(alc, s, PredictMetaInfo.ExtendFinalMaxSequence, PredictMetaInfo.ExtendTempMaxSequence);
-			pm.Merge(temppm);
+			PredictSequenceManager temppm = DoOneSequencePredict(alc, s, PredictMetaInfo.ExtendFinalMaxSequence, PredictMetaInfo.ExtendTempMaxSequence);
+			if (pm == null)
+			{
+				pm = temppm;
+			}
+			else
+			{
+				pm.Merge(temppm);
+			}
 		}
-		pm.Restrain();
+		pm.Restrain(PredictMetaInfo.ExtendFinalMaxSequence);
 		return pm;
 	}
 	
-	private PredictManager DoOneSequencePredict(AeroLifeCycle alc, Sequence oneseq, int finalsize, int maxextendsize)
+	private PredictSequenceManager DoOneSequencePredict(AeroLifeCycle alc, Sequence oneseq, int finalsize, int maxextendsize)
 	{
 		int normalExtendSize = (int)Math.max(Math.sqrt(maxextendsize), maxextendsize/2);
-		PredictManager result = new PredictManager();
-		PredictManager firstlevel = new PredictManager();
-		Predict tpd = new Predict(oneseq);
+		PredictSequenceManager result = new PredictSequenceManager();
+		PredictSequenceManager firstlevel = new PredictSequenceManager();
+		PredictSequence tpd = new PredictSequence(oneseq);
 		firstlevel.AddOnePredict(tpd, -1);
-		PredictManager olevel = firstlevel;
+		PredictSequenceManager olevel = firstlevel;
 		while (!result.CouldOver(finalsize) && !olevel.IsEmpty())
 		{
-			PredictManager tempolevel = new PredictManager();
-			Iterator<Predict> oitr = olevel.Iterator();
+			PredictSequenceManager tempolevel = new PredictSequenceManager();
+			Iterator<Sequence> oitr = olevel.Iterator();
 			while (oitr.hasNext())
 			{
-				Predict pd = oitr.next();
-				PredictManager pm = pd.ExtendOneSentence(alc, normalExtendSize);
-				Iterator<Predict> itr = pm.Iterator();
+				PredictSequence pd = (PredictSequence) oitr.next();
+				PredictSequenceManager pm = pd.ExtendOneSentence(alc, normalExtendSize);
+				Iterator<Sequence> itr = pm.Iterator();
 				while (itr.hasNext())
 				{
-					Predict opd = itr.next();
+					PredictSequence opd = (PredictSequence) itr.next();
 					if (opd.isOver())
 					{
 						result.AddOnePredict(opd, finalsize);
@@ -94,7 +99,7 @@ public class PredictionFetch {
 		return result;
 	}
 	
-	private List<String> DoRealCodeSynthesis(SimplifiedCodeGenerateASTVisitor fmastv, PredictManager pm) {
+	private List<String> DoRealCodeSynthesis(SimplifiedCodeGenerateASTVisitor fmastv, PredictSequenceManager pm) {
 		// TODO Auto-generated method stub
 		
 		return null;
@@ -103,13 +108,6 @@ public class PredictionFetch {
 	private PreTrySequenceManager DoPreTrySequencePredict(AeroLifeCycle alc, PreTrySequenceManager manager, String ons)
 	{
 		// TODO
-		
-		PreTrySequenceManager managerresult = manager.HandleANewInSentence(alc, ons);
-		return managerresult;
-	}
-	
-
-	public PreTrySequenceManager HandleANewInSentence(AeroLifeCycle alc, String ons) {
 		if (getExactseq() == null)
 		{
 			setExactseq(new Sequence(true));

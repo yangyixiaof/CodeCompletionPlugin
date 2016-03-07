@@ -62,6 +62,34 @@ public class SequenceManager {
 		unique.put(seq.hashCode(), seq);
 	}
 	
+	public void AddOnePredict(PredictSequence pd, int maxSize)
+	{
+		sequence.add(pd);
+		unique.put(pd.hashCode(), pd);
+		if (maxSize > 0)
+		{
+			int size = sequence.size();
+			if (size > maxSize)
+			{
+				int gap = size - maxSize;
+				for (int i=0;i<gap;i++)
+				{
+					sequence.poll();
+				}
+			}
+		}
+	}
+	
+	public int GetSize()
+	{
+		return sequence.size();
+	}
+	
+	public boolean IsEmpty()
+	{
+		return sequence.size() == 0;
+	}
+	
 	/*public SequenceManager(ArrayList<SequenceManager> smarray, Sequence oracle) {
 		Sequence match = null;
 		PriorityQueue<Sequence> pq = new PriorityQueue<Sequence>();

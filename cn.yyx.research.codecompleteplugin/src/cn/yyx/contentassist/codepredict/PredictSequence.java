@@ -7,7 +7,7 @@ import java.util.Stack;
 
 import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 
-public class Predict implements Comparable<Predict> {
+public class PredictSequence extends Sequence {
 	
 	Sequence hint = null;
 	Queue<String> predicts = new LinkedList<String>();
@@ -15,14 +15,14 @@ public class Predict implements Comparable<Predict> {
 	private int kindofpredict;
 	private boolean over = false;
 	
-	public Predict(Sequence hint) {
+	public PredictSequence(Sequence hint) {
 		this.hint = (Sequence) hint.clone();
 		cstack.push(PredictMetaInfo.AllKindWaitingOver);
 	}
 	
-	public PredictManager ExtendOneSentence(AeroLifeCycle alc, int maxsize)
+	public PredictSequenceManager ExtendOneSentence(AeroLifeCycle alc, int maxsize)
 	{
-		PredictManager pm = new PredictManager();
+		PredictSequenceManager pm = new PredictSequenceManager();
 		hint.HandleNewInSentence(alc, ons, maxsize);
 		int nowsize = predicts.size();
 		if (nowsize >= PredictMetaInfo.NgramMaxSize)
@@ -44,11 +44,6 @@ public class Predict implements Comparable<Predict> {
 		{
 			
 		}
-	}
-	
-	@Override
-	public int compareTo(Predict o) {
-		return hint.compareTo(o.hint);
 	}
 
 	public boolean isOver() {
