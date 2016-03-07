@@ -16,18 +16,16 @@ public class Sequence implements Comparable<Sequence> {
 
 	private Double prob = (double) 0;
 
-	private boolean exactmatch = false;
-
-	public Sequence(boolean exactmatch) {
-		this.exactmatch = exactmatch;
-	}
-
 	public void HandleNewInDirectlyToAddOneSentence(String ons) {
 		getSequence().add(ons);
 		int qsize = sequence.size();
 		if (qsize > PredictMetaInfo.PrePredictWindow) {
 			sequence.poll();
 		}
+	}
+	
+	public SequenceManager PredictSentences(AeroLifeCycle alc, int neededSize) {
+		
 	}
 	
 	public SequenceManager HandleNewInSentence(AeroLifeCycle alc, String ons, int neededSize) {
@@ -167,14 +165,6 @@ public class Sequence implements Comparable<Sequence> {
 	
 	public void setProb(Double prob) {
 		this.prob = prob;
-	}
-	
-	public boolean isExactmatch() {
-		return exactmatch;
-	}
-	
-	public void setExactmatch(boolean exactmatch) {
-		this.exactmatch = exactmatch;
 	}
 	
 	@SuppressWarnings("unchecked")
