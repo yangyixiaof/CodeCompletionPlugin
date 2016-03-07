@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Queue;
 
 import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
@@ -13,7 +12,7 @@ import cn.yyx.research.AeroSpikeHandle.PredictProbPair;
 public class Sequence implements Comparable<Sequence> {
 
 	private Queue<String> sequence = new LinkedList<String>();
-
+	String last = null;
 	private Double prob = (double) 0;
 
 	public void HandleNewInDirectlyToAddOneSentence(String ons) {
@@ -23,81 +22,73 @@ public class Sequence implements Comparable<Sequence> {
 			sequence.poll();
 		}
 	}
-	
-	public SequenceManager PredictSentences(AeroLifeCycle alc, int neededSize) {
-		
-	}
-	
-	public SequenceManager HandleNewInSentence(AeroLifeCycle alc, String ons, int neededSize) {
-		SequenceManager result = new SequenceManager();
-		Sequence exactmatch = null;
-		PriorityQueue<Sequence> notexactmatch = new PriorityQueue<Sequence>();
 
-		if (!this.exactmatch)
-		{
-			neededSize--;
-		}
+	public SequenceManager PredictSentences(AeroLifeCycle alc, int neededSize) {
+		SequenceManager result = new SequenceManager();
 		int ssize = sequence.size();
 		int maxsize = Math.min(ssize - 1, PredictMetaInfo.NgramMaxSize);
 		ArrayList<String> analysislist = LastOfSentenceQueue(maxsize);
 		for (int i = maxsize; i > 0; i--) {
 			String key = ConcatJoinLast(i, analysislist);
-			List<PredictProbPair> predicts = alc.AeroModelPredict(key, neededSize, ons);
+			List<PredictProbPair> predicts = alc.AeroModelPredict(key, neededSize);
 			Iterator<PredictProbPair> itr = predicts.iterator();
 			while (itr.hasNext()) {
 				PredictProbPair ppp = itr.next();
-				if (!itr.hasNext()) {
-					// last exact match
-					if (this.exactmatch)
-					{
-						exactmatch = NewSequenceInExactMatch(ppp);
-					}
-					else
-					{
-						NewSequenceInNotExactMatch(ppp, notexactmatch, -1);
-					}
-				}
-				else
+				if (neededSize == 0)
 				{
-					if (neededSize == 0)
-					{
-						continue;
-					}
+					continue;
 				}
-				neededSize = NewSequenceInNotExactMatch(ppp, notexactmatch, neededSize);
+				Sequence s = NewSequence(ppp);
+				result.AddSequence(s);
+				neededSize--;
 			}
 			if (neededSize == 0)
 			{
 				break;
 			}
 		}
-
-		result.setExactmatch(exactmatch);
-		result.setNotexactmatch(notexactmatch);
 		return result;
 	}
-	
-	private int NewSequenceInNotExactMatch(PredictProbPair ppp, PriorityQueue<Sequence> notexactmatch, int neededSize)
-	{
-		Sequence s = NewSequence(ppp);
-		notexactmatch.add(s);
-		neededSize--;
-		return neededSize;
-	}
 
-	private Sequence NewSequenceInExactMatch(PredictProbPair ppp)
-	{
-		return NewSequence(ppp);
-	}
-	
-	private Sequence NewSequence(PredictProbPair ppp)
-	{
+	/*
+	 * public SequenceManager HandleNewInSentence(AeroLifeCycle alc, String ons,
+	 * int neededSize) {
+	 * 
+	 * Sequence exactmatch = null; PriorityQueue<Sequence> notexactmatch = new
+	 * PriorityQueue<Sequence>();
+	 * 
+	 * if (!this.exactmatch) { neededSize--; } int ssize = sequence.size(); int
+	 * maxsize = Math.min(ssize - 1, PredictMetaInfo.NgramMaxSize);
+	 * 
+	 * for (int i = maxsize; i > 0; i--) { String key = ConcatJoinLast(i,
+	 * analysislist); List<PredictProbPair> predicts = alc.AeroModelPredict(key,
+	 * neededSize, ons); Iterator<PredictProbPair> itr = predicts.iterator();
+	 * while (itr.hasNext()) { PredictProbPair ppp = itr.next(); if
+	 * (!itr.hasNext()) { // last exact match if (this.exactmatch) { exactmatch
+	 * = NewSequenceInExactMatch(ppp); } else { NewSequenceInNotExactMatch(ppp,
+	 * notexactmatch, -1); } } else { if (neededSize == 0) { continue; } }
+	 * neededSize = NewSequenceInNotExactMatch(ppp, notexactmatch, neededSize);
+	 * } if (neededSize == 0) { break; } }
+	 * 
+	 * result.setExactmatch(exactmatch); result.setNotexactmatch(notexactmatch);
+	 * return result; }
+	 * 
+	 * private int NewSequenceInNotExactMatch(PredictProbPair ppp,
+	 * PriorityQueue<Sequence> notexactmatch, int neededSize) { Sequence s =
+	 * NewSequence(ppp); notexactmatch.add(s); neededSize--; return neededSize;
+	 * }
+	 * 
+	 * private Sequence NewSequenceInExactMatch(PredictProbPair ppp) { return
+	 * NewSequence(ppp); }
+	 */
+
+	private Sequence NewSequence(PredictProbPair ppp) {
 		Sequence s = (Sequence) this.clone();
 		s.HandleNewInDirectlyToAddOneSentence(ppp.getPred());
 		s.AddProbability(ppp.getProb());
 		return s;
 	}
-	
+
 	public void AddProbability(Double prob2) {
 		this.prob += prob2;
 	}
@@ -158,15 +149,15 @@ public class Sequence implements Comparable<Sequence> {
 	public void setSequence(Queue<String> sequence) {
 		this.sequence = sequence;
 	}
-	
+
 	public Double getProb() {
 		return prob;
 	}
-	
+
 	public void setProb(Double prob) {
 		this.prob = prob;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Object clone() {
 		Sequence o = null;
@@ -178,11 +169,11 @@ public class Sequence implements Comparable<Sequence> {
 		}
 		return o;
 	}
-	
+
 	@Override
 	public int compareTo(Sequence o) {
 		// TODO this order has changed, must change the related code.
 		return getProb().compareTo(o.getProb());
 	}
-	
+
 }

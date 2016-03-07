@@ -1,33 +1,69 @@
 package cn.yyx.contentassist.codepredict;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.TreeMap;
 
-import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
-
 public class SequenceManager {
 	
-	private static Sequence exactseq = null;
-	
-	private Sequence exactmatch = null;
-	
-	private PriorityQueue<Sequence> notexactmatch = new PriorityQueue<Sequence>();
+	private PriorityQueue<Sequence> sequence = new PriorityQueue<Sequence>();
+	// internal use.
+	private Map<Integer, Sequence> unique = new TreeMap<Integer, Sequence>();
+	private boolean hasRestrained = false;
 	
 	public SequenceManager() {
 	}
 	
-	public SequenceManager(Sequence exactmatch, PriorityQueue<Sequence> notexactmatch)
+	// merge must be happened in the same level.
+	public void Merge(SequenceManager sm)
 	{
-		this.setExactmatch(exactmatch);
-		this.setNotexactmatch(notexactmatch);
+		if (hasRestrained)
+		{
+			System.err.println("Can not merge after restrained");
+			System.exit(1);
+		}
+		Iterator<Sequence> itr = sm.Iterator();
+		while (itr.hasNext())
+		{
+			Sequence seq = itr.next();
+			int hash = seq.hashCode();
+			if (!unique.containsKey(hash))
+			{
+				unique.put(hash, seq);
+				sequence.add(seq);
+			}
+		}
 	}
 	
-	public SequenceManager(ArrayList<SequenceManager> smarray, Sequence oracle) {
+	public void Restrain(int size)
+	{
+		hasRestrained = true;
+		int nowsize = sequence.size();
+		if (nowsize > size)
+		{
+			int gap = nowsize - size;
+			for (int i=0;i<gap;i++)
+			{
+				sequence.poll();
+			}
+		}
+		unique.clear();
+	}
+	
+	public Iterator<Sequence> Iterator()
+	{
+		return sequence.iterator();
+	}
+	
+	public void AddSequence(Sequence seq)
+	{
+		sequence.add(seq);
+		unique.put(seq.hashCode(), seq);
+	}
+	
+	/*public SequenceManager(ArrayList<SequenceManager> smarray, Sequence oracle) {
 		Sequence match = null;
-		Map<Integer, Sequence> unique = new TreeMap<Integer, Sequence>();
 		PriorityQueue<Sequence> pq = new PriorityQueue<Sequence>();
 		Iterator<SequenceManager> itr2 = smarray.iterator();
 		while (itr2.hasNext())
@@ -69,64 +105,6 @@ public class SequenceManager {
 			}
 			this.notexactmatch.add(sq);
 		}
-	}
-	
-	public SequenceManager HandleANewInSentence(AeroLifeCycle alc, String ons) {
-		if (getExactseq() == null)
-		{
-			setExactseq(new Sequence(true));
-		}
-		getExactseq().HandleNewInDirectlyToAddOneSentence(ons);
-		
-		if (getExactmatch() == null)
-		{
-			// first line.
-			setExactmatch(new Sequence(true));
-			getExactmatch().HandleNewInDirectlyToAddOneSentence(ons);
-			return this;
-		}
-		else
-		{
-			ArrayList<SequenceManager> smarray = new ArrayList<SequenceManager>();
-			int existSize = 1 + getNotexactmatch().size();
-			int averagePredict = PredictMetaInfo.PredictMaxSequence / existSize;
-			SequenceManager sm = getExactmatch().HandleNewInSentence(alc, ons, averagePredict + 5);
-			smarray.add(sm);
-			
-			Iterator<Sequence> itr = getNotexactmatch().iterator();
-			int isize = existSize;
-			while (itr.hasNext())
-			{
-				isize--;
-				Sequence seq = itr.next();
-				smarray.add(seq.HandleNewInSentence(alc, ons, averagePredict + (int)(5*(isize*1.0/(existSize*1.0)))));
-			}
-			return new SequenceManager(smarray, getExactseq());
-		}
-	}
-
-	public Sequence getExactmatch() {
-		return exactmatch;
-	}
-
-	public void setExactmatch(Sequence exactmatch) {
-		this.exactmatch = exactmatch;
-	}
-
-	public PriorityQueue<Sequence> getNotexactmatch() {
-		return notexactmatch;
-	}
-
-	public void setNotexactmatch(PriorityQueue<Sequence> notexactmatch) {
-		this.notexactmatch = notexactmatch;
-	}
-
-	public Sequence getExactseq() {
-		return exactseq;
-	}
-
-	public void setExactseq(Sequence exactseq) {
-		SequenceManager.exactseq = exactseq;
-	}
+	}*/
 	
 }

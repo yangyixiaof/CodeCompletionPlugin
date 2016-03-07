@@ -12,7 +12,7 @@ public class PredictionFetch {
 	
 	// public static final int ParallelSize = 10;
 	
-	public static List<String> FetchPrediction(SimplifiedCodeGenerateASTVisitor fmastv, List<String> analist, ArrayList<String> result) {
+	public List<String> FetchPrediction(SimplifiedCodeGenerateASTVisitor fmastv, List<String> analist, ArrayList<String> result) {
 		
 		AeroLifeCycle alc = new AeroLifeCycle();
 		alc.Initialize();
@@ -23,12 +23,12 @@ public class PredictionFetch {
 			size = PredictMetaInfo.PrePredictWindow;
 		}
 		
-		SequenceManager manager = new SequenceManager();
+		PreTrySequenceManager manager = new PreTrySequenceManager();
 		Iterator<String> itr = analist.iterator();
 		while (itr.hasNext())
 		{
 			String ons = itr.next();
-			manager = DoSequenceManager(alc, manager, ons);
+			manager = DoPreTrySequencePredict(alc, manager, ons);
 		}
 		
 		PredictManager pm = DoSequencesPredict(alc, manager);
@@ -43,7 +43,7 @@ public class PredictionFetch {
 		return list;
 	}
 	
-	private static PredictManager DoSequencesPredict(AeroLifeCycle alc, SequenceManager manager)
+	private PredictManager DoSequencesPredict(AeroLifeCycle alc, SequenceManager manager)
 	{
 		Sequence exactmatch = manager.getExactmatch();
 		PredictManager pm = DoOneSequencePredict(alc, exactmatch, PredictMetaInfo.ExtendFinalMaxSequence, PredictMetaInfo.ExtendTempMaxSequence);
@@ -59,7 +59,7 @@ public class PredictionFetch {
 		return pm;
 	}
 	
-	private static PredictManager DoOneSequencePredict(AeroLifeCycle alc, Sequence oneseq, int finalsize, int maxextendsize)
+	private PredictManager DoOneSequencePredict(AeroLifeCycle alc, Sequence oneseq, int finalsize, int maxextendsize)
 	{
 		int normalExtendSize = (int)Math.max(Math.sqrt(maxextendsize), maxextendsize/2);
 		PredictManager result = new PredictManager();
@@ -94,16 +94,53 @@ public class PredictionFetch {
 		return result;
 	}
 	
-	private static List<String> DoRealCodeSynthesis(SimplifiedCodeGenerateASTVisitor fmastv, PredictManager pm) {
+	private List<String> DoRealCodeSynthesis(SimplifiedCodeGenerateASTVisitor fmastv, PredictManager pm) {
 		// TODO Auto-generated method stub
 		
 		return null;
 	}
 	
-	private static SequenceManager DoSequenceManager(AeroLifeCycle alc, SequenceManager manager, String ons)
+	private PreTrySequenceManager DoPreTrySequencePredict(AeroLifeCycle alc, PreTrySequenceManager manager, String ons)
 	{
-		SequenceManager managerresult = manager.HandleANewInSentence(alc, ons);
+		// TODO
+		
+		PreTrySequenceManager managerresult = manager.HandleANewInSentence(alc, ons);
 		return managerresult;
+	}
+	
+
+	public PreTrySequenceManager HandleANewInSentence(AeroLifeCycle alc, String ons) {
+		if (getExactseq() == null)
+		{
+			setExactseq(new Sequence(true));
+		}
+		getExactseq().HandleNewInDirectlyToAddOneSentence(ons);
+		
+		if (getExactmatch() == null)
+		{
+			// first line.
+			setExactmatch(new Sequence(true));
+			getExactmatch().HandleNewInDirectlyToAddOneSentence(ons);
+			return this;
+		}
+		else
+		{
+			ArrayList<SequenceManager> smarray = new ArrayList<SequenceManager>();
+			int existSize = 1 + getNotexactmatch().size();
+			int averagePredict = PredictMetaInfo.PredictMaxSequence / existSize;
+			SequenceManager sm = getExactmatch().HandleNewInSentence(alc, ons, averagePredict + 5);
+			smarray.add(sm);
+			
+			Iterator<Sequence> itr = getNotexactmatch().iterator();
+			int isize = existSize;
+			while (itr.hasNext())
+			{
+				isize--;
+				Sequence seq = itr.next();
+				smarray.add(seq.HandleNewInSentence(alc, ons, averagePredict + (int)(5*(isize*1.0/(existSize*1.0)))));
+			}
+			return new SequenceManager(smarray, getExactseq());
+		}
 	}
 	
 	/*public static void main(String[] args) {

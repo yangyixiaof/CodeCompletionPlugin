@@ -2,8 +2,6 @@ package cn.yyx.research.AeroSpikeHandle;
 
 import java.util.List;
 
-import cn.yyx.contentassist.codepredict.PredictMetaInfo;
-
 public class AeroLifeCycle {
 
 	public static final int code1sim = 1;
@@ -27,7 +25,20 @@ public class AeroLifeCycle {
 	}
 
 	// must invoke in the environment of AeroLifeCycle.
-	public List<PredictProbPair> AeroModelPredict(String key, int neededSize, String oraclePredict) {
+	public List<PredictProbPair> AeroModelPredict(String key, int neededSize) {
+		CheckInitialized();
+		List<PredictProbPair> result = AeroHelper.GetNGramInAero(AeroLifeCycle.codengram, key, neededSize, null);
+		result.sort(new ProbPredictComparator());
+		int realsize = result.size();
+		if (realsize > neededSize)
+		{
+			result = result.subList(0, neededSize);
+			realsize = neededSize;
+		}
+		return result;
+	}
+	
+	/*public List<PredictProbPair> AeroModelPredict(String key, int neededSize, String oraclePredict) {
 		CheckInitialized();
 		List<PredictProbPair> result = AeroHelper.GetNGramInAero(AeroLifeCycle.codengram, key, neededSize, null);
 		result.sort(new ProbPredictComparator());
@@ -49,7 +60,7 @@ public class AeroLifeCycle {
 			result.set(realsize - 1, specified);
 		}
 		return result;
-	}
+	}*/
 	
 	private void CheckInitialized()
 	{
