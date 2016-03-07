@@ -1,18 +1,16 @@
 package cn.yyx.contentassist.codepredict;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.Stack;
 
 import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 import cn.yyx.research.AeroSpikeHandle.PredictProbPair;
 
-public class Sequence implements Comparator<Sequence> {
+public class Sequence implements Comparable<Sequence> {
 
 	private Queue<String> sequence = new LinkedList<String>();
 
@@ -31,12 +29,7 @@ public class Sequence implements Comparator<Sequence> {
 			sequence.poll();
 		}
 	}
-
-	@Override
-	public int compare(Sequence o1, Sequence o2) {
-		return -o1.getProb().compareTo(o2.getProb());
-	}
-
+	
 	public SequenceManager HandleNewInSentence(AeroLifeCycle alc, String ons, int neededSize) {
 		SequenceManager result = new SequenceManager();
 		Sequence exactmatch = null;
@@ -167,23 +160,23 @@ public class Sequence implements Comparator<Sequence> {
 	public void setSequence(Queue<String> sequence) {
 		this.sequence = sequence;
 	}
-
+	
 	public Double getProb() {
 		return prob;
 	}
-
+	
 	public void setProb(Double prob) {
 		this.prob = prob;
 	}
-
+	
 	public boolean isExactmatch() {
 		return exactmatch;
 	}
-
+	
 	public void setExactmatch(boolean exactmatch) {
 		this.exactmatch = exactmatch;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public Object clone() {
 		Sequence o = null;
@@ -195,25 +188,11 @@ public class Sequence implements Comparator<Sequence> {
 		}
 		return o;
 	}
-
-	@SuppressWarnings("unchecked")
-	public PredictManager HandleExtendPredict(AeroLifeCycle alc, int finalsize, int maxextendsize) {
-		PredictManager pm = new PredictManager();
-		int ssize = sequence.size();
-		Queue<String> useq = (LinkedList<String>) ((LinkedList<String>)sequence).clone();
-		int maxsize = Math.min(ssize, PredictMetaInfo.NgramMaxSize);
-		int skip = ssize - maxsize;
-		for (int i=0;i<skip;i++)
-		{
-			useq.poll();
-		}
-		Stack<Sentence> cstack = new Stack<Sentence>();
-		boolean canterminate = false;
-		while (!canterminate)
-		{
-			
-		}
-		return pm;
+	
+	@Override
+	public int compareTo(Sequence o) {
+		// TODO this order has changed, must change the related code.
+		return getProb().compareTo(o.getProb());
 	}
-
+	
 }

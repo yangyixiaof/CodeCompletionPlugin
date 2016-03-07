@@ -19,4 +19,7 @@ public class PredictMetaInfo {
 	public static final int ifcond = 1;
 	public static final int whilecond = 2;
 	// TODO ...
+	
+	// predict over waiting.
+	public static final int AllKindWaitingOver = 1;
 }

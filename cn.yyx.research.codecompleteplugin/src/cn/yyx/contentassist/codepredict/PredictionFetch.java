@@ -61,7 +61,37 @@ public class PredictionFetch {
 	
 	private static PredictManager DoOneSequencePredict(AeroLifeCycle alc, Sequence oneseq, int finalsize, int maxextendsize)
 	{
-		return oneseq.HandleExtendPredict(alc, finalsize, maxextendsize);
+		int normalExtendSize = (int)Math.max(Math.sqrt(maxextendsize), maxextendsize/2);
+		PredictManager result = new PredictManager();
+		PredictManager firstlevel = new PredictManager();
+		Predict tpd = new Predict(oneseq);
+		firstlevel.AddOnePredict(tpd, -1);
+		PredictManager olevel = firstlevel;
+		while (!result.CouldOver(finalsize) && !olevel.IsEmpty())
+		{
+			PredictManager tempolevel = new PredictManager();
+			Iterator<Predict> oitr = olevel.Iterator();
+			while (oitr.hasNext())
+			{
+				Predict pd = oitr.next();
+				PredictManager pm = pd.ExtendOneSentence(alc, normalExtendSize);
+				Iterator<Predict> itr = pm.Iterator();
+				while (itr.hasNext())
+				{
+					Predict opd = itr.next();
+					if (opd.isOver())
+					{
+						result.AddOnePredict(opd, finalsize);
+					}
+					else
+					{
+						tempolevel.AddOnePredict(opd, maxextendsize);
+					}
+				}
+			}
+			olevel = tempolevel;
+		}
+		return result;
 	}
 	
 	private static List<String> DoRealCodeSynthesis(SimplifiedCodeGenerateASTVisitor fmastv, PredictManager pm) {
