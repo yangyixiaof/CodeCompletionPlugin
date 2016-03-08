@@ -20,8 +20,7 @@ public class Sentence implements Comparable<Sentence>, CodeSimilarity<Sentence> 
 	
 	@Override
 	public int compareTo(Sentence o) {
-		// TODO
-		return 0;
+		return sentence.compareTo(o.sentence);
 	}
 
 	@Override

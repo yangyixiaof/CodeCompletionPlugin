@@ -71,6 +71,7 @@ public class PredictionFetch {
 		PredictSequenceManager result = new PredictSequenceManager();
 		PredictSequenceManager firstlevel = new PredictSequenceManager();
 		PredictSequence tpd = new PredictSequence(oneseq);
+		tpd.PredictStart();
 		firstlevel.AddSequence(tpd, -1);
 		PredictSequenceManager olevel = firstlevel;
 		while (!result.CouldOver(finalsize) && !olevel.IsEmpty())
