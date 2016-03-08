@@ -11,7 +11,6 @@ public class PredictSequence extends Sequence {
 	
 	protected Queue<Sentence> predicts = new LinkedList<Sentence>();
 	protected Stack<Integer> cstack = new Stack<Integer>();
-	protected int kindofpredict = -1;
 	
 	public PredictSequence(Sequence hint) {
 		this.last = hint.last;
@@ -28,14 +27,6 @@ public class PredictSequence extends Sequence {
 		this.cstack = (Stack<Integer>) current.cstack.clone();
 		this.predicts.add(last);
 		last.smt.HandleOverSignal(cstack);
-		if (current.kindofpredict != -1)
-		{
-			this.kindofpredict = current.kindofpredict;
-		}
-		else
-		{
-			this.kindofpredict = last.smt.HandlePredictKind();
-		}
 	}
 	
 	public void PredictStart()
@@ -60,10 +51,6 @@ public class PredictSequence extends Sequence {
 
 	public boolean isOver() {
 		return cstack.empty();
-	}
-
-	public int getKindofpredict() {
-		return kindofpredict;
 	}
 	
 }

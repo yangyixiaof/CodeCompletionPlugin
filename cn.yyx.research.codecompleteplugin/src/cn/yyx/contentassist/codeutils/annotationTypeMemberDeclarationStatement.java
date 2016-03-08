@@ -16,13 +16,7 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 	public void HandleOverSignal(Stack<Integer> cstack) {
 		// TODO
 	}
-
-	@Override
-	public int HandlePredictKind() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
+	
 	@Override
 	public boolean CouldThoughtSame(statement t) {
 		// TODO Auto-generated method stub
