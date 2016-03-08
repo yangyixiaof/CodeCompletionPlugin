@@ -1,5 +1,5 @@
 package cn.yyx.contentassist.codeutils;
 
-public class referedExpression extends OneCode{
+public abstract class referedExpression extends OneCode{
 	
 }

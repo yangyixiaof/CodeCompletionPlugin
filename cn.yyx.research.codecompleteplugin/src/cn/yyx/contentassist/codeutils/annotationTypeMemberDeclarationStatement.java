@@ -14,19 +14,19 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 
 	@Override
 	public void HandleOverSignal(Stack<Integer> cstack) {
-		// TODO
 	}
 	
 	@Override
-	public boolean CouldThoughtSame(statement t) {
+	public boolean CouldThoughtSame(OneCode t) {
 		// TODO Auto-generated method stub
+		if (t instanceof annotationTypeMemberDeclarationStatement)
+		{
+			if (type.CouldThoughtSame(((annotationTypeMemberDeclarationStatement)t).type))
+			{
+				return true;
+			}
+		}
 		return false;
-	}
-
-	@Override
-	public double Similarity(statement t) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 	
 }

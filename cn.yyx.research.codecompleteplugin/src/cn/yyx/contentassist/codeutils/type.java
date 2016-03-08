@@ -1,5 +1,5 @@
 package cn.yyx.contentassist.codeutils;
 
-public class type {
+public abstract class type extends OneCode{
 
 }

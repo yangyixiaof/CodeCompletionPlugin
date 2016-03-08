@@ -3,7 +3,7 @@ package cn.yyx.contentassist.codeutils;
 import java.util.LinkedList;
 import java.util.List;
 
-public class argumentList {
+public class argumentList extends OneCode{
 	
 	private List<referedExpression> el = new LinkedList<referedExpression>();
 	
@@ -26,6 +26,14 @@ public class argumentList {
 
 	public void setEl(List<referedExpression> el) {
 		this.el = el;
+	}
+
+	@Override
+	public boolean CouldThoughtSame(OneCode t) {
+		// TODO Auto-generated method stub
+		int size = el.size();
+		size = Math.max(0, size/2-1);
+		return false;
 	}
 	
 }

@@ -1,5 +1,5 @@
 package cn.yyx.contentassist.codeutils;
 
-public class identifier extends referedExpression{
+public abstract class identifier extends referedExpression{
 
 }
