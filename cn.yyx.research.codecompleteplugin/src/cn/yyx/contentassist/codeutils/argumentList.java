@@ -30,9 +30,21 @@ public class argumentList extends OneCode{
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
-		int size = el.size();
-		size = Math.max(0, size/2-1);
+		if (t instanceof argumentList)
+		{
+			int size = el.size();
+			int tsize = ((argumentList) t).el.size();
+			int maxsize = Math.max(size, tsize);
+			if (maxsize <= 2)
+			{
+				return true;
+			}
+			int minsize = Math.min(size, tsize);
+			if (Math.abs(size-tsize) > minsize)
+			{
+				return true;
+			}
+		}
 		return false;
 	}
 	
