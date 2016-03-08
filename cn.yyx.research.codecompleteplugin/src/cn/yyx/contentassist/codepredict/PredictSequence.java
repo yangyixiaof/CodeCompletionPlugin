@@ -9,21 +9,21 @@ import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 
 public class PredictSequence extends Sequence {
 	
-	Sequence hint = null;
-	Queue<String> predicts = new LinkedList<String>();
-	Stack<Integer> cstack = new Stack<Integer>();
-	private int kindofpredict;
-	private boolean over = false;
+	protected Queue<String> predicts = new LinkedList<String>();
+	protected Stack<Integer> cstack = new Stack<Integer>();
+	protected int kindofpredict;
 	
 	public PredictSequence(Sequence hint) {
-		this.hint = (Sequence) hint.clone();
+		this.last = hint.last;
+		this.sequence = hint.sequence;
+		this.prob = hint.prob;
 		cstack.push(PredictMetaInfo.AllKindWaitingOver);
 	}
 	
 	public PredictSequenceManager ExtendOneSentence(AeroLifeCycle alc, int maxsize)
 	{
 		PredictSequenceManager pm = new PredictSequenceManager();
-		hint.HandleNewInSentence(alc, ons, maxsize);
+		SequenceManager pdm = PredictSentences(alc, maxsize);
 		int nowsize = predicts.size();
 		if (nowsize >= PredictMetaInfo.NgramMaxSize)
 		{
@@ -47,11 +47,7 @@ public class PredictSequence extends Sequence {
 	}
 
 	public boolean isOver() {
-		return over;
-	}
-
-	public void setOver(boolean over) {
-		this.over = over;
+		return cstack.empty();
 	}
 
 	public int getKindofpredict() {
