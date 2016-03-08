@@ -1,5 +1,7 @@
 package cn.yyx.contentassist.codepredict;
 
+import java.util.Iterator;
+
 public class PreTrySequenceManager extends SequenceManager{
 	
 	private PreTrySequence exactmatch = null;
@@ -7,9 +9,28 @@ public class PreTrySequenceManager extends SequenceManager{
 	public PreTrySequenceManager() {
 	}
 
-	public PreTrySequenceManager(SequenceManager tempsm, String ons) {
-		// TODO Auto-generated constructor stub
-		
+	public PreTrySequenceManager(SequenceManager tempsm, String ons, boolean generateFromExactmath) {
+		Iterator<Sequence> itr = tempsm.Iterator();
+		while (itr.hasNext())
+		{
+			Sequence seq = itr.next();
+			String recent = seq.getLast();
+			boolean exactmatch = false;
+			// two strings same.
+			if (recent.equals(ons))
+			{
+				if (generateFromExactmath)
+				{
+					exactmatch = true;
+				}
+			}
+			PreTrySequence pts = new PreTrySequence(seq, exactmatch);
+			AddSequence(pts);
+			if (exactmatch)
+			{
+				this.exactmatch = pts;
+			}
+		}
 	}
 	
 	@Override

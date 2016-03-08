@@ -3,7 +3,6 @@ package cn.yyx.contentassist.codepredict;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.PriorityQueue;
 
 import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVisitor;
@@ -119,9 +118,9 @@ public class PredictionFetch {
 			while (itr.hasNext())
 			{
 				isize--;
-				Sequence seq = itr.next();
+				PreTrySequence seq = (PreTrySequence) itr.next();
 				SequenceManager tempsm = seq.PredictSentences(alc, averagePredict + (int)(5*(isize*1.0/(existSize*1.0))));
-				PreTrySequenceManager ptsm = new PreTrySequenceManager(tempsm, ons);
+				PreTrySequenceManager ptsm = new PreTrySequenceManager(tempsm, ons, seq.isExactmatch());
 				if (sm == null)
 				{
 					sm = ptsm;

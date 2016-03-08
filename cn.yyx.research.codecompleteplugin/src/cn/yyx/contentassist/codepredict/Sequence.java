@@ -11,9 +11,9 @@ import cn.yyx.research.AeroSpikeHandle.PredictProbPair;
 
 public class Sequence implements Comparable<Sequence> {
 
-	private Queue<String> sequence = new LinkedList<String>();
-	private String last = null;
-	private Double prob = (double) 0;
+	protected Queue<String> sequence = new LinkedList<String>();
+	protected String last = null;
+	protected Double prob = (double) 0;
 
 	public void AddOneSentence(String ons) {
 		sequence.add(ons);
