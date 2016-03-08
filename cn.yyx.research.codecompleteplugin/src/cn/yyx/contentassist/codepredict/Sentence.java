@@ -25,14 +25,12 @@ public class Sentence implements Comparable<Sentence>, CodeSimilarity<Sentence> 
 
 	@Override
 	public boolean CouldThoughtSame(Sentence t) {
-		// TODO Auto-generated method stub
-		return false;
+		return smt.CouldThoughtSame(t.smt);
 	}
 
 	@Override
 	public double Similarity(Sentence t) {
-		// TODO Auto-generated method stub
-		return 0;
+		return smt.Similarity(t.smt);
 	}
 	
 }

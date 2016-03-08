@@ -1,21 +1,7 @@
 package cn.yyx.contentassist.codepredict;
 
-public class PredictMetaInfo {
+public class GCodeMetaInfo {
 	
-	public static final double NotExistProbability = 0;
-	
-	public static final double SequenceSimilarThreshold = 0.7;
-	public static final double OneSentenceSimilarThreshold = 0.7;
-	
-	public static final int PredictMaxSequence = 15;
-	public static final int PrePredictWindow = 10;
-	
-	public static final int ExtendFinalMaxSequence = 3;
-	public static final int ExtendTempMaxSequence = 8;
-	
-	public static final int NgramMaxSize = 5;
-	
-	// predict
 	public static final String AnonymousClassBegin = "AB@";
 	public static final String AnonymousClassPreHint = "HT@";
 	public static final String ClassDeclarationHint = "CD@";
@@ -57,10 +43,62 @@ public class PredictMetaInfo {
 	public static final String VariableDeclarationHolder = "VH@";
 	public static final String EnhancedFor = "EF@";
 	public static final String ArrayAccess = "[@";
-	public static final int ifcond = 1;
-	public static final int whilecond = 2;
-	// TODO ...
 	
-	// predict over waiting.
-	public static final int AllKindWaitingOver = 1;
+	// another display of ']'
+	public static final String EndOfArrayDeclarationIndexExpression = "@]";
+	
+	public static final String LeftParenthese = "@(";
+	public static final String RightParenthese = "@)";
+	
+	// another display of ' '
+	public static final String WhiteSpace = "'@w'";
+	
+	// another display of ';'
+	public static final String EndOfAStatement = ";";
+	// another display of ',' ')'
+	public static final String EndOfAPartialStatement = ",";
+	
+	// public static final String ArrayInitial = "@ARI";
+	// public static final String ArrayCreation = "@ARC";
+	
+	public static final String StringHolder = "@STR";
+	// public static final String NumberHolder = "@NUB";
+	// public static final String CharHolder = "@CHR";
+	
+	// public static String NoStatement = "nu#";
+	// public static final String NullLiteral = "@NUL";
+	public static final String CommonSplitter = "#";
+	
+	public static final String InferedType = "@IT";
+	public static final String NoDeclaredType = "@NT";
+	
+	public static final String CodeHole = "@HO";
+	public static final String PreExist = "@PE";
+	
+	// The white space in code is replaced with '#'.
+	public static final String WhiteSpaceReplacer = "#";
+	
+	public static final String OffsetSpiliter = "?";
+	
+	public static final String ContentHolder = "<!%CH!>";
+	
+	public static final String DataRefIndicator = "$";
+	
+	public static final String HackedNoType = "<$NT$>";
+	
+	// public static int OutofScopeVarOrObject = -10;
+	// public static String FirstDeclaredData = "F";
+	// public static String OutofScopeDesc = "$INF";
+	
+	//for field only which means data only.
+	//public static int IsField = -9;
+	//public static String IsFieldDesc = "$FREF#";
+	
+	// corpus name
+	public static final String EnumCorpus = "BigEnumDetail";
+	public static final String NumberCorpus = "BigNumberDetail";
+	public static final String StringCorpus = "BigStringDetail";
+	public static final String CharCorpus = "BigCharDetail";
+	public static final String LogicCorpus = "BigClassDetail";
+	public static final String AnonymousLogicCorpus = "BigAnonymousClassDetail";
 }
