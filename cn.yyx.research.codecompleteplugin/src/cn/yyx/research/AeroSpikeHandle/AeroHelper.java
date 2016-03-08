@@ -9,6 +9,8 @@ import com.aerospike.client.Bin;
 import com.aerospike.client.Key;
 import com.aerospike.client.Record;
 
+import cn.yyx.contentassist.parsehelper.ComplexParser;
+
 public class AeroHelper {
 	
 	public static final Console console = new Console();
@@ -46,7 +48,7 @@ public class AeroHelper {
 		{
 			Double prob = itr.next();
 			String pred = itr2.next();
-			result.add(new PredictProbPair(pred, prob));
+			result.add(new PredictProbPair(ComplexParser.GetSentence(pred), prob));
 		}
 		return result;
 	}

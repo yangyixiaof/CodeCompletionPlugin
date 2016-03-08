@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import cn.yyx.contentassist.parsehelper.ComplexParser;
 import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVisitor;
 
@@ -26,7 +27,8 @@ public class PredictionFetch {
 		Iterator<String> itr = analist.iterator();
 		while (itr.hasNext())
 		{
-			String ons = itr.next();
+			String str = itr.next();
+			Sentence ons = ComplexParser.GetSentence(str);
 			manager = DoPreTrySequencePredict(alc, manager, ons);
 		}
 		
@@ -98,7 +100,7 @@ public class PredictionFetch {
 		return result;
 	}
 
-	private PreTrySequenceManager DoPreTrySequencePredict(AeroLifeCycle alc, PreTrySequenceManager manager, String ons)
+	private PreTrySequenceManager DoPreTrySequencePredict(AeroLifeCycle alc, PreTrySequenceManager manager, Sentence ons)
 	{
 		if (manager.IsEmpty())
 		{

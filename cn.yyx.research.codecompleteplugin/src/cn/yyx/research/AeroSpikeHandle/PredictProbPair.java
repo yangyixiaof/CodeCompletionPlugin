@@ -1,21 +1,23 @@
 package cn.yyx.research.AeroSpikeHandle;
 
+import cn.yyx.contentassist.codepredict.Sentence;
+
 public class PredictProbPair {
 	
-	private String pred = null;
+	private Sentence pred = null;
 	private Double prob = (double) 0;
 	
-	public PredictProbPair(String pred, Double prob)
+	public PredictProbPair(Sentence pred, Double prob)
 	{
 		this.setPred(pred);
 		this.setProb(prob);
 	}
 
-	public String getPred() {
+	public Sentence getPred() {
 		return pred;
 	}
 
-	public void setPred(String pred) {
+	public void setPred(Sentence pred) {
 		this.pred = pred;
 	}
 

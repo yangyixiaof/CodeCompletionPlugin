@@ -9,15 +9,15 @@ public class PreTrySequenceManager extends SequenceManager{
 	public PreTrySequenceManager() {
 	}
 
-	public PreTrySequenceManager(SequenceManager tempsm, String ons, boolean generateFromExactmath) {
+	public PreTrySequenceManager(SequenceManager tempsm, Sentence ons, boolean generateFromExactmath) {
 		Iterator<Sequence> itr = tempsm.Iterator();
 		while (itr.hasNext())
 		{
 			Sequence seq = itr.next();
-			String recent = seq.getLast();
+			Sentence recent = seq.getLast();
 			boolean exactmatch = false;
 			// two strings same.
-			if (recent.equals(ons))
+			if (recent.CouldThoughtSame(ons))
 			{
 				if (generateFromExactmath)
 				{

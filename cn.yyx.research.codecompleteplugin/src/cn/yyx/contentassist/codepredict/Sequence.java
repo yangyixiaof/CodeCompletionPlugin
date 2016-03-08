@@ -11,11 +11,11 @@ import cn.yyx.research.AeroSpikeHandle.PredictProbPair;
 
 public class Sequence implements Comparable<Sequence> {
 
-	protected Queue<String> sequence = new LinkedList<String>();
-	protected String last = null;
+	protected Queue<Sentence> sequence = new LinkedList<Sentence>();
+	protected Sentence last = null;
 	protected Double prob = (double) 0;
 
-	public void AddOneSentence(String ons) {
+	public void AddOneSentence(Sentence ons) {
 		sequence.add(ons);
 		last = ons;
 		int qsize = sequence.size();
@@ -28,7 +28,7 @@ public class Sequence implements Comparable<Sequence> {
 		SequenceManager result = new SequenceManager();
 		int ssize = sequence.size();
 		int maxsize = Math.min(ssize - 1, PredictMetaInfo.NgramMaxSize);
-		ArrayList<String> analysislist = LastOfSentenceQueue(maxsize);
+		ArrayList<Sentence> analysislist = LastOfSentenceQueue(maxsize);
 		for (int i = maxsize; i > 0; i--) {
 			String key = ConcatJoinLast(i, analysislist);
 			List<PredictProbPair> predicts = alc.AeroModelPredict(key, neededSize);
@@ -94,12 +94,12 @@ public class Sequence implements Comparable<Sequence> {
 		this.prob += prob2;
 	}
 	
-	public Iterator<String> Iterator()
+	public Iterator<Sentence> Iterator()
 	{
 		return sequence.iterator();
 	}
 
-	private String ConcatJoinLast(int size, ArrayList<String> analysislist) {
+	private String ConcatJoinLast(int size, ArrayList<Sentence> analysislist) {
 		StringBuffer sb = new StringBuffer("");
 		int end = analysislist.size() - 1;
 		int start = end + 1 - size;
@@ -113,18 +113,18 @@ public class Sequence implements Comparable<Sequence> {
 		return sb.toString().trim();
 	}
 
-	private ArrayList<String> LastOfSentenceQueue(int neededSize) {
-		ArrayList<String> result = new ArrayList<String>();
+	private ArrayList<Sentence> LastOfSentenceQueue(int neededSize) {
+		ArrayList<Sentence> result = new ArrayList<Sentence>();
 		int seqsize = sequence.size();
 		int skipsize = seqsize - neededSize;
 		int hasskipped = 0;
-		Iterator<String> itr = sequence.iterator();
+		Iterator<Sentence> itr = sequence.iterator();
 		boolean shouldadd = false;
 		while (itr.hasNext()) {
 			if (hasskipped >= skipsize) {
 				shouldadd = true;
 			}
-			String sentence = itr.next();
+			Sentence sentence = itr.next();
 			hasskipped++;
 			if (shouldadd) {
 				result.add(sentence);
@@ -136,7 +136,7 @@ public class Sequence implements Comparable<Sequence> {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer("");
-		Iterator<String> itr = sequence.iterator();
+		Iterator<Sentence> itr = sequence.iterator();
 		while (itr.hasNext()) {
 			sb.append(" " + itr.next());
 		}
@@ -161,7 +161,7 @@ public class Sequence implements Comparable<Sequence> {
 		Sequence o = null;
 		try {
 			o = (Sequence) super.clone();
-			o.sequence = (Queue<String>) (((LinkedList<String>) sequence).clone());
+			o.sequence = (Queue<Sentence>) (((LinkedList<Sentence>) sequence).clone());
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
@@ -174,7 +174,7 @@ public class Sequence implements Comparable<Sequence> {
 		return getProb().compareTo(o.getProb());
 	}
 
-	public String getLast() {
+	public Sentence getLast() {
 		return last;
 	}
 

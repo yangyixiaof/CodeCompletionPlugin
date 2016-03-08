@@ -1,7 +1,6 @@
 package cn.yyx.contentassist.codepredict;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -9,7 +8,7 @@ import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 
 public class PredictSequence extends Sequence {
 	
-	protected Queue<String> predicts = new LinkedList<String>();
+	protected Queue<Sentence> predicts = new LinkedList<Sentence>();
 	protected Stack<Integer> cstack = new Stack<Integer>();
 	protected int kindofpredict;
 	
@@ -20,10 +19,13 @@ public class PredictSequence extends Sequence {
 		cstack.push(PredictMetaInfo.AllKindWaitingOver);
 	}
 	
-	public PredictSequenceManager ExtendOneSentence(AeroLifeCycle alc, int maxsize)
+	@SuppressWarnings("unchecked")
+	public PredictSequenceManager ExtendOneSentence(AeroLifeCycle alc, int neededSize)
 	{
+		// TODO
 		PredictSequenceManager pm = new PredictSequenceManager();
-		SequenceManager pdm = PredictSentences(alc, maxsize);
+		SequenceManager pdm = PredictSentences(alc, neededSize);
+		
 		int nowsize = predicts.size();
 		if (nowsize >= PredictMetaInfo.NgramMaxSize)
 		{
@@ -31,7 +33,7 @@ public class PredictSequence extends Sequence {
 		}
 		
 		int ssize = sequence.size();
-		Queue<String> useq = (LinkedList<String>) ((LinkedList<String>)sequence).clone();
+		Queue<Sentence> useq = (LinkedList<Sentence>) ((LinkedList<Sentence>)sequence).clone();
 		int maxsize = Math.min(ssize, PredictMetaInfo.NgramMaxSize);
 		int skip = ssize - maxsize;
 		for (int i=0;i<skip;i++)
@@ -44,6 +46,7 @@ public class PredictSequence extends Sequence {
 		{
 			
 		}
+		return pm;
 	}
 
 	public boolean isOver() {
@@ -52,10 +55,6 @@ public class PredictSequence extends Sequence {
 
 	public int getKindofpredict() {
 		return kindofpredict;
-	}
-
-	public void setKindofpredict(int kindofpredict) {
-		this.kindofpredict = kindofpredict;
 	}
 	
 }
