@@ -12,11 +12,12 @@ import cn.yyx.research.AeroSpikeHandle.PredictProbPair;
 public class Sequence implements Comparable<Sequence> {
 
 	private Queue<String> sequence = new LinkedList<String>();
-	String last = null;
+	private String last = null;
 	private Double prob = (double) 0;
 
-	public void HandleNewInDirectlyToAddOneSentence(String ons) {
-		getSequence().add(ons);
+	public void AddOneSentence(String ons) {
+		sequence.add(ons);
+		last = ons;
 		int qsize = sequence.size();
 		if (qsize > PredictMetaInfo.PrePredictWindow) {
 			sequence.poll();
@@ -84,13 +85,18 @@ public class Sequence implements Comparable<Sequence> {
 
 	private Sequence NewSequence(PredictProbPair ppp) {
 		Sequence s = (Sequence) this.clone();
-		s.HandleNewInDirectlyToAddOneSentence(ppp.getPred());
+		s.AddOneSentence(ppp.getPred());
 		s.AddProbability(ppp.getProb());
 		return s;
 	}
 
 	public void AddProbability(Double prob2) {
 		this.prob += prob2;
+	}
+	
+	public Iterator<String> Iterator()
+	{
+		return sequence.iterator();
 	}
 
 	private String ConcatJoinLast(int size, ArrayList<String> analysislist) {
@@ -130,7 +136,7 @@ public class Sequence implements Comparable<Sequence> {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer("");
-		Iterator<String> itr = getSequence().iterator();
+		Iterator<String> itr = sequence.iterator();
 		while (itr.hasNext()) {
 			sb.append(" " + itr.next());
 		}
@@ -140,14 +146,6 @@ public class Sequence implements Comparable<Sequence> {
 	@Override
 	public int hashCode() {
 		return toString().hashCode();
-	}
-
-	public Queue<String> getSequence() {
-		return sequence;
-	}
-
-	public void setSequence(Queue<String> sequence) {
-		this.sequence = sequence;
 	}
 
 	public Double getProb() {
@@ -174,6 +172,10 @@ public class Sequence implements Comparable<Sequence> {
 	public int compareTo(Sequence o) {
 		// TODO this order has changed, must change the related code.
 		return getProb().compareTo(o.getProb());
+	}
+
+	public String getLast() {
+		return last;
 	}
 
 }

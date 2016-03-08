@@ -70,7 +70,7 @@ public class PredictionFetch {
 		PredictSequenceManager result = new PredictSequenceManager();
 		PredictSequenceManager firstlevel = new PredictSequenceManager();
 		PredictSequence tpd = new PredictSequence(oneseq);
-		firstlevel.AddOnePredict(tpd, -1);
+		firstlevel.AddSequence(tpd, -1);
 		PredictSequenceManager olevel = firstlevel;
 		while (!result.CouldOver(finalsize) && !olevel.IsEmpty())
 		{
@@ -86,11 +86,11 @@ public class PredictionFetch {
 					PredictSequence opd = (PredictSequence) itr.next();
 					if (opd.isOver())
 					{
-						result.AddOnePredict(opd, finalsize);
+						result.AddSequence(opd, finalsize);
 					}
 					else
 					{
-						tempolevel.AddOnePredict(opd, maxextendsize);
+						tempolevel.AddSequence(opd, maxextendsize);
 					}
 				}
 			}
@@ -98,47 +98,47 @@ public class PredictionFetch {
 		}
 		return result;
 	}
-	
-	private List<String> DoRealCodeSynthesis(SimplifiedCodeGenerateASTVisitor fmastv, PredictSequenceManager pm) {
-		// TODO Auto-generated method stub
-		
-		return null;
-	}
-	
+
 	private PreTrySequenceManager DoPreTrySequencePredict(AeroLifeCycle alc, PreTrySequenceManager manager, String ons)
 	{
-		// TODO
-		if (getExactseq() == null)
+		if (manager.IsEmpty())
 		{
-			setExactseq(new Sequence(true));
-		}
-		getExactseq().HandleNewInDirectlyToAddOneSentence(ons);
-		
-		if (getExactmatch() == null)
-		{
-			// first line.
-			setExactmatch(new Sequence(true));
-			getExactmatch().HandleNewInDirectlyToAddOneSentence(ons);
-			return this;
+			PreTrySequence em = new PreTrySequence(true);
+			em.AddOneSentence(ons);
+			manager.setExactmatch(em);
+			manager.AddSequence(em);
+			return manager;
 		}
 		else
 		{
-			ArrayList<SequenceManager> smarray = new ArrayList<SequenceManager>();
-			int existSize = 1 + getNotexactmatch().size();
+			PreTrySequenceManager sm = null;
+			int existSize = manager.GetSize();
 			int averagePredict = PredictMetaInfo.PredictMaxSequence / existSize;
-			SequenceManager sm = getExactmatch().HandleNewInSentence(alc, ons, averagePredict + 5);
-			smarray.add(sm);
-			
-			Iterator<Sequence> itr = getNotexactmatch().iterator();
+			Iterator<Sequence> itr = manager.Iterator();
 			int isize = existSize;
 			while (itr.hasNext())
 			{
 				isize--;
 				Sequence seq = itr.next();
-				smarray.add(seq.HandleNewInSentence(alc, ons, averagePredict + (int)(5*(isize*1.0/(existSize*1.0)))));
+				SequenceManager tempsm = seq.PredictSentences(alc, averagePredict + (int)(5*(isize*1.0/(existSize*1.0))));
+				PreTrySequenceManager ptsm = new PreTrySequenceManager(tempsm, ons);
+				if (sm == null)
+				{
+					sm = ptsm;
+				}
+				else
+				{
+					sm.Merge(ptsm);
+				}
 			}
-			return new SequenceManager(smarray, getExactseq());
+			return sm;
 		}
+	}
+	
+	private List<String> DoRealCodeSynthesis(SimplifiedCodeGenerateASTVisitor fmastv, PredictSequenceManager pm) {
+		// TODO Auto-generated method stub
+		
+		return null;
 	}
 	
 	/*public static void main(String[] args) {

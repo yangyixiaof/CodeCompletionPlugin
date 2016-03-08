@@ -62,10 +62,10 @@ public class SequenceManager {
 		unique.put(seq.hashCode(), seq);
 	}
 	
-	public void AddOnePredict(PredictSequence pd, int maxSize)
+	public void AddSequence(Sequence seq, int maxSize)
 	{
-		sequence.add(pd);
-		unique.put(pd.hashCode(), pd);
+		sequence.add(seq);
+		unique.put(seq.hashCode(), seq);
 		if (maxSize > 0)
 		{
 			int size = sequence.size();
