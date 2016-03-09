@@ -9,4 +9,6 @@ public class TODO {
 	// TODO multiple ')' should merge. multiple '{' or '}' should merge. 
 	
 	// TODO the sequence has not been eliminated by LCS.
+	
+	// TODO do statement should be eliminated.
 }

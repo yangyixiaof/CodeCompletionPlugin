@@ -12,13 +12,19 @@ public class nameStatement extends expressionStatement{
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof nameStatement)
+		{
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof nameStatement)
+		{
+			return 1;
+		}
 		return 0;
 	}
 
