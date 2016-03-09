@@ -3,30 +3,40 @@ package cn.yyx.contentassist.codeutils;
 import java.util.LinkedList;
 import java.util.List;
 
-import SJ8Parse.Java8Parser.TypeContext;
+import cn.yyx.contentassist.commonutils.SimilarityHelper;
 
 public class typeList extends OneCode {
 	
-	private List<TypeContext> el = new LinkedList<TypeContext>();
+	private List<type> tps = new LinkedList<type>();
 	
 	public typeList() {
 	}
 	
-	public void AddToFirst(TypeContext re)
+	public void AddToFirst(type re)
 	{
-		getEl().add(0, re);
+		tps.add(0, re);
 	}
 	
-	public void AddReferedExpression(TypeContext re)
+	public void AddReferedExpression(type re)
 	{
-		getEl().add(re);
+		tps.add(re);
 	}
 
-	public List<TypeContext> getEl() {
-		return el;
+	@Override
+	public boolean CouldThoughtSame(OneCode t) {
+		if (t instanceof typeList)
+		{
+			return SimilarityHelper.CouldThoughtListsOfTypeSame(tps, ((typeList) t).tps);
+		}
+		return false;
 	}
 
-	public void setEl(List<TypeContext> el) {
-		this.el = el;
+	@Override
+	public double Similarity(OneCode t) {
+		if (t instanceof typeList)
+		{
+			return SimilarityHelper.ComputeListsOfTypeSimilarity(tps, ((typeList) t).tps);
+		}
+		return 0;
 	}
 }

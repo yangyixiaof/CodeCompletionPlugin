@@ -50,7 +50,6 @@ import cn.yyx.contentassist.codeutils.condExpColonMarkStatement;
 import cn.yyx.contentassist.codeutils.condExpQuestionMarkStatement;
 import cn.yyx.contentassist.codeutils.continueStatement;
 import cn.yyx.contentassist.codeutils.defaultStatement;
-import cn.yyx.contentassist.codeutils.doStatement;
 import cn.yyx.contentassist.codeutils.doWhileStatement;
 import cn.yyx.contentassist.codeutils.endOfStatement;
 import cn.yyx.contentassist.codeutils.enhancedForStatement;
@@ -584,12 +583,6 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	}
 
 	@Override
-	public Integer visitDoStatement(Java8Parser.DoStatementContext ctx) {
-		smt = new doStatement();
-		return visitChildren(ctx);
-	}
-
-	@Override
 	public Integer visitArrayInitializerStartStatement(Java8Parser.ArrayInitializerStartStatementContext ctx) {
 		smt = new arrayInitializerStartStatement();
 		return visitChildren(ctx);
@@ -681,7 +674,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		while (itr.hasNext()) {
 			itr.next();
 			Object o = usedobj.poll();
-			al.AddToFirst((TypeContext) o);
+			al.AddToFirst((type) o);
 		}
 		usedobj.add(al);
 		return res;

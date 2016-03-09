@@ -9,5 +9,41 @@ public class wildCardType extends type{
 		this.extended = extended;
 		this.tp = tp;
 	}
-
+	
+	@Override
+	public boolean CouldThoughtSame(OneCode t) {
+		if (t instanceof wildCardType)
+		{
+			if (tp == null)
+			{
+				return true;
+			}
+			else
+			{
+				if (tp.CouldThoughtSame(((wildCardType) t).tp))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public double Similarity(OneCode t) {
+		if (t instanceof wildCardType)
+		{
+			if (tp == null)
+			{
+				return 1;
+			}
+			else
+			{
+				
+				return 0.4 + 0.6*(tp.Similarity(((wildCardType) t).tp));
+			}
+		}
+		return 0;
+	}
+	
 }
