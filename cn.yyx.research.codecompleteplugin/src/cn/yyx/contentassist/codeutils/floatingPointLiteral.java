@@ -8,4 +8,22 @@ public class floatingPointLiteral extends numberLiteral{
 		this.value = parseDouble;
 	}
 
+	@Override
+	public boolean CouldThoughtSame(OneCode t) {
+		if (t instanceof floatingPointLiteral)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public double Similarity(OneCode t) {
+		if (t instanceof floatingPointLiteral)
+		{
+			return 1;
+		}
+		return 0;
+	}
+
 }

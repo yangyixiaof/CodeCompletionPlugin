@@ -8,4 +8,16 @@ public class idRawLetter extends identifier{
 		this.text = text;
 	}
 
+	@Override
+	public boolean CouldThoughtSame(OneCode t) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public double Similarity(OneCode t) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
