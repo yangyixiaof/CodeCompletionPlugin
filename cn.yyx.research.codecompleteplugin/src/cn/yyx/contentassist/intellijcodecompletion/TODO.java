@@ -8,4 +8,5 @@ public class TODO {
 	// TODO do-while should before judge.
 	// TODO multiple ')' should merge. multiple '{' or '}' should merge. 
 	
+	// TODO the sequence has not been eliminated by LCS.
 }

@@ -24,5 +24,14 @@ public class arrayAccessStatement extends statement{
 	@Override
 	public void HandleOverSignal(Stack<Integer> cstack) {
 	}
+
+	@Override
+	public double Similarity(OneCode t) {
+		if (t instanceof arrayAccessStatement)
+		{
+			return 0.4 + 0.6*(rarr.Similarity(((arrayAccessStatement) t).rarr) + rexp.Similarity(((arrayAccessStatement) t).rexp));
+		}
+		return 0;
+	}
 	
 }

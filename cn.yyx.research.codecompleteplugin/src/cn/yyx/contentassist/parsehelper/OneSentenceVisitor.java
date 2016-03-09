@@ -31,6 +31,7 @@ import cn.yyx.contentassist.codeutils.arrayInitializerStartStatement;
 import cn.yyx.contentassist.codeutils.arrayType;
 import cn.yyx.contentassist.codeutils.assignmentOperator;
 import cn.yyx.contentassist.codeutils.assignmentStatement;
+import cn.yyx.contentassist.codeutils.atInterfaceStatement;
 import cn.yyx.contentassist.codeutils.binaryOperator;
 import cn.yyx.contentassist.codeutils.booleanLiteral;
 import cn.yyx.contentassist.codeutils.breakStatement;
@@ -262,7 +263,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	public Integer visitAtInterfaceStatement(Java8Parser.AtInterfaceStatementContext ctx) {
 		Integer res = visitChildren(ctx);
 		Object id = usedobj.poll();
-		smt = new anonymousClassPreStatement((identifier) id);
+		smt = new atInterfaceStatement((identifier) id);
 		return res;
 	}
 

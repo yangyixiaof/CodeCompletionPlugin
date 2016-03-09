@@ -8,4 +8,28 @@ public class assignmentOperator extends OneCode{
 		this.optr = text;
 	}
 
+	@Override
+	public boolean CouldThoughtSame(OneCode t) {
+		if (t instanceof assignmentOperator)
+		{
+			if (optr.equals(((assignmentOperator) t).optr))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public double Similarity(OneCode t) {
+		if (t instanceof assignmentOperator)
+		{
+			if (optr.equals(((assignmentOperator) t).optr))
+			{
+				return 1;
+			}
+		}
+		return 0;
+	}
+
 }

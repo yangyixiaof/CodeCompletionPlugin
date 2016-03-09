@@ -27,5 +27,10 @@ public class Sentence implements Comparable<Sentence>, CodeSimilarity<Sentence> 
 	public boolean CouldThoughtSame(Sentence t) {
 		return smt.CouldThoughtSame(t.smt);
 	}
+
+	@Override
+	public double Similarity(Sentence t) {
+		return smt.Similarity(t.smt);
+	}
 	
 }

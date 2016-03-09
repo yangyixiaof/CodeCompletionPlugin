@@ -1,6 +1,6 @@
 package cn.yyx.contentassist.codeutils;
 
-public class expressionStatement extends statement{
+public abstract class expressionStatement extends statement{
 	
 	protected boolean arrayAccessEnd = false;
 

@@ -3,6 +3,8 @@ package cn.yyx.contentassist.codeutils;
 import java.util.LinkedList;
 import java.util.List;
 
+import cn.yyx.contentassist.commonutils.SimilarityHelper;
+
 public class argumentList extends OneCode{
 	
 	private List<referedExpression> el = new LinkedList<referedExpression>();
@@ -46,6 +48,24 @@ public class argumentList extends OneCode{
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public double Similarity(OneCode t) {
+		if (t instanceof argumentList)
+		{
+			int size = el.size();
+			int tsize = ((argumentList) t).el.size();
+			if (Math.abs(size-tsize) <= 1)
+			{
+				return 1;
+			}
+			else
+			{
+				return SimilarityHelper.ComputeTwoIntegerSimilarity(size, tsize);
+			}
+		}
+		return 0;
 	}
 	
 }

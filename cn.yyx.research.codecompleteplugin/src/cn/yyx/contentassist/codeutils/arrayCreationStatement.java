@@ -26,4 +26,13 @@ public class arrayCreationStatement extends statement{
 	public void HandleOverSignal(Stack<Integer> cstack) {
 	}
 
+	@Override
+	public double Similarity(OneCode t) {
+		if (t instanceof arrayCreationStatement)
+		{
+			return 0.4 + 0.6*(rt.Similarity(((arrayCreationStatement) t).rt));
+		}
+		return 0;
+	}
+
 }

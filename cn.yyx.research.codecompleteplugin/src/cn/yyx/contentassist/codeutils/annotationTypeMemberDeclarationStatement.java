@@ -18,7 +18,6 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 	
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
 		if (t instanceof annotationTypeMemberDeclarationStatement)
 		{
 			if (type.CouldThoughtSame(((annotationTypeMemberDeclarationStatement)t).type))
@@ -27,6 +26,16 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public double Similarity(OneCode t) {
+		double similar = 0;
+		if (t instanceof annotationTypeMemberDeclarationStatement)
+		{
+			similar = 0.4 + 0.6*(type.Similarity(((annotationTypeMemberDeclarationStatement) t).type)*0.7 + drexp.Similarity(((annotationTypeMemberDeclarationStatement) t).drexp)*0.3);
+		}
+		return similar;
 	}
 	
 }

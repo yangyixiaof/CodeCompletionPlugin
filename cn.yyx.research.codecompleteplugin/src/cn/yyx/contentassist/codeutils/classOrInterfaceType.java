@@ -10,4 +10,19 @@ public class classOrInterfaceType extends type{
 		this.result = result;
 	}
 
+	@Override
+	public boolean CouldThoughtSame(OneCode t) {
+		if (t instanceof classOrInterfaceType)
+		{
+			// TODO
+		}
+		return false;
+	}
+
+	@Override
+	public double Similarity(OneCode t) {
+		
+		return 0;
+	}
+
 }

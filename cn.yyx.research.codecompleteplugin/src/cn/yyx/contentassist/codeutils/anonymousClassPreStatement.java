@@ -25,5 +25,14 @@ public class anonymousClassPreStatement extends statement{
 	@Override
 	public void HandleOverSignal(Stack<Integer> cstack) {
 	}
+
+	@Override
+	public double Similarity(OneCode t) {
+		if (t instanceof anonymousClassPreStatement)
+		{
+			return 0.4 + 0.6*(id.Similarity(((anonymousClassPreStatement) t).id));
+		}
+		return 0;
+	}
 	
 }

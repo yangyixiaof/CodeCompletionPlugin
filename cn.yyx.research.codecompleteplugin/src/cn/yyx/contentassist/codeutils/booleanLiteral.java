@@ -8,4 +8,28 @@ public class booleanLiteral extends literal{
 		this.value = parseBoolean;
 	}
 
+	@Override
+	public boolean CouldThoughtSame(OneCode t) {
+		if (t instanceof booleanLiteral)
+		{
+			if (value == ((booleanLiteral)t).value)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public double Similarity(OneCode t) {
+		if (t instanceof booleanLiteral)
+		{
+			if (value == ((booleanLiteral)t).value)
+			{
+				return 1;
+			}
+		}
+		return 0;
+	}
+
 }

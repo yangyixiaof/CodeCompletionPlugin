@@ -22,5 +22,14 @@ public class anonymousClassBeginStatement extends statement{
 	@Override
 	public void HandleOverSignal(Stack<Integer> cstack) {
 	}
+
+	@Override
+	public double Similarity(OneCode t) {
+		if (t instanceof anonymousClassBeginStatement)
+		{
+			return 1;
+		}
+		return 0;
+	}
 	
 }
