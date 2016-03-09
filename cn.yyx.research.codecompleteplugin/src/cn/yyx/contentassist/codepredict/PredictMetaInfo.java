@@ -21,4 +21,5 @@ public class PredictMetaInfo {
 	public static final int AllKindWaitingOver = 1;
 	public static final int CommonForKindWaitingOver = 2;
 	public static final int ConditionExpressionOver = 3;
+	public static final int IfOver = 4;
 }

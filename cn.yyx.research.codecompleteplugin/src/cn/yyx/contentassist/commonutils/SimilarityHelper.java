@@ -1,5 +1,10 @@
 package cn.yyx.contentassist.commonutils;
 
+import java.util.Iterator;
+import java.util.List;
+
+import cn.yyx.contentassist.codeutils.type;
+
 public class SimilarityHelper {
 
 	public static double ComputeTwoIntegerSimilarity(int a, int b) {
@@ -26,7 +31,47 @@ public class SimilarityHelper {
 		}
 		return 0.6 + 0.4 * (0.5 / (gap1 * 1.0) + 0.5 / (gap2 * 1.0));
 	}
-
+	
+	public static boolean CouldThoughtListsOfTypeSame(List<type> tps1, List<type> tps2)
+	{
+		Iterator<type> itr1 = tps1.iterator();
+		Iterator<type> itr2 = tps2.iterator();
+		while (itr1.hasNext())
+		{
+			type t1 = itr1.next();
+			while (itr2.hasNext())
+			{
+				type t2 = itr2.next();
+				if (t1.CouldThoughtSame(t2))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public static double ComputeListsOfTypeSimilarity(List<type> tps1, List<type> tps2)
+	{
+		Iterator<type> itr1 = tps1.iterator();
+		Iterator<type> itr2 = tps2.iterator();
+		double tmax = 0;
+		while (itr1.hasNext())
+		{
+			type t1 = itr1.next();
+			while (itr2.hasNext())
+			{
+				type t2 = itr2.next();
+				double tsmil = t1.Similarity(t2);
+				if (tmax < tsmil)
+				{
+					tmax = tsmil;
+				}
+			}
+		}
+		return tmax;
+	}
+	
 	public static double ComputeTwoStringSimilarity(String one, String two) {
 		char[] a = one.toCharArray();
 		char[] b = two.toCharArray();

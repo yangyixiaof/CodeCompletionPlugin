@@ -5,7 +5,7 @@ import java.util.List;
 
 import SJ8Parse.Java8Parser.TypeContext;
 
-public class typeList {
+public class typeList extends OneCode {
 	
 	private List<TypeContext> el = new LinkedList<TypeContext>();
 	
