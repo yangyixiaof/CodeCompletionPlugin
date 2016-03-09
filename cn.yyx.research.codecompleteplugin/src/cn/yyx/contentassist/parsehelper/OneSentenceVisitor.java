@@ -78,6 +78,8 @@ import cn.yyx.contentassist.codeutils.labeledStatement;
 import cn.yyx.contentassist.codeutils.lambdaExpressionStatement;
 import cn.yyx.contentassist.codeutils.leftBraceStatement;
 import cn.yyx.contentassist.codeutils.leftParentheseStatement;
+import cn.yyx.contentassist.codeutils.literal;
+import cn.yyx.contentassist.codeutils.literalStatement;
 import cn.yyx.contentassist.codeutils.methodDeclarationStatement;
 import cn.yyx.contentassist.codeutils.methodInvocationStatement;
 import cn.yyx.contentassist.codeutils.methodReferenceStatement;
@@ -137,7 +139,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitLiteralStatement(Java8Parser.LiteralStatementContext ctx) {
-		usedobj.add(ctx.literal().getText());
+		smt = new literalStatement((literal) usedobj.poll());
 		return 0;
 	}
 
