@@ -42,12 +42,6 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 	}
 	
 	@Override
-	public String GetCodeText() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SimplifiedCodeGenerateASTVisitor fmastv) {
 		// TODO Auto-generated method stub
 		return false;
