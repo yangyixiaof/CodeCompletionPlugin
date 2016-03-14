@@ -11,6 +11,8 @@ public class PredictSequence extends Sequence {
 	
 	protected Queue<Sentence> predicts = new LinkedList<Sentence>();
 	protected Stack<Integer> cstack = new Stack<Integer>();
+	protected Stack<Sentence> sstack = new Stack<Sentence>();
+	protected String syncode = "";
 	
 	public PredictSequence(Sequence hint) {
 		this.last = hint.last;
@@ -25,6 +27,7 @@ public class PredictSequence extends Sequence {
 		this.prob = hint.prob;
 		this.predicts = (Queue<Sentence>) ((LinkedList<Sentence>)(current.predicts)).clone();
 		this.cstack = (Stack<Integer>) current.cstack.clone();
+		this.sstack = (Stack<Sentence>) current.sstack.clone();
 		this.predicts.add(last);
 		last.smt.HandleOverSignal(cstack);
 	}
@@ -51,6 +54,11 @@ public class PredictSequence extends Sequence {
 
 	public boolean isOver() {
 		return cstack.empty();
+	}
+	
+	public String GetSynthesisedCode()
+	{
+		return syncode;
 	}
 	
 }

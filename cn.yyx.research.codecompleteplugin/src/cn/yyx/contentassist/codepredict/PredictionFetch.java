@@ -32,19 +32,19 @@ public class PredictionFetch {
 			manager = DoPreTrySequencePredict(alc, manager, ons);
 		}
 		
-		PredictSequenceManager pm = DoSequencesPredict(alc, manager);
-		List<String> list = DoRealCodeSynthesis(fmastv, pm);
+		PredictSequenceManager pm = DoSequencesPredictAndRealCodeSynthesis(fmastv, alc, manager);
+		// List<String> list = DoRealCodeSynthesis(fmastv, pm);
 		// AeroHelper.testListStrings(2);
 		// System.out.println("ArrayListType:" + analist.getClass());
 		// System.out.println("ArrayListRealSize:" + analist.size() + ";OSize;" + size + ";They should be the same.");
 		
 		alc.Destroy();
 		alc = null;
-		
+		List<String> list = pm.GetAllSynthesisdCodes();
 		return list;
 	}
 	
-	private PredictSequenceManager DoSequencesPredict(AeroLifeCycle alc, SequenceManager manager)
+	private PredictSequenceManager DoSequencesPredictAndRealCodeSynthesis(SimplifiedCodeGenerateASTVisitor fmastv, AeroLifeCycle alc, SequenceManager manager)
 	{
 		Iterator<Sequence> itr = manager.Iterator();
 		PredictSequenceManager pm = null;
@@ -137,11 +137,9 @@ public class PredictionFetch {
 		}
 	}
 	
-	private List<String> DoRealCodeSynthesis(SimplifiedCodeGenerateASTVisitor fmastv, PredictSequenceManager pm) {
-		// TODO Auto-generated method stub
-		
+	/*private List<String> DoRealCodeSynthesis(SimplifiedCodeGenerateASTVisitor fmastv, PredictSequenceManager pm) {
 		return null;
-	}
+	}*/
 	
 	/*public static void main(String[] args) {
 		ArrayList<String> result = new ArrayList<String>();
