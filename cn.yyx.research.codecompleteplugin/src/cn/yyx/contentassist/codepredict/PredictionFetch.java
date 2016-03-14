@@ -51,7 +51,7 @@ public class PredictionFetch {
 		while (itr.hasNext())
 		{
 			Sequence s = itr.next();
-			PredictSequenceManager temppm = DoOneSequencePredict(alc, s, PredictMetaInfo.ExtendFinalMaxSequence, PredictMetaInfo.ExtendTempMaxSequence);
+			PredictSequenceManager temppm = DoOneSequencePredict(fmastv, alc, s, PredictMetaInfo.ExtendFinalMaxSequence, PredictMetaInfo.ExtendTempMaxSequence);
 			if (pm == null)
 			{
 				pm = temppm;
@@ -65,7 +65,7 @@ public class PredictionFetch {
 		return pm;
 	}
 	
-	private PredictSequenceManager DoOneSequencePredict(AeroLifeCycle alc, Sequence oneseq, int finalsize, int maxextendsize)
+	private PredictSequenceManager DoOneSequencePredict(SimplifiedCodeGenerateASTVisitor fmastv, AeroLifeCycle alc, Sequence oneseq, int finalsize, int maxextendsize)
 	{
 		int normalExtendSize = (int)Math.max(Math.sqrt(maxextendsize), maxextendsize/2);
 		PredictSequenceManager result = new PredictSequenceManager();
@@ -81,7 +81,7 @@ public class PredictionFetch {
 			while (oitr.hasNext())
 			{
 				PredictSequence pd = (PredictSequence) oitr.next();
-				PredictSequenceManager pm = pd.ExtendOneSentence(alc, normalExtendSize);
+				PredictSequenceManager pm = pd.ExtendOneSentence(fmastv, alc, normalExtendSize);
 				Iterator<Sequence> itr = pm.Iterator();
 				while (itr.hasNext())
 				{
