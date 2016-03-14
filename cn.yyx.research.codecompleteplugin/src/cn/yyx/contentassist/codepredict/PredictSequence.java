@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVisitor;
 
@@ -12,8 +13,7 @@ public class PredictSequence extends Sequence {
 	
 	protected Queue<Sentence> predicts = new LinkedList<Sentence>();
 	protected Stack<Integer> cstack = new Stack<Integer>();
-	protected Stack<Sentence> sstack = new Stack<Sentence>();
-	protected StringBuilder syncode = new StringBuilder("");
+	protected CodeSynthesisQueue<String> sstack = new CodeSynthesisQueue<String>();
 	
 	public PredictSequence(Sequence hint) {
 		this.last = hint.last;
@@ -28,8 +28,7 @@ public class PredictSequence extends Sequence {
 		this.prob = hint.prob;
 		this.predicts = (Queue<Sentence>) ((LinkedList<Sentence>)(current.predicts)).clone();
 		this.cstack = (Stack<Integer>) current.cstack.clone();
-		this.sstack = (Stack<Sentence>) current.sstack.clone();
-		this.syncode.append(current.sstack);
+		this.sstack = (CodeSynthesisQueue<String>) current.sstack.clone();
 	}
 	
 	public void PredictStart()
@@ -41,7 +40,7 @@ public class PredictSequence extends Sequence {
 	{
 		this.predicts.add(last);
 		last.smt.HandleOverSignal(cstack);
-		boolean conflict = last.smt.HandleCodeSynthesis(sstack, fmastv, syncode);
+		boolean conflict = last.smt.HandleCodeSynthesis(sstack, fmastv);
 		return conflict;
 	}
 	
@@ -71,7 +70,7 @@ public class PredictSequence extends Sequence {
 	
 	public String GetSynthesisedCode()
 	{
-		return syncode.toString();
+		return sstack.getFirst();
 	}
 	
 }
