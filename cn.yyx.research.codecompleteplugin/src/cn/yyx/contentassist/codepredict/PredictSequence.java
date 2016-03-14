@@ -28,6 +28,7 @@ public class PredictSequence extends Sequence {
 		this.predicts = (Queue<Sentence>) ((LinkedList<Sentence>)(current.predicts)).clone();
 		this.cstack = (Stack<Integer>) current.cstack.clone();
 		this.sstack = (Stack<Sentence>) current.sstack.clone();
+		this.syncode = current.syncode;
 		this.predicts.add(last);
 		last.smt.HandleOverSignal(cstack);
 	}
