@@ -11,7 +11,7 @@ public class arrayType extends type {
 		this.tp = tp;
 		this.count = count;
 	}
-
+	
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof arrayType)
@@ -23,7 +23,7 @@ public class arrayType extends type {
 		}
 		return false;
 	}
-
+	
 	@Override
 	public double Similarity(OneCode t) {
 		if (t instanceof arrayType)
