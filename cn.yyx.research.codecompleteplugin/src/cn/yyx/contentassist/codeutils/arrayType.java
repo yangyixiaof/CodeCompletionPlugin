@@ -1,6 +1,9 @@
 package cn.yyx.contentassist.codeutils;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class arrayType extends type {
 	
@@ -31,6 +34,13 @@ public class arrayType extends type {
 			return 0.4 + 0.6*(0.7*SimilarityHelper.ComputeTwoIntegerSimilarity(count, ((arrayType) t).count) + 0.3*(tp.Similarity(((arrayType) t).tp)));
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		
+		return false;
 	}
 	
 }

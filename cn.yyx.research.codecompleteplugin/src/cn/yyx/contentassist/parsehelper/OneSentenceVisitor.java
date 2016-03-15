@@ -9,6 +9,7 @@ import SJ8Parse.Java8BaseVisitor;
 import SJ8Parse.Java8Parser;
 import SJ8Parse.Java8Parser.ArgumentListContext;
 import SJ8Parse.Java8Parser.BothTypeContext;
+import SJ8Parse.Java8Parser.EndOfArrayDeclarationIndexExpressionContext;
 import SJ8Parse.Java8Parser.ExtendBoundContext;
 import SJ8Parse.Java8Parser.IntersectionFirstTypeContext;
 import SJ8Parse.Java8Parser.IntersectionSecondTypeContext;
@@ -85,6 +86,8 @@ import cn.yyx.contentassist.codeutils.methodReferenceStatement;
 import cn.yyx.contentassist.codeutils.nameStatement;
 import cn.yyx.contentassist.codeutils.nullLiteral;
 import cn.yyx.contentassist.codeutils.parameterizedType;
+import cn.yyx.contentassist.codeutils.partialEndArrayAccessStatement;
+import cn.yyx.contentassist.codeutils.partialEndArrayInitializerStatement;
 import cn.yyx.contentassist.codeutils.postfixExpressionStatement;
 import cn.yyx.contentassist.codeutils.preExist;
 import cn.yyx.contentassist.codeutils.prefixExpressionStatement;
@@ -509,7 +512,8 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		Integer res = visitChildren(ctx);
 		Object rexp = usedobj.poll();
 		Object rarr = usedobj.poll();
-		smt = new arrayAccessStatement((referedExpression) rarr, (referedExpression) rexp);
+		EndOfArrayDeclarationIndexExpressionContext eoad = ctx.endOfArrayDeclarationIndexExpression();
+		smt = new arrayAccessStatement((referedExpression) rarr, (referedExpression) rexp, (eoad == null ? false : true));
 		return res;
 	}
 
@@ -521,7 +525,19 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 			new Exception().printStackTrace();
 			System.exit(1);
 		}
-		((expressionStatement) smt).setArrayAccessEnd(true);
+		smt = new partialEndArrayAccessStatement((expressionStatement)smt);
+		return res;
+	}
+	
+	@Override
+	public Integer visitPartialEndArrayInitializerStatement(Java8Parser.PartialEndArrayInitializerStatementContext ctx) {
+		Integer res = visitChildren(ctx);
+		if (smt == null || !(smt instanceof expressionStatement)) {
+			System.err.println("PartialEndArrayInitializerStatement does handle expressionStatement.");
+			new Exception().printStackTrace();
+			System.exit(1);
+		}
+		smt = new partialEndArrayInitializerStatement((expressionStatement)smt);
 		return res;
 	}
 

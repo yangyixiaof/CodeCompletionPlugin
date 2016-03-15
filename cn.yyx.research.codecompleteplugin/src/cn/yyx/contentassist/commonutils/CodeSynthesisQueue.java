@@ -123,9 +123,17 @@ public class CodeSynthesisQueue<T> {
 	public T getLast() {
 		return last.data;
 	}
+	
+	public boolean hasHoleLast() {
+		return last.hasHole;
+	}
 
 	public T getFirst() {
 		return head.data;
+	}
+	
+	public boolean hasHoleFirst() {
+		return head.hasHole;
 	}
 
 	public int getSize() {
@@ -152,6 +160,10 @@ public class CodeSynthesisQueue<T> {
 			}
 			System.out.println();
 		}
+	}
+
+	public void SetLast(T cnt) {
+		last.data = cnt;
 	}
 	
 }

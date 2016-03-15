@@ -2,6 +2,10 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+
 public class arrayInitializerStartStatement extends statement{
 
 	@Override
@@ -26,4 +30,11 @@ public class arrayInitializerStartStatement extends statement{
 		return 0;
 	}
 
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		squeue.SetLast(squeue.getLast() + "{}");
+		return false;
+	}
+	
 }

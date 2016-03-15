@@ -2,6 +2,10 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+
 public class assignmentStatement extends expressionStatement{
 	referedExpression left = null;
 	String optr = null;
@@ -36,6 +40,24 @@ public class assignmentStatement extends expressionStatement{
 	
 	@Override
 	public void HandleOverSignal(Stack<Integer> cstack) {
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		StringBuilder fin = new StringBuilder("");
+		StringBuilder tle = new StringBuilder("");
+		left.HandleCodeSynthesis(squeue, handler, tle, null);
+		fin.append(tle.toString() + optr);
+		squeue.add(fin.toString(), true);
+		StringBuilder tre = new StringBuilder("");
+		right.HandleCodeSynthesis(squeue, handler, tre, null);
+		if (tre.length() > 0)
+		{
+			fin.append(tre.toString());
+			squeue.SetLast(fin.toString());
+		}
+		return false;
 	}
 	
 }

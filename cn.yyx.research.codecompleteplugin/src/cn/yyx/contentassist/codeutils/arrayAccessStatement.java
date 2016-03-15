@@ -10,10 +10,12 @@ public class arrayAccessStatement extends statement{
 	
 	referedExpression rarr = null;
 	referedExpression rexp = null;
+	boolean accessEnd = false;
 	
-	public arrayAccessStatement(referedExpression rarr, referedExpression rexp) {
+	public arrayAccessStatement(referedExpression rarr, referedExpression rexp, boolean accessEnd) {
 		this.rarr = rarr;
 		this.rexp = rexp;
+		this.accessEnd = accessEnd;
 	}
 	
 	@Override
@@ -41,8 +43,24 @@ public class arrayAccessStatement extends statement{
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
 			StringBuilder result, AdditionalInfo ai) {
-		rarr.HandleCodeSynthesis(squeue, handler, result, ai);
-		
+		boolean conflict = false;
+		StringBuilder fin = new StringBuilder("");
+		conflict = rarr.HandleCodeSynthesis(squeue, handler, fin, null);
+		if (conflict)
+		{
+			return true;
+		}
+		fin.append("[");
+		conflict = rexp.HandleCodeSynthesis(squeue, handler, fin, null);
+		if (conflict)
+		{
+			return true;
+		}
+		if (accessEnd)
+		{
+			fin.append("]");
+		}
+		squeue.add(fin.toString());
 		return false;
 	}
 	

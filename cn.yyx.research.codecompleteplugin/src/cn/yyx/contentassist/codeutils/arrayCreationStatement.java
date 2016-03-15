@@ -2,6 +2,10 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+
 public class arrayCreationStatement extends statement{
 	
 	type rt = null;
@@ -35,4 +39,18 @@ public class arrayCreationStatement extends statement{
 		return 0;
 	}
 
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		StringBuilder fin = new StringBuilder("");
+		StringBuilder ttp = new StringBuilder("");
+		rt.HandleCodeSynthesis(squeue, handler, ttp, null);
+		fin.append("new " + ttp.toString());
+		if (squeue.hasHoleLast())
+		{
+			squeue.SetLast(squeue.getLast() + fin.toString());
+		}
+		return false;
+	}
+	
 }
