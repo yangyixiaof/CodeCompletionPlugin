@@ -36,7 +36,12 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 		double similar = 0;
 		if (t instanceof annotationTypeMemberDeclarationStatement)
 		{
-			similar = 0.4 + 0.6*(type.Similarity(((annotationTypeMemberDeclarationStatement) t).type)*0.7 + drexp.Similarity(((annotationTypeMemberDeclarationStatement) t).drexp)*0.3);
+			double drexpsimilar = 1;
+			if (drexp != null)
+			{
+				drexpsimilar = drexp.Similarity(((annotationTypeMemberDeclarationStatement) t).drexp);
+			}
+			similar = 0.4 + 0.6*(type.Similarity(((annotationTypeMemberDeclarationStatement) t).type)*0.7 + drexpsimilar*0.3);
 		}
 		return similar;
 	}
