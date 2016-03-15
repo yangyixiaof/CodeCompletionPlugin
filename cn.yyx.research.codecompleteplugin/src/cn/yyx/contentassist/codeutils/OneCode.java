@@ -5,6 +5,6 @@ import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVi
 
 public abstract class OneCode  implements CodeSimilarity<OneCode> {
 	
-	public abstract boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SimplifiedCodeGenerateASTVisitor fmastv);
+	public abstract boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SimplifiedCodeGenerateASTVisitor fmastv, StringBuilder result);
 	
 }

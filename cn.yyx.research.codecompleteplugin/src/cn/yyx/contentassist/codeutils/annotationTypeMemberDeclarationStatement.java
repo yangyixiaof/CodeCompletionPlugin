@@ -42,7 +42,7 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 	}
 	
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SimplifiedCodeGenerateASTVisitor fmastv) {
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SimplifiedCodeGenerateASTVisitor fmastv, StringBuilder result) {
 		// TODO Auto-generated method stub
 		return false;
 	}
