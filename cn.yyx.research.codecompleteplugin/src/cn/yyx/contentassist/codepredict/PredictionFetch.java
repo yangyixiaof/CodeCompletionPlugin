@@ -7,6 +7,7 @@ import java.util.List;
 import cn.yyx.contentassist.parsehelper.ComplexParser;
 import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVisitor;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class PredictionFetch {
 	
@@ -31,8 +32,8 @@ public class PredictionFetch {
 			Sentence ons = ComplexParser.GetSentence(str);
 			manager = DoPreTrySequencePredict(alc, manager, ons);
 		}
-		
-		PredictSequenceManager pm = DoSequencesPredictAndRealCodeSynthesis(fmastv, alc, manager);
+		ScopeOffsetRefHandler handler = fmastv.GenerateScopeOffsetRefHandler();
+		PredictSequenceManager pm = DoSequencesPredictAndRealCodeSynthesis(handler, alc, manager);
 		// List<String> list = DoRealCodeSynthesis(fmastv, pm);
 		// AeroHelper.testListStrings(2);
 		// System.out.println("ArrayListType:" + analist.getClass());
@@ -44,14 +45,14 @@ public class PredictionFetch {
 		return list;
 	}
 	
-	private PredictSequenceManager DoSequencesPredictAndRealCodeSynthesis(SimplifiedCodeGenerateASTVisitor fmastv, AeroLifeCycle alc, SequenceManager manager)
+	private PredictSequenceManager DoSequencesPredictAndRealCodeSynthesis(ScopeOffsetRefHandler handler, AeroLifeCycle alc, SequenceManager manager)
 	{
 		Iterator<Sequence> itr = manager.Iterator();
 		PredictSequenceManager pm = null;
 		while (itr.hasNext())
 		{
 			Sequence s = itr.next();
-			PredictSequenceManager temppm = DoOneSequencePredict(fmastv, alc, s, PredictMetaInfo.ExtendFinalMaxSequence, PredictMetaInfo.ExtendTempMaxSequence);
+			PredictSequenceManager temppm = DoOneSequencePredict(handler, alc, s, PredictMetaInfo.ExtendFinalMaxSequence, PredictMetaInfo.ExtendTempMaxSequence);
 			if (pm == null)
 			{
 				pm = temppm;
@@ -65,7 +66,7 @@ public class PredictionFetch {
 		return pm;
 	}
 	
-	private PredictSequenceManager DoOneSequencePredict(SimplifiedCodeGenerateASTVisitor fmastv, AeroLifeCycle alc, Sequence oneseq, int finalsize, int maxextendsize)
+	private PredictSequenceManager DoOneSequencePredict(ScopeOffsetRefHandler handler, AeroLifeCycle alc, Sequence oneseq, int finalsize, int maxextendsize)
 	{
 		int normalExtendSize = (int)Math.max(Math.sqrt(maxextendsize), maxextendsize/2);
 		PredictSequenceManager result = new PredictSequenceManager();
@@ -81,7 +82,7 @@ public class PredictionFetch {
 			while (oitr.hasNext())
 			{
 				PredictSequence pd = (PredictSequence) oitr.next();
-				PredictSequenceManager pm = pd.ExtendOneSentence(fmastv, alc, normalExtendSize);
+				PredictSequenceManager pm = pd.ExtendOneSentence(handler, alc, normalExtendSize);
 				Iterator<Sequence> itr = pm.Iterator();
 				while (itr.hasNext())
 				{

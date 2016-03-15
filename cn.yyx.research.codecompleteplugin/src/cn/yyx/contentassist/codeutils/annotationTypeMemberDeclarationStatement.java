@@ -3,7 +3,7 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
-import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVisitor;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class annotationTypeMemberDeclarationStatement extends statement{
 	
@@ -47,8 +47,24 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 	}
 	
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SimplifiedCodeGenerateASTVisitor fmastv, StringBuilder result) {
-		// TODO Auto-generated method stub
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler, StringBuilder result) {
+		StringBuilder rdexpsb = new StringBuilder();
+		boolean conflict = false;
+		if (drexp != null)
+		{
+			conflict = drexp.HandleCodeSynthesis(squeue, handler, rdexpsb);
+		}
+		if (conflict)
+		{
+			return true;
+		}
+		StringBuilder tsb = new StringBuilder();
+		conflict = this.type.HandleCodeSynthesis(squeue, handler, tsb);
+		if (conflict)
+		{
+			return true;
+		}
+		squeue.add(tsb.toString()+"()"+(drexp != null ? (" default " + rdexpsb.toString()) : ""));
 		return false;
 	}
 	

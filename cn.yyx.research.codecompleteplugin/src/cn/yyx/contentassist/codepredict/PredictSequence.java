@@ -7,7 +7,7 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
-import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVisitor;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class PredictSequence extends Sequence {
 	
@@ -36,15 +36,15 @@ public class PredictSequence extends Sequence {
 		cstack.push(PredictMetaInfo.AllKindWaitingOver);
 	}
 	
-	private boolean HandleNewInSentence(SimplifiedCodeGenerateASTVisitor fmastv)
+	private boolean HandleNewInSentence(ScopeOffsetRefHandler handler)
 	{
 		this.predicts.add(last);
 		last.smt.HandleOverSignal(cstack);
-		boolean conflict = last.smt.HandleCodeSynthesis(sstack, fmastv, null);
+		boolean conflict = last.smt.HandleCodeSynthesis(sstack, handler, null);
 		return conflict;
 	}
 	
-	public PredictSequenceManager ExtendOneSentence(SimplifiedCodeGenerateASTVisitor fmastv, AeroLifeCycle alc, int neededSize)
+	public PredictSequenceManager ExtendOneSentence(ScopeOffsetRefHandler handler, AeroLifeCycle alc, int neededSize)
 	{
 		int extendSize = neededSize * 2;
 		PredictSequenceManager pm = new PredictSequenceManager();
@@ -54,7 +54,7 @@ public class PredictSequence extends Sequence {
 		{
 			Sequence seq = itr.next();
 			PredictSequence ps = new PredictSequence(seq, this);
-			boolean conflict = ps.HandleNewInSentence(fmastv);
+			boolean conflict = ps.HandleNewInSentence(handler);
 			if (!conflict)
 			{
 				pm.AddSequence(ps, extendSize);
