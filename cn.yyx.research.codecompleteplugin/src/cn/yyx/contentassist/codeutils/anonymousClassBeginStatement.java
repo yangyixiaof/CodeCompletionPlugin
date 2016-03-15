@@ -2,12 +2,13 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+
 public class anonymousClassBeginStatement extends statement{
 	
-	identifier id = null;
-	
-	public anonymousClassBeginStatement(identifier id) {
-		this.id = id;
+	public anonymousClassBeginStatement() {
 	}
 
 	@Override
@@ -30,6 +31,12 @@ public class anonymousClassBeginStatement extends statement{
 			return 1;
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		return false;
 	}
 	
 }

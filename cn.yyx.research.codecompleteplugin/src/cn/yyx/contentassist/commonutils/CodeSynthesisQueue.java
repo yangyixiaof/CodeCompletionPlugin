@@ -10,12 +10,18 @@ public class CodeSynthesisQueue<T> {
 		Node<T> perv = null;
 		Node<T> next = null;
 		T data = null;
+		boolean hasHole = false;
 		
 		public Node() {
 		}
 
 		public Node(T t) {
 			this.data = t;
+		}
+		
+		public Node(T t, boolean hasHole) {
+			this.data = t;
+			this.hasHole = hasHole;
 		}
 		
 		public Node(Node<T> t) {
@@ -65,6 +71,21 @@ public class CodeSynthesisQueue<T> {
 			length++;
 		}
 	}
+	
+	public void add(T data, boolean hasHole) {
+		if (isEmpty()) {
+			head = new Node<T>(data, hasHole);
+			last = head;
+			length++;
+		} else {
+			// tail insert method
+			Node<T> other = new Node<T>(data, hasHole);
+			other.perv = last;
+			last.next = other;
+			last = other;
+			length++;
+		}
+	}
 
 	public T get(int index) {
 		if (index > length || index < 0) {
@@ -75,6 +96,17 @@ public class CodeSynthesisQueue<T> {
 			other = other.next;
 		}
 		return other.data;
+	}
+	
+	public boolean hasHole(int index) {
+		if (index > length || index < 0) {
+			throw new IndexOutOfBoundsException("Index out of boud:" + index);
+		}
+		Node<T> other = head;
+		for (int i = 0; i < index; i++) {
+			other = other.next;
+		}
+		return other.hasHole;
 	}
 
 	public boolean contains(T data) {
@@ -121,5 +153,5 @@ public class CodeSynthesisQueue<T> {
 			System.out.println();
 		}
 	}
-
+	
 }

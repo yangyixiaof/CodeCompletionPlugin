@@ -2,6 +2,10 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+
 public class arrayAccessStatement extends statement{
 	
 	referedExpression rarr = null;
@@ -32,6 +36,14 @@ public class arrayAccessStatement extends statement{
 			return 0.4 + 0.6*(rarr.Similarity(((arrayAccessStatement) t).rarr) + rexp.Similarity(((arrayAccessStatement) t).rexp));
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		rarr.HandleCodeSynthesis(squeue, handler, result, ai);
+		
+		return false;
 	}
 	
 }

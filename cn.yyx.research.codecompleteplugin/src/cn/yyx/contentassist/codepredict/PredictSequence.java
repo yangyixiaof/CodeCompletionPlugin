@@ -40,7 +40,7 @@ public class PredictSequence extends Sequence {
 	{
 		this.predicts.add(last);
 		last.smt.HandleOverSignal(cstack);
-		boolean conflict = last.smt.HandleCodeSynthesis(sstack, handler, null);
+		boolean conflict = last.smt.HandleCodeSynthesis(sstack, handler, null, null);
 		return conflict;
 	}
 	

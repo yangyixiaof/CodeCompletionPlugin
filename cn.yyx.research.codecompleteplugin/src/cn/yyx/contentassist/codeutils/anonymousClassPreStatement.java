@@ -2,6 +2,10 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+
 public class anonymousClassPreStatement extends statement{
 	
 	identifier id = null;
@@ -33,6 +37,12 @@ public class anonymousClassPreStatement extends statement{
 			return 0.4 + 0.6*(id.Similarity(((anonymousClassPreStatement) t).id));
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		return false;
 	}
 	
 }

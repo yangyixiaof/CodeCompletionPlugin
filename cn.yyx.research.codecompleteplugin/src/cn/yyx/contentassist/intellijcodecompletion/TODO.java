@@ -12,4 +12,6 @@ public class TODO {
 	
 	// TODO do statement should be eliminated. do-while become do.
 	// do-while use '{' to stop instead of ';'.
+	
+	// TODO String new this super.a system.out such must be handled. Include fieldAccess identifier.
 }

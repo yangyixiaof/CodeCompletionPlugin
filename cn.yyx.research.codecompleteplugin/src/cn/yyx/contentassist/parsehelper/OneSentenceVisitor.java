@@ -247,8 +247,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	@Override
 	public Integer visitAnonymousClassBeginStatement(Java8Parser.AnonymousClassBeginStatementContext ctx) {
 		Integer res = visitChildren(ctx);
-		Object id = usedobj.poll();
-		smt = new anonymousClassBeginStatement((identifier) id);
+		smt = new anonymousClassBeginStatement();
 		return res;
 	}
 

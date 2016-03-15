@@ -2,6 +2,7 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
@@ -47,19 +48,19 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 	}
 	
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler, StringBuilder result) {
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler, StringBuilder result, AdditionalInfo ai) {
 		StringBuilder rdexpsb = new StringBuilder();
 		boolean conflict = false;
 		if (drexp != null)
 		{
-			conflict = drexp.HandleCodeSynthesis(squeue, handler, rdexpsb);
+			conflict = drexp.HandleCodeSynthesis(squeue, handler, rdexpsb, ai);
 		}
 		if (conflict)
 		{
 			return true;
 		}
 		StringBuilder tsb = new StringBuilder();
-		conflict = this.type.HandleCodeSynthesis(squeue, handler, tsb);
+		conflict = this.type.HandleCodeSynthesis(squeue, handler, tsb, ai);
 		if (conflict)
 		{
 			return true;
