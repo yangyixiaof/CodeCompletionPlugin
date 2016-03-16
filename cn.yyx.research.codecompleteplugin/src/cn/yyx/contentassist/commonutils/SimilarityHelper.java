@@ -2,6 +2,9 @@ package cn.yyx.contentassist.commonutils;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.PriorityQueue;
+
+import org.apache.commons.lang3.StringUtils;
 
 import cn.yyx.contentassist.codeutils.type;
 
@@ -73,8 +76,41 @@ public class SimilarityHelper {
 	}
 	
 	public static double ComputeTwoStringSimilarity(String one, String two) {
-		char[] a = one.toCharArray();
-		char[] b = two.toCharArray();
+		String[] ones = StringUtils.splitByCharacterTypeCamelCase("one");
+		String[] twos = StringUtils.splitByCharacterTypeCamelCase("two");
+		int onelen = ones.length;
+		int twolen = twos.length;
+		PriorityQueue<Double> pq = new PriorityQueue<Double>();
+		for (int i=0;i<onelen;i++)
+		{
+			double maxsim = 0;
+			for (int j=0;j<twolen;j++)
+			{
+				double sim = ComputeTwoStringDirectSimilarity(ones[i], twos[j]);
+				if (maxsim < sim)
+				{
+					maxsim = sim;
+				}
+			}
+			pq.add(-maxsim);
+		}
+		double allprob = 0;
+		int countsize = (int)(onelen*1.0/3.0*2.0);
+		if (countsize == 0)
+		{
+			countsize = 1;
+		}
+		for (int i=0;i<countsize;i++)
+		{
+			allprob += -pq.poll();
+		}
+		return allprob/countsize;
+	}
+	
+	private static double ComputeTwoStringDirectSimilarity(String one, String two)
+	{
+		char[] a = one.toLowerCase().toCharArray();
+		char[] b = two.toLowerCase().toCharArray();
 		int len_a = a.length;
 		int len_b = b.length;
 		int[][] temp = new int[len_a + 1][len_b + 1];
@@ -124,5 +160,5 @@ public class SimilarityHelper {
 				return c;
 		}
 	}
-
+	
 }

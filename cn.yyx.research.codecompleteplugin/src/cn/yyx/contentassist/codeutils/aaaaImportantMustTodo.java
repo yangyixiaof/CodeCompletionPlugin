@@ -1,6 +1,6 @@
 package cn.yyx.contentassist.codeutils;
 
-public class amustTodo {
+public class aaaaImportantMustTodo {
 	
 	// TODO arrayInitializerStartStatement add '{''}' directly, you must insert before '}'.
 	// TODO the handle of @HO can only be in the very end. remember to handle @HO at very end.

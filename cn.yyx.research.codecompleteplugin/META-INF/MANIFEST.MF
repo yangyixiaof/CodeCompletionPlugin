@@ -21,4 +21,5 @@ Bundle-ClassPath: .,
  aerospike-client-3.1.9.jar,
  program-processor.jar,
  special-parse.jar,
- antlr-4.5.2-complete.jar
+ antlr-4.5.2-complete.jar,
+ commons-lang3-3.4.jar
