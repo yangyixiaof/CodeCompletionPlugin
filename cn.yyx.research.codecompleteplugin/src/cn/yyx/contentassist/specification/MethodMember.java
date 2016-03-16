@@ -8,11 +8,11 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 @SuppressWarnings("restriction")
 public class MethodMember {
 	
-	String name = null;
-	String returntype = null;
-	String whereDeclared = null;
-	ArrayList<String> argtypelist = new ArrayList<String>();
-	ArrayList<String> argnamelist = new ArrayList<String>();
+	private String name = null;
+	private String returntype = null;
+	private String whereDeclared = null;
+	private ArrayList<String> argtypelist = new ArrayList<String>();
+	private ArrayList<String> argnamelist = new ArrayList<String>();
 	
 	public MethodMember(ICompletionProposal icp) {
 		initial(icp.getDisplayString());
@@ -26,34 +26,74 @@ public class MethodMember {
 	{
 		String[] strs = pstr.split(":|-");
 		String[] funs = strs[0].trim().split("\\(|\\)|,");
-		name = funs[0].trim();
+		setName(funs[0].trim());
 		int flen = funs.length;
 		for (int i=1;i<flen;i++)
 		{
 			String arg = funs[i].trim();
 			// System.out.println("arg:" + arg + ",pstr:"+pstr + ",funs:" + strs[0] + "#");
 			String[] as = arg.split(" ");
-			argtypelist.add(as[0]);
-			argnamelist.add(as[1]);
+			getArgtypelist().add(as[0]);
+			getArgnamelist().add(as[1]);
 		}
-		returntype = strs[1].trim();
+		setReturntype(strs[1].trim());
 		if (strs.length == 3)
 		{
-			whereDeclared = strs[2].trim();
+			setWhereDeclared(strs[2].trim());
 		}
 	}
 	
 	@Override
 	public String toString() {
 		String args = "";
-		int len = argtypelist.size();
+		int len = getArgtypelist().size();
 		for (int i=0;i<len;i++)
 		{
-			String type = argtypelist.get(i);
-			String name = argnamelist.get(i);
+			String type = getArgtypelist().get(i);
+			String name = getArgnamelist().get(i);
 			args += "#" + type + "$" + name + "#";
 		}
-		return returntype + " " + name + args + " - " + whereDeclared;
+		return getReturntype() + " " + getName() + args + " - " + getWhereDeclared();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getReturntype() {
+		return returntype;
+	}
+
+	public void setReturntype(String returntype) {
+		this.returntype = returntype;
+	}
+
+	public String getWhereDeclared() {
+		return whereDeclared;
+	}
+
+	public void setWhereDeclared(String whereDeclared) {
+		this.whereDeclared = whereDeclared;
+	}
+
+	public ArrayList<String> getArgtypelist() {
+		return argtypelist;
+	}
+
+	public void setArgtypelist(ArrayList<String> argtypelist) {
+		this.argtypelist = argtypelist;
+	}
+
+	public ArrayList<String> getArgnamelist() {
+		return argnamelist;
+	}
+
+	public void setArgnamelist(ArrayList<String> argnamelist) {
+		this.argnamelist = argnamelist;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package cn.yyx.contentassist.specification;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,7 +23,17 @@ public class MembersOfAReference {
 	{
 		getMmlist().add(mm);
 	}
-
+	
+	public Iterator<FieldMember> GetFieldMemberIterator()
+	{
+		return fmlist.iterator();
+	}
+	
+	public Iterator<MethodMember> GetMethodMemberIterator()
+	{
+		return mmlist.iterator();
+	}
+	
 	public List<FieldMember> getFmlist() {
 		return fmlist;
 	}

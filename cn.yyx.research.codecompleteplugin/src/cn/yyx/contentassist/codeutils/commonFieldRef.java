@@ -5,6 +5,7 @@ import java.util.Map;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.ErrorUtil;
+import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheckHelper;
@@ -43,7 +44,9 @@ public class commonFieldRef extends identifier{
 		ErrorUtil.CheckDirectlyMemberHintInAINotNull(ai);
 		Map<String, String> po = handler.getScopeOffsetRefHandler().HandleFieldVariableRef(scope, off);
 		String hint = ai.getDirectlyMemberHint();
-		result.append(TypeCheckHelper.GetMostLikelyRef(handler.getContextHandler(), po, hint));
+		RefAndModifiedMember ramm = TypeCheckHelper.GetMostLikelyRef(handler.getContextHandler(), po, hint, ai.isDirectlyMemberIsMethod(), ai.getDirectlyMemberType());
+		result.append(ramm.getRef());
+		ai.setModifiedMember(ramm.getMember());
 		return false;
 	}
 	

@@ -4,24 +4,48 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
 public class FieldMember {
 	
-	String name = null;
-	String type = null;
-	String whereDeclared = null;
+	private String name = null;
+	private String type = null;
+	private String whereDeclared = null;
 	
 	public FieldMember(ICompletionProposal icp) {
 		String pstr =  icp.getDisplayString().trim();
 		String[] strs = pstr.split(":|-");
-		name = strs[0].trim();
-		type = strs[1].trim();
+		setName(strs[0].trim());
+		setType(strs[1].trim());
 		if (strs.length == 3)
 		{
-			whereDeclared = strs[2].trim();
+			setWhereDeclared(strs[2].trim());
 		}
 	}
 	
 	@Override
 	public String toString() {
-		return name + "#" + type + "#" + whereDeclared;
+		return getName() + "#" + getType() + "#" + getWhereDeclared();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getWhereDeclared() {
+		return whereDeclared;
+	}
+
+	public void setWhereDeclared(String whereDeclared) {
+		this.whereDeclared = whereDeclared;
 	}
 	
 }

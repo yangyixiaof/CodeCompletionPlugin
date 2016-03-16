@@ -10,6 +10,9 @@ public class AdditionalInfo {
 	private String methodReturnType = null;
 	
 	private String directlyMemberHint = null;
+	private boolean directlyMemberIsMethod = false;
+	private String directlyMemberType = null;
+	private String ModifiedMember = null;
 	
 	public AdditionalInfo() {
 		
@@ -53,6 +56,30 @@ public class AdditionalInfo {
 
 	public void setDirectlyMemberHint(String directlyMemberHint) {
 		this.directlyMemberHint = directlyMemberHint;
+	}
+
+	public boolean isDirectlyMemberIsMethod() {
+		return directlyMemberIsMethod;
+	}
+
+	public void setDirectlyMemberIsMethod(boolean directlyMemberIsMethod) {
+		this.directlyMemberIsMethod = directlyMemberIsMethod;
+	}
+
+	public String getDirectlyMemberType() {
+		return directlyMemberType;
+	}
+
+	public void setDirectlyMemberType(String directlyMemberType) {
+		this.directlyMemberType = directlyMemberType;
+	}
+
+	public String getModifiedMember() {
+		return ModifiedMember;
+	}
+
+	public void setModifiedMember(String modifiedMember) {
+		ModifiedMember = modifiedMember;
 	}
 	
 }
