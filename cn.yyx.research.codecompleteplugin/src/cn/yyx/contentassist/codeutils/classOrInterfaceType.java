@@ -1,5 +1,6 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Iterator;
 import java.util.List;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
@@ -36,7 +37,24 @@ public class classOrInterfaceType extends type{
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
 			StringBuilder result, AdditionalInfo ai) {
-		
+		StringBuilder fin = new StringBuilder("");
+		Iterator<type> itr = tps.iterator();
+		while (itr.hasNext())
+		{
+			type t = itr.next();
+			StringBuilder tsb = new StringBuilder("");
+			boolean conflict = t.HandleCodeSynthesis(squeue, handler, tsb, null);
+			if (conflict)
+			{
+				return true;
+			}
+			fin.append(tsb.toString());
+			if (itr.hasNext())
+			{
+				fin.append(".");
+			}
+		}
+		result.append(fin.toString());
 		return false;
 	}
 	

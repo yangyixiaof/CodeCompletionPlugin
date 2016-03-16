@@ -1,6 +1,9 @@
 package cn.yyx.contentassist.codeutils;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class classRef extends type {
 	
@@ -28,6 +31,13 @@ public class classRef extends type {
 			return SimilarityHelper.ComputeScopeOffsetSimilarity(scope, ((classRef) t).scope, off, ((classRef) t).off);
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		
+		return false;
 	}
 	
 }
