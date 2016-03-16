@@ -41,7 +41,22 @@ public class castExpressionStatement extends expressionStatement{
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
 			StringBuilder result, AdditionalInfo ai) {
-		
+		StringBuilder fin = new StringBuilder("");
+		StringBuilder tpsb = new StringBuilder("");
+		boolean conflict = tp.HandleCodeSynthesis(squeue, handler, tpsb, null);
+		if (conflict)
+		{
+			return true;
+		}
+		fin.append("("+tpsb.toString()+")");
+		StringBuilder resb = new StringBuilder("");
+		conflict = rexp.HandleCodeSynthesis(squeue, handler, resb, null);
+		if (conflict)
+		{
+			return true;
+		}
+		fin.append(resb);
+		squeue.add(fin.toString());
 		return false;
 	}
 	

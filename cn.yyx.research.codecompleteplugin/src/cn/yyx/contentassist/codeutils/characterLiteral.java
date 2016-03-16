@@ -1,5 +1,10 @@
 package cn.yyx.contentassist.codeutils;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisHelper;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+
 public class characterLiteral extends literal{
 	
 	String literal = null;
@@ -26,4 +31,11 @@ public class characterLiteral extends literal{
 		return 0;
 	}
 
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		CodeSynthesisHelper.HandleRawTextSynthesis(literal, squeue, handler, result, null);
+		return false;
+	}
+	
 }

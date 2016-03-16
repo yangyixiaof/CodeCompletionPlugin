@@ -2,6 +2,10 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+
 public class catchClauseStatement extends statement{
 	
 	type rt = null;
@@ -30,6 +34,16 @@ public class catchClauseStatement extends statement{
 	
 	@Override
 	public void HandleOverSignal(Stack<Integer> cstack) {
+		cstack.pop();
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		StringBuilder tpsb = new StringBuilder("");
+		rt.HandleCodeSynthesis(squeue, handler, tpsb, null);
+		squeue.add("catch (" + tpsb.toString() + " e) {\n}");
+		return false;
 	}
 	
 }

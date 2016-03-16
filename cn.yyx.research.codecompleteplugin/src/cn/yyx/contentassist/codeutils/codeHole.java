@@ -1,5 +1,9 @@
 package cn.yyx.contentassist.codeutils;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+
 public class codeHole extends identifier{
 	
 	public codeHole() {
@@ -23,4 +27,11 @@ public class codeHole extends identifier{
 		return 0;
 	}
 
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		squeue.SetLastHasHole(true);
+		return false;
+	}
+	
 }

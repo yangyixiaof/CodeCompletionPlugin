@@ -165,5 +165,9 @@ public class CodeSynthesisQueue<T> {
 	public void SetLast(T cnt) {
 		last.data = cnt;
 	}
+
+	public void SetLastHasHole(boolean hole) {
+		last.hasHole = hole;
+	}
 	
 }
