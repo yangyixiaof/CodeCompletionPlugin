@@ -1,5 +1,10 @@
 package cn.yyx.contentassist.codeutils;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisHelper;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
+
 public class floatingPointLiteral extends numberLiteral{
 	
 	double value = -1;
@@ -26,4 +31,10 @@ public class floatingPointLiteral extends numberLiteral{
 		return 0;
 	}
 
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		return CodeSynthesisHelper.HandleRawTextSynthesis(value+"", squeue, handler, result, null);
+	}
+	
 }

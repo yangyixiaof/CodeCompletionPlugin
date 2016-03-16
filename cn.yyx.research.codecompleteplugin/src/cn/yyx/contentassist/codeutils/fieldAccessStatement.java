@@ -2,6 +2,10 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
+
 public class fieldAccessStatement extends expressionStatement{
 	
 	fieldAccess fa = null;
@@ -33,6 +37,15 @@ public class fieldAccessStatement extends expressionStatement{
 
 	@Override
 	public void HandleOverSignal(Stack<Integer> cstack) {
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		StringBuilder fasb = new StringBuilder("");
+		fa.HandleCodeSynthesis(squeue, handler, fasb, null);
+		squeue.add(fasb.toString());
+		return false;
 	}
 	
 }

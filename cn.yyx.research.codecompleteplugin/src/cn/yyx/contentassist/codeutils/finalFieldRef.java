@@ -1,6 +1,10 @@
 package cn.yyx.contentassist.codeutils;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.ErrorUtil;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class finalFieldRef extends identifier{
 	
@@ -28,6 +32,13 @@ public class finalFieldRef extends identifier{
 			return SimilarityHelper.ComputeScopeOffsetSimilarity(scope, ((finalFieldRef) t).scope, off, ((finalFieldRef) t).off);
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		ErrorUtil.CanNeverReachHere("finalVarRef is not just handled.");
+		return false;
 	}
 	
 }
