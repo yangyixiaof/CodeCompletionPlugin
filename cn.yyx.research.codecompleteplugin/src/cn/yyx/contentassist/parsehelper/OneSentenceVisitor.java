@@ -54,6 +54,7 @@ import cn.yyx.contentassist.codeutils.defaultStatement;
 import cn.yyx.contentassist.codeutils.doWhileStatement;
 import cn.yyx.contentassist.codeutils.endOfStatement;
 import cn.yyx.contentassist.codeutils.enhancedForStatement;
+import cn.yyx.contentassist.codeutils.enterMethodParamStatement;
 import cn.yyx.contentassist.codeutils.enumConstantDeclarationStatement;
 import cn.yyx.contentassist.codeutils.enumDeclarationStatement;
 import cn.yyx.contentassist.codeutils.expressionStatement;
@@ -594,6 +595,22 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 			}
 		}
 		smt = new rightBraceStatement(count);
+		return visitChildren(ctx);
+	}
+	
+	@Override
+	public Integer visitEnterMethodParamStatement(Java8Parser.EnterMethodParamStatementContext ctx) {
+		int allcount = 0;
+		String text = ctx.getText();
+		for (int i=0;i<text.length();i++)
+		{
+			char c = text.charAt(i);
+			if (c == 'E')
+			{
+				allcount++;
+			}
+		}
+		smt = new enterMethodParamStatement(allcount);
 		return visitChildren(ctx);
 	}
 

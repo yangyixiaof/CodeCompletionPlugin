@@ -2,16 +2,21 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
-import cn.yyx.contentassist.codepredict.PredictMetaInfo;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
-public class forUpdOverStatement extends statement{
-
+public class enterMethodParamStatement extends statement{
+	
+	int times = -1;
+	
+	public enterMethodParamStatement(int times) {
+		this.times = times;
+	}
+	
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		if (t instanceof forUpdOverStatement)
+		if (t instanceof enterMethodParamStatement)
 		{
 			return true;
 		}
@@ -20,7 +25,7 @@ public class forUpdOverStatement extends statement{
 
 	@Override
 	public double Similarity(OneCode t) {
-		if (t instanceof forUpdOverStatement)
+		if (t instanceof enterMethodParamStatement)
 		{
 			return 1;
 		}
@@ -29,25 +34,13 @@ public class forUpdOverStatement extends statement{
 
 	@Override
 	public boolean HandleOverSignal(Stack<Integer> cstack) {
-		int signal = cstack.peek();
-		if (signal != PredictMetaInfo.CommonForExpWaitingOver)
-		{
-			return true;
-			// System.err.println("What the fuck, pre is not for?");
-			// new Exception().printStackTrace();
-			// System.exit(1);
-		}
-		else
-		{
-			cstack.pop();
-		}
 		return false;
 	}
 
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
 			StringBuilder result, AdditionalInfo ai) {
-		squeue.add(") {\n}", true, 0);
+		squeue.add("@Em", times);
 		return false;
 	}
 	

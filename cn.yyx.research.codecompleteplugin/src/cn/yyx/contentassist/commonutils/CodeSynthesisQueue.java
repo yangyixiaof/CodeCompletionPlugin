@@ -11,6 +11,8 @@ public class CodeSynthesisQueue<T> {
 		Node<T> next = null;
 		T data = null;
 		boolean hasHole = false;
+		boolean connect = false;
+		int addinfo = -1;
 		
 		public Node() {
 		}
@@ -22,6 +24,16 @@ public class CodeSynthesisQueue<T> {
 		public Node(T t, boolean hasHole) {
 			this.data = t;
 			this.hasHole = hasHole;
+		}
+		
+		public Node(T t, boolean connect, int extra) {
+			this.data = t;
+			this.connect = connect;
+		}
+		
+		public Node(T t, int addinfo) {
+			this.data = t;
+			this.addinfo = addinfo;
 		}
 		
 		public Node(Node<T> t) {
@@ -80,6 +92,36 @@ public class CodeSynthesisQueue<T> {
 		} else {
 			// tail insert method
 			Node<T> other = new Node<T>(data, hasHole);
+			other.prev = last;
+			last.next = other;
+			last = other;
+			length++;
+		}
+	}
+	
+	public void add(T data, boolean connect, int extra) {
+		if (isEmpty()) {
+			head = new Node<T>(data, connect, -1);
+			last = head;
+			length++;
+		} else {
+			// tail insert method
+			Node<T> other = new Node<T>(data, connect, -1);
+			other.prev = last;
+			last.next = other;
+			last = other;
+			length++;
+		}
+	}
+	
+	public void add(T data, int addinfo) {
+		if (isEmpty()) {
+			head = new Node<T>(data, addinfo);
+			last = head;
+			length++;
+		} else {
+			// tail insert method
+			Node<T> other = new Node<T>(data, addinfo);
 			other.prev = last;
 			last.next = other;
 			last = other;

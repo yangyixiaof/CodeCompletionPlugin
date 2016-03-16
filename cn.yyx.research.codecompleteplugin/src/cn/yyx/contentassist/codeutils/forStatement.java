@@ -3,6 +3,9 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.PredictMetaInfo;
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class forStatement extends statement{
 
@@ -25,13 +28,21 @@ public class forStatement extends statement{
 	}
 
 	@Override
-	public void HandleOverSignal(Stack<Integer> cstack) {
+	public boolean HandleOverSignal(Stack<Integer> cstack) {
 		int sttop = cstack.peek();
 		if (sttop == PredictMetaInfo.AllKindWaitingOver)
 		{
 			cstack.pop();
 		}
 		cstack.push(PredictMetaInfo.CommonForKindWaitingOver);
+		return false;
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		squeue.add("for (", true);
+		return false;
 	}
 
 }

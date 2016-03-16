@@ -20,6 +20,8 @@ public class PredictMetaInfo {
 	// predict over waiting.
 	public static final int AllKindWaitingOver = 1;
 	public static final int CommonForKindWaitingOver = 2;
-	public static final int ConditionExpressionOver = 3;
-	public static final int IfOver = 4;
+	public static final int CommonForInitWaitingOver = 3;
+	public static final int CommonForExpWaitingOver = 4;
+	public static final int ConditionExpressionOver = 5;
+	public static final int IfOver = 6;
 }

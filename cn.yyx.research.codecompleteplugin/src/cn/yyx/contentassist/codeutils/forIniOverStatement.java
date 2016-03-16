@@ -2,6 +2,11 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.codepredict.PredictMetaInfo;
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
+
 public class forIniOverStatement extends statement{
 
 	@Override
@@ -23,7 +28,25 @@ public class forIniOverStatement extends statement{
 	}
 
 	@Override
-	public void HandleOverSignal(Stack<Integer> cstack) {
+	public boolean HandleOverSignal(Stack<Integer> cstack) {
+		int sttop = cstack.peek();
+		if (sttop == PredictMetaInfo.CommonForKindWaitingOver)
+		{
+			cstack.pop();
+		}
+		else
+		{
+			return true;
+		}
+		cstack.push(PredictMetaInfo.CommonForInitWaitingOver);
+		return false;
 	}
 
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		squeue.add(";", true, 0);
+		return false;
+	}
+	
 }
