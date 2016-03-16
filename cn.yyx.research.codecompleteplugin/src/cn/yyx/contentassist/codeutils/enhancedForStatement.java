@@ -2,6 +2,10 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
+
 public class enhancedForStatement extends statement{
 	
 	type rt = null;
@@ -32,6 +36,17 @@ public class enhancedForStatement extends statement{
 
 	@Override
 	public void HandleOverSignal(Stack<Integer> cstack) {
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		StringBuilder tpsb = new StringBuilder("");
+		rt.HandleCodeSynthesis(squeue, handler, tpsb, null);
+		StringBuilder resb = new StringBuilder("");
+		rexp.HandleCodeSynthesis(squeue, handler, resb, null);
+		squeue.add("for (" + tpsb.toString() + " et" + " : " + resb.toString() + ") {\n}");
+		return false;
 	}
 	
 }

@@ -76,7 +76,6 @@ public class argumentList extends OneCode{
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
 			StringBuilder result, AdditionalInfo ai) {
 		boolean conflict = false;
-		StringBuilder fin = new StringBuilder("");
 		StringBuilder tsb = new StringBuilder("");
 		referedExpression invokerhint = el.get(0);
 		AdditionalInfo nai = new AdditionalInfo();
@@ -84,7 +83,7 @@ public class argumentList extends OneCode{
 		conflict = invokerhint.HandleCodeSynthesis(squeue, handler, tsb, nai);
 		if (tsb.length() != 0)
 		{
-			fin.append(tsb.toString() + ai.getMethodName() + "(");
+			result.append(tsb.toString() + ai.getMethodName() + "(");
 		}
 		List<referedExpression> tl = new LinkedList<referedExpression>();
 		Iterator<referedExpression> itr = el.iterator();
@@ -105,14 +104,13 @@ public class argumentList extends OneCode{
 			{
 				return true;
 			}
-			fin.append(tsb.toString());
+			result.append(tsb.toString());
 			if (itr.hasNext())
 			{
-				fin.append(",");
+				result.append(",");
 			}
 		}
-		fin.append(")");
-		squeue.add(fin.toString());
+		result.append(")");
 		return false;
 	}
 	

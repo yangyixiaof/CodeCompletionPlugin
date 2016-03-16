@@ -2,6 +2,10 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
+
 public class doWhileStatement extends statement{
 	
 	referedExpression rexp = null;
@@ -31,7 +35,14 @@ public class doWhileStatement extends statement{
 	@Override
 	public void HandleOverSignal(Stack<Integer> cstack) {
 	}
-	
-	
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		StringBuilder resb = new StringBuilder("");
+		rexp.HandleCodeSynthesis(squeue, handler, resb, null);
+		squeue.add("do {\n\n} while (" + resb.toString() + ");");
+		return false;
+	}
 	
 }

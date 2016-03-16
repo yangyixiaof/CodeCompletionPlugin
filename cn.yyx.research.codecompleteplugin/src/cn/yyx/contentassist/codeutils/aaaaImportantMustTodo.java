@@ -9,4 +9,6 @@ public class aaaaImportantMustTodo {
 	
 	// TODO what is exactly the field offset?
 	
+	// TODO what is behind enumConstantDeclarationStatement, can that cause stopping? If not, change that. This is very important.
+	
 }

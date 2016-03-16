@@ -2,6 +2,10 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
+
 public class endOfStatement extends statement{
 	
 	boolean fullEnd = false;
@@ -40,6 +44,13 @@ public class endOfStatement extends statement{
 		{
 			cstack.pop();
 		}
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		
+		return false;
 	}
 	
 }
