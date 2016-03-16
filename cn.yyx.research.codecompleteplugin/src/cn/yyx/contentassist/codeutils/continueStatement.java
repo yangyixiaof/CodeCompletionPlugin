@@ -2,12 +2,17 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisHelper;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+
 public class continueStatement extends statement{
 	
-	identifier name = null;
+	identifier id = null;
 	
 	public continueStatement(identifier name) {
-		this.name = name;
+		this.id = name;
 	}
 	
 	@Override
@@ -24,9 +29,9 @@ public class continueStatement extends statement{
 		if (t instanceof continueStatement)
 		{
 			double prob = 1;
-			if (name != null)
+			if (id != null)
 			{
-				prob = name.Similarity(((continueStatement) t).name);
+				prob = id.Similarity(((continueStatement) t).id);
 			}
 			return 0.6 + 0.4*(prob);
 		}
@@ -35,6 +40,12 @@ public class continueStatement extends statement{
 	
 	@Override
 	public void HandleOverSignal(Stack<Integer> cstack) {
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		return CodeSynthesisHelper.HandleBreakContinueCodeSynthesis(id, squeue, handler, result, null);
 	}
 	
 }

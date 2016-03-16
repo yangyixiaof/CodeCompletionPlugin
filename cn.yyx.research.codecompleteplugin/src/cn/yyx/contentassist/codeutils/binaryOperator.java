@@ -1,5 +1,10 @@
 package cn.yyx.contentassist.codeutils;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisHelper;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+
 public class binaryOperator extends OneCode{
 	
 	String optr = null;
@@ -30,6 +35,13 @@ public class binaryOperator extends OneCode{
 			}
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		CodeSynthesisHelper.HandleRawTextSynthesis(optr, squeue, handler, result, ai);
+		return false;
 	}
 	
 }

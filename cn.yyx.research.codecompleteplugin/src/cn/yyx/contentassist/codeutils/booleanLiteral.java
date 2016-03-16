@@ -1,5 +1,10 @@
 package cn.yyx.contentassist.codeutils;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisHelper;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+
 public class booleanLiteral extends literal{
 	
 	boolean value = false;
@@ -30,6 +35,13 @@ public class booleanLiteral extends literal{
 			}
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		CodeSynthesisHelper.HandleRawTextSynthesis(value+"", squeue, handler, result, ai);
+		return false;
 	}
 
 }

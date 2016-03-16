@@ -1,8 +1,8 @@
 package cn.yyx.contentassist.codeutils;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisHelper;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
-import cn.yyx.contentassist.commonutils.ErrorUtil;
 import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class assignmentOperator extends OneCode{
@@ -40,21 +40,7 @@ public class assignmentOperator extends OneCode{
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
 			StringBuilder result, AdditionalInfo ai) {
-		if (result != null)
-		{
-			result.append(optr);
-		}
-		else
-		{
-			if (squeue.hasHoleLast())
-			{
-				squeue.SetLast(squeue.getLast() + optr);
-			}
-			else
-			{
-				ErrorUtil.ErrorAndStop("What the fuch the assignOptr put where?");
-			}
-		}
+		CodeSynthesisHelper.HandleRawTextSynthesis(optr, squeue, handler, result, ai);
 		return false;
 	}
 	

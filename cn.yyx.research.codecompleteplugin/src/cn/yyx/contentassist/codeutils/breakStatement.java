@@ -2,6 +2,11 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisHelper;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+
 public class breakStatement extends statement{
 	
 	identifier id = null;
@@ -30,6 +35,12 @@ public class breakStatement extends statement{
 	
 	@Override
 	public void HandleOverSignal(Stack<Integer> cstack) {
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		return CodeSynthesisHelper.HandleBreakContinueCodeSynthesis(id, squeue, handler, result, null);
 	}
 	
 }
