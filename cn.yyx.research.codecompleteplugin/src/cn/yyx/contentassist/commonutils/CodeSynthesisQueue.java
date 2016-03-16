@@ -7,7 +7,7 @@ package cn.yyx.contentassist.commonutils;
 public class CodeSynthesisQueue<T> {
 	// node class
 	protected static class Node<T> {
-		Node<T> perv = null;
+		Node<T> prev = null;
 		Node<T> next = null;
 		T data = null;
 		boolean hasHole = false;
@@ -65,7 +65,7 @@ public class CodeSynthesisQueue<T> {
 		} else {
 			// tail insert method
 			Node<T> other = new Node<T>(data);
-			other.perv = last;
+			other.prev = last;
 			last.next = other;
 			last = other;
 			length++;
@@ -80,7 +80,7 @@ public class CodeSynthesisQueue<T> {
 		} else {
 			// tail insert method
 			Node<T> other = new Node<T>(data, hasHole);
-			other.perv = last;
+			other.prev = last;
 			last.next = other;
 			last = other;
 			length++;
@@ -168,6 +168,40 @@ public class CodeSynthesisQueue<T> {
 
 	public void SetLastHasHole(boolean hole) {
 		last.hasHole = hole;
+	}
+	
+	public T GetLastButOne()
+	{
+		return last.prev.data;
+	}
+
+	public boolean GetLastHoleButOne()
+	{
+		return last.prev.hasHole;
+	}
+	
+	public boolean CanBeMerged()
+	{
+		if (head == last)
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	public void MergeLast(T merge) {
+		last.prev.data = merge;
+		last.prev.hasHole = false;
+		last.prev.next = null;
+		last = last.prev;
+	}
+
+	public void MergeLast() {
+		// skip prev data.
+		last.prev.data = last.data;
+		last.prev.hasHole = false;
+		last.prev.next = null;
+		last = last.prev;
 	}
 	
 }

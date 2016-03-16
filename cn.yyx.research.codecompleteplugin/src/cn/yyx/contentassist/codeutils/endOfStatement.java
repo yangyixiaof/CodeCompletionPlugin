@@ -49,7 +49,22 @@ public class endOfStatement extends statement{
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
 			StringBuilder result, AdditionalInfo ai) {
-		
+		while (squeue.CanBeMerged())
+		{
+			String last = squeue.getLast();
+			String sndlast = squeue.GetLastButOne();
+			sndlast = sndlast + last;
+			boolean hole = squeue.GetLastHoleButOne();
+			if (hole)
+			{
+				squeue.MergeLast(sndlast);
+			}
+			else
+			{
+				squeue.MergeLast();
+			}
+		}
+		squeue.SetLast(squeue.getLast() + ";");
 		return false;
 	}
 	
