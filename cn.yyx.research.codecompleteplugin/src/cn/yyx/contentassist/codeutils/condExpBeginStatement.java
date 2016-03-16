@@ -28,8 +28,9 @@ public class condExpBeginStatement extends statement{
 	}
 	
 	@Override
-	public void HandleOverSignal(Stack<Integer> cstack) {
+	public boolean HandleOverSignal(Stack<Integer> cstack) {
 		cstack.push(PredictMetaInfo.ConditionExpressionOver);
+		return false;
 	}
 
 	@Override

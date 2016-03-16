@@ -39,11 +39,12 @@ public class endOfStatement extends statement{
 	}
 
 	@Override
-	public void HandleOverSignal(Stack<Integer> cstack) {
+	public boolean HandleOverSignal(Stack<Integer> cstack) {
 		if (fullEnd)
 		{
 			cstack.pop();
 		}
+		return false;
 	}
 
 	@Override

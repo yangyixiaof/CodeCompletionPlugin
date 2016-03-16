@@ -34,7 +34,8 @@ public class breakStatement extends statement{
 	}
 	
 	@Override
-	public void HandleOverSignal(Stack<Integer> cstack) {
+	public boolean HandleOverSignal(Stack<Integer> cstack) {
+		return false;
 	}
 
 	@Override

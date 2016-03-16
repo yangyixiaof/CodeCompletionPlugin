@@ -36,8 +36,9 @@ public class atInterfaceStatement extends statement{
 	}
 	
 	@Override
-	public void HandleOverSignal(Stack<Integer> cstack) {
+	public boolean HandleOverSignal(Stack<Integer> cstack) {
 		cstack.pop();
+		return false;
 	}
 
 	@Override
