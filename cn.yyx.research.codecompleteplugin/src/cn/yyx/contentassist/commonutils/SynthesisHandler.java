@@ -8,23 +8,23 @@ public class SynthesisHandler {
 	private ContextHandler ch = null;
 	
 	public SynthesisHandler(ScopeOffsetRefHandler handler, ContextHandler ch) {
-		this.setHandler(handler);
-		this.setCh(ch);
+		this.setScopeOffsetRefHandler(handler);
+		this.setContextHandler(ch);
 	}
 
-	public ScopeOffsetRefHandler getHandler() {
+	public ScopeOffsetRefHandler getScopeOffsetRefHandler() {
 		return handler;
 	}
 
-	public void setHandler(ScopeOffsetRefHandler handler) {
+	public void setScopeOffsetRefHandler(ScopeOffsetRefHandler handler) {
 		this.handler = handler;
 	}
 
-	public ContextHandler getCh() {
+	public ContextHandler getContextHandler() {
 		return ch;
 	}
 
-	public void setCh(ContextHandler ch) {
+	public void setContextHandler(ContextHandler ch) {
 		this.ch = ch;
 	}
 	

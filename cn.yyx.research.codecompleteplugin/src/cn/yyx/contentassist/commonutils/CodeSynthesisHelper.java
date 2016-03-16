@@ -1,11 +1,10 @@
 package cn.yyx.contentassist.commonutils;
 
 import cn.yyx.contentassist.codeutils.identifier;
-import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class CodeSynthesisHelper {
 	
-	public static boolean HandleRawTextSynthesis(String text, CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+	public static boolean HandleRawTextSynthesis(String text, CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
 			StringBuilder result, AdditionalInfo ai)
 	{
 		if (result != null)

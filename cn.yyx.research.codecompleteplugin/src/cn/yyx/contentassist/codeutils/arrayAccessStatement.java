@@ -4,7 +4,7 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
-import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class arrayAccessStatement extends statement{
 	
@@ -41,7 +41,7 @@ public class arrayAccessStatement extends statement{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
 			StringBuilder result, AdditionalInfo ai) {
 		boolean conflict = false;
 		StringBuilder fin = new StringBuilder("");

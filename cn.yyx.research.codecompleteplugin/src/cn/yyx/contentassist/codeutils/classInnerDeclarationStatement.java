@@ -4,7 +4,7 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
-import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class classInnerDeclarationStatement extends statement{
 	
@@ -38,7 +38,7 @@ public class classInnerDeclarationStatement extends statement{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
 			StringBuilder result, AdditionalInfo ai) {
 		StringBuilder idsb = new StringBuilder("");
 		boolean conflict = id.HandleCodeSynthesis(squeue, handler, idsb, null);

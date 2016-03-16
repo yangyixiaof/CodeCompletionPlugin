@@ -6,8 +6,8 @@ import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.ErrorUtil;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheckHelper;
-import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class commonVarRef extends identifier{
 	
@@ -38,10 +38,10 @@ public class commonVarRef extends identifier{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
 			StringBuilder result, AdditionalInfo ai) {
 		ErrorUtil.CheckDirectlyMemberHintInAINotNull(ai);
-		Map<String, String> po = handler.HandleCommonVariableRef(scope, off);
+		Map<String, String> po = handler.getScopeOffsetRefHandler().HandleCommonVariableRef(scope, off);
 		String hint = ai.getDirectlyMemberHint();
 		result.append(TypeCheckHelper.GetMostLikelyRef(po, hint));
 		return false;

@@ -5,7 +5,7 @@ import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CodeSynthesisHelper;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
-import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class idRawLetter extends identifier{
 	
@@ -39,7 +39,7 @@ public class idRawLetter extends identifier{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
 			StringBuilder result, AdditionalInfo ai) {
 		return CodeSynthesisHelper.HandleRawTextSynthesis(text, squeue, handler, result, null);
 	}

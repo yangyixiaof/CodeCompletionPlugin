@@ -5,7 +5,7 @@ import java.util.Stack;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CodeSynthesisHelper;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
-import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class breakStatement extends statement{
 	
@@ -38,7 +38,7 @@ public class breakStatement extends statement{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
 			StringBuilder result, AdditionalInfo ai) {
 		return CodeSynthesisHelper.HandleBreakContinueCodeSynthesis(id, squeue, handler, result, null);
 	}
