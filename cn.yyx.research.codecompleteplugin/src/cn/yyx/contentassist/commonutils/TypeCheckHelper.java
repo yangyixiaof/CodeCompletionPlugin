@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class TypeCheckHelper {
 	
-	public static String GetMostLikelyRef(Map<String, String> po, String hint)
+	public static String GetMostLikelyRef(ContextHandler ch, Map<String, String> po, String hint)
 	{
 		
 		return null;

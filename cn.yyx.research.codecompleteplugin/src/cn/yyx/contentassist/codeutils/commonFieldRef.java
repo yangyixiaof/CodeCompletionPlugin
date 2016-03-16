@@ -43,7 +43,7 @@ public class commonFieldRef extends identifier{
 		ErrorUtil.CheckDirectlyMemberHintInAINotNull(ai);
 		Map<String, String> po = handler.getScopeOffsetRefHandler().HandleFieldVariableRef(scope, off);
 		String hint = ai.getDirectlyMemberHint();
-		result.append(TypeCheckHelper.GetMostLikelyRef(po, hint));
+		result.append(TypeCheckHelper.GetMostLikelyRef(handler.getContextHandler(), po, hint));
 		return false;
 	}
 	

@@ -43,7 +43,7 @@ public class commonVarRef extends identifier{
 		ErrorUtil.CheckDirectlyMemberHintInAINotNull(ai);
 		Map<String, String> po = handler.getScopeOffsetRefHandler().HandleCommonVariableRef(scope, off);
 		String hint = ai.getDirectlyMemberHint();
-		result.append(TypeCheckHelper.GetMostLikelyRef(po, hint));
+		result.append(TypeCheckHelper.GetMostLikelyRef(handler.getContextHandler(), po, hint));
 		return false;
 	}
 	
