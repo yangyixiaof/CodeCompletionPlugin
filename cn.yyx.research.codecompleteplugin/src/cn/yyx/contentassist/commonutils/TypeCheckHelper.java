@@ -48,7 +48,6 @@ public class TypeCheckHelper {
 					FieldMember fm = fmitr.next();
 					String cmp = fm.getName();
 					// String checktp = fm.getType();
-					// TODO
 					double similar = SimilarityHelper.ComputeTwoStringSimilarity(hint, cmp);
 					if (maxsimilar < similar)
 					{
