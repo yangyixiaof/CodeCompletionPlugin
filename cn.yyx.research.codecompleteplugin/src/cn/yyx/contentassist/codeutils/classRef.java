@@ -36,7 +36,8 @@ public class classRef extends type {
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
 			StringBuilder result, AdditionalInfo ai) {
-		
+		String tp = handler.HandleTypeRef(off);
+		result.append(tp);
 		return false;
 	}
 	

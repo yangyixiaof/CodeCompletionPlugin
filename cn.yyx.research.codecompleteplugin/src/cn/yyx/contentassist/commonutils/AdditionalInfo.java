@@ -9,6 +9,8 @@ public class AdditionalInfo {
 	private List<String> possibleArgType = null;
 	private String methodReturnType = null;
 	
+	private String directlyMemberHint = null;
+	
 	public AdditionalInfo() {
 		
 	}
@@ -43,6 +45,14 @@ public class AdditionalInfo {
 
 	public void setMethodName(String methodName) {
 		this.methodName = methodName;
+	}
+
+	public String getDirectlyMemberHint() {
+		return directlyMemberHint;
+	}
+
+	public void setDirectlyMemberHint(String directlyMemberHint) {
+		this.directlyMemberHint = directlyMemberHint;
 	}
 	
 }

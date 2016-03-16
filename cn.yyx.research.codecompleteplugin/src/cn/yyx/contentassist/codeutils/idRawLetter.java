@@ -1,7 +1,11 @@
 package cn.yyx.contentassist.codeutils;
 
 import cn.yyx.contentassist.codepredict.PredictMetaInfo;
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CodeSynthesisHelper;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class idRawLetter extends identifier{
 	
@@ -32,6 +36,12 @@ public class idRawLetter extends identifier{
 			return similar;
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+			StringBuilder result, AdditionalInfo ai) {
+		return CodeSynthesisHelper.HandleRawTextSynthesis(text, squeue, handler, result, null);
 	}
 	
 }

@@ -14,14 +14,7 @@ public class CodeSynthesisHelper {
 		}
 		else
 		{
-			if (squeue.hasHoleLast())
-			{
-				squeue.SetLast(squeue.getLast() + text);
-			}
-			else
-			{
-				ErrorUtil.ErrorAndStop("What the fuch the assignOptr put where?");
-			}
+			ErrorUtil.ErrorAndStop("What the fuch the rawText put where?");
 		}
 		return false;
 	}
