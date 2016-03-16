@@ -6,8 +6,8 @@ import java.util.Queue;
 import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
-import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class PredictSequence extends Sequence {
 	
@@ -36,7 +36,7 @@ public class PredictSequence extends Sequence {
 		cstack.push(PredictMetaInfo.AllKindWaitingOver);
 	}
 	
-	private boolean HandleNewInSentence(ScopeOffsetRefHandler handler)
+	private boolean HandleNewInSentence(SynthesisHandler handler)
 	{
 		this.predicts.add(last);
 		last.smt.HandleOverSignal(cstack);
@@ -44,7 +44,7 @@ public class PredictSequence extends Sequence {
 		return conflict;
 	}
 	
-	public PredictSequenceManager ExtendOneSentence(ScopeOffsetRefHandler handler, AeroLifeCycle alc, int neededSize)
+	public PredictSequenceManager ExtendOneSentence(SynthesisHandler handler, AeroLifeCycle alc, int neededSize)
 	{
 		int extendSize = neededSize * 2;
 		PredictSequenceManager pm = new PredictSequenceManager();

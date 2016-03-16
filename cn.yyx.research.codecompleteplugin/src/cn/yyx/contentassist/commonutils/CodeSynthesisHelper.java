@@ -19,7 +19,7 @@ public class CodeSynthesisHelper {
 		return false;
 	}
 	
-	public static boolean HandleBreakContinueCodeSynthesis(identifier id, CodeSynthesisQueue<String> squeue, ScopeOffsetRefHandler handler,
+	public static boolean HandleBreakContinueCodeSynthesis(identifier id, CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
 			StringBuilder result, AdditionalInfo ai)
 	{
 		StringBuilder fin = new StringBuilder("break");

@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
+
+import cn.yyx.contentassist.commonutils.ContextHandler;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.parsehelper.ComplexParser;
 import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVisitor;
@@ -13,7 +18,7 @@ public class PredictionFetch {
 	
 	// public static final int ParallelSize = 10;
 	
-	public List<String> FetchPrediction(SimplifiedCodeGenerateASTVisitor fmastv, List<String> analist, ArrayList<String> result) {
+	public List<String> FetchPrediction(JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor, SimplifiedCodeGenerateASTVisitor fmastv, List<String> analist, ArrayList<String> result) {
 		
 		AeroLifeCycle alc = new AeroLifeCycle();
 		alc.Initialize();
@@ -33,7 +38,9 @@ public class PredictionFetch {
 			manager = DoPreTrySequencePredict(alc, manager, ons);
 		}
 		ScopeOffsetRefHandler handler = fmastv.GenerateScopeOffsetRefHandler();
-		PredictSequenceManager pm = DoSequencesPredictAndRealCodeSynthesis(handler, alc, manager);
+		ContextHandler ch = new ContextHandler(javacontext, monitor);
+		SynthesisHandler sh = new SynthesisHandler(handler, ch);
+		PredictSequenceManager pm = DoSequencesPredictAndRealCodeSynthesis(sh, alc, manager);
 		// List<String> list = DoRealCodeSynthesis(fmastv, pm);
 		// AeroHelper.testListStrings(2);
 		// System.out.println("ArrayListType:" + analist.getClass());
@@ -45,7 +52,7 @@ public class PredictionFetch {
 		return list;
 	}
 	
-	private PredictSequenceManager DoSequencesPredictAndRealCodeSynthesis(ScopeOffsetRefHandler handler, AeroLifeCycle alc, SequenceManager manager)
+	private PredictSequenceManager DoSequencesPredictAndRealCodeSynthesis(SynthesisHandler handler, AeroLifeCycle alc, SequenceManager manager)
 	{
 		Iterator<Sequence> itr = manager.Iterator();
 		PredictSequenceManager pm = null;
@@ -66,7 +73,7 @@ public class PredictionFetch {
 		return pm;
 	}
 	
-	private PredictSequenceManager DoOneSequencePredict(ScopeOffsetRefHandler handler, AeroLifeCycle alc, Sequence oneseq, int finalsize, int maxextendsize)
+	private PredictSequenceManager DoOneSequencePredict(SynthesisHandler handler, AeroLifeCycle alc, Sequence oneseq, int finalsize, int maxextendsize)
 	{
 		int normalExtendSize = (int)Math.max(Math.sqrt(maxextendsize), maxextendsize/2);
 		PredictSequenceManager result = new PredictSequenceManager();
