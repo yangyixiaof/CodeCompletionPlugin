@@ -13,7 +13,7 @@ public class PredictSequence extends Sequence {
 	
 	protected Queue<Sentence> predicts = new LinkedList<Sentence>();
 	protected Stack<Integer> cstack = new Stack<Integer>();
-	protected CodeSynthesisQueue<String> sstack = new CodeSynthesisQueue<String>();
+	protected CodeSynthesisQueue sstack = new CodeSynthesisQueue();
 	
 	public PredictSequence(Sequence hint) {
 		this.last = hint.last;
@@ -22,13 +22,13 @@ public class PredictSequence extends Sequence {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public PredictSequence(Sequence hint, PredictSequence current) {
+	public PredictSequence(Sequence hint, PredictSequence current) throws CloneNotSupportedException {
 		this.last = hint.last;
 		this.sequence = hint.sequence;
 		this.prob = hint.prob;
 		this.predicts = (Queue<Sentence>) ((LinkedList<Sentence>)(current.predicts)).clone();
 		this.cstack = (Stack<Integer>) current.cstack.clone();
-		this.sstack = (CodeSynthesisQueue<String>) current.sstack.clone();
+		this.sstack = (CodeSynthesisQueue) current.sstack.clone();
 	}
 	
 	public void PredictStart()
@@ -57,7 +57,13 @@ public class PredictSequence extends Sequence {
 		while (itr.hasNext())
 		{
 			Sequence seq = itr.next();
-			PredictSequence ps = new PredictSequence(seq, this);
+			PredictSequence ps = null;
+			try {
+				ps = new PredictSequence(seq, this);
+			} catch (CloneNotSupportedException e) {
+				e.printStackTrace();
+				continue;
+			}
 			boolean conflict = ps.HandleNewInSentence(handler);
 			if (!conflict)
 			{
@@ -74,7 +80,7 @@ public class PredictSequence extends Sequence {
 	
 	public String GetSynthesisedCode()
 	{
-		return sstack.getFirst();
+		return sstack.getFirst().GetFirstDataWithoutTypeCheck();
 	}
 	
 }
