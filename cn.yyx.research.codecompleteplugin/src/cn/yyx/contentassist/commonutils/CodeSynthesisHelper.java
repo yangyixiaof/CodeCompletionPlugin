@@ -4,7 +4,7 @@ import cn.yyx.contentassist.codeutils.identifier;
 
 public class CodeSynthesisHelper {
 	
-	public static boolean HandleRawTextSynthesis(String text, CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
+	/*public static boolean HandleRawTextSynthesis(String text, CodeSynthesisQueue squeue, SynthesisHandler handler,
 			StringBuilder result, AdditionalInfo ai)
 	{
 		if (result != null)
@@ -16,23 +16,22 @@ public class CodeSynthesisHelper {
 			ErrorUtil.ErrorAndStop("What the fuch the rawText put where?");
 		}
 		return false;
-	}
+	}*/
 	
-	public static boolean HandleBreakContinueCodeSynthesis(identifier id, CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai)
+	public static boolean HandleBreakContinueCodeSynthesis(identifier id, CodeSynthesisQueue squeue, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai)
 	{
 		StringBuilder fin = new StringBuilder("break");
-		StringBuilder idsb = new StringBuilder();
-		boolean conflict = id.HandleCodeSynthesis(squeue, handler, idsb, null);
+		CSNode csn = new CSNode();
+		boolean conflict = id.HandleCodeSynthesis(squeue, handler, csn, null);
 		if (conflict)
 		{
 			return true;
 		}
-		if (idsb.length() > 0)
-		{
-			fin.append(" " + idsb.toString());
-		}
-		squeue.add(fin.toString());
+		fin.append("break " + csn.GetFirstDataWithoutTypeCheck());
+		CSNode cs = new CSNode();
+		cs.AddPossibleCandidates(fin.toString(), null);
+		squeue.add(cs);
 		return false;
 	}
 	

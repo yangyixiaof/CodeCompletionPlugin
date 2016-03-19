@@ -4,180 +4,61 @@ package cn.yyx.contentassist.commonutils;
  * @author Skip
  * @version 1.0
  */
-public class CodeSynthesisQueue<T> {
-	// node class
-	protected static class Node<T> {
-		Node<T> prev = null;
-		Node<T> next = null;
-		T data = null;
-		boolean hasHole = false;
-		boolean connect = false;
-		int addinfo = -1;
-		
-		public Node() {
-		}
-
-		public Node(T t) {
-			this.data = t;
-		}
-		
-		public Node(T t, boolean hasHole) {
-			this.data = t;
-			this.hasHole = hasHole;
-		}
-		
-		public Node(T t, boolean connect, int extra) {
-			this.data = t;
-			this.connect = connect;
-		}
-		
-		public Node(T t, int addinfo) {
-			this.data = t;
-			this.addinfo = addinfo;
-		}
-		
-		public Node(Node<T> t) {
-			this.data = t.data;
-		}
-		
-	}
+public class CodeSynthesisQueue {
+	
+	protected CSNode head = null;
+	protected CSNode last = null;
+	protected int length;
 	
 	@Override
-	public Object clone() {
-		CodeSynthesisQueue<T> o = new CodeSynthesisQueue<T>();
+	public Object clone() throws CloneNotSupportedException {
+		CodeSynthesisQueue o = new CodeSynthesisQueue();
 		o.length = length;
-		Node<T> temp = head;
+		CSNode temp = head;
 		while (temp != null)
 		{
-			o.add(temp.data);
-			temp = temp.next;
+			o.add((CSNode)temp.clone());
+			temp = temp.getNext();
 		}
 		return o;
 	}
-
-	protected Node<T> head = null;
-	protected Node<T> last = null;
-	protected int length;
-
+	
 	public CodeSynthesisQueue() {
 		length = 0;
 	}
-
-	public CodeSynthesisQueue(T data) {
-		head = new Node<T>(data);
-		last = head;
-		length = 1;
-	}
-
-	public void add(T data) {
+	
+	public void add(CSNode data) {
 		if (isEmpty()) {
-			head = new Node<T>(data);
+			head = data;
 			last = head;
 			length++;
 		} else {
-			// tail insert method
-			Node<T> other = new Node<T>(data);
-			other.prev = last;
-			last.next = other;
-			last = other;
+			data.setPrev(last);
+			last.setNext(data);
+			last = data;
 			length++;
 		}
 	}
 	
-	public void add(T data, boolean hasHole) {
-		if (isEmpty()) {
-			head = new Node<T>(data, hasHole);
-			last = head;
-			length++;
-		} else {
-			// tail insert method
-			Node<T> other = new Node<T>(data, hasHole);
-			other.prev = last;
-			last.next = other;
-			last = other;
-			length++;
-		}
-	}
-	
-	public void add(T data, boolean connect, int extra) {
-		if (isEmpty()) {
-			head = new Node<T>(data, connect, -1);
-			last = head;
-			length++;
-		} else {
-			// tail insert method
-			Node<T> other = new Node<T>(data, connect, -1);
-			other.prev = last;
-			last.next = other;
-			last = other;
-			length++;
-		}
-	}
-	
-	public void add(T data, int addinfo) {
-		if (isEmpty()) {
-			head = new Node<T>(data, addinfo);
-			last = head;
-			length++;
-		} else {
-			// tail insert method
-			Node<T> other = new Node<T>(data, addinfo);
-			other.prev = last;
-			last.next = other;
-			last = other;
-			length++;
-		}
-	}
-
-	public T get(int index) {
+	public CSNode get(int index) {
 		if (index > length || index < 0) {
 			throw new IndexOutOfBoundsException("Index out of boud:" + index);
 		}
-		Node<T> other = head;
+		CSNode other = head;
 		for (int i = 0; i < index; i++) {
-			other = other.next;
+			other = other.getNext();
 		}
-		return other.data;
+		return other;
 	}
 	
-	public boolean hasHole(int index) {
-		if (index > length || index < 0) {
-			throw new IndexOutOfBoundsException("Index out of boud:" + index);
-		}
-		Node<T> other = head;
-		for (int i = 0; i < index; i++) {
-			other = other.next;
-		}
-		return other.hasHole;
+	public CSNode getLast() {
+		return last;
 	}
 
-	public boolean contains(T data) {
-		Node<T> other = head;
-		while (other != null) {
-			if (other.data.equals(data)) {
-				return true;
-			}
-			other = other.next;
-		}
-		return false;
-	}
-
-	public T getLast() {
-		return last.data;
+	public CSNode getFirst() {
+		return head;
 	}
 	
-	public boolean hasHoleLast() {
-		return last.hasHole;
-	}
-
-	public T getFirst() {
-		return head.data;
-	}
-	
-	public boolean hasHoleFirst() {
-		return head.hasHole;
-	}
-
 	public int getSize() {
 		return length;
 	}
@@ -190,36 +71,23 @@ public class CodeSynthesisQueue<T> {
 		head = null;
 		length = 0;
 	}
-
+	
 	public void printList() {
 		if (isEmpty()) {
 			System.out.println("empty list");
 		} else {
-			Node<T> other = head;
+			CSNode other = head;
 			for (int i = 0; i < length; i++) {
-				System.out.print(other.data + " ");
-				other = other.next;
+				System.out.print(other.getContenttype() + " ");
+				other = other.getNext();
 			}
 			System.out.println();
 		}
 	}
-
-	public void SetLast(T cnt) {
-		last.data = cnt;
-	}
-
-	public void SetLastHasHole(boolean hole) {
-		last.hasHole = hole;
-	}
 	
-	public T GetLastButOne()
+	public CSNode GetLastButOne()
 	{
-		return last.prev.data;
-	}
-
-	public boolean GetLastHoleButOne()
-	{
-		return last.prev.hasHole;
+		return last.getPrev();
 	}
 	
 	public boolean CanBeMerged()
@@ -231,19 +99,19 @@ public class CodeSynthesisQueue<T> {
 		return true;
 	}
 	
-	public void MergeLast(T merge) {
-		last.prev.data = merge;
-		last.prev.hasHole = false;
-		last.prev.next = null;
-		last = last.prev;
+	/*public void MergeLast(T merge) {
+		last.getPrev().data = merge;
+		last.getPrev().hasHole = false;
+		last.getPrev().setNext(null);
+		last = last.getPrev();
 	}
 
 	public void MergeLast() {
 		// skip prev data.
-		last.prev.data = last.data;
-		last.prev.hasHole = false;
-		last.prev.next = null;
-		last = last.prev;
-	}
+		last.getPrev().data = last.data;
+		last.getPrev().hasHole = false;
+		last.getPrev().setNext(null);
+		last = last.getPrev();
+	}*/
 	
 }

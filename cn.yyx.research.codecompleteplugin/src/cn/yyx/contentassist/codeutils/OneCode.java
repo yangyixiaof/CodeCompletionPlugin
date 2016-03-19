@@ -1,11 +1,12 @@
 package cn.yyx.contentassist.codeutils;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
-public abstract class OneCode  implements CodeSimilarity<OneCode> {
+public interface OneCode extends CodeSimilarity<OneCode> {
 	
-	public abstract boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler, StringBuilder result, AdditionalInfo ai);
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, SynthesisHandler handler, CSNode result, AdditionalInfo ai);
 	
 }
