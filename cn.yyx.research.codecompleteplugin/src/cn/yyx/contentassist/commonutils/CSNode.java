@@ -10,8 +10,11 @@ public class CSNode {
 	private CSNode next = null;
 	private Map<String, TypeCheck> datas = new TreeMap<String, TypeCheck>();
 	private int contenttype = -1;
+	private String prefix = null;
+	private String postfix = null;
 	
 	public CSNode() {
+		this.contenttype = CSNodeType.RawStringContent;
 	}
 	
 	public CSNode(int contenttype) {
@@ -42,7 +45,7 @@ public class CSNode {
 	{
 		Iterator<String> itr = datas.keySet().iterator();
 		String firstdata = itr.next();
-		return firstdata;
+		return (prefix != null ? prefix : "") + firstdata + (postfix != null ? postfix : "");
 	}
 
 	public CSNode getPrev() {
@@ -75,6 +78,22 @@ public class CSNode {
 
 	public void setContenttype(int contenttype) {
 		this.contenttype = contenttype;
+	}
+
+	public String getPrefix() {
+		return prefix;
+	}
+
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
+
+	public String getPostfix() {
+		return postfix;
+	}
+
+	public void setPostfix(String postfix) {
+		this.postfix = postfix;
 	}
 	
 }

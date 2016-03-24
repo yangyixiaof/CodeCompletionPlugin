@@ -3,6 +3,8 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
@@ -49,12 +51,13 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 	}
 	
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler, StringBuilder result, AdditionalInfo ai) {
-		StringBuilder rdexpsb = new StringBuilder();
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, SynthesisHandler handler, CSNode result,
+			AdditionalInfo ai) {
+		CSNode rdexpcn = new CSNode(CSNodeType.ReferedExpression);
 		boolean conflict = false;
 		if (drexp != null)
 		{
-			conflict = drexp.HandleCodeSynthesis(squeue, handler, rdexpsb, ai);
+			conflict = drexp.HandleCodeSynthesis(squeue, handler, rdexpcn, ai);
 		}
 		if (conflict)
 		{
