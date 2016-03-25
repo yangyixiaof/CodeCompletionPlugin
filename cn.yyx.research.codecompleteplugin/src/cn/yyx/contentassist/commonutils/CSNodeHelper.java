@@ -34,9 +34,34 @@ public class CSNodeHelper {
 		return result;
 	}
 
-	public static Map<String, TypeCheck> ConcatTwoNodesDatasWithTypeChecking(CSNode lt, CSNode rt, int i) {
-		
-		return null;
+	public static Map<String, TypeCheck> ConcatTwoNodesDatasWithTypeChecking(CSNode one, CSNode two, int i) {
+		Map<String, TypeCheck> result = new TreeMap<String, TypeCheck>();
+		String onepre = one.getPrefix();
+		String onepost = one.getPostfix();
+		String twopre = two.getPrefix();
+		String twopost = two.getPostfix();
+		Set<String> codes = one.getDatas().keySet();
+		Iterator<String> c1itr = codes.iterator();
+		while (c1itr.hasNext())
+		{
+			String c1 = c1itr.next();
+			TypeCheck tc1 = one.getDatas().get(c1);
+			String c1res = onepre + c1 + onepost;
+			Set<String> code2s = two.getDatas().keySet();
+			Iterator<String> c2itr = code2s.iterator();
+			while (c2itr.hasNext())
+			{
+				String c2 = c2itr.next();
+				TypeCheck tc2 = two.getDatas().get(c2);
+				String c2res = twopre + c2 + twopost;
+				if (TypeCheckHelper.CanBeMutualCast(tc1, tc2))
+				{
+					String res = c1res + c2res;
+					result.put(res, tc1);
+				}
+			}
+		}
+		return result;
 	}
 	
 }

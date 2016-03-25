@@ -88,6 +88,10 @@ public class CSNode {
 	}
 
 	public String getPrefix() {
+		if (prefix == null)
+		{
+			prefix = "";
+		}
 		return prefix;
 	}
 
@@ -96,6 +100,10 @@ public class CSNode {
 	}
 
 	public String getPostfix() {
+		if (postfix == null)
+		{
+			postfix = "";
+		}
 		return postfix;
 	}
 

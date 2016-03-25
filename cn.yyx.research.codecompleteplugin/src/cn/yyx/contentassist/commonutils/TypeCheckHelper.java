@@ -63,6 +63,13 @@ public class TypeCheckHelper {
 		return result;
 	}
 	
+	public static boolean CanBeMutualCast(TypeCheck one, TypeCheck two)
+	{
+		Class<?> onetype = one.getExpreturntypeclass();
+		Class<?> twotype = two.getExpreturntypeclass();
+		return CanBeMutualCast(onetype, twotype);
+	}
+	
 	public static boolean CanBeMutualCast(Class<?> onetype, Class<?> twotype)
 	{
 		if (onetype == null || twotype == null)
