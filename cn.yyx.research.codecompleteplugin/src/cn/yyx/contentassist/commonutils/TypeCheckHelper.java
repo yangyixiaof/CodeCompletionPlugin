@@ -63,4 +63,17 @@ public class TypeCheckHelper {
 		return result;
 	}
 	
+	public static boolean CanBeMutualCast(Class<?> onetype, Class<?> twotype)
+	{
+		if (onetype == null || twotype == null)
+		{
+			return true;
+		}
+		if (onetype.isAssignableFrom(twotype) || twotype.isAssignableFrom(onetype))
+		{
+			return true;
+		}
+		return false;
+	}
+	
 }

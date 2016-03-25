@@ -3,6 +3,8 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
@@ -42,15 +44,16 @@ public class arrayAccessStatement extends statement{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
 		boolean conflict = false;
-		StringBuilder fin = new StringBuilder("");
-		conflict = rarr.HandleCodeSynthesis(squeue, handler, fin, null);
+		CSNode csarr = new CSNode(CSNodeType.TempUsed);
+		conflict = rarr.HandleCodeSynthesis(squeue, handler, csarr, null);
 		if (conflict)
 		{
 			return true;
 		}
+		
 		fin.append("[");
 		conflict = rexp.HandleCodeSynthesis(squeue, handler, fin, null);
 		if (conflict)

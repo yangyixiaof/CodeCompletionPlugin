@@ -3,12 +3,19 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.ArrayUtil;
 import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
+import cn.yyx.contentassist.commonutils.TypeCheckHelper;
 
 public class argumentList implements OneCode{
 	
@@ -77,42 +84,108 @@ public class argumentList implements OneCode{
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		boolean conflict = false;
-		StringBuilder tsb = new StringBuilder("");
 		referedExpression invokerhint = el.get(0);
-		AdditionalInfo nai = new AdditionalInfo();
-		nai.setFirstInvokerInArgList(true);
-		conflict = invokerhint.HandleCodeSynthesis(squeue, handler, tsb, nai);
-		if (tsb.length() != 0)
-		{
-			result.append(tsb.toString() + ai.getMethodName() + "(");
-		}
-		List<referedExpression> tl = new LinkedList<referedExpression>();
+		CSNode invcn = new CSNode(CSNodeType.TempUsed);
+		conflict = invokerhint.HandleCodeSynthesis(squeue, handler, invcn, ai);
+		List<CSNode> paramsnode = new LinkedList<CSNode>();
 		Iterator<referedExpression> itr = el.iterator();
 		itr.next();
 		while (itr.hasNext())
 		{
 			referedExpression re = itr.next();
-			tl.add(0, re);
-		}
-		// inverse order iterate.
-		itr = tl.iterator();
-		while (itr.hasNext())
-		{
-			tsb = new StringBuilder("");
-			referedExpression re = itr.next();
-			conflict = re.HandleCodeSynthesis(squeue, handler, tsb, null);
+			CSNode oparam = new CSNode(CSNodeType.TempUsed);
+			conflict = re.HandleCodeSynthesis(squeue, handler, oparam, null);
 			if (conflict)
 			{
 				return true;
 			}
-			result.append(tsb.toString());
-			if (itr.hasNext())
-			{
-				result.append(",");
-			}
+			paramsnode.add(oparam);
 		}
-		result.append(")");
+		Map<String, TypeCheck> resdatas = new TreeMap<String, TypeCheck>();
+		Map<String, TypeCheck> datas = invcn.getDatas();
+		Set<String> precodes = datas.keySet();
+		Iterator<String> pcitr = precodes.iterator();
+		while (pcitr.hasNext())
+		{
+			String pc = pcitr.next();
+			StringBuilder sb = new StringBuilder(pc);
+			sb.append("(");
+			TypeCheck retandparamstypes = datas.get(pc);
+			if (retandparamstypes == null)
+			{
+				// directly add param.
+				Iterator<CSNode> pitr = paramsnode.iterator();
+				while (pitr.hasNext())
+				{
+					CSNode pcn = pitr.next();
+					sb.append(pcn.GetFirstDataWithoutTypeCheck());
+					if (pitr.hasNext())
+					{
+						sb.append(",");
+					}
+				}
+			}
+			else
+			{
+				List<Boolean> usedparams = ArrayUtil.InitialBooleanArray(paramsnode.size());
+				List<Class<?>> tps = retandparamstypes.getExpargstypesclasses();
+				Iterator<Class<?>> tpitr = tps.iterator();
+				while (tpitr.hasNext())
+				{
+					Class<?> c = tpitr.next();
+					String ct = HandleOneClassParamNodes(c, paramsnode, usedparams);
+					sb.append(ct);
+					if (tpitr.hasNext())
+					{
+						sb.append(",");
+					}
+				}
+			}
+			sb.append(")");
+			resdatas.put(pc, retandparamstypes);
+		}
 		return false;
+	}
+	
+	private String HandleOneClassParamNodes(Class<?> c, List<CSNode> paramsnode, List<Boolean> usedparams)
+	{
+		Iterator<CSNode> pitr = paramsnode.iterator();
+		int usedidx = 0;
+		String unusedorlatestused = null;
+		while (pitr.hasNext())
+		{
+			CSNode pcn = pitr.next();
+			String select = null;
+			Map<String, TypeCheck> dts = pcn.getDatas();
+			Set<String> codes = dts.keySet();
+			Iterator<String> codeitr = codes.iterator();
+			while (codeitr.hasNext())
+			{
+				String code = codeitr.next();
+				TypeCheck codecheck = dts.get(code);
+				Class<?> rtclass = codecheck.getExpreturntypeclass();
+				if (TypeCheckHelper.CanBeMutualCast(c, rtclass))
+				{
+					select = code;
+					break;
+				}
+			}
+			if (select == null)
+			{
+				select = codes.iterator().next();
+			}
+			if (!usedparams.get(usedidx))
+			{
+				usedparams.set(usedidx, true);
+				return select;
+			}
+			else
+			{
+				unusedorlatestused = select;
+			}
+			usedidx++;
+		}
+		return unusedorlatestused;
 	}
 	
 }
