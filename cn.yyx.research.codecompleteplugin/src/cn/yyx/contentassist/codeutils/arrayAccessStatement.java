@@ -4,6 +4,7 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeHelper;
 import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
@@ -72,6 +73,8 @@ public class arrayAccessStatement extends statement{
 		{
 			cidx.setPostfix("]");
 		}
+		
+		smt.setDatas(CSNodeHelper.ConcatTwoNodesDatas(csarr, cidx, -1));
 		squeue.add(smt);
 		expected.pop();
 		return false;
