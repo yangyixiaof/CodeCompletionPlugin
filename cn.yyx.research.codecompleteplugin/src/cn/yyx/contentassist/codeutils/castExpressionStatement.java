@@ -3,8 +3,12 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeHelper;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class castExpressionStatement extends expressionStatement{
 	
@@ -40,24 +44,24 @@ public class castExpressionStatement extends expressionStatement{
 	}
 	
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
-		StringBuilder fin = new StringBuilder("");
-		StringBuilder tpsb = new StringBuilder("");
-		boolean conflict = tp.HandleCodeSynthesis(squeue, handler, tpsb, null);
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		CSNode ttp = new CSNode(CSNodeType.HalfFullExpression);
+		tp.HandleCodeSynthesis(squeue, expected, handler, ttp, null);
+		ttp.setPrefix("(");
+		ttp.setPostfix(")");
+		
+		expected.push(null);
+		CSNode resb = new CSNode(CSNodeType.ReferedExpression);
+		boolean conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, resb, null);
 		if (conflict)
 		{
 			return true;
 		}
-		fin.append("("+tpsb.toString()+")");
-		StringBuilder resb = new StringBuilder("");
-		conflict = rexp.HandleCodeSynthesis(squeue, handler, resb, null);
-		if (conflict)
-		{
-			return true;
-		}
-		fin.append(resb);
-		squeue.add(fin.toString());
+		CSNode fin = new CSNode(CSNodeType.WholeStatement);
+		fin.setDatas(CSNodeHelper.ConcatTwoNodesDatas(ttp, resb, -1));
+		squeue.add(fin);
+		expected.pop();
 		return false;
 	}
 	

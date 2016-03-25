@@ -3,8 +3,12 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeHelper;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class assignmentStatement extends expressionStatement{
 	referedExpression left = null;
@@ -44,20 +48,24 @@ public class assignmentStatement extends expressionStatement{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
-		StringBuilder fin = new StringBuilder("");
-		StringBuilder tle = new StringBuilder("");
-		left.HandleCodeSynthesis(squeue, handler, tle, null);
-		fin.append(tle.toString() + optr);
-		squeue.add(fin.toString(), true);
-		StringBuilder tre = new StringBuilder("");
-		right.HandleCodeSynthesis(squeue, handler, tre, null);
-		if (tre.length() > 0)
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		CSNode lt = new CSNode(CSNodeType.ReferedExpression);
+		boolean conflict = left.HandleCodeSynthesis(squeue, expected, handler, lt, null);
+		if (conflict)
 		{
-			fin.append(tre.toString());
-			squeue.SetLast(fin.toString());
+			return true;
 		}
+		lt.setPostfix(optr);
+		CSNode rt = new CSNode(CSNodeType.ReferedExpression);
+		conflict = right.HandleCodeSynthesis(squeue, expected, handler, rt, null);
+		if (conflict)
+		{
+			return true;
+		}
+		CSNode fin = new CSNode(CSNodeType.WholeStatement);
+		fin.setDatas(CSNodeHelper.ConcatTwoNodesDatasWithTypeChecking(lt, rt, -1));
+		squeue.add(fin);
 		return false;
 	}
 	

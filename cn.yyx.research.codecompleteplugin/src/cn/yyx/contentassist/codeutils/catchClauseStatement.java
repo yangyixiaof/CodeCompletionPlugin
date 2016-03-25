@@ -3,15 +3,18 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class catchClauseStatement extends statement{
 	
-	type rt = null;
+	type tp = null;
 	
 	public catchClauseStatement(type rt) {
-		this.rt = rt;
+		this.tp = rt;
 	}
 	
 	@Override
@@ -27,7 +30,7 @@ public class catchClauseStatement extends statement{
 	public double Similarity(OneCode t) {
 		if (t instanceof catchClauseStatement)
 		{
-			return 0.5 + 0.5*(rt.Similarity(((catchClauseStatement)t).rt));
+			return 0.5 + 0.5*(tp.Similarity(((catchClauseStatement)t).tp));
 		}
 		return 0;
 	}
@@ -39,11 +42,13 @@ public class catchClauseStatement extends statement{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
-		StringBuilder tpsb = new StringBuilder("");
-		rt.HandleCodeSynthesis(squeue, handler, tpsb, null);
-		squeue.add("catch (" + tpsb.toString() + " e) {\n}");
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		CSNode ttp = new CSNode(CSNodeType.HalfFullExpression);
+		tp.HandleCodeSynthesis(squeue, expected, handler, ttp, null);
+		ttp.setPrefix("catch (");
+		ttp.setPostfix(" e)");
+		squeue.add(ttp);
 		return false;
 	}
 	

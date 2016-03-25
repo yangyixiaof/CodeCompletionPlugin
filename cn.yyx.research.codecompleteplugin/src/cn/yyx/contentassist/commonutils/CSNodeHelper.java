@@ -33,5 +33,10 @@ public class CSNodeHelper {
 		}
 		return result;
 	}
+
+	public static Map<String, TypeCheck> ConcatTwoNodesDatasWithTypeChecking(CSNode lt, CSNode rt, int i) {
+		
+		return null;
+	}
 	
 }
