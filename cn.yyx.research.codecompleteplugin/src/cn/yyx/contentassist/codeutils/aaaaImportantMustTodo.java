@@ -13,4 +13,6 @@ public class aaaaImportantMustTodo {
 	
 	// method arg split should use DH@@, instead of DH@, to distinguish with common , Oh, this should be ignored.
 	
+	// TODO Question: int a[][][] = new int[][][]{......}; the [][][] behind new should be considered. This needs the whole effort. But it may be included in ArrayType.
+	// TODO reminder to add '{' and '}' to the begin and end of type.
 }

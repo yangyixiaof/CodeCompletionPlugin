@@ -12,9 +12,15 @@ public class CSNode {
 	private int contenttype = -1;
 	private String prefix = null;
 	private String postfix = null;
+	private boolean hashole = false;
+	private boolean connect = false;
 	
 	public CSNode(int contenttype) {
 		this.setContenttype(contenttype);
+		if (contenttype == CSNodeType.SymbolMark)
+		{
+			this.connect = true;
+		}
 	}
 	
 	public void AddPossibleCandidates(String t, TypeCheck tc)
@@ -95,6 +101,22 @@ public class CSNode {
 
 	public void setPostfix(String postfix) {
 		this.postfix = postfix;
+	}
+
+	public boolean isHashole() {
+		return hashole;
+	}
+
+	public void setHashole(boolean hashole) {
+		this.hashole = hashole;
+	}
+
+	public boolean isConnect() {
+		return connect;
+	}
+
+	public void setConnect(boolean connect) {
+		this.connect = connect;
 	}
 	
 }

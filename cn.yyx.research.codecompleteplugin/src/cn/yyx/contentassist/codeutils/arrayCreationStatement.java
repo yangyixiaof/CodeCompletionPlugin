@@ -4,23 +4,24 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class arrayCreationStatement extends statement{
 	
-	type rt = null;
+	type tp = null;
 	
 	public arrayCreationStatement(type rt) {
-		this.rt = rt;
+		this.tp = rt;
 	}
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof arrayCreationStatement)
 		{
-			if (rt.CouldThoughtSame(((arrayCreationStatement) t).rt))
+			if (tp.CouldThoughtSame(((arrayCreationStatement) t).tp))
 			{
 				return true;
 			}
@@ -32,34 +33,23 @@ public class arrayCreationStatement extends statement{
 	public boolean HandleOverSignal(Stack<Integer> cstack) {
 		return false;
 	}
-
+	
 	@Override
 	public double Similarity(OneCode t) {
 		if (t instanceof arrayCreationStatement)
 		{
-			return 0.4 + 0.6*(rt.Similarity(((arrayCreationStatement) t).rt));
+			return 0.4 + 0.6*(tp.Similarity(((arrayCreationStatement) t).tp));
 		}
 		return 0;
 	}
-
-	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
-		StringBuilder fin = new StringBuilder("");
-		StringBuilder ttp = new StringBuilder("");
-		rt.HandleCodeSynthesis(squeue, handler, ttp, null);
-		fin.append("new " + ttp.toString());
-		if (squeue.hasHoleLast())
-		{
-			squeue.SetLast(squeue.getLast() + fin.toString());
-		}
-		return false;
-	}
-
+	
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
-		
+		CSNode ttp = new CSNode(CSNodeType.HalfFullExpression);
+		tp.HandleCodeSynthesis(squeue, expected, handler, ttp, null);
+		ttp.setPrefix("new ");
+		squeue.add(ttp);
 		return false;
 	}
 	

@@ -1,9 +1,13 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Stack;
+
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CodeSynthesisHelper;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class booleanLiteral extends literal{
 	
@@ -38,9 +42,10 @@ public class booleanLiteral extends literal{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
-		CodeSynthesisHelper.HandleRawTextSynthesis(value+"", squeue, handler, result, ai);
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		result.setContenttype(CSNodeType.SymbolMark);
+		result.AddOneData(value+"", null);
 		return false;
 	}
 

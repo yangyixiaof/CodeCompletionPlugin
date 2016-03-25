@@ -3,8 +3,11 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class atInterfaceStatement extends statement{
 	
@@ -42,11 +45,12 @@ public class atInterfaceStatement extends statement{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
-		StringBuilder idsb = new StringBuilder("");
-		id.HandleCodeSynthesis(squeue, handler, idsb, null);
-		squeue.add("public @interface " + idsb.toString() + "{\n}");
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		CSNode tid = new CSNode(CSNodeType.HalfFullExpression);
+		id.HandleCodeSynthesis(squeue, expected, handler, tid, null);
+		tid.setPrefix("public @interface ");
+		squeue.add(tid);
 		return false;
 	}
 	

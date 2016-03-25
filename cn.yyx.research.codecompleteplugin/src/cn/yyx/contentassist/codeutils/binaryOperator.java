@@ -1,11 +1,15 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Stack;
+
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CodeSynthesisHelper;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
-public class binaryOperator extends OneCode{
+public class binaryOperator implements OneCode{
 	
 	String optr = null;
 	
@@ -38,9 +42,10 @@ public class binaryOperator extends OneCode{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
-		CodeSynthesisHelper.HandleRawTextSynthesis(optr, squeue, handler, result, ai);
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		result.setContenttype(CSNodeType.SymbolMark);
+		result.AddOneData(optr, null);
 		return false;
 	}
 	
