@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import java.util.TreeMap;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
@@ -81,12 +82,13 @@ public class argumentList implements OneCode{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, SynthesisHandler handler,
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
+		expected.add(null);
 		boolean conflict = false;
 		referedExpression invokerhint = el.get(0);
 		CSNode invcn = new CSNode(CSNodeType.TempUsed);
-		conflict = invokerhint.HandleCodeSynthesis(squeue, handler, invcn, ai);
+		conflict = invokerhint.HandleCodeSynthesis(squeue, expected, handler, invcn, ai);
 		List<CSNode> paramsnode = new LinkedList<CSNode>();
 		Iterator<referedExpression> itr = el.iterator();
 		itr.next();
@@ -94,7 +96,7 @@ public class argumentList implements OneCode{
 		{
 			referedExpression re = itr.next();
 			CSNode oparam = new CSNode(CSNodeType.TempUsed);
-			conflict = re.HandleCodeSynthesis(squeue, handler, oparam, null);
+			conflict = re.HandleCodeSynthesis(squeue, expected, handler, oparam, ai);
 			if (conflict)
 			{
 				return true;
@@ -144,6 +146,8 @@ public class argumentList implements OneCode{
 			sb.append(")");
 			resdatas.put(pc, retandparamstypes);
 		}
+		result.setDatas(resdatas);
+		expected.pop();
 		return false;
 	}
 	

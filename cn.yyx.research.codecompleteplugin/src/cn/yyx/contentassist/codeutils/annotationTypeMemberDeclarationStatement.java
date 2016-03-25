@@ -7,6 +7,7 @@ import cn.yyx.contentassist.commonutils.CSNode;
 import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class annotationTypeMemberDeclarationStatement extends statement{
 	
@@ -51,20 +52,20 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 	}
 	
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, SynthesisHandler handler, CSNode result,
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler, CSNode result,
 			AdditionalInfo ai) {
 		CSNode rdexpcn = new CSNode(CSNodeType.ReferedExpression);
 		boolean conflict = false;
 		if (drexp != null)
 		{
-			conflict = drexp.HandleCodeSynthesis(squeue, handler, rdexpcn, ai);
+			conflict = drexp.HandleCodeSynthesis(squeue, expected, handler, rdexpcn, ai);
 		}
 		if (conflict)
 		{
 			return true;
 		}
 		CSNode tcn = new CSNode(CSNodeType.ReferedExpression);
-		conflict = this.type.HandleCodeSynthesis(squeue, handler, tcn, ai);
+		conflict = this.type.HandleCodeSynthesis(squeue, expected, handler, tcn, ai);
 		if (conflict)
 		{
 			return true;

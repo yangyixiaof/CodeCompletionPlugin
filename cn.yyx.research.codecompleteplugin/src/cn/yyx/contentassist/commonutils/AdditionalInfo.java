@@ -1,36 +1,20 @@
 package cn.yyx.contentassist.commonutils;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class AdditionalInfo {
 	
 	private String methodName = null;
-	private List<String> possibleArgType = null;
-	private String methodReturnType = null;
+	
+	private List<TypeCheck> tcs = new LinkedList<TypeCheck>();
 	
 	private String directlyMemberHint = null;
 	private boolean directlyMemberIsMethod = false;
-	private String directlyMemberType = null;
 	private String ModifiedMember = null;
 	
 	public AdditionalInfo() {
 		
-	}
-	
-	public List<String> getPossibleArgType() {
-		return possibleArgType;
-	}
-
-	public void setPossibleArgType(List<String> possibleArgType) {
-		this.possibleArgType = possibleArgType;
-	}
-
-	public String getMethodReturnType() {
-		return methodReturnType;
-	}
-
-	public void setMethodReturnType(String methodReturnType) {
-		this.methodReturnType = methodReturnType;
 	}
 
 	public String getMethodName() {
@@ -57,20 +41,25 @@ public class AdditionalInfo {
 		this.directlyMemberIsMethod = directlyMemberIsMethod;
 	}
 
-	public String getDirectlyMemberType() {
-		return directlyMemberType;
-	}
-
-	public void setDirectlyMemberType(String directlyMemberType) {
-		this.directlyMemberType = directlyMemberType;
-	}
-
 	public String getModifiedMember() {
 		return ModifiedMember;
 	}
 
 	public void setModifiedMember(String modifiedMember) {
 		ModifiedMember = modifiedMember;
+	}
+	
+	public void AddTypeCheck(TypeCheck tc)
+	{
+		tcs.add(tc);
+	}
+
+	public List<TypeCheck> getTcs() {
+		return tcs;
+	}
+
+	public void setTcs(List<TypeCheck> tcs) {
+		this.tcs = tcs;
 	}
 	
 }

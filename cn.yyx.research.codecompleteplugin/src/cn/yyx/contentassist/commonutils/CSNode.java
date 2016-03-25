@@ -59,6 +59,11 @@ public class CSNode {
 	public void setNext(CSNode next) {
 		this.next = next;
 	}
+	
+	public void AddOneData(String code, TypeCheck tc)
+	{
+		datas.put(code, tc);
+	}
 
 	public Map<String, TypeCheck> getDatas() {
 		return datas;

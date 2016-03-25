@@ -7,6 +7,7 @@ import cn.yyx.contentassist.commonutils.CSNode;
 import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class arrayAccessStatement extends statement{
 	
@@ -44,18 +45,29 @@ public class arrayAccessStatement extends statement{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, SynthesisHandler handler,
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
+		CSNode smt = new CSNode(CSNodeType.ReferedExpression);
 		boolean conflict = false;
 		CSNode csarr = new CSNode(CSNodeType.TempUsed);
-		conflict = rarr.HandleCodeSynthesis(squeue, handler, csarr, null);
+		conflict = rarr.HandleCodeSynthesis(squeue, expected, handler, csarr, null);
 		if (conflict)
 		{
 			return true;
 		}
 		
-		fin.append("[");
-		conflict = rexp.HandleCodeSynthesis(squeue, handler, fin, null);
+		AdditionalInfo nai = new AdditionalInfo();
+		TypeCheck iit = new TypeCheck();
+		iit.setExpreturntype("int");
+		iit.setExpreturntypeclass(int.class);
+		TypeCheck bigiit = new TypeCheck();
+		bigiit.setExpreturntype("java.lang.Integer");
+		bigiit.setExpreturntypeclass(Integer.class);
+		nai.AddTypeCheck(iit);
+		nai.AddTypeCheck(bigiit);
+		// fin.append("[");
+		CSNode cidx = new CSNode(CSNodeType.TempUsed);
+		conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, cidx, nai);
 		if (conflict)
 		{
 			return true;
@@ -64,7 +76,7 @@ public class arrayAccessStatement extends statement{
 		{
 			fin.append("]");
 		}
-		squeue.add(fin.toString());
+		squeue.add(smt);
 		return false;
 	}
 	

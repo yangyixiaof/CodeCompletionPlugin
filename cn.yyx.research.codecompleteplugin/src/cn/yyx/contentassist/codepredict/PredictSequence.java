@@ -7,6 +7,7 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 
 public class PredictSequence extends Sequence {
@@ -14,6 +15,7 @@ public class PredictSequence extends Sequence {
 	protected Queue<Sentence> predicts = new LinkedList<Sentence>();
 	protected Stack<Integer> cstack = new Stack<Integer>();
 	protected CodeSynthesisQueue sstack = new CodeSynthesisQueue();
+	protected Stack<TypeCheck> tpstack = new Stack<TypeCheck>();
 	
 	public PredictSequence(Sequence hint) {
 		this.last = hint.last;
@@ -29,6 +31,7 @@ public class PredictSequence extends Sequence {
 		this.predicts = (Queue<Sentence>) ((LinkedList<Sentence>)(current.predicts)).clone();
 		this.cstack = (Stack<Integer>) current.cstack.clone();
 		this.sstack = (CodeSynthesisQueue) current.sstack.clone();
+		this.tpstack = (Stack<TypeCheck>) tpstack.clone();
 	}
 	
 	public void PredictStart()
@@ -44,7 +47,7 @@ public class PredictSequence extends Sequence {
 		{
 			return true;
 		}
-		conflict = last.smt.HandleCodeSynthesis(sstack, handler, null, null);
+		conflict = last.smt.HandleCodeSynthesis(sstack, tpstack, handler, null, null);
 		return conflict;
 	}
 	
