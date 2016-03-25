@@ -56,27 +56,24 @@ public class arrayAccessStatement extends statement{
 			return true;
 		}
 		
-		AdditionalInfo nai = new AdditionalInfo();
 		TypeCheck iit = new TypeCheck();
-		iit.setExpreturntype("int");
-		iit.setExpreturntypeclass(int.class);
-		TypeCheck bigiit = new TypeCheck();
-		bigiit.setExpreturntype("java.lang.Integer");
-		bigiit.setExpreturntypeclass(Integer.class);
-		nai.AddTypeCheck(iit);
-		nai.AddTypeCheck(bigiit);
-		// fin.append("[");
+		iit.setExpreturntype("java.lang.Integer");
+		iit.setExpreturntypeclass(Integer.class);
+		
+		expected.push(iit);
 		CSNode cidx = new CSNode(CSNodeType.TempUsed);
-		conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, cidx, nai);
+		cidx.setPrefix("[");
+		conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, cidx, null);
 		if (conflict)
 		{
 			return true;
 		}
 		if (accessEnd)
 		{
-			fin.append("]");
+			cidx.setPostfix("]");
 		}
 		squeue.add(smt);
+		expected.pop();
 		return false;
 	}
 	
