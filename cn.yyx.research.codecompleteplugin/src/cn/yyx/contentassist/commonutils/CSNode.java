@@ -13,10 +13,6 @@ public class CSNode {
 	private String prefix = null;
 	private String postfix = null;
 	
-	public CSNode() {
-		this.contenttype = CSNodeType.RawStringContent;
-	}
-	
 	public CSNode(int contenttype) {
 		this.setContenttype(contenttype);
 	}

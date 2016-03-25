@@ -63,13 +63,16 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 		{
 			return true;
 		}
-		StringBuilder tsb = new StringBuilder();
-		conflict = this.type.HandleCodeSynthesis(squeue, handler, tsb, ai);
+		CSNode tcn = new CSNode(CSNodeType.ReferedExpression);
+		conflict = this.type.HandleCodeSynthesis(squeue, handler, tcn, ai);
 		if (conflict)
 		{
 			return true;
 		}
-		squeue.add(tsb.toString()+"()"+(drexp != null ? (" default " + rdexpsb.toString()) : ""));
+		CSNode res = new CSNode(CSNodeType.WholeStatement);
+		String content = tcn.GetFirstDataWithoutTypeCheck()+"()"+(drexp != null ? (" default " + rdexpcn.GetFirstDataWithoutTypeCheck()) : "");
+		res.AddPossibleCandidates(content, null);
+		squeue.add(res);
 		return false;
 	}
 	

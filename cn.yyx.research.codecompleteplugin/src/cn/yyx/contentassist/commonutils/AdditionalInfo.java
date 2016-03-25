@@ -4,7 +4,6 @@ import java.util.List;
 
 public class AdditionalInfo {
 	
-	private boolean firstInvokerInArgList;
 	private String methodName = null;
 	private List<String> possibleArgType = null;
 	private String methodReturnType = null;
@@ -18,14 +17,6 @@ public class AdditionalInfo {
 		
 	}
 	
-	public boolean isFirstInvokerInArgList() {
-		return firstInvokerInArgList;
-	}
-	
-	public void setFirstInvokerInArgList(boolean firstInvokerInArgList) {
-		this.firstInvokerInArgList = firstInvokerInArgList;
-	}
-
 	public List<String> getPossibleArgType() {
 		return possibleArgType;
 	}

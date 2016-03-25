@@ -22,14 +22,14 @@ public class CodeSynthesisHelper {
 			CSNode result, AdditionalInfo ai)
 	{
 		StringBuilder fin = new StringBuilder("break");
-		CSNode csn = new CSNode();
+		CSNode csn = new CSNode(CSNodeType.TempUsed);
 		boolean conflict = id.HandleCodeSynthesis(squeue, handler, csn, null);
 		if (conflict)
 		{
 			return true;
 		}
 		fin.append("break " + csn.GetFirstDataWithoutTypeCheck());
-		CSNode cs = new CSNode();
+		CSNode cs = new CSNode(CSNodeType.WholeStatement);
 		cs.AddPossibleCandidates(fin.toString(), null);
 		squeue.add(cs);
 		return false;

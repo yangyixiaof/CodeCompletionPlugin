@@ -41,6 +41,7 @@ import cn.yyx.contentassist.codeutils.catchClauseStatement;
 import cn.yyx.contentassist.codeutils.characterLiteral;
 import cn.yyx.contentassist.codeutils.classDeclarationStatement;
 import cn.yyx.contentassist.codeutils.classInnerDeclarationStatement;
+import cn.yyx.contentassist.codeutils.classInvoke;
 import cn.yyx.contentassist.codeutils.classOrInterfaceType;
 import cn.yyx.contentassist.codeutils.classRef;
 import cn.yyx.contentassist.codeutils.codeHole;
@@ -62,6 +63,7 @@ import cn.yyx.contentassist.codeutils.fieldAccess;
 import cn.yyx.contentassist.codeutils.fieldAccessStatement;
 import cn.yyx.contentassist.codeutils.finalFieldRef;
 import cn.yyx.contentassist.codeutils.finalVarRef;
+import cn.yyx.contentassist.codeutils.firstArg;
 import cn.yyx.contentassist.codeutils.floatingPointLiteral;
 import cn.yyx.contentassist.codeutils.forExpOverStatement;
 import cn.yyx.contentassist.codeutils.forIniOverStatement;
@@ -85,6 +87,7 @@ import cn.yyx.contentassist.codeutils.methodDeclarationStatement;
 import cn.yyx.contentassist.codeutils.methodInvocationStatement;
 import cn.yyx.contentassist.codeutils.methodReferenceStatement;
 import cn.yyx.contentassist.codeutils.nameStatement;
+import cn.yyx.contentassist.codeutils.newClassInvoke;
 import cn.yyx.contentassist.codeutils.nullLiteral;
 import cn.yyx.contentassist.codeutils.parameterizedType;
 import cn.yyx.contentassist.codeutils.partialEndArrayAccessStatement;
@@ -97,9 +100,11 @@ import cn.yyx.contentassist.codeutils.referedExpression;
 import cn.yyx.contentassist.codeutils.returnStatement;
 import cn.yyx.contentassist.codeutils.rightBraceStatement;
 import cn.yyx.contentassist.codeutils.rightParentheseStatement;
+import cn.yyx.contentassist.codeutils.selfClassMemberInvoke;
 import cn.yyx.contentassist.codeutils.simpleType;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.codeutils.stringLiteral;
+import cn.yyx.contentassist.codeutils.superClassMemberInvoke;
 import cn.yyx.contentassist.codeutils.switchCaseStatement;
 import cn.yyx.contentassist.codeutils.switchStatement;
 import cn.yyx.contentassist.codeutils.synchronizedStatement;
@@ -681,7 +686,57 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	public Integer visitFullEnd(Java8Parser.FullEndContext ctx) {
 		return visitChildren(ctx);
 	}
+	
+	@Override
+	public Integer visitSelfClassMemberInvoke(Java8Parser.SelfClassMemberInvokeContext ctx) {
+		Integer res = visitChildren(ctx);
+		referedExpression rexp = null;
+		ReferedExpressionContext rexpctx = ctx.referedExpression();
+		if (rexpctx != null)
+		{
+			rexp = (referedExpression) usedobj.poll();
+		}
+		selfClassMemberInvoke scmi = new selfClassMemberInvoke(rexp);
+		usedobj.add(scmi);
+		return res;
+	}
 
+	@Override
+	public Integer visitSuperClassMemberInvoke(Java8Parser.SuperClassMemberInvokeContext ctx) {
+		Integer res = visitChildren(ctx);
+		referedExpression rexp = null;
+		ReferedExpressionContext rexpctx = ctx.referedExpression();
+		if (rexpctx != null)
+		{
+			rexp = (referedExpression) usedobj.poll();
+		}
+		superClassMemberInvoke scmi = new superClassMemberInvoke(rexp);
+		usedobj.add(scmi);
+		return res;
+	}
+
+	@Override
+	public Integer visitNewClassInvoke(Java8Parser.NewClassInvokeContext ctx) {
+		Integer res = visitChildren(ctx);
+		referedExpression rexp = null;
+		ReferedExpressionContext rexpctx = ctx.referedExpression();
+		if (rexpctx != null)
+		{
+			rexp = (referedExpression) usedobj.poll();
+		}
+		newClassInvoke scmi = new newClassInvoke(rexp);
+		usedobj.add(scmi);
+		return res;
+	}
+	
+	@Override
+	public Integer visitFirstArg(Java8Parser.FirstArgContext ctx) {
+		Integer res = visitChildren(ctx);
+		classInvoke ci = (classInvoke) usedobj.poll();
+		usedobj.add(new firstArg(ci));
+		return res;
+	}
+	
 	@Override
 	public Integer visitArgumentList(Java8Parser.ArgumentListContext ctx) {
 		Integer res = visitChildren(ctx);

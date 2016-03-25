@@ -5,11 +5,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
-public class argumentList extends OneCode{
+public class argumentList implements OneCode{
 	
 	private List<referedExpression> el = new LinkedList<referedExpression>();
 	
@@ -73,8 +74,8 @@ public class argumentList extends OneCode{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
 		boolean conflict = false;
 		StringBuilder tsb = new StringBuilder("");
 		referedExpression invokerhint = el.get(0);
