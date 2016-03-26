@@ -7,14 +7,21 @@ import java.util.TreeMap;
 
 public class CSNodeHelper {
 	
-	public static Map<String, TypeCheck> ConcatTwoNodesDatas(CSNode one, CSNode two, int maxsize)
+	public static Map<String, TypeCheck> ConcatTwoNodesDatas(CSNode one, CSNode two, String connector, int maxsize)
 	{
+		if (connector == null) {
+			connector = "";
+		}
 		Map<String, TypeCheck> result = new TreeMap<String, TypeCheck>();
 		String onepre = one.getPrefix();
 		String onepost = one.getPostfix();
 		String twopre = two.getPrefix();
 		String twopost = two.getPostfix();
 		Set<String> codes = one.getDatas().keySet();
+		if (codes == null || codes.size() == 0)
+		{
+			return MapHelper.CloneDatas(two.getDatas());
+		}
 		Iterator<String> c1itr = codes.iterator();
 		while (c1itr.hasNext())
 		{
@@ -27,7 +34,7 @@ public class CSNodeHelper {
 			{
 				String c2 = c2itr.next();
 				String c2res = twopre + c2 + twopost;
-				String res = c1res + c2res;
+				String res = c1res + connector + c2res;
 				result.put(res, tc1);
 			}
 		}

@@ -74,7 +74,7 @@ public class arrayAccessStatement extends statement{
 			cidx.setPostfix("]");
 		}
 		
-		smt.setDatas(CSNodeHelper.ConcatTwoNodesDatas(csarr, cidx, -1));
+		smt.setDatas(CSNodeHelper.ConcatTwoNodesDatas(csarr, cidx, null, -1));
 		squeue.add(smt);
 		expected.pop();
 		return false;

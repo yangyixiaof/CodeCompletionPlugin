@@ -59,7 +59,7 @@ public class castExpressionStatement extends expressionStatement{
 			return true;
 		}
 		CSNode fin = new CSNode(CSNodeType.WholeStatement);
-		fin.setDatas(CSNodeHelper.ConcatTwoNodesDatas(ttp, resb, -1));
+		fin.setDatas(CSNodeHelper.ConcatTwoNodesDatas(ttp, resb, null, -1));
 		squeue.add(fin);
 		expected.pop();
 		return false;

@@ -2,11 +2,16 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeHelper;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class classOrInterfaceType extends type{
 	
@@ -35,26 +40,20 @@ public class classOrInterfaceType extends type{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
-		StringBuilder fin = new StringBuilder("");
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
 		Iterator<type> itr = tps.iterator();
 		while (itr.hasNext())
 		{
 			type t = itr.next();
-			StringBuilder tsb = new StringBuilder("");
-			boolean conflict = t.HandleCodeSynthesis(squeue, handler, tsb, null);
+			CSNode ttp = new CSNode(CSNodeType.TempUsed);
+			boolean conflict = t.HandleCodeSynthesis(squeue, expected, handler, ttp, null);
 			if (conflict)
 			{
 				return true;
 			}
-			fin.append(tsb.toString());
-			if (itr.hasNext())
-			{
-				fin.append(".");
-			}
+			result.setDatas(CSNodeHelper.ConcatTwoNodesDatas(ttp, result, ".", -1));
 		}
-		result.append(fin.toString());
 		return false;
 	}
 	
