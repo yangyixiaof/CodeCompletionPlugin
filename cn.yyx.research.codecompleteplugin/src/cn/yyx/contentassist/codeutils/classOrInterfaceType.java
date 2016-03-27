@@ -54,6 +54,7 @@ public class classOrInterfaceType extends type{
 			}
 			result.setDatas(CSNodeHelper.ConcatTwoNodesDatas(ttp, result, ".", -1));
 		}
+		CSNodeHelper.HandleTypeByTypeCodes(result);
 		return false;
 	}
 	

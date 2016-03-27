@@ -70,5 +70,10 @@ public class CSNodeHelper {
 		}
 		return result;
 	}
+
+	public static void HandleTypeByTypeCodes(CSNode result) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
