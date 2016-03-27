@@ -4,6 +4,7 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
@@ -52,23 +53,11 @@ public class endOfStatement extends statement{
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
-		while (squeue.CanBeMerged())
-		{
-			String last = squeue.getLast();
-			String sndlast = squeue.GetLastButOne();
-			sndlast = sndlast + last;
-			boolean hole = squeue.GetLastHoleButOne();
-			if (hole)
-			{
-				squeue.MergeLast(sndlast);
-			}
-			else
-			{
-				squeue.MergeLast();
-			}
-		}
-		squeue.SetLast(squeue.getLast() + ";");
-		return false;
+		CSNode cs = new CSNode(CSNodeType.SymbolMark);
+		cs.AddOneData(";", null);
+		squeue.add(cs);
+		boolean conflict = squeue.MergeBackwardAsFarAsItCan();
+		return conflict;
 	}
 	
 }

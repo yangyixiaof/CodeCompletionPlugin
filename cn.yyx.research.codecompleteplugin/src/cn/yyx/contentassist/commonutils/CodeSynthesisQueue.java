@@ -85,11 +85,6 @@ public class CodeSynthesisQueue {
 		}
 	}
 	
-	public CSNode GetLastButOne()
-	{
-		return last.getPrev();
-	}
-	
 	public boolean CanBeMerged()
 	{
 		if (head == last)
@@ -97,6 +92,60 @@ public class CodeSynthesisQueue {
 			return false;
 		}
 		return true;
+	}
+
+	public boolean MergeBackwardAsFarAsItCan() {
+		while (CanBeMerged())
+		{
+			CSNode last = getLast();
+			CSNode sndlast = last.getPrev();
+			boolean lasthandled = false;
+			if (last.isConnect())
+			{
+				boolean conflict = MergeLastTwo();
+				if (conflict)
+				{
+					return true;
+				}
+				lasthandled = true;
+			}
+			if (sndlast.isHashole())
+			{
+				if (!lasthandled)
+				{
+					boolean conflict = MergeLastTwo();
+					if (conflict)
+					{
+						return true;
+					}
+				}
+			}
+			else
+			{
+				if (sndlast.isConnect())
+				{
+					if (!lasthandled)
+					{
+						boolean conflict = MergeLastTwo();
+						if (conflict)
+						{
+							return true;
+						}
+					}
+					boolean conflict = MergeLastTwo();
+					if (conflict)
+					{
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean MergeLastTwo() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	/*public void MergeLast(T merge) {

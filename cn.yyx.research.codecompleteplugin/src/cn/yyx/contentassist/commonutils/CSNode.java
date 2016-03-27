@@ -17,7 +17,7 @@ public class CSNode {
 	
 	public CSNode(int contenttype) {
 		this.setContenttype(contenttype);
-		if (contenttype == CSNodeType.SymbolMark)
+		if (contenttype == CSNodeType.SymbolMark || contenttype == CSNodeType.WholeStatement || contenttype == CSNodeType.HalfFullExpression)
 		{
 			this.connect = true;
 		}
