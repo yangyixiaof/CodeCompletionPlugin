@@ -11,10 +11,11 @@ import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;
 
 public class TypeCheckHelper {
 	
-	public static RefAndModifiedMember GetMostLikelyRef(ContextHandler ch, Map<String, String> po, String hint, boolean hintismethod, String matchtype)
+	public static RefAndModifiedMember GetMostLikelyRef(ContextHandler ch, Map<String, String> po, String hint, boolean hintismethod)
 	{
 		String maxRef = null;
 		String maxMember = null;
+		String maxMemberType = null;
 		Set<String> keys = po.keySet();
 		Iterator<String> itr = keys.iterator();
 		double maxsimilar = 0;
@@ -37,6 +38,7 @@ public class TypeCheckHelper {
 						maxsimilar = similar;
 						maxMember = cmp;
 						maxRef = refname;
+						maxMemberType = mm.getReturntype();
 					}
 				}
 			}
@@ -54,12 +56,13 @@ public class TypeCheckHelper {
 						maxsimilar = similar;
 						maxMember = cmp;
 						maxRef = refname;
+						maxMemberType = fm.getType();
 					}
 				}
 			}
 			
 		}
-		RefAndModifiedMember result = new RefAndModifiedMember(maxRef, maxMember);
+		RefAndModifiedMember result = new RefAndModifiedMember(maxRef, maxMember, maxMemberType);
 		return result;
 	}
 	

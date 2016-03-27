@@ -1,14 +1,15 @@
 package cn.yyx.contentassist.codeutils;
 
 import java.util.Map;
+import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CodeSynthesisHelper;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
-import cn.yyx.contentassist.commonutils.ErrorUtil;
-import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheckHelper;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class commonVarRef extends identifier{
 	
@@ -39,14 +40,11 @@ public class commonVarRef extends identifier{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
-		ErrorUtil.CheckDirectlyMemberHintInAINotNull(ai);
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		// ErrorUtil.CheckDirectlyMemberHintInAINotNull(ai);
 		Map<String, String> po = handler.getScopeOffsetRefHandler().HandleCommonVariableRef(scope, off);
-		String hint = ai.getDirectlyMemberHint();
-		RefAndModifiedMember ramm = TypeCheckHelper.GetMostLikelyRef(handler.getContextHandler(), po, hint, ai.isDirectlyMemberIsMethod(), ai.getDirectlyMemberType());
-		result.append(ramm.getRef());
-		ai.setModifiedMember(ramm.getMember());
+		CodeSynthesisHelper.HandleVarRefCodeSynthesis(po, squeue, expected, handler, result, ai);
 		return false;
 	}
 	

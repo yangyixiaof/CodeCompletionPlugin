@@ -4,10 +4,12 @@ public class RefAndModifiedMember {
 	
 	private String ref = null;
 	private String member = null;
+	private String membertype = null;
 	
-	public RefAndModifiedMember(String ref, String member) {
+	public RefAndModifiedMember(String ref, String member, String membertype) {
 		this.setRef(ref);
 		this.setMember(member);
+		this.setMembertype(membertype);
 	}
 
 	public String getRef() {
@@ -24,6 +26,14 @@ public class RefAndModifiedMember {
 
 	public void setMember(String member) {
 		this.member = member;
+	}
+
+	public String getMembertype() {
+		return membertype;
+	}
+
+	public void setMembertype(String membertype) {
+		this.membertype = membertype;
 	}
 	
 }

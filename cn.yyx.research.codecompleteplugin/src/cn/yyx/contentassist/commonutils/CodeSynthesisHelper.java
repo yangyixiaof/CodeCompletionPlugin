@@ -1,5 +1,8 @@
 package cn.yyx.contentassist.commonutils;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 import cn.yyx.contentassist.codeutils.identifier;
@@ -45,6 +48,39 @@ public class CodeSynthesisHelper {
 			sb.append("[]");
 		}
 		return sb.toString();
+	}
+	
+	public static void HandleVarRefCodeSynthesis(Map<String, String> po, CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai)
+	{
+		if (ai != null && ai.getDirectlyMemberHint() != null)
+		{
+			String hint = ai.getDirectlyMemberHint();
+			RefAndModifiedMember ramm = TypeCheckHelper.GetMostLikelyRef(handler.getContextHandler(), po, hint, ai.isDirectlyMemberIsMethod());
+			String ref = ramm.getRef();
+			String member = ramm.getMember();
+			String membertype = ramm.getMembertype();
+			Class<?> c = TypeResolver.ResolveType(membertype);
+			TypeCheck tc = new TypeCheck();
+			tc.setExpreturntype(membertype);
+			tc.setExpreturntypeclass(c);
+			result.AddOneData(ref + "." + member, tc);
+		}
+		else
+		{
+			Set<String> codes = po.keySet();
+			Iterator<String> citr = codes.iterator();
+			while (citr.hasNext())
+			{
+				String code = citr.next();
+				String type = po.get(code);
+				Class<?> c = TypeResolver.ResolveType(type);
+				TypeCheck tc = new TypeCheck();
+				tc.setExpreturntype(type);
+				tc.setExpreturntypeclass(c);
+				result.AddOneData(code, tc);
+			}
+		}
 	}
 	
 }
