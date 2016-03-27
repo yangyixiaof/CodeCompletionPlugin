@@ -1,5 +1,9 @@
 package cn.yyx.contentassist.commonutils;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author Skip
  * @version 1.0
@@ -97,7 +101,6 @@ public class CodeSynthesisQueue {
 	public boolean MergeBackwardAsFarAsItCan() {
 		while (CanBeMerged())
 		{
-			CSNode last = getLast();
 			CSNode sndlast = last.getPrev();
 			boolean lasthandled = false;
 			if (last.isConnect())
@@ -145,7 +148,34 @@ public class CodeSynthesisQueue {
 
 	private boolean MergeLastTwo() {
 		// TODO Auto-generated method stub
-		
+		CSNode res = new CSNode(CSNodeType.TempMergeUnknown);
+		CSNode sndlast = last.getPrev();
+		if (sndlast.isMaytypereplacer())
+		{
+			Map<String, TypeCheck> po = last.getDatas();
+			Set<String> codes = po.keySet();
+			Iterator<String> citr = codes.iterator();
+			while (citr.hasNext())
+			{
+				String code = citr.next();
+				TypeCheck tc = po.get(code);
+				String rt = tc.getExpreturntype();
+				res.AddOneData(sndlast.getPrefix() + rt + sndlast.getPostfix() + last.getPrefix() + code + last.getPostfix(), tc);
+			}
+		}
+		else
+		{
+			Map<String, TypeCheck> pores = CSNodeHelper.ConcatTwoNodesDatasWithTypeChecking(sndlast, last, -1);
+			if (pores.size() == 0)
+			{
+				return true;
+			}
+			res.setDatas(pores);
+		}
+		res.setPrev(sndlast.getPrev());
+		sndlast.getPrev().setNext(res);
+		add(res);
+		return false;
 	}
 	
 	/*public void MergeLast(T merge) {

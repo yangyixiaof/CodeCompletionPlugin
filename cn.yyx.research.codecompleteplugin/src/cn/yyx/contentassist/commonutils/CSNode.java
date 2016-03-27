@@ -14,6 +14,7 @@ public class CSNode {
 	private String postfix = null;
 	private boolean hashole = false;
 	private boolean connect = false;
+	private boolean maytypereplacer = false;
 	
 	public CSNode(int contenttype) {
 		this.setContenttype(contenttype);
@@ -96,7 +97,11 @@ public class CSNode {
 	}
 
 	public void setPrefix(String prefix) {
-		this.prefix = prefix;
+		if (this.prefix == null)
+		{
+			this.prefix = "";
+		}
+		this.prefix = prefix + this.prefix;
 	}
 
 	public String getPostfix() {
@@ -106,9 +111,13 @@ public class CSNode {
 		}
 		return postfix;
 	}
-
+	
 	public void setPostfix(String postfix) {
-		this.postfix = postfix;
+		if (this.postfix == null)
+		{
+			this.postfix = "";
+		}
+		this.postfix = this.postfix + postfix;
 	}
 
 	public boolean isHashole() {
@@ -125,6 +134,14 @@ public class CSNode {
 
 	public void setConnect(boolean connect) {
 		this.connect = connect;
+	}
+
+	public boolean isMaytypereplacer() {
+		return maytypereplacer;
+	}
+
+	public void setMaytypereplacer(boolean maytypereplacer) {
+		this.maytypereplacer = maytypereplacer;
 	}
 	
 }
