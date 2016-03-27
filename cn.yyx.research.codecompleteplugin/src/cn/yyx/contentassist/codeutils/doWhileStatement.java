@@ -4,6 +4,7 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
@@ -43,9 +44,16 @@ public class doWhileStatement extends statement{
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
-		StringBuilder resb = new StringBuilder("");
-		rexp.HandleCodeSynthesis(squeue, handler, resb, null);
-		squeue.add("do {\n\n} while (" + resb.toString() + ");");
+		CSNode ts = new CSNode(CSNodeType.TempUsed);
+		boolean conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, ts, null);
+		if (conflict)
+		{
+			return true;
+		}
+		ts.setContenttype(CSNodeType.WholeStatement);
+		ts.setPrefix("do {\n\n} while (");
+		ts.setPostfix(");");
+		squeue.add(ts);
 		return false;
 	}
 	
