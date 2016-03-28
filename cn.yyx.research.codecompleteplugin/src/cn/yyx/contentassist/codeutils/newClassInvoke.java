@@ -19,9 +19,19 @@ public class newClassInvoke extends classInvoke {
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
+		String name = ai.getMethodName();
 		if (rexp == null)
 		{
-			TODO
+			result.AddOneData("new "+name, null);
+		}
+		else
+		{
+			boolean conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, result, ai);
+			if (conflict)
+			{
+				return true;
+			}
+			result.setPostfix(".new "+name);
 		}
 		return false;
 	}
