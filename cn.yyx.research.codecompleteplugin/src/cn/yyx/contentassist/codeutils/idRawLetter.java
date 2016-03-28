@@ -1,11 +1,15 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Stack;
+
 import cn.yyx.contentassist.codepredict.PredictMetaInfo;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CodeSynthesisHelper;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class idRawLetter extends identifier{
 	
@@ -39,9 +43,11 @@ public class idRawLetter extends identifier{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
-		return CodeSynthesisHelper.HandleRawTextSynthesis(text, squeue, handler, result, null);
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		result.setContenttype(CSNodeType.SymbolMark);
+		result.AddOneData(text+"", null);
+		return false;
 	}
 	
 }

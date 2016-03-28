@@ -15,4 +15,6 @@ public class aaaaImportantMustTodo {
 	
 	// TODO Question: int a[][][] = new int[][][]{......}; the [][][] behind new should be considered. This needs the whole effort. But it may be included in ArrayType.
 	// TODO reminder to add '{' and '}' to the begin and end of type.
+	
+	// TODO if has hint, must handled directly add the modified to result.
 }

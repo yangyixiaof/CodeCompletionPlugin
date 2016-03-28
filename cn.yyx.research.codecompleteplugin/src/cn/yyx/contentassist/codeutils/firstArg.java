@@ -1,9 +1,12 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Stack;
+
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNode;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class firstArg implements OneCode {
 	
@@ -35,11 +38,11 @@ public class firstArg implements OneCode {
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, SynthesisHandler handler, CSNode result,
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler, CSNode result,
 			AdditionalInfo ai) {
 		if (ci != null)
 		{
-			return ci.HandleCodeSynthesis(squeue, handler, result, ai);
+			return ci.HandleCodeSynthesis(squeue, expected, handler, result, ai);
 		}
 		// all null means error.
 		return true;

@@ -1,8 +1,13 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Stack;
+
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class fieldAccess extends referedExpression{
 	
@@ -33,19 +38,16 @@ public class fieldAccess extends referedExpression{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
-		StringBuilder idsb = new StringBuilder("");
-		id.HandleCodeSynthesis(squeue, handler, idsb, null);
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		CSNode idcs = new CSNode(CSNodeType.TempUsed);
+		id.HandleCodeSynthesis(squeue, expected, handler, idcs, null);
 		AdditionalInfo nai = new AdditionalInfo();
-		nai.setDirectlyMemberHint(idsb.toString());
+		nai.setDirectlyMemberHint(idcs.GetFirstDataWithoutTypeCheck());
 		nai.setDirectlyMemberIsMethod(false);
-		StringBuilder resb = new StringBuilder("");
-		rexp.HandleCodeSynthesis(squeue, handler, resb, nai);
-		String member = nai.getModifiedMember();
-		String ref = resb.toString();
-		result.append(ref + "." + member);
-		return false;
+		result.setContenttype(CSNodeType.HalfFullExpression);
+		boolean conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, result, nai);
+		return conflict;
 	}
 	
 }

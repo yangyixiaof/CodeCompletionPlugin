@@ -3,8 +3,11 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class fieldAccessStatement extends expressionStatement{
 	
@@ -41,11 +44,11 @@ public class fieldAccessStatement extends expressionStatement{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
-		StringBuilder fasb = new StringBuilder("");
-		fa.HandleCodeSynthesis(squeue, handler, fasb, null);
-		squeue.add(fasb.toString());
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		CSNode fcs = new CSNode(CSNodeType.WholeStatement);
+		fa.HandleCodeSynthesis(squeue, expected, handler, fcs, null);
+		squeue.add(fcs);
 		return false;
 	}
 	
