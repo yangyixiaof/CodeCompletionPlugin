@@ -32,6 +32,10 @@ public class CodeSynthesisQueue {
 	}
 	
 	public void add(CSNode data) {
+		if (!data.isUsed())
+		{
+			return;
+		}
 		if (isEmpty()) {
 			head = data;
 			last = head;

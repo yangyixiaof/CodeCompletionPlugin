@@ -3,6 +3,12 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.PredictMetaInfo;
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class ifStatement extends statement{
 	
@@ -31,13 +37,32 @@ public class ifStatement extends statement{
 	}
 
 	@Override
-	public void HandleOverSignal(Stack<Integer> cstack) {
+	public boolean HandleOverSignal(Stack<Integer> cstack) {
 		int waitkind = cstack.peek();
 		if (waitkind == PredictMetaInfo.AllKindWaitingOver)
 		{
 			cstack.pop();
 		}
 		cstack.push(PredictMetaInfo.IfOver);
+		return false;
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		// TODO Auto-generated method stub
+		TypeCheck tc = new TypeCheck();
+		tc.setExpreturntype("Boolean");
+		tc.setExpreturntypeclass(Boolean.class);
+		expected.add(tc);
+		
+		CSNode recs = new CSNode(CSNodeType.WholeStatement);
+		rexp.HandleCodeSynthesis(squeue, expected, handler, recs, ai);
+		recs.setPrefix("if (");
+		recs.setPostfix(") {\n}");
+		
+		expected.pop();
+		return false;
 	}
 	
 }

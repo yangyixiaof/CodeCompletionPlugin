@@ -15,6 +15,7 @@ public class CSNode {
 	private boolean hashole = false;
 	private boolean connect = false;
 	private boolean maytypereplacer = false;
+	private boolean used = true;
 	
 	public CSNode(int contenttype) {
 		this.setContenttype(contenttype);
@@ -143,5 +144,19 @@ public class CSNode {
 	public void setMaytypereplacer(boolean maytypereplacer) {
 		this.maytypereplacer = maytypereplacer;
 	}
+
+	public boolean isUsed() {
+		return used;
+	}
+
+	public void setUsed(boolean used) {
+		this.used = used;
+	}
+
+	/*public void setBooleanValueByCSNode(CSNode rtcs) {
+		this.hashole = rtcs.hashole;
+		this.connect = rtcs.connect;
+		this.maytypereplacer = rtcs.maytypereplacer;
+	}*/
 	
 }

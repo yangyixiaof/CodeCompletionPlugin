@@ -34,6 +34,7 @@ public class codeHole extends identifier{
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
+		result.setUsed(false);
 		squeue.getLast().setHashole(true);
 		return false;
 	}
