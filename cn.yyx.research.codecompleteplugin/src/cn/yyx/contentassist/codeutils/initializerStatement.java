@@ -36,7 +36,6 @@ public class initializerStatement extends statement{
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
-		
 		return false;
 	}
 	
