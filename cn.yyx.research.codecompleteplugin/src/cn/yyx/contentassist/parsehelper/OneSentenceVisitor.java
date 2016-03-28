@@ -115,6 +115,7 @@ import cn.yyx.contentassist.codeutils.unaryOperator;
 import cn.yyx.contentassist.codeutils.unionType;
 import cn.yyx.contentassist.codeutils.variableDeclarationHolderStatement;
 import cn.yyx.contentassist.codeutils.variableDeclarationStatement;
+import cn.yyx.contentassist.codeutils.virtualInferredType;
 import cn.yyx.contentassist.codeutils.whileStatement;
 import cn.yyx.contentassist.codeutils.wildCardType;
 
@@ -785,6 +786,13 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitType(Java8Parser.TypeContext ctx) {
+		return visitChildren(ctx);
+	}
+	
+
+	@Override
+	public Integer visitVirtualInferredType(Java8Parser.VirtualInferredTypeContext ctx) {
+		usedobj.add(new virtualInferredType());
 		return visitChildren(ctx);
 	}
 

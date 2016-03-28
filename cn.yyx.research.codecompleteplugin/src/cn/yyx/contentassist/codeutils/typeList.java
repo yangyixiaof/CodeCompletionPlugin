@@ -5,7 +5,7 @@ import java.util.List;
 
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 
-public class typeList extends OneCode {
+public class typeList implements OneCode {
 	
 	private List<type> tps = new LinkedList<type>();
 	

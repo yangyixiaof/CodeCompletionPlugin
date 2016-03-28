@@ -2,6 +2,13 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSLeftParenInfoNode;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
+
 public class leftParentheseStatement extends statement{
 	
 	int count = 0;
@@ -29,7 +36,16 @@ public class leftParentheseStatement extends statement{
 	}
 
 	@Override
-	public void HandleOverSignal(Stack<Integer> cstack) {
+	public boolean HandleOverSignal(Stack<Integer> cstack) {
+		return false;
 	}
 
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		CSLeftParenInfoNode cpin = new CSLeftParenInfoNode(count);
+		squeue.add(cpin);
+		return false;
+	}
+	
 }

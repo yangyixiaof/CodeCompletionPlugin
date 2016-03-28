@@ -2,6 +2,12 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
+
 public class leftBraceStatement extends statement{
 	
 	int count = 0;
@@ -29,8 +35,16 @@ public class leftBraceStatement extends statement{
 	}
 
 	@Override
-	public void HandleOverSignal(Stack<Integer> cstack) {
+	public boolean HandleOverSignal(Stack<Integer> cstack) {
 		cstack.pop();
+		return false;
 	}
 
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		// should do nothing.
+		return false;
+	}
+	
 }
