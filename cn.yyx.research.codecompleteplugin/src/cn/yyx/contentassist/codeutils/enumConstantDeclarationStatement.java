@@ -3,8 +3,11 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class enumConstantDeclarationStatement extends statement{
 	
@@ -43,23 +46,24 @@ public class enumConstantDeclarationStatement extends statement{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
-		StringBuilder fin = new StringBuilder("");
-		StringBuilder idsb = new StringBuilder("");
-		id.HandleCodeSynthesis(squeue, handler, idsb, null);
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		CSNode idcs = new CSNode(CSNodeType.TempUsed);
+		boolean conflict = id.HandleCodeSynthesis(squeue, expected, handler, idcs, null);
 		if (arglist == null)
 		{
-			fin.append(idsb.toString());
+			idcs.setContenttype(CSNodeType.WholeStatement);
+			squeue.add(idcs);
 		}
 		else
 		{
 			AdditionalInfo nai = new AdditionalInfo();
-			nai.setMethodName(idsb.toString());
-			arglist.HandleCodeSynthesis(squeue, handler, fin, nai);
+			nai.setMethodName(idcs.GetFirstDataWithoutTypeCheck());
+			CSNode acs = new CSNode(CSNodeType.WholeStatement);
+			conflict = arglist.HandleCodeSynthesis(squeue, expected, handler, acs, nai);
+			squeue.add(acs);
 		}
-		squeue.add(fin.toString());
-		return false;
+		return conflict;
 	}
 	
 }

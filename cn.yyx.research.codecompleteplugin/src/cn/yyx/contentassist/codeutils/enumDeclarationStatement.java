@@ -3,8 +3,11 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class enumDeclarationStatement extends statement{
 	
@@ -42,10 +45,13 @@ public class enumDeclarationStatement extends statement{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
-		StringBuilder idsb = new StringBuilder("");
-		squeue.add("public enum " + idsb.toString() + " {\n}");
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		CSNode idcs = new CSNode(CSNodeType.WholeStatement);
+		id.HandleCodeSynthesis(squeue, expected, handler, idcs, ai);
+		idcs.setPrefix("public enum ");
+		idcs.setPostfix(" {\n}");
+		squeue.add(idcs);
 		return false;
 	}
 	

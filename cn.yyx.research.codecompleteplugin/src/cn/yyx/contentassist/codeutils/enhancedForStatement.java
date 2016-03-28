@@ -3,16 +3,19 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class enhancedForStatement extends statement{
 	
-	type rt = null;
+	type tp = null;
 	referedExpression rexp = null;
 	
 	public enhancedForStatement(type rt, referedExpression rexp) {
-		this.rt = rt;
+		this.tp = rt;
 		this.rexp = rexp;
 	}
 
@@ -29,7 +32,7 @@ public class enhancedForStatement extends statement{
 	public double Similarity(OneCode t) {
 		if (t instanceof enhancedForStatement)
 		{
-			return 0.4 + 0.6*(0.6*rt.Similarity(((enhancedForStatement) t).rt) + 0.4*(rexp.Similarity(((enhancedForStatement) t).rexp)));
+			return 0.4 + 0.6*(0.6*tp.Similarity(((enhancedForStatement) t).tp) + 0.4*(rexp.Similarity(((enhancedForStatement) t).rexp)));
 		}
 		return 0;
 	}
@@ -40,13 +43,17 @@ public class enhancedForStatement extends statement{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
-		StringBuilder tpsb = new StringBuilder("");
-		rt.HandleCodeSynthesis(squeue, handler, tpsb, null);
-		StringBuilder resb = new StringBuilder("");
-		rexp.HandleCodeSynthesis(squeue, handler, resb, null);
-		squeue.add("for (" + tpsb.toString() + " et" + " : " + resb.toString() + ") {\n}");
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		CSNode tpcs = new CSNode(CSNodeType.HalfFullExpression);
+		tp.HandleCodeSynthesis(squeue, expected, handler, tpcs, null);
+		tpcs.setMaytypereplacer(true);
+		tpcs.setPrefix("for (");
+		tpcs.setPostfix(" et : ");
+		CSNode rexpcs = new CSNode(CSNodeType.HalfFullExpression);
+		rexp.HandleCodeSynthesis(squeue, expected, handler, rexpcs, null);
+		rexpcs.setPrefix("");
+		rexpcs.setPostfix(") {\n}");
 		return false;
 	}
 	

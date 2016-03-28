@@ -141,13 +141,17 @@ public class CodeSynthesisQueue {
 						return true;
 					}
 				}
+				else
+				{
+					SkipSecondLast();
+					// help info may cause this to run.
+				}
 			}
 		}
 		return false;
 	}
 
 	private boolean MergeLastTwo() {
-		// TODO Auto-generated method stub
 		CSNode res = new CSNode(CSNodeType.TempMergeUnknown);
 		CSNode sndlast = last.getPrev();
 		if (sndlast.isMaytypereplacer())
@@ -178,19 +182,10 @@ public class CodeSynthesisQueue {
 		return false;
 	}
 	
-	/*public void MergeLast(T merge) {
-		last.getPrev().data = merge;
-		last.getPrev().hasHole = false;
-		last.getPrev().setNext(null);
-		last = last.getPrev();
+	private void SkipSecondLast()
+	{
+		last.getPrev().getPrev().setNext(last);
+		last.setPrev(last.getPrev().getPrev());
 	}
-
-	public void MergeLast() {
-		// skip prev data.
-		last.getPrev().data = last.data;
-		last.getPrev().hasHole = false;
-		last.getPrev().setNext(null);
-		last = last.getPrev();
-	}*/
 	
 }

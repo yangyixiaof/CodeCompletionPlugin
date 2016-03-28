@@ -144,7 +144,7 @@ public class argumentList implements OneCode{
 				}
 			}
 			sb.append(")");
-			resdatas.put(pc, retandparamstypes);
+			resdatas.put(sb.toString(), retandparamstypes);
 		}
 		result.setDatas(resdatas);
 		expected.pop();

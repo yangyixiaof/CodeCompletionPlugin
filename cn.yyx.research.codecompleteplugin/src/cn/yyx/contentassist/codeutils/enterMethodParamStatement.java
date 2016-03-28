@@ -3,8 +3,11 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSEnterParamInfoNode;
+import cn.yyx.contentassist.commonutils.CSNode;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class enterMethodParamStatement extends statement{
 	
@@ -38,9 +41,10 @@ public class enterMethodParamStatement extends statement{
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
-		squeue.add("@Em", times);
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		CSEnterParamInfoNode cs = new CSEnterParamInfoNode(times);
+		squeue.add(cs);
 		return false;
 	}
 	
