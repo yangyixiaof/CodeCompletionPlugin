@@ -10,6 +10,11 @@ public class TypeCheck {
 	private LinkedList<String> expargstypes = null;
 	private LinkedList<Class<?>> expargstypesclasses = null;
 	
+	public void addExpreturntype(String expreturntype) {
+		this.expreturntype = expreturntype;
+		// TODO get Class<?>
+	}
+	
 	public String getExpreturntype() {
 		return expreturntype;
 	}

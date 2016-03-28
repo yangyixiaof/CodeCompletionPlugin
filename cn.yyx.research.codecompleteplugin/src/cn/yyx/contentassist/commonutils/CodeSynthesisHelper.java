@@ -56,7 +56,7 @@ public class CodeSynthesisHelper {
 		if (ai != null && ai.getDirectlyMemberHint() != null)
 		{
 			String hint = ai.getDirectlyMemberHint();
-			RefAndModifiedMember ramm = TypeCheckHelper.GetMostLikelyRef(handler.getContextHandler(), po, hint, ai.isDirectlyMemberIsMethod());
+			RefAndModifiedMember ramm = SpecificationHelper.GetMostLikelyRef(handler.getContextHandler(), po, hint, ai.isDirectlyMemberIsMethod());
 			String ref = ramm.getRef();
 			String member = ramm.getMember();
 			String membertype = ramm.getMembertype();
