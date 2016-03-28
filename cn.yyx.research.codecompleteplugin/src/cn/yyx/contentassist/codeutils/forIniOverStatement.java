@@ -4,8 +4,11 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.PredictMetaInfo;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class forIniOverStatement extends statement{
 
@@ -41,11 +44,13 @@ public class forIniOverStatement extends statement{
 		cstack.push(PredictMetaInfo.CommonForInitWaitingOver);
 		return false;
 	}
-
+	
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue<String> squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai) {
-		squeue.add(";", true, 0);
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		CSNode cs = new CSNode(CSNodeType.SymbolMark);
+		cs.AddOneData(";", null);
+		squeue.add(cs);
 		return false;
 	}
 	
