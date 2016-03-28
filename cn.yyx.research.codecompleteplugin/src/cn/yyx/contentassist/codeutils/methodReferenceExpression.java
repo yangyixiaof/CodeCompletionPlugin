@@ -4,48 +4,34 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNode;
-import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
 
-public class nameStatement extends expressionStatement{
+public class methodReferenceExpression implements OneCode{
 	
-	identifier name = null;
+	referedExpression rexp = null;
 	
-	public nameStatement(identifier name) {
-		this.name = name;
+	public methodReferenceExpression(referedExpression rexp) {
+		this.rexp = rexp;
 	}
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		if (t instanceof nameStatement)
-		{
-			return true;
-		}
+		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		if (t instanceof nameStatement)
-		{
-			return 1;
-		}
+		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public boolean HandleOverSignal(Stack<Integer> cstack) {
-		return false;
 	}
 
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
-		CSNode fcs = new CSNode(CSNodeType.WholeStatement);
-		name.HandleCodeSynthesis(squeue, expected, handler, fcs, ai);
-		squeue.add(fcs);
+		// TODO Auto-generated method stub
 		return false;
 	}
 

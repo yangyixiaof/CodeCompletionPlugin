@@ -2,6 +2,13 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
+
 public class methodInvocationStatement extends expressionStatement{
 	
 	identifier name = null;
@@ -34,7 +41,26 @@ public class methodInvocationStatement extends expressionStatement{
 	}
 	
 	@Override
-	public void HandleOverSignal(Stack<Integer> cstack) {
+	public boolean HandleOverSignal(Stack<Integer> cstack) {
+		return false;
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		CSNode nacs = new CSNode(CSNodeType.ReferedExpression);
+		boolean conflict = name.HandleCodeSynthesis(squeue, expected, handler, nacs, ai);
+		if (conflict)
+		{
+			return true;
+		}
+		AdditionalInfo nai = new AdditionalInfo();
+		nai.setDirectlyMemberHint(nacs.GetFirstDataWithoutTypeCheck());
+		nai.setDirectlyMemberIsMethod(true);
+		CSNode fcs = new CSNode(CSNodeType.WholeStatement);
+		argList.HandleCodeSynthesis(squeue, expected, handler, fcs, nai);
+		squeue.add(fcs);
+		return false;
 	}
 	
 }

@@ -2,6 +2,13 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
+
 public class methodDeclarationStatement extends statement{
 	
 	typeList typelist = null;
@@ -34,7 +41,29 @@ public class methodDeclarationStatement extends statement{
 	}
 	
 	@Override
-	public void HandleOverSignal(Stack<Integer> cstack) {
+	public boolean HandleOverSignal(Stack<Integer> cstack) {
+		return false;
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		CSNode nacs = new CSNode(CSNodeType.ReferedExpression);
+		boolean conflict = name.HandleCodeSynthesis(squeue, expected, handler, nacs, ai);
+		if (conflict)
+		{
+			return true;
+		}
+		CSNode tpscs = new CSNode(CSNodeType.ReferedExpression);
+		conflict = typelist.HandleCodeSynthesis(squeue, expected, handler, tpscs, ai);
+		if (conflict)
+		{
+			return true;
+		}
+		CSNode fcs = new CSNode(CSNodeType.WholeStatement);
+		fcs.AddOneData(nacs.GetFirstDataWithoutTypeCheck() + tpscs.GetFirstDataWithoutTypeCheck(), null);
+		squeue.add(fcs);
+		return false;
 	}
 	
 }

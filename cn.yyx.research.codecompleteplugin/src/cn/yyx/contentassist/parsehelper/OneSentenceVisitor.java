@@ -13,6 +13,7 @@ import SJ8Parse.Java8Parser.EndOfArrayDeclarationIndexExpressionContext;
 import SJ8Parse.Java8Parser.ExtendBoundContext;
 import SJ8Parse.Java8Parser.IntersectionFirstTypeContext;
 import SJ8Parse.Java8Parser.IntersectionSecondTypeContext;
+import SJ8Parse.Java8Parser.MethodReferenceExpressionContext;
 import SJ8Parse.Java8Parser.OffsetContext;
 import SJ8Parse.Java8Parser.ParameterizedTypeContext;
 import SJ8Parse.Java8Parser.ReferedExpressionContext;
@@ -85,6 +86,7 @@ import cn.yyx.contentassist.codeutils.literal;
 import cn.yyx.contentassist.codeutils.literalStatement;
 import cn.yyx.contentassist.codeutils.methodDeclarationStatement;
 import cn.yyx.contentassist.codeutils.methodInvocationStatement;
+import cn.yyx.contentassist.codeutils.methodReferenceExpression;
 import cn.yyx.contentassist.codeutils.methodReferenceStatement;
 import cn.yyx.contentassist.codeutils.nameStatement;
 import cn.yyx.contentassist.codeutils.newClassInvoke;
@@ -211,13 +213,21 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		smt = new instanceofExpressionStatement((referedExpression) rexp, (type) type);
 		return res;
 	}
+	
+	@Override
+	public Integer visitMethodReferenceExpression(MethodReferenceExpressionContext ctx) {
+		Integer res = visitChildren(ctx);
+		Object rexp = usedobj.poll();
+		usedobj.add(new methodReferenceExpression((referedExpression)rexp));
+		return res;
+	}
 
 	@Override
 	public Integer visitMethodReferenceStatement(Java8Parser.MethodReferenceStatementContext ctx) {
 		Integer res = visitChildren(ctx);
 		Object rexp = usedobj.poll();
 		Object name = usedobj.poll();
-		smt = new methodReferenceStatement((identifier) name, (referedExpression) rexp);
+		smt = new methodReferenceStatement((identifier) name, (methodReferenceExpression) rexp);
 		return res;
 	}
 
