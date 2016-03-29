@@ -4,6 +4,7 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
@@ -59,7 +60,24 @@ public class wildCardType extends type{
 			CSNode result, AdditionalInfo ai) {
 		if (tp != null)
 		{
-			
+			CSNode cs = new CSNode(CSNodeType.HalfFullExpression);
+			boolean conflict = tp.HandleCodeSynthesis(squeue, expected, handler, cs, ai);
+			if (conflict)
+			{
+				return true;
+			}
+			String ex = "super";
+			TypeCheck tc = null;
+			if (extended)
+			{
+				ex = "extends";
+				tc = cs.GetFirstTypeCheck();
+			}
+			result.AddOneData("?" + " " + ex + " " + cs.GetFirstDataWithoutTypeCheck(), tc);
+		}
+		else
+		{
+			result.AddOneData("?", null);
 		}
 		return false;
 	}

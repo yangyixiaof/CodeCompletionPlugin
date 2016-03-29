@@ -5,6 +5,7 @@ import java.util.Stack;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNode;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.StructureSignalInfo;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
 
@@ -36,13 +37,24 @@ public class partialEndArrayAccessStatement extends statement{
 
 	@Override
 	public boolean HandleOverSignal(Stack<Integer> cstack) {
+		Integer res = cstack.peek();
+		if (res == null || res != StructureSignalInfo.ArrayAccessBlcok)
+		{
+			return true;
+		}
+		cstack.pop();
 		return false;
 	}
 
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
-		TODO
+		boolean conflict = es.HandleCodeSynthesis(squeue, expected, handler, result, ai);
+		if (conflict)
+		{
+			return true;
+		}
+		squeue.getLast().setPostfix("]");
 		return false;
 	}
 	

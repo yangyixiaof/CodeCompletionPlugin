@@ -51,6 +51,16 @@ public class CSNode {
 		String firstdata = itr.next();
 		return (prefix != null ? prefix : "") + firstdata + (postfix != null ? postfix : "");
 	}
+	
+	public TypeCheck GetFirstTypeCheck() {
+		if (datas.size() == 0)
+		{
+			return null;
+		}
+		Iterator<String> itr = datas.keySet().iterator();
+		String firstdata = itr.next();
+		return datas.get(firstdata);
+	}
 
 	public CSNode getPrev() {
 		return prev;
@@ -152,11 +162,5 @@ public class CSNode {
 	public void setUsed(boolean used) {
 		this.used = used;
 	}
-
-	/*public void setBooleanValueByCSNode(CSNode rtcs) {
-		this.hashole = rtcs.hashole;
-		this.connect = rtcs.connect;
-		this.maytypereplacer = rtcs.maytypereplacer;
-	}*/
 	
 }
