@@ -29,6 +29,8 @@ import cn.yyx.contentassist.codeutils.anonymousClassPreStatement;
 import cn.yyx.contentassist.codeutils.argumentList;
 import cn.yyx.contentassist.codeutils.arrayAccessStatement;
 import cn.yyx.contentassist.codeutils.arrayCreationStatement;
+import cn.yyx.contentassist.codeutils.arrayInitializerEndStatement;
+import cn.yyx.contentassist.codeutils.arrayInitializerSplitCommaStatement;
 import cn.yyx.contentassist.codeutils.arrayInitializerStartStatement;
 import cn.yyx.contentassist.codeutils.arrayType;
 import cn.yyx.contentassist.codeutils.assignmentOperator;
@@ -93,7 +95,6 @@ import cn.yyx.contentassist.codeutils.newClassInvoke;
 import cn.yyx.contentassist.codeutils.nullLiteral;
 import cn.yyx.contentassist.codeutils.parameterizedType;
 import cn.yyx.contentassist.codeutils.partialEndArrayAccessStatement;
-import cn.yyx.contentassist.codeutils.partialEndArrayInitializerStatement;
 import cn.yyx.contentassist.codeutils.postfixExpressionStatement;
 import cn.yyx.contentassist.codeutils.preExist;
 import cn.yyx.contentassist.codeutils.prefixExpressionStatement;
@@ -546,7 +547,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		return res;
 	}
 	
-	@Override
+	/*@Override
 	public Integer visitPartialEndArrayInitializerStatement(Java8Parser.PartialEndArrayInitializerStatementContext ctx) {
 		Integer res = visitChildren(ctx);
 		if (smt == null || !(smt instanceof expressionStatement)) {
@@ -556,7 +557,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		}
 		smt = new partialEndArrayInitializerStatement((expressionStatement)smt);
 		return res;
-	}
+	}*/
 
 	@Override
 	public Integer visitLeftParentheseStatement(Java8Parser.LeftParentheseStatementContext ctx) {
@@ -633,6 +634,18 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	@Override
 	public Integer visitArrayInitializerStartStatement(Java8Parser.ArrayInitializerStartStatementContext ctx) {
 		smt = new arrayInitializerStartStatement();
+		return visitChildren(ctx);
+	}
+	
+	@Override
+	public Integer visitArrayInitializerSplitCommaStatement(Java8Parser.ArrayInitializerSplitCommaStatementContext ctx) {
+		smt = new arrayInitializerSplitCommaStatement();
+		return visitChildren(ctx);
+	}
+	
+	@Override
+	public Integer visitArrayInitializerEndStatement(Java8Parser.ArrayInitializerEndStatementContext ctx) {
+		smt = new arrayInitializerEndStatement();
 		return visitChildren(ctx);
 	}
 

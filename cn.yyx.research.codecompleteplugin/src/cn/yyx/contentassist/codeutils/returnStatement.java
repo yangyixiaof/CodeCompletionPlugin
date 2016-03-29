@@ -2,6 +2,13 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
+
 public class returnStatement extends statement{
 	
 	referedExpression rexp = null;
@@ -38,7 +45,18 @@ public class returnStatement extends statement{
 	}
 	
 	@Override
-	public void HandleOverSignal(Stack<Integer> cstack) {
+	public boolean HandleOverSignal(Stack<Integer> cstack) {
+		return false;
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		CSNode cs = new CSNode(CSNodeType.WholeStatement);
+		boolean conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, cs, ai);
+		cs.setPrefix("return ");
+		squeue.add(cs);
+		return conflict;
 	}
 	
 }
