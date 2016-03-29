@@ -42,7 +42,7 @@ public class partialEndArrayAccessStatement extends statement{
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
-		
+		TODO
 		return false;
 	}
 	
