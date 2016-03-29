@@ -1,6 +1,15 @@
 package cn.yyx.contentassist.codeutils;
 
-public class unaryOperator extends OneCode{
+import java.util.Stack;
+
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
+
+public class unaryOperator implements OneCode{
 	
 	String optr = null;
 	
@@ -32,6 +41,14 @@ public class unaryOperator extends OneCode{
 			return 0.5 + 0.5 * prob;
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		result.setContenttype(CSNodeType.SymbolMark);
+		result.AddOneData(optr, null);
+		return false;
 	}
 	
 }

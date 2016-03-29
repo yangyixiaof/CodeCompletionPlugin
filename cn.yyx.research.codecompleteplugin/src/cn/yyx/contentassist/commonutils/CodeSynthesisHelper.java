@@ -1,11 +1,13 @@
 package cn.yyx.contentassist.commonutils;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
 import cn.yyx.contentassist.codeutils.identifier;
+import cn.yyx.contentassist.codeutils.type;
 
 public class CodeSynthesisHelper {
 	
@@ -81,6 +83,25 @@ public class CodeSynthesisHelper {
 				result.AddOneData(code, tc);
 			}
 		}
+	}
+	
+	public static void HandleIntersectionOrUnionType(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai, List<type> tps, String concator)
+	{
+		Iterator<type> itr = tps.iterator();
+		type tp = itr.next();
+		CSNode tp1 = new CSNode(CSNodeType.TempUsed);
+		tp.HandleCodeSynthesis(squeue, expected, handler, tp1, ai);
+		while (itr.hasNext())
+		{
+			type ttp = itr.next();
+			CSNode tp2 = new CSNode(CSNodeType.TempUsed);
+			ttp.HandleCodeSynthesis(squeue, expected, handler, tp2, ai);
+			CSNode mgd = new CSNode(CSNodeType.TempUsed);
+			mgd.setDatas(CSNodeHelper.ConcatTwoNodesDatas(tp1, tp2, concator, -1));
+			tp1 = mgd;
+		}
+		result.setDatas(tp1.getDatas());
 	}
 	
 }

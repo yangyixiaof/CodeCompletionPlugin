@@ -1,5 +1,13 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Stack;
+
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
+
 public class primitiveType extends type{
 	
 	String text = null;
@@ -62,6 +70,22 @@ public class primitiveType extends type{
 			}
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		TypeCheck tc = new TypeCheck();
+		tc.setExpreturntype(text);
+		try {
+			tc.setExpreturntypeclass(Class.forName(text));
+		} catch (ClassNotFoundException e) {
+			System.err.println("Unrecognized Primitive Type:" + text);
+			System.exit(1);
+			e.printStackTrace();
+		}
+		result.AddOneData(text, tc);
+		return false;
 	}
 	
 }
