@@ -23,6 +23,10 @@ public class CSNode {
 		{
 			this.connect = true;
 		}
+		if (contenttype == CSNodeType.VariableDeclaration)
+		{
+			this.maytypereplacer = true;
+		}
 	}
 	
 	public void AddPossibleCandidates(String t, TypeCheck tc)

@@ -9,5 +9,6 @@ public class CSNodeType {
 	public static final int WholeStatement = 4;
 	public static final int SymbolMark = 5;
 	public static final int HelpInfo = 6;
+	public static final int VariableDeclaration = 7;
 	
 }

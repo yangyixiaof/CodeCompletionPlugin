@@ -6,6 +6,7 @@ public class SynthesisHandler {
 	
 	private ScopeOffsetRefHandler handler = null;
 	private ContextHandler ch = null;
+	private String recenttype = null;
 	
 	public SynthesisHandler(ScopeOffsetRefHandler handler, ContextHandler ch) {
 		this.setScopeOffsetRefHandler(handler);
@@ -26,6 +27,14 @@ public class SynthesisHandler {
 
 	public void setContextHandler(ContextHandler ch) {
 		this.ch = ch;
+	}
+
+	public String getRecenttype() {
+		return recenttype;
+	}
+
+	public void setRecenttype(String recenttype) {
+		this.recenttype = recenttype;
 	}
 	
 }
