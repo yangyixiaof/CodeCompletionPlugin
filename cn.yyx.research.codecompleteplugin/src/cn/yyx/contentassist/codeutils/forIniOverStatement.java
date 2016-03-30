@@ -2,11 +2,11 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
-import cn.yyx.contentassist.codepredict.PredictMetaInfo;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNode;
 import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
 
@@ -33,7 +33,7 @@ public class forIniOverStatement extends statement{
 	@Override
 	public boolean HandleOverSignal(Stack<Integer> cstack) {
 		int sttop = cstack.peek();
-		if (sttop == PredictMetaInfo.CommonForKindWaitingOver)
+		if (sttop == StructureSignalMetaInfo.CommonForKindWaitingOver)
 		{
 			cstack.pop();
 		}
@@ -41,7 +41,7 @@ public class forIniOverStatement extends statement{
 		{
 			return true;
 		}
-		cstack.push(PredictMetaInfo.CommonForInitWaitingOver);
+		cstack.push(StructureSignalMetaInfo.CommonForInitWaitingOver);
 		return false;
 	}
 	

@@ -178,4 +178,11 @@ public class CSNode {
 		this.used = cs.used;
 	}
 	
+	public void MergeCSNodeNonDataContent(CSNode cs1, CSNode cs2)
+	{
+		setHashole(cs2.hashole);
+		setConnect(cs1.connect);
+		setUsed(cs1.used | cs2.used);
+	}
+	
 }

@@ -7,7 +7,7 @@ import cn.yyx.contentassist.commonutils.CSNode;
 import cn.yyx.contentassist.commonutils.CSNodeHelper;
 import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
-import cn.yyx.contentassist.commonutils.StructureSignalInfo;
+import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
 
@@ -36,7 +36,7 @@ public class arrayAccessStatement extends statement{
 	public boolean HandleOverSignal(Stack<Integer> cstack) {
 		if (!accessEnd)
 		{
-			cstack.push(StructureSignalInfo.ArrayAccessBlcok);
+			cstack.push(StructureSignalMetaInfo.ArrayAccessBlcok);
 		}
 		return false;
 	}

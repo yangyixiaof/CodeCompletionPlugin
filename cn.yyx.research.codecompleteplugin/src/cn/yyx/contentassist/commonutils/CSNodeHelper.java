@@ -7,6 +7,15 @@ import java.util.TreeMap;
 
 public class CSNodeHelper {
 	
+	public static CSNode ConcatTwoNodes(CSNode one, CSNode two, String connector, int maxsize)
+	{
+		CSNode cs = new CSNode(CSNodeType.HalfFullExpression);
+		Map<String, TypeCheck> po = ConcatTwoNodesDatas(one, two, connector, maxsize);
+		cs.setDatas(po);
+		cs.MergeCSNodeNonDataContent(one, two);
+		return cs;
+	}
+	
 	public static Map<String, TypeCheck> ConcatTwoNodesDatas(CSNode one, CSNode two, String connector, int maxsize)
 	{
 		if (connector == null) {

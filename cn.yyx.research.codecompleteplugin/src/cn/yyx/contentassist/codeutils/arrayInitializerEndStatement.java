@@ -6,7 +6,7 @@ import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNode;
 import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
-import cn.yyx.contentassist.commonutils.StructureSignalInfo;
+import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
 
@@ -41,7 +41,7 @@ public class arrayInitializerEndStatement extends statement implements CloseBloc
 	@Override
 	public boolean HandleOverSignal(Stack<Integer> cstack) {
 		Integer res = cstack.peek();
-		if (res == null || res != StructureSignalInfo.ArrayInitialBlock)
+		if (res == null || res != StructureSignalMetaInfo.ArrayInitialBlock)
 		{
 			return true;
 		}

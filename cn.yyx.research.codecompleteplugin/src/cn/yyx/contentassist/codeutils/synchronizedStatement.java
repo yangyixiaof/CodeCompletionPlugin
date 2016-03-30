@@ -2,6 +2,14 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
+import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
+
 public class synchronizedStatement extends statement{
 	
 	referedExpression rexp = null;
@@ -29,7 +37,29 @@ public class synchronizedStatement extends statement{
 	}
 	
 	@Override
-	public void HandleOverSignal(Stack<Integer> cstack) {
+	public boolean HandleOverSignal(Stack<Integer> cstack) {
+		Integer signal = cstack.peek();
+		if (signal != StructureSignalMetaInfo.AllKindWaitingOver)
+		{
+			return true;
+		}
+		cstack.pop();
+		return false;
+	}
+
+	@Override
+	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai) {
+		CSNode fcs = new CSNode(CSNodeType.WholeStatement);
+		boolean conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, fcs, ai);
+		if (conflict)
+		{
+			return true;
+		}
+		fcs.setPrefix("synchronized (");
+		fcs.setPostfix("){\n\n}");
+		squeue.add(fcs);
+		return false;
 	}
 	
 }

@@ -3,7 +3,7 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.ComplicatedSignal;
-import cn.yyx.contentassist.commonutils.StructureSignalInfo;
+import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
 
 public class rightParentheseStatement extends statement implements CloseBlock {
 	
@@ -39,7 +39,7 @@ public class rightParentheseStatement extends statement implements CloseBlock {
 			return true;
 		}
 		ComplicatedSignal cs = ComplicatedSignal.ParseComplicatedSignal(hint);
-		if (cs == null || cs.getSign() == StructureSignalInfo.ParentheseBlock || count > cs.getCount())
+		if (cs == null || cs.getSign() == StructureSignalMetaInfo.ParentheseBlock || count > cs.getCount())
 		{
 			return true;
 		}

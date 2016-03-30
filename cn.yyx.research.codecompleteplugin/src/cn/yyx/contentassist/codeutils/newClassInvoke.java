@@ -4,6 +4,9 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeHelper;
+import cn.yyx.contentassist.commonutils.CSNodeType;
+import cn.yyx.contentassist.commonutils.CodeSynthesisHelper;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
@@ -19,20 +22,24 @@ public class newClassInvoke extends classInvoke {
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
-		String name = ai.getMethodName();
-		if (rexp == null)
+		String mcode = ai.getMethodName();
+		CSNode recs = new CSNode(CSNodeType.HalfFullExpression);
+		if (rexp != null)
 		{
-			result.AddOneData("new "+name, null);
-		}
-		else
-		{
-			boolean conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, result, ai);
+			boolean conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, recs, ai);
 			if (conflict)
 			{
 				return true;
 			}
-			result.setPostfix(".new "+name);
 		}
+		CSNode spec = new CSNode(CSNodeType.HalfFullExpression);
+		boolean conflict = CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, expected, handler, spec, ai, "new "+ mcode);
+		if (conflict)
+		{
+			return true;
+		}
+		result.SetCSNodeContent(CSNodeHelper.ConcatTwoNodes(recs, spec, ".", -1));
+		// result.AddOneData(mcode, null);
 		return false;
 	}
 

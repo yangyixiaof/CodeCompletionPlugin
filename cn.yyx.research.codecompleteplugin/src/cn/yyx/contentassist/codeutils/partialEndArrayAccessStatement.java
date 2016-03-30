@@ -5,7 +5,7 @@ import java.util.Stack;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNode;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
-import cn.yyx.contentassist.commonutils.StructureSignalInfo;
+import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
 
@@ -38,7 +38,7 @@ public class partialEndArrayAccessStatement extends statement{
 	@Override
 	public boolean HandleOverSignal(Stack<Integer> cstack) {
 		Integer res = cstack.peek();
-		if (res == null || res != StructureSignalInfo.ArrayAccessBlcok)
+		if (res == null || res != StructureSignalMetaInfo.ArrayAccessBlcok)
 		{
 			return true;
 		}

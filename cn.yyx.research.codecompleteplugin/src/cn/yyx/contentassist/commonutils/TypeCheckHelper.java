@@ -1,5 +1,7 @@
 package cn.yyx.contentassist.commonutils;
 
+import cn.yyx.contentassist.specification.MethodMember;
+
 public class TypeCheckHelper {
 	
 	public static boolean CanBeMutualCast(TypeCheck one, TypeCheck two)
@@ -47,6 +49,12 @@ public class TypeCheckHelper {
 			onetype = Character.class;
 		}
 		return onetype;
+	}
+	
+	public static TypeCheck TranslateMethodMember(MethodMember mm)
+	{
+		// TODO
+		return null;
 	}
 	
 }

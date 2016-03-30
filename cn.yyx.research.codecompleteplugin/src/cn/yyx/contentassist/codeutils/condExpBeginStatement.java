@@ -2,10 +2,10 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
-import cn.yyx.contentassist.codepredict.PredictMetaInfo;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNode;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
 
@@ -31,7 +31,7 @@ public class condExpBeginStatement extends statement{
 	
 	@Override
 	public boolean HandleOverSignal(Stack<Integer> cstack) {
-		cstack.push(PredictMetaInfo.ConditionExpressionOver);
+		cstack.push(StructureSignalMetaInfo.ConditionExpressionOver);
 		return false;
 	}
 

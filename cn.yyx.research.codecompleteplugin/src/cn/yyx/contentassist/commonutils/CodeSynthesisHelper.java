@@ -8,6 +8,9 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.codeutils.identifier;
 import cn.yyx.contentassist.codeutils.type;
+import cn.yyx.contentassist.specification.MembersOfAReference;
+import cn.yyx.contentassist.specification.MethodMember;
+import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;
 
 public class CodeSynthesisHelper {
 	
@@ -102,6 +105,26 @@ public class CodeSynthesisHelper {
 			tp1 = mgd;
 		}
 		result.setDatas(tp1.getDatas());
+	}
+	
+	public static boolean HandleMethodSpecificationInfer(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+			CSNode result, AdditionalInfo ai, String spechint)
+	{
+		MembersOfAReference res = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(spechint, handler.getContextHandler().getJavacontext(), null);
+		List<MethodMember> mms = res.getMmlist();
+		Iterator<MethodMember> itr = mms.iterator();
+		String cmp = StringUtil.GetContentBehindFirstWhiteSpace(spechint);
+		while (itr.hasNext())
+		{
+			MethodMember mm = itr.next();
+			String methodname = mm.getName();
+			double sim = SimilarityHelper.ComputeTwoStringSimilarity(cmp, methodname);
+			if (sim > 0.8)
+			{
+				result.AddOneData(spechint, TypeCheckHelper.TranslateMethodMember(mm));
+			}
+		}
+		return false;
 	}
 	
 }
