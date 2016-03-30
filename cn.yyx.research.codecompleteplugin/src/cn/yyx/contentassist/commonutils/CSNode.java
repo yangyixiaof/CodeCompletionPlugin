@@ -154,13 +154,24 @@ public class CSNode {
 	public void setMaytypereplacer(boolean maytypereplacer) {
 		this.maytypereplacer = maytypereplacer;
 	}
-
+	
 	public boolean isUsed() {
 		return used;
 	}
-
+	
 	public void setUsed(boolean used) {
 		this.used = used;
+	}
+	
+	public void SetCSNodeContent(CSNode cs) {
+		this.datas = cs.datas;
+		this.contenttype = cs.contenttype;
+		this.prefix = cs.prefix;
+		this.postfix = cs.postfix;
+		this.hashole = cs.hashole;
+		this.connect = cs.connect;
+		this.maytypereplacer = cs.maytypereplacer;
+		this.used = cs.used;
 	}
 	
 }

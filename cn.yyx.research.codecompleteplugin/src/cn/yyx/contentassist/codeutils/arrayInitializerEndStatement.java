@@ -10,7 +10,7 @@ import cn.yyx.contentassist.commonutils.StructureSignalInfo;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
 
-public class arrayInitializerEndStatement extends statement{
+public class arrayInitializerEndStatement extends statement implements CloseBlock{
 
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,

@@ -6,6 +6,8 @@ import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSLeftParenInfoNode;
 import cn.yyx.contentassist.commonutils.CSNode;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
+import cn.yyx.contentassist.commonutils.ComplicatedSignal;
+import cn.yyx.contentassist.commonutils.StructureSignalInfo;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
 
@@ -37,6 +39,7 @@ public class leftParentheseStatement extends statement{
 
 	@Override
 	public boolean HandleOverSignal(Stack<Integer> cstack) {
+		cstack.add(ComplicatedSignal.GenerateComplicatedSignal(StructureSignalInfo.ParentheseBlock, count));
 		return false;
 	}
 

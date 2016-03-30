@@ -191,5 +191,13 @@ public class CodeSynthesisQueue {
 		last.getPrev().getPrev().setNext(last);
 		last.setPrev(last.getPrev().getPrev());
 	}
+
+	public CSNode Pop() {
+		CSNode res = last;
+		last.getPrev().setNext(null);
+		last = last.getPrev();
+		res.setPrev(null);
+		return res;
+	}
 	
 }

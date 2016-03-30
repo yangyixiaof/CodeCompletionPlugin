@@ -2,7 +2,10 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
-public class rightParentheseStatement extends statement{
+import cn.yyx.contentassist.commonutils.ComplicatedSignal;
+import cn.yyx.contentassist.commonutils.StructureSignalInfo;
+
+public class rightParentheseStatement extends statement implements CloseBlock {
 	
 	int count = 0;
 	
@@ -29,7 +32,27 @@ public class rightParentheseStatement extends statement{
 	}
 	
 	@Override
-	public void HandleOverSignal(Stack<Integer> cstack) {
+	public boolean HandleOverSignal(Stack<Integer> cstack) {
+		Integer hint = cstack.peek();
+		if (hint == null)
+		{
+			return true;
+		}
+		ComplicatedSignal cs = ComplicatedSignal.ParseComplicatedSignal(hint);
+		if (cs == null || cs.getSign() == StructureSignalInfo.ParentheseBlock || count > cs.getCount())
+		{
+			return true;
+		}
+		int remaincounts = cs.getCount() - count;
+		if (remaincounts == 0)
+		{
+			cstack.pop();
+		}
+		else
+		{
+			cs.setCount(remaincounts);
+		}
+		return false;
 	}
 	
 }

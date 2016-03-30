@@ -84,6 +84,8 @@ public class argumentList implements OneCode{
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
+		
+		// must be in reverse order.
 		expected.add(null);
 		boolean conflict = false;
 		referedExpression invokerhint = el.get(0);
