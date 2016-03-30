@@ -1,6 +1,6 @@
 package cn.yyx.contentassist.specification;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.eclipse.jdt.internal.ui.text.java.ParameterGuessingProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
@@ -11,8 +11,8 @@ public class MethodMember {
 	private String name = null;
 	private String returntype = null;
 	private String whereDeclared = null;
-	private ArrayList<String> argtypelist = new ArrayList<String>();
-	private ArrayList<String> argnamelist = new ArrayList<String>();
+	private LinkedList<String> argtypelist = new LinkedList<String>();
+	private LinkedList<String> argnamelist = new LinkedList<String>();
 	
 	public MethodMember(ICompletionProposal icp) {
 		initial(icp.getDisplayString());
@@ -80,19 +80,19 @@ public class MethodMember {
 		this.whereDeclared = whereDeclared;
 	}
 
-	public ArrayList<String> getArgtypelist() {
+	public LinkedList<String> getArgtypelist() {
 		return argtypelist;
 	}
 
-	public void setArgtypelist(ArrayList<String> argtypelist) {
+	public void setArgtypelist(LinkedList<String> argtypelist) {
 		this.argtypelist = argtypelist;
 	}
 
-	public ArrayList<String> getArgnamelist() {
+	public LinkedList<String> getArgnamelist() {
 		return argnamelist;
 	}
 
-	public void setArgnamelist(ArrayList<String> argnamelist) {
+	public void setArgnamelist(LinkedList<String> argnamelist) {
 		this.argnamelist = argnamelist;
 	}
 	

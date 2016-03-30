@@ -1,5 +1,8 @@
 package cn.yyx.contentassist.commonutils;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import cn.yyx.contentassist.specification.MethodMember;
 
 public class TypeCheckHelper {
@@ -53,8 +56,23 @@ public class TypeCheckHelper {
 	
 	public static TypeCheck TranslateMethodMember(MethodMember mm)
 	{
-		// TODO
-		return null;
+		TypeCheck tc = new TypeCheck();
+		String rttype = mm.getReturntype();
+		tc.setExpreturntype(rttype);
+		Class<?> c = TypeResolver.ResolveType(rttype);
+		tc.setExpreturntypeclass(c);
+		LinkedList<String> tplist = mm.getArgtypelist();
+		tc.setExpargstypes(tplist);
+		LinkedList<Class<?>> tpclist = new LinkedList<Class<?>>();
+		Iterator<String> itr = tplist.iterator();
+		while (itr.hasNext())
+		{
+			String tp = itr.next();
+			Class<?> tpc = TypeResolver.ResolveType(tp);
+			tpclist.add(tpc);
+		}
+		tc.setExpargstypesclasses(tpclist);
+		return tc;
 	}
 	
 }
