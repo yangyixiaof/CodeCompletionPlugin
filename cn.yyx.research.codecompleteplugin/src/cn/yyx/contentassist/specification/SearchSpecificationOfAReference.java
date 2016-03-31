@@ -26,6 +26,11 @@ import cn.yyx.contentassist.codehelper.MyCompilationUnit;
 @SuppressWarnings("restriction")
 public class SearchSpecificationOfAReference {
 	
+	/*public static MembersOfAReference SearchFunctionSpecificationByPrefix(String prefix, JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor)
+	{
+		
+	}*/
+	
 	public static MembersOfAReference SearchFunctionSpecificationByPrefix(String prefix, JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor)
 	{
 		/*
@@ -63,8 +68,10 @@ public class SearchSpecificationOfAReference {
 		MembersOfAReference result = new MembersOfAReference();
 		System.out.println("start print proposals. proposals length:" + proposals.size());
 		Iterator<ICompletionProposal> itr = proposals.iterator();
+		// int idx = 0;
 		while (itr.hasNext())
 		{
+			// idx++;
 			ICompletionProposal icp = itr.next();
 			// interested
 			if (icp instanceof JavaMethodCompletionProposal || icp instanceof ParameterGuessingProposal)
@@ -82,7 +89,7 @@ public class SearchSpecificationOfAReference {
 		}
 		
 		// testing
-		System.out.println(result);
+		// System.out.println(result);
 		
 		return result;
 	}

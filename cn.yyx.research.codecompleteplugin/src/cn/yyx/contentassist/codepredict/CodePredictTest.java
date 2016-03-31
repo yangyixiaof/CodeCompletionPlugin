@@ -34,6 +34,8 @@ public class CodePredictTest implements CodePredict{
 				if (lastchar == ';' || lastchar == '}' || lastchar == ',' || lastchar == '{' || lastchar == '(' || lastchar == ':')
 				{
 					SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix("System.", javacontext, monitor);
+					SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix("PrintStream", javacontext, monitor);
+					SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix("Integer", javacontext, monitor);
 				}
 				else
 				{

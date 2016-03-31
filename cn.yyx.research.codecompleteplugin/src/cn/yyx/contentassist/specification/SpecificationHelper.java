@@ -1,13 +1,12 @@
-package cn.yyx.contentassist.commonutils;
+package cn.yyx.contentassist.specification;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import cn.yyx.contentassist.specification.FieldMember;
-import cn.yyx.contentassist.specification.MembersOfAReference;
-import cn.yyx.contentassist.specification.MethodMember;
-import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;
+import cn.yyx.contentassist.commonutils.ContextHandler;
+import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
+import cn.yyx.contentassist.commonutils.SimilarityHelper;
 
 public class SpecificationHelper {
 	

@@ -11,6 +11,7 @@ import cn.yyx.contentassist.codeutils.type;
 import cn.yyx.contentassist.specification.MembersOfAReference;
 import cn.yyx.contentassist.specification.MethodMember;
 import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;
+import cn.yyx.contentassist.specification.SpecificationHelper;
 
 public class CodeSynthesisHelper {
 	

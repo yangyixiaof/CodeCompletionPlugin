@@ -17,4 +17,8 @@ public class aaaaImportantMustTodo {
 	// TODO reminder to add '{' and '}' to the begin and end of type.
 	
 	// TODO if has hint, must handled directly add the modified to result.
+	
+	// TODO int[] when inferring specification, [] should be eliminated, this must be considered.
+	
+	// TODO int must be translated to Integer. boolean float double char are the same. This must be done in program-processor phase.
 }

@@ -9,9 +9,9 @@ import cn.yyx.contentassist.commonutils.CSNode;
 import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
-import cn.yyx.contentassist.commonutils.SpecificationHelper;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
+import cn.yyx.contentassist.specification.SpecificationHelper;
 
 public class methodReferenceExpression implements OneCode{
 	

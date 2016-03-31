@@ -10,6 +10,7 @@ public class MembersOfAReference {
 	
 	private List<FieldMember> fmlist = new LinkedList<FieldMember>();
 	private List<MethodMember> mmlist = new LinkedList<MethodMember>();
+	private List<TypeMember> tmlist = new LinkedList<TypeMember>();
 	
 	public MembersOfAReference() {
 	}
@@ -24,6 +25,11 @@ public class MembersOfAReference {
 		getMmlist().add(mm);
 	}
 	
+	public void AddTypeMember(TypeMember tm)
+	{
+		getTmlist().add(tm);
+	}
+	
 	public Iterator<FieldMember> GetFieldMemberIterator()
 	{
 		return fmlist.iterator();
@@ -32,6 +38,11 @@ public class MembersOfAReference {
 	public Iterator<MethodMember> GetMethodMemberIterator()
 	{
 		return mmlist.iterator();
+	}
+	
+	public Iterator<TypeMember> GetTypeMemberIterator()
+	{
+		return tmlist.iterator();
 	}
 	
 	public List<FieldMember> getFmlist() {
@@ -50,6 +61,14 @@ public class MembersOfAReference {
 		this.mmlist = mmlist;
 	}
 	
+	public List<TypeMember> getTmlist() {
+		return tmlist;
+	}
+
+	public void setTmlist(List<TypeMember> tmlist) {
+		this.tmlist = tmlist;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
@@ -64,6 +83,12 @@ public class MembersOfAReference {
 		for (int i=0;i<len;i++)
 		{
 			sb.append(mmlist.get(i) + ConstantVariable.LineSeperator);
+		}
+		sb.append("Type:" + ConstantVariable.LineSeperator);
+		len = getTmlist().size();
+		for (int i=0;i<len;i++)
+		{
+			sb.append(getTmlist().get(i) + ConstantVariable.LineSeperator);
 		}
 		return sb.toString();
 	}
