@@ -37,7 +37,7 @@ public class SearchSpecificationOfAReference {
 		while (itr.hasNext())
 		{
 			ICompletionProposal icp = itr.next();
-			tmlist.add(new TypeMember((LazyGenericTypeProposal)icp));
+			tmlist.add(0, new TypeMember((LazyGenericTypeProposal)icp));
 		}
 		return tmlist;
 	}
@@ -51,7 +51,7 @@ public class SearchSpecificationOfAReference {
 		while (itr.hasNext())
 		{
 			ICompletionProposal icp = itr.next();
-			fmlist.add(new FieldMember((JavaCompletionProposal)icp));
+			fmlist.add(0, new FieldMember((JavaCompletionProposal)icp));
 		}
 		return fmlist;
 	}
@@ -67,11 +67,11 @@ public class SearchSpecificationOfAReference {
 			ICompletionProposal icp = itr.next();
 			if (icp instanceof JavaMethodCompletionProposal)
 			{
-				mmlist.add(new MethodMember((JavaMethodCompletionProposal)icp));
+				mmlist.add(0, new MethodMember((JavaMethodCompletionProposal)icp));
 			}
 			if (icp instanceof ParameterGuessingProposal)
 			{
-				mmlist.add(new MethodMember((ParameterGuessingProposal)icp));
+				mmlist.add(0, new MethodMember((ParameterGuessingProposal)icp));
 			}
 		}
 		return mmlist;

@@ -66,7 +66,7 @@ public class CodeSynthesisHelper {
 			String ref = ramm.getRef();
 			String member = ramm.getMember();
 			String membertype = ramm.getMembertype();
-			Class<?> c = TypeResolver.ResolveType(membertype);
+			Class<?> c = TypeResolver.ResolveType(membertype, handler.getContextHandler().getJavacontext());
 			TypeCheck tc = new TypeCheck();
 			tc.setExpreturntype(membertype);
 			tc.setExpreturntypeclass(c);
@@ -80,7 +80,7 @@ public class CodeSynthesisHelper {
 			{
 				String code = citr.next();
 				String type = po.get(code);
-				Class<?> c = TypeResolver.ResolveType(type);
+				Class<?> c = TypeResolver.ResolveType(type, handler.getContextHandler().getJavacontext());
 				TypeCheck tc = new TypeCheck();
 				tc.setExpreturntype(type);
 				tc.setExpreturntypeclass(c);
@@ -122,7 +122,7 @@ public class CodeSynthesisHelper {
 			double sim = SimilarityHelper.ComputeTwoStringSimilarity(cmp, methodname);
 			if (sim > 0.8)
 			{
-				result.AddOneData(spechint, TypeCheckHelper.TranslateMethodMember(mm));
+				result.AddOneData(spechint, TypeCheckHelper.TranslateMethodMember(mm, handler.getContextHandler().getJavacontext()));
 			}
 		}
 		return false;
