@@ -1,14 +1,15 @@
 package cn.yyx.contentassist.specification;
 
-import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.eclipse.jdt.internal.ui.text.java.JavaCompletionProposal;
 
+@SuppressWarnings("restriction")
 public class FieldMember {
 	
 	private String name = null;
 	private String type = null;
 	private String whereDeclared = null;
 	
-	public FieldMember(ICompletionProposal icp) {
+	public FieldMember(JavaCompletionProposal icp) {
 		String pstr =  icp.getDisplayString().trim();
 		String[] strs = pstr.split(":|-");
 		setName(strs[0].trim());
