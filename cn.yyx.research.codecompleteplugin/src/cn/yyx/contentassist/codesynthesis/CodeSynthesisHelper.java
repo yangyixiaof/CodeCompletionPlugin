@@ -1,4 +1,4 @@
-package cn.yyx.contentassist.commonutils;
+package cn.yyx.contentassist.codesynthesis;
 
 import java.util.Iterator;
 import java.util.List;
@@ -10,6 +10,15 @@ import cn.yyx.contentassist.codesynthesis.CSNode;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
 import cn.yyx.contentassist.codeutils.identifier;
 import cn.yyx.contentassist.codeutils.type;
+import cn.yyx.contentassist.commonutils.AdditionalInfo;
+import cn.yyx.contentassist.commonutils.CSNodeType;
+import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
+import cn.yyx.contentassist.commonutils.SimilarityHelper;
+import cn.yyx.contentassist.commonutils.StringUtil;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TypeCheck;
+import cn.yyx.contentassist.commonutils.TypeCheckHelper;
+import cn.yyx.contentassist.commonutils.TypeResolver;
 import cn.yyx.contentassist.specification.MembersOfAReference;
 import cn.yyx.contentassist.specification.MethodMember;
 import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;

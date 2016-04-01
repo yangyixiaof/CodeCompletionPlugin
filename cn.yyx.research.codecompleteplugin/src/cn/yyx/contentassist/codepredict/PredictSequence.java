@@ -32,7 +32,7 @@ public class PredictSequence extends Sequence {
 		this.prob = hint.prob;
 		this.predicts = (Queue<Sentence>) ((LinkedList<Sentence>)(current.predicts)).clone();
 		this.cstack = (Stack<Integer>) current.cstack.clone();
-		this.csfl = (CodeSynthesisFlowLine) current.csfl.clone();
+		// this.csfl = (CodeSynthesisFlowLine) current.csfl.clone();
 		// this.sstack = (CodeSynthesisQueue) current.sstack.clone();
 		// this.tpstack = (Stack<TypeCheck>) tpstack.clone();
 	}

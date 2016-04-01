@@ -1,4 +1,4 @@
-package cn.yyx.contentassist.commonutils;
+package cn.yyx.contentassist.codesynthesis;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -6,6 +6,10 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import cn.yyx.contentassist.codesynthesis.CSNode;
+import cn.yyx.contentassist.commonutils.CSNodeType;
+import cn.yyx.contentassist.commonutils.MapHelper;
+import cn.yyx.contentassist.commonutils.TypeCheck;
+import cn.yyx.contentassist.commonutils.TypeCheckHelper;
 
 public class CSNodeHelper {
 	
