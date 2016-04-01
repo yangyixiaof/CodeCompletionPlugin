@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import cn.yyx.contentassist.codesynthesis.CSNode;
+
 public class CSNodeHelper {
 	
 	public static CSNode ConcatTwoNodes(CSNode one, CSNode two, String connector, int maxsize)

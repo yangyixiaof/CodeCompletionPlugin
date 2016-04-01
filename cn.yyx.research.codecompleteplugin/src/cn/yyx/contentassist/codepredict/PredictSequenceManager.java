@@ -20,7 +20,7 @@ public class PredictSequenceManager extends SequenceManager {
 		while (itr.hasNext())
 		{
 			PredictSequence ps = (PredictSequence) itr.next();
-			result.add(ps.GetSynthesisedCode());
+			result.addAll(ps.GetSynthesisedCode());
 		}
 		return result;
 	}

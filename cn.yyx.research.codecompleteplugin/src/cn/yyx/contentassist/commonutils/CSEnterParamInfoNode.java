@@ -1,5 +1,7 @@
 package cn.yyx.contentassist.commonutils;
 
+import cn.yyx.contentassist.codesynthesis.CSNode;
+
 public class CSEnterParamInfoNode extends CSNode{
 	
 	int times = -1;

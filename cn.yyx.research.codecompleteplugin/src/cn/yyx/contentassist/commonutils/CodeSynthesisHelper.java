@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import cn.yyx.contentassist.codesynthesis.CSNode;
+import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
 import cn.yyx.contentassist.codeutils.identifier;
 import cn.yyx.contentassist.codeutils.type;
 import cn.yyx.contentassist.specification.MembersOfAReference;

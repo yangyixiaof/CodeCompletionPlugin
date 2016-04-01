@@ -3,9 +3,9 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.PredictMetaInfo;
+import cn.yyx.contentassist.codesynthesis.CSNode;
+import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNode;
-import cn.yyx.contentassist.commonutils.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;

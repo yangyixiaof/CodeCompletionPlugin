@@ -1,11 +1,14 @@
-package cn.yyx.contentassist.commonutils;
+package cn.yyx.contentassist.codesynthesis;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class CSNode {
+import cn.yyx.contentassist.commonutils.CSNodeType;
+import cn.yyx.contentassist.commonutils.TypeCheck;
+
+public class CSNode implements Mergeable<CSNode>, Extendable{
 	private CSNode prev = null;
 	private CSNode next = null;
 	private Map<String, TypeCheck> datas = new TreeMap<String, TypeCheck>();
