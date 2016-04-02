@@ -192,7 +192,7 @@ public class PredictionFetch {
 						if (ons.Similarity(pred) > PredictMetaInfo.OneSentenceSimilarThreshold)
 						{
 							exactmatchhandled = true;
-							fls.CompareAndSetTempExactMatchInfo(new FlowLineNode<Sentence>(pred), ppp.getProb());
+							fls.CompareAndSetTempExactMatchInfo(new FlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability()));
 						}
 					}
 					
@@ -202,7 +202,7 @@ public class PredictionFetch {
 					double sim = LCSComparison.LCSSimilarity(exactcmp, triedcmp);
 					if (sim > PredictMetaInfo.SequenceSimilarThreshold)
 					{
-						FlowLineNode<Sentence> nf = new FlowLineNode<Sentence>(pred);
+						FlowLineNode<Sentence> nf = new FlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability());
 						fls.AddToNextLevel(nf, fln);
 						remainsize--;
 					}
@@ -218,19 +218,18 @@ public class PredictionFetch {
 					PredictProbPair ppp = pppqueue.poll();
 					Sentence pred = ppp.getPred();
 
-					FlowLineNode<Sentence> nf = new FlowLineNode<Sentence>(pred);
+					FlowLineNode<Sentence> nf = new FlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability());
 					fls.AddToNextLevel(nf, fln);
 					remainsize--;
 				}
 			}
 			if (!exactmatchhandled)
 			{
-				fls.CompareAndSetTempExactMatchInfo(new FlowLineNode<Sentence>(ons), 0);
+				fls.CompareAndSetTempExactMatchInfo(new FlowLineNode<Sentence>(ons,fls.getExactmatchtail().getProbability()));
 			}
 			
 			fls.EndOperation();
 			
-			// TODO exactmatch
 			// TODO end of statement
 			
 			/*PreTrySequenceManager sm = null;

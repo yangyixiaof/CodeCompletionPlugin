@@ -48,7 +48,7 @@ public class CodeNGramAnalyzer {
 			ArrayList<String> analist = fmastv.GetMainAnalyseList(aoi.isInAnonymousClass());
 			
 			PredictionFetch pf = new PredictionFetch();
-			return pf.FetchPrediction(javacontext, monitor, fmastv, analist, list);
+			return pf.FetchPredictionInSerial(javacontext, monitor, fmastv, analist, list);
 			
 		} catch (JavaModelException e) {
 			e.printStackTrace();
