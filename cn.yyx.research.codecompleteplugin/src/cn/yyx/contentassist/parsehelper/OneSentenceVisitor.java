@@ -23,104 +23,7 @@ import SJ8Parse.Java8Parser.TypeListContext;
 import SJ8Parse.Java8Parser.UnionFirstTypeContext;
 import SJ8Parse.Java8Parser.UnionSecondTypeContext;
 import SJ8Parse.Java8Parser.WildcardBoundsContext;
-import cn.yyx.contentassist.codeutils.annotationTypeMemberDeclarationStatement;
-import cn.yyx.contentassist.codeutils.anonymousClassBeginStatement;
-import cn.yyx.contentassist.codeutils.anonymousClassPreStatement;
-import cn.yyx.contentassist.codeutils.argumentList;
-import cn.yyx.contentassist.codeutils.arrayAccessStatement;
-import cn.yyx.contentassist.codeutils.arrayCreationStatement;
-import cn.yyx.contentassist.codeutils.arrayInitializerEndStatement;
-import cn.yyx.contentassist.codeutils.arrayInitializerSplitCommaStatement;
-import cn.yyx.contentassist.codeutils.arrayInitializerStartStatement;
-import cn.yyx.contentassist.codeutils.arrayType;
-import cn.yyx.contentassist.codeutils.assignmentOperator;
-import cn.yyx.contentassist.codeutils.assignmentStatement;
-import cn.yyx.contentassist.codeutils.atInterfaceStatement;
-import cn.yyx.contentassist.codeutils.binaryOperator;
-import cn.yyx.contentassist.codeutils.booleanLiteral;
-import cn.yyx.contentassist.codeutils.breakStatement;
-import cn.yyx.contentassist.codeutils.castExpressionStatement;
-import cn.yyx.contentassist.codeutils.catchClauseStatement;
-import cn.yyx.contentassist.codeutils.characterLiteral;
-import cn.yyx.contentassist.codeutils.classDeclarationStatement;
-import cn.yyx.contentassist.codeutils.classInnerDeclarationStatement;
-import cn.yyx.contentassist.codeutils.classInvoke;
-import cn.yyx.contentassist.codeutils.classOrInterfaceType;
-import cn.yyx.contentassist.codeutils.classRef;
-import cn.yyx.contentassist.codeutils.codeHole;
-import cn.yyx.contentassist.codeutils.commonFieldRef;
-import cn.yyx.contentassist.codeutils.commonVarRef;
-import cn.yyx.contentassist.codeutils.condExpBeginStatement;
-import cn.yyx.contentassist.codeutils.condExpColonMarkStatement;
-import cn.yyx.contentassist.codeutils.condExpQuestionMarkStatement;
-import cn.yyx.contentassist.codeutils.continueStatement;
-import cn.yyx.contentassist.codeutils.defaultStatement;
-import cn.yyx.contentassist.codeutils.doWhileStatement;
-import cn.yyx.contentassist.codeutils.endOfStatement;
-import cn.yyx.contentassist.codeutils.enhancedForStatement;
-import cn.yyx.contentassist.codeutils.enterMethodParamStatement;
-import cn.yyx.contentassist.codeutils.enumConstantDeclarationStatement;
-import cn.yyx.contentassist.codeutils.enumDeclarationStatement;
-import cn.yyx.contentassist.codeutils.expressionStatement;
-import cn.yyx.contentassist.codeutils.fieldAccess;
-import cn.yyx.contentassist.codeutils.fieldAccessStatement;
-import cn.yyx.contentassist.codeutils.finalFieldRef;
-import cn.yyx.contentassist.codeutils.finalVarRef;
-import cn.yyx.contentassist.codeutils.firstArg;
-import cn.yyx.contentassist.codeutils.floatingPointLiteral;
-import cn.yyx.contentassist.codeutils.forExpOverStatement;
-import cn.yyx.contentassist.codeutils.forIniOverStatement;
-import cn.yyx.contentassist.codeutils.forStatement;
-import cn.yyx.contentassist.codeutils.forUpdOverStatement;
-import cn.yyx.contentassist.codeutils.idRawLetter;
-import cn.yyx.contentassist.codeutils.identifier;
-import cn.yyx.contentassist.codeutils.ifStatement;
-import cn.yyx.contentassist.codeutils.infixExpressionStatement;
-import cn.yyx.contentassist.codeutils.initializerStatement;
-import cn.yyx.contentassist.codeutils.instanceofExpressionStatement;
-import cn.yyx.contentassist.codeutils.integerLiteral;
-import cn.yyx.contentassist.codeutils.intersectionType;
-import cn.yyx.contentassist.codeutils.labeledStatement;
-import cn.yyx.contentassist.codeutils.lambdaExpressionStatement;
-import cn.yyx.contentassist.codeutils.leftBraceStatement;
-import cn.yyx.contentassist.codeutils.leftParentheseStatement;
-import cn.yyx.contentassist.codeutils.literal;
-import cn.yyx.contentassist.codeutils.literalStatement;
-import cn.yyx.contentassist.codeutils.methodDeclarationStatement;
-import cn.yyx.contentassist.codeutils.methodInvocationStatement;
-import cn.yyx.contentassist.codeutils.methodReferenceExpression;
-import cn.yyx.contentassist.codeutils.methodReferenceStatement;
-import cn.yyx.contentassist.codeutils.nameStatement;
-import cn.yyx.contentassist.codeutils.newClassInvoke;
-import cn.yyx.contentassist.codeutils.nullLiteral;
-import cn.yyx.contentassist.codeutils.parameterizedType;
-import cn.yyx.contentassist.codeutils.partialEndArrayAccessStatement;
-import cn.yyx.contentassist.codeutils.postfixExpressionStatement;
-import cn.yyx.contentassist.codeutils.preExist;
-import cn.yyx.contentassist.codeutils.prefixExpressionStatement;
-import cn.yyx.contentassist.codeutils.primitiveType;
-import cn.yyx.contentassist.codeutils.referedExpression;
-import cn.yyx.contentassist.codeutils.returnStatement;
-import cn.yyx.contentassist.codeutils.rightBraceStatement;
-import cn.yyx.contentassist.codeutils.rightParentheseStatement;
-import cn.yyx.contentassist.codeutils.selfClassMemberInvoke;
-import cn.yyx.contentassist.codeutils.simpleType;
-import cn.yyx.contentassist.codeutils.statement;
-import cn.yyx.contentassist.codeutils.stringLiteral;
-import cn.yyx.contentassist.codeutils.superClassMemberInvoke;
-import cn.yyx.contentassist.codeutils.switchCaseStatement;
-import cn.yyx.contentassist.codeutils.switchStatement;
-import cn.yyx.contentassist.codeutils.synchronizedStatement;
-import cn.yyx.contentassist.codeutils.throwStatement;
-import cn.yyx.contentassist.codeutils.type;
-import cn.yyx.contentassist.codeutils.typeList;
-import cn.yyx.contentassist.codeutils.unaryOperator;
-import cn.yyx.contentassist.codeutils.unionType;
-import cn.yyx.contentassist.codeutils.variableDeclarationHolderStatement;
-import cn.yyx.contentassist.codeutils.variableDeclarationStatement;
-import cn.yyx.contentassist.codeutils.virtualInferredType;
-import cn.yyx.contentassist.codeutils.whileStatement;
-import cn.yyx.contentassist.codeutils.wildCardType;
+import cn.yyx.contentassist.codeutils.*;
 
 public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
@@ -690,24 +593,16 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		smt = new condExpColonMarkStatement();
 		return visitChildren(ctx);
 	}
-
+	
 	@Override
-	public Integer visitEndOfStatement(Java8Parser.EndOfStatementContext ctx) {
-		if (ctx.fullEnd() != null) {
-			smt = new endOfStatement(true);
-		} else {
-			smt = new endOfStatement(false);
-		}
+	public Integer visitPartialEndStatement(Java8Parser.PartialEndStatementContext ctx) {
+		smt = new partialEndStatement();
 		return visitChildren(ctx);
 	}
-
+	
 	@Override
-	public Integer visitPartialEnd(Java8Parser.PartialEndContext ctx) {
-		return visitChildren(ctx);
-	}
-
-	@Override
-	public Integer visitFullEnd(Java8Parser.FullEndContext ctx) {
+	public Integer visitFullEndStatement(Java8Parser.FullEndStatementContext ctx) {
+		smt = new fullEndStatement();
 		return visitChildren(ctx);
 	}
 	
