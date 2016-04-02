@@ -1,12 +1,9 @@
 package cn.yyx.contentassist.codepredict;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
-import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 import cn.yyx.research.AeroSpikeHandle.PredictProbPair;
 
 public class Sequence implements Comparable<Sequence> {
@@ -23,34 +20,7 @@ public class Sequence implements Comparable<Sequence> {
 			sequence.poll();
 		}
 	}
-
-	public SequenceManager PredictSentences(AeroLifeCycle alc, int neededSize) {
-		SequenceManager result = new SequenceManager();
-		int ssize = sequence.size();
-		int maxsize = Math.min(ssize - 1, PredictMetaInfo.NgramMaxSize);
-		ArrayList<Sentence> analysislist = LastOfSentenceQueue(maxsize);
-		for (int i = maxsize; i > 0; i--) {
-			String key = ConcatJoinLast(i, analysislist);
-			List<PredictProbPair> predicts = alc.AeroModelPredict(key, neededSize);
-			Iterator<PredictProbPair> itr = predicts.iterator();
-			while (itr.hasNext()) {
-				PredictProbPair ppp = itr.next();
-				if (neededSize == 0)
-				{
-					continue;
-				}
-				Sequence s = NewSequence(ppp);
-				result.AddSequence(s);
-				neededSize--;
-			}
-			if (neededSize == 0)
-			{
-				break;
-			}
-		}
-		return result;
-	}
-
+	
 	/*
 	 * public SequenceManager HandleNewInSentence(AeroLifeCycle alc, String ons,
 	 * int neededSize) {
@@ -98,41 +68,7 @@ public class Sequence implements Comparable<Sequence> {
 	{
 		return sequence.iterator();
 	}
-
-	private String ConcatJoinLast(int size, ArrayList<Sentence> analysislist) {
-		StringBuffer sb = new StringBuffer("");
-		int end = analysislist.size() - 1;
-		int start = end + 1 - size;
-		for (int i = start; i <= end; i++) {
-			String split = " ";
-			if (i == end) {
-				split = "";
-			}
-			sb.append(analysislist.get(i) + split);
-		}
-		return sb.toString().trim();
-	}
-
-	private ArrayList<Sentence> LastOfSentenceQueue(int neededSize) {
-		ArrayList<Sentence> result = new ArrayList<Sentence>();
-		int seqsize = sequence.size();
-		int skipsize = seqsize - neededSize;
-		int hasskipped = 0;
-		Iterator<Sentence> itr = sequence.iterator();
-		boolean shouldadd = false;
-		while (itr.hasNext()) {
-			if (hasskipped >= skipsize) {
-				shouldadd = true;
-			}
-			Sentence sentence = itr.next();
-			hasskipped++;
-			if (shouldadd) {
-				result.add(sentence);
-			}
-		}
-		return result;
-	}
-
+	
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer("");

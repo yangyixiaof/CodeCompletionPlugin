@@ -45,12 +45,12 @@ public class PredictSequence extends Sequence {
 	private boolean HandleNewInSentence(SynthesisHandler handler)
 	{
 		this.predicts.add(last);
-		boolean conflict = last.smt.HandleOverSignal(cstack);
+		boolean conflict = last.getSmt().HandleOverSignal(cstack);
 		if (conflict)
 		{
 			return true;
 		}
-		conflict = csfl.ExtendOneSentence(last.smt);
+		conflict = csfl.ExtendOneSentence(last.getSmt());
 		// conflict = last.smt.HandleCodeSynthesis(sstack, tpstack, handler, null, null);
 		return conflict;
 	}

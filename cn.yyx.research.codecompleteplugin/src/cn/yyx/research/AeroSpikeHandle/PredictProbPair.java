@@ -2,7 +2,7 @@ package cn.yyx.research.AeroSpikeHandle;
 
 import cn.yyx.contentassist.codepredict.Sentence;
 
-public class PredictProbPair {
+public class PredictProbPair implements Comparable<PredictProbPair>{
 	
 	private Sentence pred = null;
 	private Double prob = (double) 0;
@@ -27,6 +27,12 @@ public class PredictProbPair {
 
 	public void setProb(Double prob) {
 		this.prob = prob;
+	}
+
+	// order is : bigger former.
+	@Override
+	public int compareTo(PredictProbPair o) {
+		return ((Double)(-prob)).compareTo((-o.prob));
 	}
 	
 }

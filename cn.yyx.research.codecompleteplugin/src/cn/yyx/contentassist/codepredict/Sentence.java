@@ -5,32 +5,48 @@ import cn.yyx.contentassist.codeutils.statement;
 
 public class Sentence implements Comparable<Sentence>, CodeSimilarity<Sentence> {
 	
-	String sentence = "";
-	statement smt = null;
+	private String sentence = "";
+	private statement smt = null;
 
 	public Sentence(String sentence, statement smt) {
-		this.sentence = sentence;
-		this.smt = smt;
+		this.setSentence(sentence);
+		this.setSmt(smt);
 	}
 	
 	@Override
 	public String toString() {
-		return sentence;
+		return getSentence();
 	}
 	
 	@Override
 	public int compareTo(Sentence o) {
-		return sentence.compareTo(o.sentence);
+		return getSentence().compareTo(o.getSentence());
 	}
 
 	@Override
 	public boolean CouldThoughtSame(Sentence t) {
-		return smt.CouldThoughtSame(t.smt);
+		return getSmt().CouldThoughtSame(t.getSmt());
 	}
 
 	@Override
 	public double Similarity(Sentence t) {
-		return smt.Similarity(t.smt);
+		return getSmt().Similarity(t.getSmt());
+	}
+
+	public String getSentence() {
+		return sentence;
+	}
+
+	public void setSentence(String sentence) {
+		this.sentence = sentence;
+	}
+
+	public statement getSmt() {
+		return smt;
+	}
+
+	public void setSmt(statement smt) {
+		this.smt = smt;
 	}
 	
 }
