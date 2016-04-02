@@ -70,15 +70,11 @@ public class PredictionFetch {
 			size = PredictMetaInfo.PrePredictWindow;
 		}
 		
+		List<Sentence> setelist = SentenceHelper.TranslateStringsToSentences(analist);
+		List<statement> smtlist = SentenceHelper.TranslateSentencesToStatements(setelist);
 		PreTryFlowLines<Sentence> fls = new PreTryFlowLines<Sentence>();
 		// PreTrySequenceManager manager = new PreTrySequenceManager();
-		Iterator<String> itr = analist.iterator();
-		while (itr.hasNext())
-		{
-			String str = itr.next();
-			Sentence ons = ComplexParser.GetSentence(str);
-			DoPreTrySequencePredict(alc, fls, ons);
-		}
+		DoPreTrySequencePredict(alc, fls, setelist, smtlist, PredictMetaInfo.PreTryNeedSize);
 		
 		ScopeOffsetRefHandler handler = fmastv.GenerateScopeOffsetRefHandler();
 		ContextHandler ch = new ContextHandler(javacontext, monitor);
@@ -90,7 +86,7 @@ public class PredictionFetch {
 		List<String> list = pm.GetAllSynthesisdCodes();
 		return list;
 	}
-	
+
 	private PredictSequenceManager DoSequencesPredictAndRealCodeSynthesis(SynthesisHandler handler, AeroLifeCycle alc, SequenceManager manager)
 	{
 		Iterator<Sequence> itr = manager.Iterator();
@@ -147,17 +143,41 @@ public class PredictionFetch {
 		}
 		return result;
 	}
+	
+	private void DoPreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, List<Sentence> setelist,
+			List<statement> smtlist, int needsize) {
+		Iterator<Sentence> itr = setelist.iterator();
+		while (itr.hasNext())
+		{
+			Sentence ons = itr.next();
+			DoOnePreTrySequencePredict(alc, fls, ons, smtlist);
+		}
+		int size = fls.GetOveredSize();
+		int turn = 0;
+		while (size < needsize && turn < PredictMetaInfo.PreTryMaxStep)
+		{
+			turn++;
+			DoOnePreTrySequencePredict(alc, fls, null, smtlist);
+			size = fls.GetOveredSize();
+		}
+	}
 
-	private void DoPreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons)
+	private void DoOnePreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons, final List<statement> oraclelist)
 	{
+		// final int orclesize = oraclelist.size();
 		if (fls.IsEmpty())
 		{
+			assert ons != null;
 			fls.InitialSeed(ons);
 		}
 		else {
 			fls.BeginOperation();
 			
-			List<statement> exactcmp = FlowLineHelper.LastToFirstStatementQueueWithAddedStatement(fls.getExactmatchtail(), ons.getSmt());
+			List<statement> exactcmp = oraclelist;
+			if (ons != null)
+			{
+				FlowLineHelper.LastToFirstStatementQueueWithAddedStatement(fls.getExactmatchtail(), ons.getSmt());
+			}
 			List<FlowLineNode<Sentence>> tails = fls.getTails();
 			final int existSize = tails.size();
 			Iterator<FlowLineNode<Sentence>> itr = tails.iterator();
@@ -208,7 +228,17 @@ public class PredictionFetch {
 					}
 					else
 					{
-						pppqueue.add(ppp);
+						double sim2 = LCSComparison.LCSSimilarity(oraclelist, triedcmp);
+						if (sim2 > PredictMetaInfo.SequenceSimilarThreshold)
+						{
+							FlowLineNode<Sentence> nf = new FlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability());
+							fls.AddOverFlowLineNode(nf, fln);
+							remainsize--;
+						}
+						else
+						{
+							pppqueue.add(ppp);
+						}
 					}
 					
 					((LinkedList<statement>)triedcmp).removeLast();
@@ -225,12 +255,17 @@ public class PredictionFetch {
 			}
 			if (!exactmatchhandled)
 			{
-				fls.CompareAndSetTempExactMatchInfo(new FlowLineNode<Sentence>(ons,fls.getExactmatchtail().getProbability()));
+				if (ons != null)
+				{
+					fls.CompareAndSetTempExactMatchInfo(new FlowLineNode<Sentence>(ons, fls.getExactmatchtail().getProbability()));
+				}
+				else
+				{
+					fls.ClearExactMatch();
+				}
 			}
 			
 			fls.EndOperation();
-			
-			// TODO end of statement
 			
 			/*PreTrySequenceManager sm = null;
 			Iterator<Sequence> itr = manager.Iterator();
