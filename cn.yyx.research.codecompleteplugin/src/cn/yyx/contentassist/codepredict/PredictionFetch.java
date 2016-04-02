@@ -163,13 +163,19 @@ public class PredictionFetch {
 			Iterator<FlowLineNode<Sentence>> itr = tails.iterator();
 			int averagePredict = PredictMetaInfo.PredictMaxSequence / existSize;
 			int isize = existSize;
+			boolean exactmatchhandled = false;
 			while (itr.hasNext())
 			{
+				boolean exactmatch = false;
 				final int neededsize = averagePredict + (int)(5*(isize*1.0/(existSize*1.0)));
 				int remainsize = neededsize;
 				isize--;
 				PriorityQueue<PredictProbPair> pppqueue = new PriorityQueue<PredictProbPair>();
 				FlowLineNode<Sentence> fln = itr.next();
+				if (fln == fls.getExactmatchtail())
+				{
+					exactmatch = true;
+				}
 				// Sentence sete = fln.getData();
 				List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(fln, PredictMetaInfo.NgramMaxSize);
 				List<PredictProbPair> pps = PredictHelper.PredictSentences(alc, ls, neededsize);
@@ -179,6 +185,16 @@ public class PredictionFetch {
 				{
 					PredictProbPair ppp = ppsitr.next();
 					Sentence pred = ppp.getPred();
+					
+					// exact match handle.
+					if (exactmatch)
+					{
+						if (ons.Similarity(pred) > PredictMetaInfo.OneSentenceSimilarThreshold)
+						{
+							exactmatchhandled = true;
+							fls.CompareAndSetTempExactMatchInfo(new FlowLineNode<Sentence>(pred), ppp.getProb());
+						}
+					}
 					
 					triedcmp.add(pred.getSmt());
 					
@@ -206,6 +222,10 @@ public class PredictionFetch {
 					fls.AddToNextLevel(nf, fln);
 					remainsize--;
 				}
+			}
+			if (!exactmatchhandled)
+			{
+				fls.CompareAndSetTempExactMatchInfo(new FlowLineNode<Sentence>(ons), 0);
 			}
 			
 			fls.EndOperation();
