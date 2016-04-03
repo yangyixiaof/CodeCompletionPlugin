@@ -1,4 +1,4 @@
-package cn.yyx.contentassist.codesynthesis;
+package cn.yyx.contentassist.codesynthesis.typeutil;
 
 import java.util.Iterator;
 import java.util.LinkedList;

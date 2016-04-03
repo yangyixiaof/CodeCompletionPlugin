@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import cn.yyx.contentassist.codesynthesis.CSNode;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
 import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.MapHelper;
 import cn.yyx.contentassist.commonutils.TypeCheck;
