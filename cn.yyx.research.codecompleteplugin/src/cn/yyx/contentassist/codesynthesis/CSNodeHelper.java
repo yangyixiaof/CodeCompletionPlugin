@@ -9,7 +9,6 @@ import cn.yyx.contentassist.codesynthesis.CSNode;
 import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.MapHelper;
 import cn.yyx.contentassist.commonutils.TypeCheck;
-import cn.yyx.contentassist.commonutils.TypeCheckHelper;
 
 public class CSNodeHelper {
 	

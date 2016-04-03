@@ -17,8 +17,6 @@ import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.StringUtil;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
-import cn.yyx.contentassist.commonutils.TypeCheckHelper;
-import cn.yyx.contentassist.commonutils.TypeResolver;
 import cn.yyx.contentassist.specification.MembersOfAReference;
 import cn.yyx.contentassist.specification.MethodMember;
 import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;

@@ -1,9 +1,10 @@
-package cn.yyx.contentassist.commonutils;
+package cn.yyx.contentassist.codesynthesis;
 
 import java.util.List;
 
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 
+import cn.yyx.contentassist.commonutils.YJCache;
 import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;
 import cn.yyx.contentassist.specification.TypeMember;
 

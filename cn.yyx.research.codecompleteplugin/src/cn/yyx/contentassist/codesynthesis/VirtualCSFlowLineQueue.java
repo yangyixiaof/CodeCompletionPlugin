@@ -1,7 +1,7 @@
 package cn.yyx.contentassist.codesynthesis;
 
-import cn.yyx.contentassist.flowline.CSFlowLineData;
-import cn.yyx.contentassist.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 
 public class VirtualCSFlowLineQueue extends CSFlowLineQueue{
 	

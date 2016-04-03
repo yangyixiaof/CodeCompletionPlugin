@@ -1,8 +1,8 @@
 package cn.yyx.contentassist.codesynthesis;
 
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.commonutils.CheckUtil;
-import cn.yyx.contentassist.flowline.CSFlowLineData;
-import cn.yyx.contentassist.flowline.FlowLineNode;
 
 public class CSFlowLineQueue {
 	

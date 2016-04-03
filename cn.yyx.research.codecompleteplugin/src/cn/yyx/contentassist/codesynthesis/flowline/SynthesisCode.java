@@ -1,4 +1,4 @@
-package cn.yyx.contentassist.flowline;
+package cn.yyx.contentassist.codesynthesis.flowline;
 
 public class SynthesisCode {
 	

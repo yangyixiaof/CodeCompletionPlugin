@@ -1,4 +1,4 @@
-package cn.yyx.contentassist.flowline;
+package cn.yyx.contentassist.codesynthesis.flowline;
 
 import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;

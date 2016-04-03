@@ -5,13 +5,13 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
-import cn.yyx.contentassist.flowline.CSFlowLineData;
-import cn.yyx.contentassist.flowline.FlowLineNode;
-import cn.yyx.contentassist.flowline.FlowLineStack;
 
 public class annotationTypeMemberDeclarationStatement extends statement{
 	
@@ -80,6 +80,13 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue)
 			throws CodeSynthesisException {
 		// TODO Auto-generated method stub
+		List<FlowLineNode<CSFlowLineData>> tps = type.HandleCodeSynthesis(squeue);
+		if (drexp != null)
+		{
+			List<FlowLineNode<CSFlowLineData>> drs = drexp.HandleCodeSynthesis(squeue);
+			
+		}
+		
 		return null;
 	}
 

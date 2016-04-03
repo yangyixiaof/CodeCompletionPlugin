@@ -4,8 +4,8 @@ import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.flowline.CSFlowLineData;
-import cn.yyx.contentassist.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 
 public interface OneCode extends CodeSimilarity<OneCode> {
 	

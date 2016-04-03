@@ -1,10 +1,11 @@
-package cn.yyx.contentassist.commonutils;
+package cn.yyx.contentassist.codesynthesis;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 
+import cn.yyx.contentassist.commonutils.TypeCheck;
 import cn.yyx.contentassist.specification.MethodMember;
 
 public class TypeCheckHelper {

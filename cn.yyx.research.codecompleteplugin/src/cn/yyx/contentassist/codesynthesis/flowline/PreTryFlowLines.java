@@ -1,4 +1,4 @@
-package cn.yyx.contentassist.flowline;
+package cn.yyx.contentassist.codesynthesis.flowline;
 
 import java.util.LinkedList;
 import java.util.List;

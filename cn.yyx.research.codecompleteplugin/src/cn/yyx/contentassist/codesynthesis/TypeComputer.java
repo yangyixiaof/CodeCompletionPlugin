@@ -1,4 +1,4 @@
-package cn.yyx.contentassist.commonutils;
+package cn.yyx.contentassist.codesynthesis;
 
 public class TypeComputer {
 	
