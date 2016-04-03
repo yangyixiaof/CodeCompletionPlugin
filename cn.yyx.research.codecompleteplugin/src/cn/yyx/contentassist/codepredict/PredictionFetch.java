@@ -89,13 +89,28 @@ public class PredictionFetch {
 	}
 
 	private void DoRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, CodeSynthesisFlowLine csfl) {
+		// first level initial the CodeSynthesisFlowLine.
+		csfl.BeginOperation();
+		
 		List<FlowLineNode<Sentence>> ots = fls.getOvertails();
 		Iterator<FlowLineNode<Sentence>> itr = ots.iterator();
 		while (itr.hasNext())
 		{
 			FlowLineNode<Sentence> fln = itr.next();
-			
+			List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(fln, PredictMetaInfo.NgramMaxSize);
+			List<PredictProbPair> pps = PredictHelper.PredictSentences(alc, ls, PredictMetaInfo.ExtendFinalMaxSequence);
+			Iterator<PredictProbPair> pitr = pps.iterator();
+			while (pitr.hasNext())
+			{
+				PredictProbPair ppp = pitr.next();
+				Sentence pred = ppp.getPred();
+				csfl.AddToNextLevel(addnode, null);
+			}
 		}
+		
+		csfl.EndOperation();
+		// normal extend.
+		
 	}
 
 	private PredictSequenceManager DoSequencesPredictAndRealCodeSynthesis(SynthesisHandler handler, AeroLifeCycle alc, SequenceManager manager)

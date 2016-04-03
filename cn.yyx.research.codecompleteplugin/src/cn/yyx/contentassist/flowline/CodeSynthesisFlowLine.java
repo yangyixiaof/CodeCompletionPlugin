@@ -5,7 +5,7 @@ import java.util.List;
 
 import cn.yyx.contentassist.codeutils.statement;
 
-public class CodeSynthesisFlowLine extends FlowLines<CSData> {
+public class CodeSynthesisFlowLine extends FlowLines<CSFlowLineData> {
 	
 	public CodeSynthesisFlowLine() {
 	}
@@ -19,11 +19,11 @@ public class CodeSynthesisFlowLine extends FlowLines<CSData> {
 	public List<String> GetSynthesisedCode()
 	{
 		LinkedList<String> res = new LinkedList<String>();
-		FlowLineNode<CSData> head = getHeads();
-		FlowLineNode<CSData> tmp = head;
+		FlowLineNode<CSFlowLineData> head = getHeads();
+		FlowLineNode<CSFlowLineData> tmp = head;
 		while (tmp != null)
 		{
-			CSData data = tmp.getData();
+			CSFlowLineData data = tmp.getData();
 			SynthesisCodeManager scm = data.getScm();
 			res.addAll(scm.GetSynthesisedCode());
 			tmp = head.getSilbnext();
