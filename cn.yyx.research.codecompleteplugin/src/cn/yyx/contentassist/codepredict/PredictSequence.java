@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisFlowLine;
 import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.flowline.CodeSynthesisFlowLine;
 import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 
 public class PredictSequence extends Sequence {

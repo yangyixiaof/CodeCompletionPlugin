@@ -12,6 +12,7 @@ import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.ContextHandler;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.flowline.CodeSynthesisFlowLine;
 import cn.yyx.contentassist.flowline.FlowLineHelper;
 import cn.yyx.contentassist.flowline.FlowLineNode;
 import cn.yyx.contentassist.flowline.PreTryFlowLines;
@@ -73,18 +74,28 @@ public class PredictionFetch {
 		List<Sentence> setelist = SentenceHelper.TranslateStringsToSentences(analist);
 		List<statement> smtlist = SentenceHelper.TranslateSentencesToStatements(setelist);
 		PreTryFlowLines<Sentence> fls = new PreTryFlowLines<Sentence>();
-		// PreTrySequenceManager manager = new PreTrySequenceManager();
 		DoPreTrySequencePredict(alc, fls, setelist, smtlist, PredictMetaInfo.PreTryNeedSize);
 		
 		ScopeOffsetRefHandler handler = fmastv.GenerateScopeOffsetRefHandler();
 		ContextHandler ch = new ContextHandler(javacontext, monitor);
 		SynthesisHandler sh = new SynthesisHandler(handler, ch);
-		PredictSequenceManager pm = DoSequencesPredictAndRealCodeSynthesis(sh, alc, manager);
+		CodeSynthesisFlowLine csfl = new CodeSynthesisFlowLine();
+		DoRealCodePredictAndSynthesis(sh, alc, fls, csfl);
 		
 		alc.Destroy();
 		alc = null;
-		List<String> list = pm.GetAllSynthesisdCodes();
+		List<String> list = csfl.GetSynthesisedCode();
 		return list;
+	}
+
+	private void DoRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, CodeSynthesisFlowLine csfl) {
+		List<FlowLineNode<Sentence>> ots = fls.getOvertails();
+		Iterator<FlowLineNode<Sentence>> itr = ots.iterator();
+		while (itr.hasNext())
+		{
+			FlowLineNode<Sentence> fln = itr.next();
+			
+		}
 	}
 
 	private PredictSequenceManager DoSequencesPredictAndRealCodeSynthesis(SynthesisHandler handler, AeroLifeCycle alc, SequenceManager manager)

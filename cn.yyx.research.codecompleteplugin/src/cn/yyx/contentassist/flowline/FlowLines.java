@@ -55,7 +55,7 @@ public class FlowLines<T> {
 		temptails.add(addnode);
 	}
 	
-	public List<FlowLineNode<T>> GetCurrentTails(FlowLineNode<T> fln)
+	public List<FlowLineNode<T>> GetCurrentTails()
 	{
 		return getTails();
 	}
