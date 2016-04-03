@@ -1,13 +1,17 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.List;
 import java.util.Stack;
 
-import cn.yyx.contentassist.codesynthesis.CSNode;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
+import cn.yyx.contentassist.flowline.CSFlowLineData;
+import cn.yyx.contentassist.flowline.FlowLineNode;
+import cn.yyx.contentassist.flowline.FlowLineStack;
 
 public class annotationTypeMemberDeclarationStatement extends statement{
 	
@@ -17,11 +21,6 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 	public annotationTypeMemberDeclarationStatement(type type, referedExpression drexp) {
 		this.type = type;
 		this.drexp = drexp;
-	}
-	
-	@Override
-	public boolean HandleOverSignal(Stack<Integer> cstack) {
-		return false;
 	}
 	
 	@Override
@@ -75,6 +74,18 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 		res.AddPossibleCandidates(content, null);
 		squeue.add(res);
 		return false;
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue)
+			throws CodeSynthesisException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
+		// do nothing.
 	}
 	
 }

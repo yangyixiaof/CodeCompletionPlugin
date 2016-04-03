@@ -1,5 +1,6 @@
 package cn.yyx.contentassist.codesynthesis;
 
+import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.flowline.CSFlowLineData;
 import cn.yyx.contentassist.flowline.FlowLineNode;
 
@@ -13,6 +14,12 @@ public class CSFlowLineQueue {
 	
 	public CSFlowLineQueue(FlowLineNode<CSFlowLineData> last) {
 		this.last = last;
+	}
+	
+	public int NewNodeId()
+	{
+		CheckUtil.CheckNotNull(last, "the 'last' member of CSFlowLineQueue is null, serious error, the system will exit.");
+		return last.getData().getScm().GenerateNextLevelId();
 	}
 	
 }
