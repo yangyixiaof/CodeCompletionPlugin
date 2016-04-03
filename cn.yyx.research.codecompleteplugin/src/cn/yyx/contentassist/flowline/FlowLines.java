@@ -39,25 +39,47 @@ public class FlowLines<T> {
 	public void AddToNextLevel(FlowLineNode<T> addnode, FlowLineNode<T> prenode)
 	{
 		CheckOperationPermit();
-		addnode.setPrev(prenode);
-		FlowLineNode<T> nextfst = prenode.getNext();
-		if (nextfst == null)
+		if (prenode == null)
 		{
-			prenode.setNext(addnode);
+			// operate heads.
+			if (heads == null)
+			{
+				heads = addnode;
+			}
+			else
+			{
+				InsertSilb(heads, addnode);
+			}
 		}
 		else
 		{
-			FlowLineNode<T> nnt = nextfst.getSilbnext();
-			nnt.setSilbprev(addnode);
-			addnode.setSilbnext(nnt);
-			nextfst.setSilbnext(addnode);
+			addnode.setPrev(prenode);
+			FlowLineNode<T> nextfst = prenode.getNext();
+			if (nextfst == null)
+			{
+				prenode.setNext(addnode);
+			}
+			else
+			{
+				InsertSilb(nextfst, addnode);
+			}
 		}
 		temptails.add(addnode);
 	}
 	
-	public List<FlowLineNode<T>> GetCurrentTails()
+	private void InsertSilb(FlowLineNode<T> afterwhich, FlowLineNode<T> insert)
 	{
-		return getTails();
+		FlowLineNode<T> nnt = afterwhich.getSilbnext();
+		if (nnt == null)
+		{
+			afterwhich.setSilbnext(insert);
+		}
+		else
+		{
+			nnt.setSilbprev(insert);
+			insert.setSilbnext(nnt);
+			afterwhich.setSilbnext(insert);
+		}
 	}
 	
 	public void BeginOperation()

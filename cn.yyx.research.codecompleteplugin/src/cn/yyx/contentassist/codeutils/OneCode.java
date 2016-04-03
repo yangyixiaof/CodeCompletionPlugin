@@ -2,12 +2,14 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.List;
 
-import cn.yyx.contentassist.codesynthesis.CSBackQueue;
-import cn.yyx.contentassist.codesynthesis.CSParLineNode;
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.flowline.CSFlowLineData;
+import cn.yyx.contentassist.flowline.FlowLineNode;
 
 public interface OneCode extends CodeSimilarity<OneCode> {
 	
 	// public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler, CSNode result, AdditionalInfo ai);
-	public boolean HandleCodeSynthesis(CSBackQueue squeue, List<CSParLineNode> nextpars);
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue) throws CodeSynthesisException;
 	
 }

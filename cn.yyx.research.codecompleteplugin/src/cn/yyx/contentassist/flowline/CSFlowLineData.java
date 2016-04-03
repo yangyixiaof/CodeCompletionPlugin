@@ -1,9 +1,12 @@
 package cn.yyx.contentassist.flowline;
 
+import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class CSFlowLineData {
 	
+	private Integer id = null;
+	private Sentence sete = null;
 	private String data = null;
 	private Integer structsignal = null;
 	private Class<?> dcls = null;
@@ -11,7 +14,9 @@ public class CSFlowLineData {
 	private SynthesisHandler handler = null;
 	private SynthesisCodeManager scm = new SynthesisCodeManager();
 	
-	public CSFlowLineData(String data, Integer structsignal, Class<?> dcls, boolean hashole, SynthesisHandler handler) {
+	public CSFlowLineData(Integer id, Sentence sete, String data, Integer structsignal, Class<?> dcls, boolean hashole, SynthesisHandler handler) {
+		this.setId(id);
+		this.setSete(sete);
 		this.setData(data);
 		this.setStructsignal(structsignal);
 		this.setDcls(dcls);
@@ -65,6 +70,22 @@ public class CSFlowLineData {
 
 	public void setStructsignal(Integer structsignal) {
 		this.structsignal = structsignal;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Sentence getSete() {
+		return sete;
+	}
+
+	public void setSete(Sentence sete) {
+		this.sete = sete;
 	}
 	
 }

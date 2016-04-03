@@ -1,9 +1,10 @@
 package cn.yyx.contentassist.codeutils;
 
-import java.util.Stack;
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.flowline.FlowLineStack;
 
 public abstract class statement implements OneCode {
 	
-	public abstract boolean HandleOverSignal(Stack<Integer> cstack);
+	public abstract void HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException;
 	
 }

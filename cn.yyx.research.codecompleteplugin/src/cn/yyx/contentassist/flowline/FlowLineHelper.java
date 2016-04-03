@@ -35,6 +35,34 @@ public class FlowLineHelper {
 		return result;
 	}
 	
+	// very simple cache. LastNeededSentenceQueue method used only.
+	private static List<Sentence> setelistref = null;
+	private static Sentence seteref = null;
 	
+	public static List<Sentence> LastNeededSentenceQueue(FlowLineNode<CSFlowLineData> tail, CodeSynthesisFlowLine csfl,
+			int needsize) {
+		CSFlowLineData data = tail.getData();
+		if (seteref != null && seteref == data.getSete())
+		{
+			assert setelistref != null;
+			return setelistref;
+		}
+		List<Sentence> result = new LinkedList<Sentence>();
+		FlowLineNode<CSFlowLineData> tmp = tail;
+		while (needsize > 0 && tmp != null)
+		{
+			result.add(0, tmp.getData().getSete());
+			tmp = tmp.getPrev();
+			needsize--;
+		}
+		if (needsize > 0)
+		{
+			int id = tmp.getData().getId();
+			FlowLineNode<Sentence> cnct = csfl.GetConnect(id);
+			List<Sentence> tmpres = LastNeededSentenceQueue(cnct, needsize);
+			result.addAll(0, tmpres);
+		}
+		return result;
+	}
 	
 }

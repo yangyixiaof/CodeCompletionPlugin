@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.PredictMetaInfo;
-import cn.yyx.contentassist.codesynthesis.CSBackQueue;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSParLineNode;
 import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
@@ -12,7 +12,7 @@ import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
 public class fullEndStatement extends statement {
 
 	@Override
-	public boolean HandleCodeSynthesis(CSBackQueue squeue, List<CSParLineNode> nextpars) {
+	public boolean HandleCodeSynthesis(CSFlowLineQueue squeue, List<CSParLineNode> nextpars) {
 		CSNode cs = new CSNode(CSNodeType.SymbolMark);
 		cs.AddOneData(";", null);
 		squeue.add(cs);

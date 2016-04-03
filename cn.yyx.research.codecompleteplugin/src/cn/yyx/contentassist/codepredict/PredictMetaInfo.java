@@ -17,6 +17,8 @@ public class PredictMetaInfo {
 	public static final int ExtendFinalMaxSequence = 3;
 	public static final int ExtendTempMaxSequence = 8;
 	
+	public static final int MaxExtendLength = 15;
+	
 	public static final int NgramMaxSize = 5;
 	
 }

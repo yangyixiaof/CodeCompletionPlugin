@@ -9,14 +9,17 @@ import java.util.PriorityQueue;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.VirtualCSFlowLineQueue;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.ContextHandler;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.flowline.CSFlowLineData;
 import cn.yyx.contentassist.flowline.CodeSynthesisFlowLine;
 import cn.yyx.contentassist.flowline.FlowLineHelper;
 import cn.yyx.contentassist.flowline.FlowLineNode;
+import cn.yyx.contentassist.flowline.FlowLineStack;
 import cn.yyx.contentassist.flowline.PreTryFlowLines;
-import cn.yyx.contentassist.parsehelper.ComplexParser;
 import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
 import cn.yyx.research.AeroSpikeHandle.PredictProbPair;
 import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVisitor;
@@ -89,31 +92,102 @@ public class PredictionFetch {
 	}
 
 	private void DoRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, CodeSynthesisFlowLine csfl) {
+		DoFirstRealCodePredictAndSynthesis(sh, alc, fls, csfl);
+		// normal extend.
+		int extendtimes = 1;
+		while (extendtimes < PredictMetaInfo.MaxExtendLength)
+		{
+			DoOneRealCodePredictAndSynthesis(alc, csfl);
+		}
+	}
+	
+	private void DoFirstRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, CodeSynthesisFlowLine csfl) {
 		// first level initial the CodeSynthesisFlowLine.
 		csfl.BeginOperation();
 		
+		VirtualCSFlowLineQueue vcsdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(-1, null, null, null, null, false, sh), 0));
 		List<FlowLineNode<Sentence>> ots = fls.getOvertails();
 		Iterator<FlowLineNode<Sentence>> itr = ots.iterator();
 		while (itr.hasNext())
 		{
 			FlowLineNode<Sentence> fln = itr.next();
-			List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(fln, PredictMetaInfo.NgramMaxSize);
+			List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(fln, PredictMetaInfo.NgramMaxSize-1);
 			List<PredictProbPair> pps = PredictHelper.PredictSentences(alc, ls, PredictMetaInfo.ExtendFinalMaxSequence);
-			Iterator<PredictProbPair> pitr = pps.iterator();
-			while (pitr.hasNext())
-			{
-				PredictProbPair ppp = pitr.next();
-				Sentence pred = ppp.getPred();
-				csfl.AddToNextLevel(addnode, null);
-			}
+			HandleExtendOneCodeSynthesis(pps, vcsdflq, fln, csfl);
 		}
 		
 		csfl.EndOperation();
-		// normal extend.
-		
 	}
-
-	private PredictSequenceManager DoSequencesPredictAndRealCodeSynthesis(SynthesisHandler handler, AeroLifeCycle alc, SequenceManager manager)
+	
+	/**
+	 * for second and beyond turns.
+	 * @param alc
+	 * @param fls
+	 * @param csfl
+	 */
+	private void DoOneRealCodePredictAndSynthesis(AeroLifeCycle alc, CodeSynthesisFlowLine csfl) {
+		csfl.BeginOperation();
+		
+		List<FlowLineNode<CSFlowLineData>> tails = csfl.getTails();
+		Iterator<FlowLineNode<CSFlowLineData>> itr = tails.iterator();
+		while (itr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> tail = itr.next();
+			List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(tail, csfl, PredictMetaInfo.NgramMaxSize-1);
+			List<PredictProbPair> pps = PredictHelper.PredictSentences(alc, ls, PredictMetaInfo.ExtendFinalMaxSequence);
+			CSFlowLineQueue csdflq = new CSFlowLineQueue(tail);
+			HandleExtendOneCodeSynthesis(pps, csdflq, tail, csfl);
+		}
+		
+		csfl.EndOperation();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void HandleExtendOneCodeSynthesis(List<PredictProbPair> pps, CSFlowLineQueue csdflq, FlowLineNode<?> fln, CodeSynthesisFlowLine csfl)
+	{
+		Iterator<PredictProbPair> pitr = pps.iterator();
+		while (pitr.hasNext())
+		{
+			PredictProbPair ppp = pitr.next();
+			Sentence pred = ppp.getPred();
+			statement predsmt = pred.getSmt();
+			try {
+				List<FlowLineNode<CSFlowLineData>> addnodes = predsmt.HandleCodeSynthesis(csdflq);
+				if (addnodes != null)
+				{
+					Iterator<FlowLineNode<CSFlowLineData>> aitr = addnodes.iterator();
+					while (aitr.hasNext())
+					{
+						FlowLineNode<CSFlowLineData> addnode = aitr.next();
+						try
+						{
+							predsmt.HandleOverSignal(new FlowLineStack(addnode));
+						}  catch (CodeSynthesisException e) {
+							// testing
+							System.err.println("Error occurs when doing code synthesis, this predict and the following will be ignored.");
+							e.printStackTrace();
+							continue;
+						}
+						if (fln != null)
+						{
+							csfl.AddToFirstLevel(addnode, (FlowLineNode<Sentence>) fln);
+						}
+						else
+						{
+							csfl.AddToNextLevel(addnode, (FlowLineNode<CSFlowLineData>) fln);
+						}
+					}
+				}
+			} catch (CodeSynthesisException e) {
+				// testing
+				System.err.println("Error occurs when doing code synthesis, this predict and the following will be ignored.");
+				e.printStackTrace();
+				continue;
+			}
+		}
+	}
+	
+	/*private PredictSequenceManager DoSequencesPredictAndRealCodeSynthesis(SynthesisHandler handler, AeroLifeCycle alc, SequenceManager manager)
 	{
 		Iterator<Sequence> itr = manager.Iterator();
 		PredictSequenceManager pm = null;
@@ -168,7 +242,7 @@ public class PredictionFetch {
 			olevel = tempolevel;
 		}
 		return result;
-	}
+	}*/
 	
 	private void DoPreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, List<Sentence> setelist,
 			List<statement> smtlist, int needsize) {
@@ -223,7 +297,7 @@ public class PredictionFetch {
 					exactmatch = true;
 				}
 				// Sentence sete = fln.getData();
-				List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(fln, PredictMetaInfo.NgramMaxSize);
+				List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(fln, PredictMetaInfo.NgramMaxSize-1);
 				List<PredictProbPair> pps = PredictHelper.PredictSentences(alc, ls, neededsize);
 				Iterator<PredictProbPair> ppsitr = pps.iterator();
 				List<statement> triedcmp = FlowLineHelper.LastToFirstStatementQueue(fln);

@@ -21,7 +21,7 @@ public class CSStamp {
 		while (itr.hasNext())
 		{
 			CSParLineNode cs = itr.next();
-			CSBackQueue csbq = new CSBackQueue(cs);
+			CSFlowLineQueue csbq = new CSFlowLineQueue(cs);
 			boolean conflict = smt.HandleCodeSynthesis(csbq, nextpars);
 			if (!conflict)
 			{

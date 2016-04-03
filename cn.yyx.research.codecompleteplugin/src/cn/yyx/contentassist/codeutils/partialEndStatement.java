@@ -3,13 +3,13 @@ package cn.yyx.contentassist.codeutils;
 import java.util.List;
 import java.util.Stack;
 
-import cn.yyx.contentassist.codesynthesis.CSBackQueue;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSParLineNode;
 
 public class partialEndStatement extends statement{
 
 	@Override
-	public boolean HandleCodeSynthesis(CSBackQueue squeue, List<CSParLineNode> nextpars) {
+	public boolean HandleCodeSynthesis(CSFlowLineQueue squeue, List<CSParLineNode> nextpars) {
 		// TODO Auto-generated method stub
 		return false;
 	}
