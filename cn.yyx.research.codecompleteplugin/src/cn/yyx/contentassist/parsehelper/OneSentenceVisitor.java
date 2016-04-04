@@ -613,6 +613,19 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	}
 	
 	@Override
+	public Integer visitPartialMethodArgumentEndStatement(Java8Parser.PartialMethodArgumentEndStatementContext ctx) {
+		smt = new partialMethodArgumentEndStatement();
+		return visitChildren(ctx);
+	}
+	
+	@Override
+	public Integer visitPartialMethodPreRerferedExpressionEndStatement(
+			Java8Parser.PartialMethodPreRerferedExpressionEndStatementContext ctx) {
+		smt = new partialMethodArgumentEndStatement();
+		return visitChildren(ctx);
+	}
+	
+	@Override
 	public Integer visitSelfClassMemberInvoke(Java8Parser.SelfClassMemberInvokeContext ctx) {
 		Integer res = visitChildren(ctx);
 		referedExpression rexp = null;
