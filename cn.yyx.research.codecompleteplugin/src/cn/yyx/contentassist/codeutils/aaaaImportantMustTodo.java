@@ -22,5 +22,5 @@ public class aaaaImportantMustTodo {
 	
 	// TODO int must be translated to Integer. boolean float double char are the same. This must be done in program-processor phase.
 	
-	// TODO anonymousBegin need to be added to sequence.
+	// Solved. anonymousBegin need to be added to sequence. No problem.
 }
