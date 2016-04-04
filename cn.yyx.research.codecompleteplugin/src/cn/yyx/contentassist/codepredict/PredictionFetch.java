@@ -155,7 +155,7 @@ public class PredictionFetch {
 		{
 			PredictProbPair ppp = pitr.next();
 			Sentence pred = ppp.getPred();
-			CSStatementHandler csh = new CSStatementHandler(pred);
+			CSStatementHandler csh = new CSStatementHandler(pred, ppp.getProb());
 			statement predsmt = pred.getSmt();
 			try {
 				List<FlowLineNode<CSFlowLineData>> addnodes = predsmt.HandleCodeSynthesis(csdflq, csh);
