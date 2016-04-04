@@ -10,6 +10,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.VirtualCSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.CodeSynthesisFlowLine;
@@ -133,6 +134,10 @@ public class PredictionFetch {
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> tail = itr.next();
+			if (!tail.isCouldextend())
+			{
+				continue;
+			}
 			List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(tail, csfl, PredictMetaInfo.NgramMaxSize-1);
 			List<PredictProbPair> pps = PredictHelper.PredictSentences(alc, ls, PredictMetaInfo.ExtendFinalMaxSequence);
 			CSFlowLineQueue csdflq = new CSFlowLineQueue(tail);
@@ -150,9 +155,10 @@ public class PredictionFetch {
 		{
 			PredictProbPair ppp = pitr.next();
 			Sentence pred = ppp.getPred();
+			CSStatementHandler csh = new CSStatementHandler(pred);
 			statement predsmt = pred.getSmt();
 			try {
-				List<FlowLineNode<CSFlowLineData>> addnodes = predsmt.HandleCodeSynthesis(csdflq);
+				List<FlowLineNode<CSFlowLineData>> addnodes = predsmt.HandleCodeSynthesis(csdflq, csh);
 				if (addnodes != null)
 				{
 					Iterator<FlowLineNode<CSFlowLineData>> aitr = addnodes.iterator();
@@ -161,7 +167,8 @@ public class PredictionFetch {
 						FlowLineNode<CSFlowLineData> addnode = aitr.next();
 						try
 						{
-							predsmt.HandleOverSignal(new FlowLineStack(addnode));
+							boolean over = predsmt.HandleOverSignal(new FlowLineStack(addnode));
+							addnode.setCouldextend(!over);
 						}  catch (CodeSynthesisException e) {
 							// testing
 							System.err.println("Error occurs when doing code synthesis, this predict and the following will be ignored.");

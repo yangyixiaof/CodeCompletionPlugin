@@ -4,6 +4,7 @@ public class FlowLineNode<T> {
 	
 	private T data = null;
 	private double probability = 0;
+	private boolean couldextend = true;
 	private FlowLineNode<T> prev = null;
 	private FlowLineNode<T> next = null;
 	private FlowLineNode<T> silbprev = null;
@@ -68,6 +69,14 @@ public class FlowLineNode<T> {
 
 	public void setProbability(double probability) {
 		this.probability = probability;
+	}
+
+	public boolean isCouldextend() {
+		return couldextend;
+	}
+
+	public void setCouldextend(boolean couldextend) {
+		this.couldextend = couldextend;
 	}
 	
 }
