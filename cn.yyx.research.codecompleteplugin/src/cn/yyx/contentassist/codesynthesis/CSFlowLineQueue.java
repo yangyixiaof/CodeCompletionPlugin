@@ -3,6 +3,7 @@ package cn.yyx.contentassist.codesynthesis;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.commonutils.CheckUtil;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class CSFlowLineQueue {
 	
@@ -14,6 +15,11 @@ public class CSFlowLineQueue {
 	
 	public CSFlowLineQueue(FlowLineNode<CSFlowLineData> last) {
 		this.last = last;
+	}
+	
+	public SynthesisHandler GetLastHandler()
+	{
+		return last.getData().getHandler();
 	}
 	
 	public int NewNodeId()

@@ -5,9 +5,11 @@ import cn.yyx.contentassist.codepredict.Sentence;
 public class CSStatementHandler {
 	
 	private Sentence sete = null;
+	private double prob = 0;
 	
-	public CSStatementHandler(Sentence sete) {
+	public CSStatementHandler(Sentence sete, double prob) {
 		this.setSete(sete);
+		this.setProb(prob);
 	}
 
 	public Sentence getSete() {
@@ -16,6 +18,14 @@ public class CSStatementHandler {
 
 	public void setSete(Sentence sete) {
 		this.sete = sete;
+	}
+
+	public double getProb() {
+		return prob;
+	}
+
+	public void setProb(double prob) {
+		this.prob = prob;
 	}
 	
 }

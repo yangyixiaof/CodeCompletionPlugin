@@ -174,6 +174,12 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		smt = new anonymousClassBeginStatement();
 		return res;
 	}
+	
+	@Override
+	public Integer visitAnonymousClassPlaceHolderStatement(Java8Parser.AnonymousClassPlaceHolderStatementContext ctx) {
+		smt  = new anonymousClassPlaceHolderStatement();
+		return visitChildren(ctx);
+	}
 
 	@Override
 	public Integer visitAnonymousClassPreStatement(Java8Parser.AnonymousClassPreStatementContext ctx) {

@@ -94,7 +94,7 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		// do nothing.
-		return true;
+		return false;
 	}
 	
 }

@@ -21,4 +21,6 @@ public class aaaaImportantMustTodo {
 	// TODO int[] when inferring specification, [] should be eliminated, this must be considered.
 	
 	// TODO int must be translated to Integer. boolean float double char are the same. This must be done in program-processor phase.
+	
+	// TODO anonymousBegin need to be added to sequence.
 }
