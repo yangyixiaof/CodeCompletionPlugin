@@ -4,9 +4,23 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 
 public class TypeComputer {
 	
-	public static Class<?> ComputeType(Class<?> c1, Class<?> c2, TypeComputationKind tck) throws CodeSynthesisException
+	public static Class<?> ComputeType(Class<?> c1, Class<?> c2, TypeComputationKind tck) throws TypeConflictException
 	{
 		switch (tck) {
+		case NoOptr:
+			if (c1 != null && c2 == null)
+			{
+				return c1;
+			}
+			if (c1 == null && c2 != null)
+			{
+				return c2;
+			}
+			if (c1 == null || c2 == null)
+			{
+				return null;
+			}
+			throw new TypeConflictException("This Noptr but two class all have resolved class.");
 		case JudgeOptr:
 			if (c1 != null && c2 != null)
 			{
@@ -22,7 +36,7 @@ public class TypeComputer {
 					}
 					else
 					{
-						throw new CodeSynthesisException(c1 + " and " + c2 + " can not be inter casted. Wrong judge optr.");
+						throw new TypeConflictException(c1 + " and " + c2 + " can not be inter casted. Wrong judge optr.");
 					}
 				}
 			}
@@ -93,7 +107,7 @@ public class TypeComputer {
 			}
 			else
 			{
-				throw new CodeSynthesisException(c1 + " can not be casted to " + c2 + ". Wrong cast optr.");
+				throw new TypeConflictException(c1 + " can not be casted to " + c2 + ". Wrong cast optr.");
 			}
 		case AssignOptr:
 			if (c1 == null)
@@ -116,11 +130,11 @@ public class TypeComputer {
 				}
 				else
 				{
-					throw new CodeSynthesisException(c1 + " and " + c2 + " can not be inter casted. Wrong assign optr.");
+					throw new TypeConflictException(c1 + " and " + c2 + " can not be inter casted. Wrong assign optr.");
 				}
 			}
 		case Unknown:
-			throw new CodeSynthesisException("Unknown optr.");
+			throw new TypeConflictException("Unknown optr.");
 		case LeftOptr:
 		case RightOptr:
 			return c1;

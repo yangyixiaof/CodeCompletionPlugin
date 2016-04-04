@@ -5,6 +5,6 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 
 public abstract class statement implements OneCode {
 	
-	public abstract void HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException;
+	public abstract boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException;
 	
 }

@@ -1,17 +1,15 @@
 package cn.yyx.contentassist.codeutils;
 
 import java.util.List;
-import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class annotationTypeMemberDeclarationStatement extends statement{
 	
@@ -50,7 +48,7 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 		return similar;
 	}
 	
-	@Override
+	/*@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler, CSNode result,
 			AdditionalInfo ai) {
 		CSNode rdexpcn = new CSNode(CSNodeType.ReferedExpression);
@@ -74,25 +72,29 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 		res.AddPossibleCandidates(content, null);
 		squeue.add(res);
 		return false;
-	}
+	}*/
 
 	@Override
-	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue)
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		List<FlowLineNode<CSFlowLineData>> tps = type.HandleCodeSynthesis(squeue);
+		List<FlowLineNode<CSFlowLineData>> tps = type.HandleCodeSynthesis(squeue, smthandler);
 		if (drexp != null)
 		{
-			List<FlowLineNode<CSFlowLineData>> drs = drexp.HandleCodeSynthesis(squeue);
-			
+			List<FlowLineNode<CSFlowLineData>> drs = drexp.HandleCodeSynthesis(squeue, smthandler);
+			List<FlowLineNode<CSFlowLineData>> cect = CSFlowLineHelper.ConcateTwoFlowLineNodes(null, tps, "() default", drs, null, TypeComputationKind.NoOptr, squeue.NewNodeId(), smthandler.getSete(), null);
+			return cect;
 		}
-		
-		return null;
+		else
+		{
+			CSFlowLineHelper.ConcateOneFlowLineNodes(null, tps, "()");
+			return tps;
+		}
 	}
 
 	@Override
-	public void HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
+	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		// do nothing.
+		return true;
 	}
 	
 }
