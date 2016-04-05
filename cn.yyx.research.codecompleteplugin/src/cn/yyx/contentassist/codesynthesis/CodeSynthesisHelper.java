@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codepredict.PredictMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -14,9 +15,11 @@ import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeResolver;
 import cn.yyx.contentassist.codeutils.identifier;
+import cn.yyx.contentassist.codeutils.referedExpression;
 import cn.yyx.contentassist.codeutils.type;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNodeType;
+import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.StringUtil;
@@ -129,6 +132,21 @@ public class CodeSynthesisHelper {
 			}
 		}
 		return result;
+	}
+	
+	public static List<FlowLineNode<CSFlowLineData>> HandleClassInvokeCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler, referedExpression rexp)
+			throws CodeSynthesisException {
+		CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
+		CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
+		String mcode = realhandler.getMethodname();
+		String rexpcode = null;
+		if (rexp != null)
+		{
+			List<FlowLineNode<CSFlowLineData>> ls = rexp.HandleCodeSynthesis(squeue, realhandler);
+			rexpcode = ls.get(0).getData().getData();
+			mcode = rexpcode + "." + mcode;
+		}
+		return CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, realhandler, mcode, rexpcode);
 	}
 	
 	/*public static boolean HandleMethodSpecificationInfer(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,

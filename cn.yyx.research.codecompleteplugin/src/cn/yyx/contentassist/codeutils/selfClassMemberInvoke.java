@@ -4,12 +4,10 @@ import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.commonutils.CheckUtil;
 
 public class selfClassMemberInvoke extends classInvoke{
 	
@@ -22,17 +20,7 @@ public class selfClassMemberInvoke extends classInvoke{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
-		CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
-		String mcode = realhandler.getMethodname();
-		String rexpcode = null;
-		if (rexp != null)
-		{
-			List<FlowLineNode<CSFlowLineData>> ls = rexp.HandleCodeSynthesis(squeue, realhandler);
-			rexpcode = ls.get(0).getData().getData();
-			mcode = rexpcode + "." + mcode;
-		}
-		return CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, realhandler, mcode, rexpcode);
+		return CodeSynthesisHelper.HandleClassInvokeCodeSynthesis(squeue, smthandler, rexp);
 	}
 	
 	/*@Override
