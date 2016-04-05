@@ -645,15 +645,9 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	@Override
 	public Integer visitCommonClassMemberInvoke(CommonClassMemberInvokeContext ctx) {
 		Integer res = visitChildren(ctx);
-		referedExpression rexp = null;
-		FirstArgReferedExpressionContext rexpctx = ctx.firstArgReferedExpression();
-		if (rexpctx != null)
-		{
-			rexp = (referedExpression) usedobj.poll();
-		}
-		identifier id = (identifier) usedobj.poll();
-		commonClassMemberInvoke scmi = new commonClassMemberInvoke(id, rexp);
-		usedobj.add(scmi);
+		referedExpression rexp = (referedExpression) usedobj.poll();
+		commonClassMemberInvoke ccmi = new commonClassMemberInvoke(rexp);
+		usedobj.add(ccmi);
 		return res;
 	}
 	
