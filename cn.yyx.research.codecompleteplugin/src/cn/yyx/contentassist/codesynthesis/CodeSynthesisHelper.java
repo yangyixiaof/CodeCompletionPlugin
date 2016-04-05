@@ -1,11 +1,14 @@
 package cn.yyx.contentassist.codesynthesis;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeResolver;
 import cn.yyx.contentassist.codeutils.identifier;
@@ -23,20 +26,6 @@ import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;
 import cn.yyx.contentassist.specification.SpecificationHelper;
 
 public class CodeSynthesisHelper {
-	
-	/*public static boolean HandleRawTextSynthesis(String text, CodeSynthesisQueue squeue, SynthesisHandler handler,
-			StringBuilder result, AdditionalInfo ai)
-	{
-		if (result != null)
-		{
-			result.append(text);
-		}
-		else
-		{
-			ErrorUtil.ErrorAndStop("What the fuch the rawText put where?");
-		}
-		return false;
-	}*/
 	
 	public static boolean HandleBreakContinueCodeSynthesis(identifier id, CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai, String wheretp)
@@ -116,8 +105,29 @@ public class CodeSynthesisHelper {
 		}
 		result.setDatas(tp1.getDatas());
 	}
+
+	public static List<FlowLineNode<CSFlowLineData>> HandleMethodSpecificationInfer(CSFlowLineQueue squeue,
+			CSStatementHandler smthandler, String spechint) {
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		MembersOfAReference res = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(spechint, squeue.GetLastHandler().getContextHandler().getJavacontext(), null);
+		List<MethodMember> mms = res.getMmlist();
+		Iterator<MethodMember> itr = mms.iterator();
+		String cmp = StringUtil.GetContentBehindFirstWhiteSpace(spechint);
+		while (itr.hasNext())
+		{
+			MethodMember mm = itr.next();
+			String methodname = mm.getName();
+			double sim = SimilarityHelper.ComputeTwoStringSimilarity(cmp, methodname);
+			if (sim > 0.8)
+			{
+				 = TypeCheckHelper.TranslateMethodMember(mm, squeue.GetLastHandler().getContextHandler().getJavacontext());
+				result.AddOneData(spechint, );
+			}
+		}
+		return result;
+	}
 	
-	public static boolean HandleMethodSpecificationInfer(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
+	/*public static boolean HandleMethodSpecificationInfer(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai, String spechint)
 	{
 		MembersOfAReference res = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(spechint, handler.getContextHandler().getJavacontext(), null);
@@ -135,6 +145,6 @@ public class CodeSynthesisHelper {
 			}
 		}
 		return false;
-	}
+	}*/
 	
 }

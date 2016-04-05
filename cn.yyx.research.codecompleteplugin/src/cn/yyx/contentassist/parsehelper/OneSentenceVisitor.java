@@ -9,6 +9,7 @@ import SJ8Parse.Java8BaseVisitor;
 import SJ8Parse.Java8Parser;
 import SJ8Parse.Java8Parser.ArgumentListContext;
 import SJ8Parse.Java8Parser.BothTypeContext;
+import SJ8Parse.Java8Parser.CommonClassMemberInvokeContext;
 import SJ8Parse.Java8Parser.EndOfArrayDeclarationIndexExpressionContext;
 import SJ8Parse.Java8Parser.ExtendBoundContext;
 import SJ8Parse.Java8Parser.FirstArgPreExistContext;
@@ -639,6 +640,21 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	public Integer visitFirstArgReferedExpression(FirstArgReferedExpressionContext ctx) {
 		// do nothing.
 		return visitChildren(ctx);
+	}
+	
+	@Override
+	public Integer visitCommonClassMemberInvoke(CommonClassMemberInvokeContext ctx) {
+		Integer res = visitChildren(ctx);
+		referedExpression rexp = null;
+		FirstArgReferedExpressionContext rexpctx = ctx.firstArgReferedExpression();
+		if (rexpctx != null)
+		{
+			rexp = (referedExpression) usedobj.poll();
+		}
+		identifier id = (identifier) usedobj.poll();
+		commonClassMemberInvoke scmi = new commonClassMemberInvoke(id, rexp);
+		usedobj.add(scmi);
+		return res;
 	}
 	
 	@Override
