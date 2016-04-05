@@ -695,10 +695,8 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	
 	@Override
 	public Integer visitFirstArg(Java8Parser.FirstArgContext ctx) {
-		Integer res = visitChildren(ctx);
-		classInvoke ci = (classInvoke) usedobj.poll();
-		usedobj.add(new firstArg(ci));
-		return res;
+		// do nothing.
+		return visitChildren(ctx);
 	}
 	
 	@Override

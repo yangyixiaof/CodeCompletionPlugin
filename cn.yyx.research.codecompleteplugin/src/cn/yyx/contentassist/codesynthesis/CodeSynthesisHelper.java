@@ -134,7 +134,7 @@ public class CodeSynthesisHelper {
 		return result;
 	}
 	
-	public static List<FlowLineNode<CSFlowLineData>> HandleClassInvokeCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler, referedExpression rexp)
+	public static List<FlowLineNode<CSFlowLineData>> HandleClassInvokeCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler, referedExpression rexp, String between)
 			throws CodeSynthesisException {
 		CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
 		CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
@@ -144,7 +144,7 @@ public class CodeSynthesisHelper {
 		{
 			List<FlowLineNode<CSFlowLineData>> ls = rexp.HandleCodeSynthesis(squeue, realhandler);
 			rexpcode = ls.get(0).getData().getData();
-			mcode = rexpcode + "." + mcode;
+			mcode = rexpcode + "." + ((between == null || between.equals("")) ? "" : between) + mcode;
 		}
 		return CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, realhandler, mcode, rexpcode);
 	}
