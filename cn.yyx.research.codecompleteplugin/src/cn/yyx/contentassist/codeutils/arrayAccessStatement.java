@@ -1,10 +1,14 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.List;
 import java.util.Stack;
 
-import cn.yyx.contentassist.codesynthesis.CSNode;
-import cn.yyx.contentassist.codesynthesis.CSNodeHelper;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
@@ -28,15 +32,6 @@ public class arrayAccessStatement extends statement{
 		if (t instanceof arrayAccessStatement)
 		{
 			return true;
-		}
-		return false;
-	}
-	
-	@Override
-	public boolean HandleOverSignal(Stack<Integer> cstack) {
-		if (!accessEnd)
-		{
-			cstack.push(StructureSignalMetaInfo.ArrayAccessBlcok);
 		}
 		return false;
 	}
@@ -82,6 +77,22 @@ public class arrayAccessStatement extends statement{
 		smt.setDatas(CSNodeHelper.ConcatTwoNodesDatas(csarr, cidx, null, -1));
 		squeue.add(smt);
 		expected.pop();
+		return false;
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
+		if (!accessEnd)
+		{
+			cstack.SetLastStructureSignal(StructureSignalMetaInfo.ArrayAccessBlcok);
+		}
 		return false;
 	}
 	

@@ -8,4 +8,9 @@ public class FlowLineStack {
 		this.last = last;
 	}
 	
+	public void SetLastStructureSignal(int structuresignal)
+	{
+		
+	}
+	
 }
