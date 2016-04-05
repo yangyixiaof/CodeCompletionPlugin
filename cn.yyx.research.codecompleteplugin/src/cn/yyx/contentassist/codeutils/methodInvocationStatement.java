@@ -46,11 +46,6 @@ public class methodInvocationStatement extends expressionStatement{
 	}
 	
 	@Override
-	public boolean HandleOverSignal(Stack<Integer> cstack) {
-		return false;
-	}
-
-	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		CSNode nacs = new CSNode(CSNodeType.ReferedExpression);
@@ -77,7 +72,6 @@ public class methodInvocationStatement extends expressionStatement{
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	

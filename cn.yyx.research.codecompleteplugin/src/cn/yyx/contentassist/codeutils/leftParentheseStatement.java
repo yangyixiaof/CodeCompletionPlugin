@@ -2,7 +2,7 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
-import cn.yyx.contentassist.codesynthesis.CSLeftParenInfoNode;
+import cn.yyx.contentassist.codesynthesis.CSLeftParenInfoData;
 import cn.yyx.contentassist.codesynthesis.CSNode;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
@@ -46,7 +46,7 @@ public class leftParentheseStatement extends statement{
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
-		CSLeftParenInfoNode cpin = new CSLeftParenInfoNode(count);
+		CSLeftParenInfoData cpin = new CSLeftParenInfoData(count);
 		squeue.add(cpin);
 		return false;
 	}

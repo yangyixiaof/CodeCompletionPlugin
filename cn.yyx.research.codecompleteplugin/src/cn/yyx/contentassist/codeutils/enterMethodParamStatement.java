@@ -2,7 +2,7 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Stack;
 
-import cn.yyx.contentassist.codesynthesis.CSEnterParamInfoNode;
+import cn.yyx.contentassist.codesynthesis.CSEnterParamInfoData;
 import cn.yyx.contentassist.codesynthesis.CSNode;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
@@ -43,7 +43,7 @@ public class enterMethodParamStatement extends statement{
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
-		CSEnterParamInfoNode cs = new CSEnterParamInfoNode(times);
+		CSEnterParamInfoData cs = new CSEnterParamInfoData(times);
 		squeue.add(cs);
 		return false;
 	}
