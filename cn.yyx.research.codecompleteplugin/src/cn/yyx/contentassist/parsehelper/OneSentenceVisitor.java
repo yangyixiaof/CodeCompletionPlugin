@@ -15,10 +15,11 @@ import SJ8Parse.Java8Parser.FirstArgPreExistContext;
 import SJ8Parse.Java8Parser.FirstArgReferedExpressionContext;
 import SJ8Parse.Java8Parser.IntersectionFirstTypeContext;
 import SJ8Parse.Java8Parser.IntersectionSecondTypeContext;
+import SJ8Parse.Java8Parser.MethodArgPreExistContext;
+import SJ8Parse.Java8Parser.MethodArgReferedExpressionContext;
 import SJ8Parse.Java8Parser.MethodReferenceExpressionContext;
 import SJ8Parse.Java8Parser.OffsetContext;
 import SJ8Parse.Java8Parser.ParameterizedTypeContext;
-import SJ8Parse.Java8Parser.ReferedExpressionContext;
 import SJ8Parse.Java8Parser.SimpleTypeContext;
 import SJ8Parse.Java8Parser.TypeContext;
 import SJ8Parse.Java8Parser.TypeListContext;
@@ -691,11 +692,23 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	}
 	
 	@Override
+	public Integer visitMethodArgPreExist(MethodArgPreExistContext ctx) {
+		usedobj.add(new methodArgPreExist());
+		return super.visitMethodArgPreExist(ctx);
+	}
+	
+	@Override
+	public Integer visitMethodArgReferedExpression(MethodArgReferedExpressionContext ctx) {
+		// do nothing.
+		return super.visitMethodArgReferedExpression(ctx);
+	}
+	
+	@Override
 	public Integer visitArgumentList(Java8Parser.ArgumentListContext ctx) {
 		Integer res = visitChildren(ctx);
 		argumentList al = new argumentList();
-		List<ReferedExpressionContext> rl = ctx.referedExpression();
-		Iterator<ReferedExpressionContext> itr = rl.iterator();
+		List<MethodArgReferedExpressionContext> rl = ctx.methodArgReferedExpression();
+		Iterator<MethodArgReferedExpressionContext> itr = rl.iterator();
 		while (itr.hasNext()) {
 			itr.next();
 			Object o = usedobj.poll();
