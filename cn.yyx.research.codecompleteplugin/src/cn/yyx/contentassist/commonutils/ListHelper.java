@@ -2,11 +2,22 @@ package cn.yyx.contentassist.commonutils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.Sentence;
 
 public class ListHelper {
+	
+	public static List<Boolean> InitialBooleanArray(int size)
+	{
+		List<Boolean> result = new LinkedList<Boolean>();
+		for (int i=0;i<size;i++)
+		{
+			result.add(false);
+		}
+		return result;
+	}
 	
 	public static void PrintList(ArrayList<String> result)
 	{

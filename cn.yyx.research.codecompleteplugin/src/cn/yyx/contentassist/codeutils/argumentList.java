@@ -3,10 +3,6 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
-import java.util.TreeMap;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
@@ -16,13 +12,9 @@ import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.ArrayUtil;
-import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.ListDynamicHeper;
+import cn.yyx.contentassist.commonutils.ListHelper;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class argumentList implements OneCode{
 	
@@ -87,7 +79,7 @@ public class argumentList implements OneCode{
 		return 0;
 	}
 
-	@Override
+	/*@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		// must be in reverse order.
@@ -156,34 +148,31 @@ public class argumentList implements OneCode{
 		result.setDatas(resdatas);
 		expected.pop();
 		return false;
-	}
+	}*/
 	
-	private String HandleOneClassParamNodes(Class<?> c, List<CSNode> paramsnode, List<Boolean> usedparams)
+	private String HandleOneClassParamNodes(Class<?> c, List<List<FlowLineNode<CSFlowLineData>>> paramsnode, List<Boolean> usedparams)
 	{
-		Iterator<CSNode> pitr = paramsnode.iterator();
+		Iterator<List<FlowLineNode<CSFlowLineData>>> pitr = paramsnode.iterator();
 		int usedidx = 0;
 		String unusedorlatestused = null;
 		while (pitr.hasNext())
 		{
-			CSNode pcn = pitr.next();
+			List<FlowLineNode<CSFlowLineData>> pcn = pitr.next();
 			String select = null;
-			Map<String, TypeCheck> dts = pcn.getDatas();
-			Set<String> codes = dts.keySet();
-			Iterator<String> codeitr = codes.iterator();
+			Iterator<FlowLineNode<CSFlowLineData>> codeitr = pcn.iterator();
 			while (codeitr.hasNext())
 			{
-				String code = codeitr.next();
-				TypeCheck codecheck = dts.get(code);
-				Class<?> rtclass = codecheck.getExpreturntypeclass();
+				FlowLineNode<CSFlowLineData> code = codeitr.next();
+				Class<?> rtclass = code.getData().getDcls();
 				if (TypeCheckHelper.CanBeMutualCast(c, rtclass))
 				{
-					select = code;
+					select = code.getData().getData();
 					break;
 				}
 			}
 			if (select == null)
 			{
-				select = codes.iterator().next();
+				select = pcn.get(0).getData().getData();
 			}
 			if (!usedparams.get(usedidx))
 			{
@@ -204,7 +193,6 @@ public class argumentList implements OneCode{
 			throws CodeSynthesisException {
 		if (smthandler instanceof CSMethodStatementHandler)
 		{
-			// TODO Auto-generated method stub
 			CSMethodStatementHandler realhandler = (CSMethodStatementHandler)smthandler;
 			realhandler.setArgsize(el.size()-1);
 			// change to reverse order list.
@@ -227,20 +215,41 @@ public class argumentList implements OneCode{
 						MethodTypeSignature msig = realhandler.GetMethodTypeSigById(data.getId());
 						if (msig == null)
 						{
-							// directly add param.
+							// directly add argument.
 							Iterator<List<FlowLineNode<CSFlowLineData>>> pitr = positiveargs.iterator();
+							StringBuilder sb = new StringBuilder(data.getData());
+							sb.append("(");
 							while (pitr.hasNext())
 							{
 								List<FlowLineNode<CSFlowLineData>> pcnls = pitr.next();
-								sb.append(pcn.GetFirstDataWithoutTypeCheck());
+								sb.append(pcnls.get(0).getData().getData());
 								if (pitr.hasNext())
 								{
 									sb.append(",");
 								}
 							}
+							sb.append(")");
 						}
-						StringBuilder sb = new StringBuilder(data.getData());
-						
+						else
+						{
+							// check and add argument.
+							List<Boolean> usedparams = ListHelper.InitialBooleanArray(positiveargs.size());
+							List<Class<?>> tps = msig.getArgtypes();
+							Iterator<Class<?>> tpitr = tps.iterator();
+							StringBuilder sb = new StringBuilder(data.getData());
+							sb.append("(");
+							while (tpitr.hasNext())
+							{
+								Class<?> c = tpitr.next();
+								String ct = HandleOneClassParamNodes(c, positiveargs, usedparams);
+								sb.append(ct);
+								if (tpitr.hasNext())
+								{
+									sb.append(",");
+								}
+							}
+							sb.append(")");
+						}
 					}
 				}
 				else
