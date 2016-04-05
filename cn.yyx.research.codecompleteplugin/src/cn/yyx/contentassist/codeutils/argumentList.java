@@ -14,10 +14,12 @@ import cn.yyx.contentassist.codesynthesis.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.ArrayUtil;
 import cn.yyx.contentassist.commonutils.CSNodeType;
+import cn.yyx.contentassist.commonutils.ListDynamicHeper;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
@@ -204,7 +206,34 @@ public class argumentList implements OneCode{
 		if (smthandler instanceof CSMethodStatementHandler)
 		{
 			// TODO Auto-generated method stub
-			
+			CSMethodStatementHandler realhandler = (CSMethodStatementHandler)smthandler;
+			// change to reverse order list.
+			List<referedExpression> reverseel = new ListDynamicHeper<referedExpression>().ReverseList(el);
+			List<List<FlowLineNode<CSFlowLineData>>> positiveargs = new LinkedList<List<FlowLineNode<CSFlowLineData>>>();
+			Iterator<referedExpression> ritr = reverseel.iterator();
+			while (ritr.hasNext())
+			{
+				referedExpression re = ritr.next();
+				List<FlowLineNode<CSFlowLineData>> oneargpospossibles = re.HandleCodeSynthesis(squeue, smthandler);
+				if (!ritr.hasNext())
+				{
+					// handle invoker.
+					referedExpression invokerhint = re;
+					List<FlowLineNode<CSFlowLineData>> invokers = oneargpospossibles;
+					Iterator<FlowLineNode<CSFlowLineData>> itr = invokers.iterator();
+					while (itr.hasNext())
+					{
+						FlowLineNode<CSFlowLineData> fln = itr.next();
+						CSFlowLineData data = fln.getData();
+						MethodTypeSignature msig = realhandler.GetMethodTypeSigById(data.getId());
+						
+					}
+				}
+				else
+				{
+					positiveargs.add(oneargpospossibles);
+				}
+			}
 		}
 		else
 		{
