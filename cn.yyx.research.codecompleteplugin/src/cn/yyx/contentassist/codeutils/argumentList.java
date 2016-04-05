@@ -10,6 +10,7 @@ import java.util.TreeMap;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -37,15 +38,15 @@ public class argumentList implements OneCode{
 	{
 		getEl().add(re);
 	}
-
+	
 	public List<referedExpression> getEl() {
 		return el;
 	}
-
+	
 	public void setEl(List<referedExpression> el) {
 		this.el = el;
 	}
-
+	
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof argumentList)
@@ -65,7 +66,7 @@ public class argumentList implements OneCode{
 		}
 		return false;
 	}
-
+	
 	@Override
 	public double Similarity(OneCode t) {
 		if (t instanceof argumentList)
@@ -196,11 +197,19 @@ public class argumentList implements OneCode{
 		}
 		return unusedorlatestused;
 	}
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
+		if (smthandler instanceof CSMethodStatementHandler)
+		{
+			// TODO Auto-generated method stub
+			
+		}
+		else
+		{
+			System.err.println("Input handler is not the expected CSMethodStatementHandler, what the fuck?");
+		}
 		return null;
 	}
 	

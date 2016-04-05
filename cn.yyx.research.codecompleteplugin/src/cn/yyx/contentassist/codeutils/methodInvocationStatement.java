@@ -1,18 +1,14 @@
 package cn.yyx.contentassist.codeutils;
 
 import java.util.List;
-import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class methodInvocationStatement extends expressionStatement{
 	
@@ -45,7 +41,7 @@ public class methodInvocationStatement extends expressionStatement{
 		return 0;
 	}
 	
-	@Override
+	/*@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		CSNode nacs = new CSNode(CSNodeType.ReferedExpression);
@@ -61,15 +57,15 @@ public class methodInvocationStatement extends expressionStatement{
 		argList.HandleCodeSynthesis(squeue, expected, handler, fcs, nai);
 		squeue.add(fcs);
 		return false;
-	}
+	}*/
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> nls = name.HandleCodeSynthesis(squeue, smthandler);
 		String methodname = nls.get(0).getData().getData();
-		
-		return null;
+		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(methodname, smthandler);
+		return argList.HandleCodeSynthesis(squeue, csmsh);
 	}
 
 	@Override
