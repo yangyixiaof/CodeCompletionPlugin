@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codepredict.PredictMetaInfo;
@@ -13,18 +12,15 @@ import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeResolver;
 import cn.yyx.contentassist.codeutils.identifier;
 import cn.yyx.contentassist.codeutils.referedExpression;
 import cn.yyx.contentassist.codeutils.type;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.StringUtil;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
 import cn.yyx.contentassist.specification.MembersOfAReference;
 import cn.yyx.contentassist.specification.MethodMember;
 import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;
@@ -94,25 +90,20 @@ public class CodeSynthesisHelper {
 		return result;
 	}
 	
-	public static void HandleIntersectionOrUnionType(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai, List<type> tps, String concator)
+	public static List<FlowLineNode<CSFlowLineData>> HandleIntersectionOrUnionType(CSFlowLineQueue squeue, CSStatementHandler smthandler, List<type> tps, String concator) throws CodeSynthesisException
 	{
 		Iterator<type> itr = tps.iterator();
 		type tp = itr.next();
-		CSNode tp1 = new CSNode(CSNodeType.TempUsed);
-		tp.HandleCodeSynthesis(squeue, expected, handler, tp1, ai);
+		List<FlowLineNode<CSFlowLineData>> ls = tp.HandleCodeSynthesis(squeue, smthandler);
 		while (itr.hasNext())
 		{
 			type ttp = itr.next();
-			CSNode tp2 = new CSNode(CSNodeType.TempUsed);
-			ttp.HandleCodeSynthesis(squeue, expected, handler, tp2, ai);
-			CSNode mgd = new CSNode(CSNodeType.TempUsed);
-			mgd.setDatas(CSNodeHelper.ConcatTwoNodesDatas(tp1, tp2, concator, -1));
-			tp1 = mgd;
+			List<FlowLineNode<CSFlowLineData>> tmpls = ttp.HandleCodeSynthesis(squeue, smthandler);
+			ls = CSFlowLineHelper.ConcateTwoFlowLineNodes(null, ls, concator, tmpls, null, TypeComputationKind.NoOptr, squeue, smthandler, null);
 		}
-		result.setDatas(tp1.getDatas());
+		return ls;
 	}
-
+	
 	public static List<FlowLineNode<CSFlowLineData>> HandleMethodSpecificationInfer(CSFlowLineQueue squeue,
 			CSMethodStatementHandler smthandler, String spechint, String beforemethodexp) {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
