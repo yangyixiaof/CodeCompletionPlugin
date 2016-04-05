@@ -90,7 +90,6 @@ public class argumentList implements OneCode{
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
-		
 		// must be in reverse order.
 		expected.add(null);
 		boolean conflict = false;
@@ -207,6 +206,7 @@ public class argumentList implements OneCode{
 		{
 			// TODO Auto-generated method stub
 			CSMethodStatementHandler realhandler = (CSMethodStatementHandler)smthandler;
+			realhandler.setArgsize(el.size()-1);
 			// change to reverse order list.
 			List<referedExpression> reverseel = new ListDynamicHeper<referedExpression>().ReverseList(el);
 			List<List<FlowLineNode<CSFlowLineData>>> positiveargs = new LinkedList<List<FlowLineNode<CSFlowLineData>>>();
@@ -218,7 +218,6 @@ public class argumentList implements OneCode{
 				if (!ritr.hasNext())
 				{
 					// handle invoker.
-					referedExpression invokerhint = re;
 					List<FlowLineNode<CSFlowLineData>> invokers = oneargpospossibles;
 					Iterator<FlowLineNode<CSFlowLineData>> itr = invokers.iterator();
 					while (itr.hasNext())
@@ -226,6 +225,21 @@ public class argumentList implements OneCode{
 						FlowLineNode<CSFlowLineData> fln = itr.next();
 						CSFlowLineData data = fln.getData();
 						MethodTypeSignature msig = realhandler.GetMethodTypeSigById(data.getId());
+						if (msig == null)
+						{
+							// directly add param.
+							Iterator<List<FlowLineNode<CSFlowLineData>>> pitr = positiveargs.iterator();
+							while (pitr.hasNext())
+							{
+								List<FlowLineNode<CSFlowLineData>> pcnls = pitr.next();
+								sb.append(pcn.GetFirstDataWithoutTypeCheck());
+								if (pitr.hasNext())
+								{
+									sb.append(",");
+								}
+							}
+						}
+						StringBuilder sb = new StringBuilder(data.getData());
 						
 					}
 				}

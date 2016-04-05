@@ -7,6 +7,7 @@ import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 
 public class CSMethodStatementHandler extends CSStatementHandler{
 	
+	private int argsize = -1;
 	private String methodname = null;
 	private Map<Integer, MethodTypeSignature> mtsmap = new TreeMap<Integer, MethodTypeSignature>();
 	
@@ -31,6 +32,14 @@ public class CSMethodStatementHandler extends CSStatementHandler{
 	public void AddMethodTypeSigById(Integer id, MethodTypeSignature mts)
 	{
 		mtsmap.put(id, mts);
+	}
+
+	public int getArgsize() {
+		return argsize;
+	}
+
+	public void setArgsize(int argsize) {
+		this.argsize = argsize;
 	}
 	
 }
