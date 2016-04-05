@@ -21,4 +21,6 @@ public class PredictMetaInfo {
 	
 	public static final int NgramMaxSize = 5;
 	
+	public static final double MethodSimilarityThreshold = 0.7;
+	
 }

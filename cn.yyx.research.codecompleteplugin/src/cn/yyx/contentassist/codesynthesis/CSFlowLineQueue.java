@@ -22,7 +22,7 @@ public class CSFlowLineQueue {
 		return last.getData().getHandler();
 	}
 	
-	public int NewNodeId()
+	public int GenerateNewNodeId()
 	{
 		CheckUtil.CheckNotNull(last, "the 'last' member of CSFlowLineQueue is null, serious error, the system will exit.");
 		return last.getData().getScm().GenerateNextLevelId();

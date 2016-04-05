@@ -57,15 +57,14 @@ public class TypeCheckHelper {
 		return onetype;
 	}
 	
-	public static TypeCheck TranslateMethodMember(MethodMember mm, JavaContentAssistInvocationContext javacontext)
+	public static MethodTypeSignature TranslateMethodMember(MethodMember mm, JavaContentAssistInvocationContext javacontext)
 	{
-		TypeCheck tc = new TypeCheck();
 		String rttype = mm.getReturntype();
-		tc.setExpreturntype(rttype);
+		// tc.setExpreturntype(rttype);
 		Class<?> c = TypeResolver.ResolveType(rttype, javacontext);
-		tc.setExpreturntypeclass(c);
+		// tc.setExpreturntypeclass(c);
 		LinkedList<String> tplist = mm.getArgtypelist();
-		tc.setExpargstypes(tplist);
+		// tc.setExpargstypes(tplist);
 		LinkedList<Class<?>> tpclist = new LinkedList<Class<?>>();
 		Iterator<String> itr = tplist.iterator();
 		while (itr.hasNext())
@@ -74,7 +73,8 @@ public class TypeCheckHelper {
 			Class<?> tpc = TypeResolver.ResolveType(tp, javacontext);
 			tpclist.add(tpc);
 		}
-		tc.setExpargstypesclasses(tpclist);
+		// tc.setExpargstypesclasses(tpclist);
+		MethodTypeSignature tc = new MethodTypeSignature(c, tpclist);
 		return tc;
 	}
 	

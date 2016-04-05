@@ -1,7 +1,6 @@
 package cn.yyx.contentassist.codeutils;
 
 import java.util.List;
-import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
@@ -10,11 +9,7 @@ import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.CheckUtil;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class selfClassMemberInvoke extends classInvoke{
 	
@@ -27,17 +22,17 @@ public class selfClassMemberInvoke extends classInvoke{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
 		CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
 		CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
 		String mcode = realhandler.getMethodname();
+		String rexpcode = null;
 		if (rexp != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> ls = rexp.HandleCodeSynthesis(squeue, realhandler);
-			String rexpcode = ls.get(0).getData().getData();
+			rexpcode = ls.get(0).getData().getData();
 			mcode = rexpcode + "." + mcode;
 		}
-		return CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, smthandler, mcode);
+		return CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, realhandler, mcode, rexpcode);
 	}
 	
 	/*@Override

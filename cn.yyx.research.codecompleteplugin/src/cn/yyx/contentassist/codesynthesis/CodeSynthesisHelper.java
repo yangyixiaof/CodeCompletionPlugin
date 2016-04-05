@@ -7,8 +7,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import cn.yyx.contentassist.codepredict.PredictMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeResolver;
 import cn.yyx.contentassist.codeutils.identifier;
@@ -107,7 +109,7 @@ public class CodeSynthesisHelper {
 	}
 
 	public static List<FlowLineNode<CSFlowLineData>> HandleMethodSpecificationInfer(CSFlowLineQueue squeue,
-			CSStatementHandler smthandler, String spechint) {
+			CSMethodStatementHandler smthandler, String spechint, String beforemethodexp) {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		MembersOfAReference res = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(spechint, squeue.GetLastHandler().getContextHandler().getJavacontext(), null);
 		List<MethodMember> mms = res.getMmlist();
@@ -118,10 +120,12 @@ public class CodeSynthesisHelper {
 			MethodMember mm = itr.next();
 			String methodname = mm.getName();
 			double sim = SimilarityHelper.ComputeTwoStringSimilarity(cmp, methodname);
-			if (sim > 0.8)
+			if (sim > PredictMetaInfo.MethodSimilarityThreshold)
 			{
-				 = TypeCheckHelper.TranslateMethodMember(mm, squeue.GetLastHandler().getContextHandler().getJavacontext());
-				result.AddOneData(spechint, );
+				MethodTypeSignature mts = TypeCheckHelper.TranslateMethodMember(mm, squeue.GetLastHandler().getContextHandler().getJavacontext());
+				int id = squeue.GenerateNewNodeId();
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? methodname : beforemethodexp + "." + methodname), null, mts.getReturntype(), false, squeue.GetLastHandler()), smthandler.getProb()));
+				smthandler.AddMethodTypeSigById(id, mts);
 			}
 		}
 		return result;
