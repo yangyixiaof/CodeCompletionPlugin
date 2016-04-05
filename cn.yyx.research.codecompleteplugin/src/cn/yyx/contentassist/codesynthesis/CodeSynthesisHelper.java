@@ -56,21 +56,28 @@ public class CodeSynthesisHelper {
 		return sb.toString();
 	}
 	
-	public static void HandleVarRefCodeSynthesis(Map<String, String> po, CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai)
+	public static List<FlowLineNode<CSFlowLineData>> HandleVarRefCodeSynthesis(Map<String, String> po, CSFlowLineQueue squeue, CSStatementHandler smthandler)
 	{
-		if (ai != null && ai.getDirectlyMemberHint() != null)
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		if ((smthandler instanceof CSFieldAccessStatementHandler) || (smthandler instanceof CSMethodStatementHandler))
 		{
-			String hint = ai.getDirectlyMemberHint();
-			RefAndModifiedMember ramm = SpecificationHelper.GetMostLikelyRef(handler.getContextHandler(), po, hint, ai.isDirectlyMemberIsMethod());
+			boolean ismethod = false;
+			String hint = null;
+			if (smthandler instanceof CSFieldAccessStatementHandler)
+			{
+				hint = ((CSFieldAccessStatementHandler) smthandler).getField();
+				ismethod = true;
+			}
+			else
+			{
+				hint = ((CSMethodStatementHandler)smthandler).getMethodname();
+			}
+			RefAndModifiedMember ramm = SpecificationHelper.GetMostLikelyRef(squeue.GetLastHandler().getContextHandler(), po, hint, ismethod);
 			String ref = ramm.getRef();
 			String member = ramm.getMember();
 			String membertype = ramm.getMembertype();
-			Class<?> c = TypeResolver.ResolveType(membertype, handler.getContextHandler().getJavacontext());
-			TypeCheck tc = new TypeCheck();
-			tc.setExpreturntype(membertype);
-			tc.setExpreturntypeclass(c);
-			result.AddOneData(ref + "." + member, tc);
+			Class<?> c = TypeResolver.ResolveType(membertype, squeue.GetLastHandler().getContextHandler().getJavacontext());
+			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ref + "." + member, null, c, false, squeue.GetLastHandler()), smthandler.getProb()));
 		}
 		else
 		{
@@ -80,13 +87,11 @@ public class CodeSynthesisHelper {
 			{
 				String code = citr.next();
 				String type = po.get(code);
-				Class<?> c = TypeResolver.ResolveType(type, handler.getContextHandler().getJavacontext());
-				TypeCheck tc = new TypeCheck();
-				tc.setExpreturntype(type);
-				tc.setExpreturntypeclass(c);
-				result.AddOneData(code, tc);
+				Class<?> c = TypeResolver.ResolveType(type, squeue.GetLastHandler().getContextHandler().getJavacontext());
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), code, null, c, false, squeue.GetLastHandler()), smthandler.getProb()));
 			}
 		}
+		return result;
 	}
 	
 	public static void HandleIntersectionOrUnionType(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
