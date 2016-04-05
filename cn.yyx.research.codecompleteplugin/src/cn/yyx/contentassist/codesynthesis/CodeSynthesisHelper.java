@@ -32,21 +32,18 @@ import cn.yyx.contentassist.specification.SpecificationHelper;
 
 public class CodeSynthesisHelper {
 	
-	public static boolean HandleBreakContinueCodeSynthesis(identifier id, CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai, String wheretp)
+	public static List<FlowLineNode<CSFlowLineData>> HandleBreakContinueCodeSynthesis(identifier id, CSFlowLineQueue squeue, CSStatementHandler smthandler,
+			String whichprefix) throws CodeSynthesisException
 	{
-		StringBuilder fin = new StringBuilder(wheretp);
-		CSNode csn = new CSNode(CSNodeType.TempUsed);
-		boolean conflict = id.HandleCodeSynthesis(squeue, expected, handler, csn, null);
-		if (conflict)
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		StringBuilder fin = new StringBuilder(whichprefix);
+		if (id != null)
 		{
-			return true;
+			List<FlowLineNode<CSFlowLineData>> ls = id.HandleCodeSynthesis(squeue, smthandler);
+			fin.append(" " + ls.get(0).getData().getData());
 		}
-		fin.append(wheretp + " " + csn.GetFirstDataWithoutTypeCheck());
-		CSNode cs = new CSNode(CSNodeType.WholeStatement);
-		cs.AddPossibleCandidates(fin.toString(), null);
-		squeue.add(cs);
-		return false;
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), fin.toString(), null, void.class, false, squeue.GetLastHandler()), smthandler.getProb()));
+		return result;
 	}
 	
 	public static String GenerateDimens(int count)
