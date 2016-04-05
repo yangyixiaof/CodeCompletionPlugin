@@ -8,7 +8,7 @@ import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
 
-public class codeHole extends identifier{
+public class codeHole extends referedExpression{
 	
 	public codeHole() {
 	}

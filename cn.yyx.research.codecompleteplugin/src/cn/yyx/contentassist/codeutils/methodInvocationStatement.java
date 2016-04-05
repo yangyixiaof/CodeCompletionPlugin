@@ -66,7 +66,9 @@ public class methodInvocationStatement extends expressionStatement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
+		List<FlowLineNode<CSFlowLineData>> nls = name.HandleCodeSynthesis(squeue, smthandler);
+		String methodname = nls.get(0).getData().getData();
+		
 		return null;
 	}
 

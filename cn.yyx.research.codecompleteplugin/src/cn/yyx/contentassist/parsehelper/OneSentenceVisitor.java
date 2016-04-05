@@ -11,6 +11,8 @@ import SJ8Parse.Java8Parser.ArgumentListContext;
 import SJ8Parse.Java8Parser.BothTypeContext;
 import SJ8Parse.Java8Parser.EndOfArrayDeclarationIndexExpressionContext;
 import SJ8Parse.Java8Parser.ExtendBoundContext;
+import SJ8Parse.Java8Parser.FirstArgPreExistContext;
+import SJ8Parse.Java8Parser.FirstArgReferedExpressionContext;
 import SJ8Parse.Java8Parser.IntersectionFirstTypeContext;
 import SJ8Parse.Java8Parser.IntersectionSecondTypeContext;
 import SJ8Parse.Java8Parser.MethodReferenceExpressionContext;
@@ -625,11 +627,24 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		return visitChildren(ctx);
 	}
 	
+	
+	@Override
+	public Integer visitFirstArgPreExist(FirstArgPreExistContext ctx) {
+		usedobj.add(new firstArgPreExist());
+		return visitChildren(ctx);
+	}
+	
+	@Override
+	public Integer visitFirstArgReferedExpression(FirstArgReferedExpressionContext ctx) {
+		// do nothing.
+		return visitChildren(ctx);
+	}
+	
 	@Override
 	public Integer visitSelfClassMemberInvoke(Java8Parser.SelfClassMemberInvokeContext ctx) {
 		Integer res = visitChildren(ctx);
 		referedExpression rexp = null;
-		ReferedExpressionContext rexpctx = ctx.referedExpression();
+		FirstArgReferedExpressionContext rexpctx = ctx.firstArgReferedExpression();
 		if (rexpctx != null)
 		{
 			rexp = (referedExpression) usedobj.poll();
@@ -643,7 +658,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	public Integer visitSuperClassMemberInvoke(Java8Parser.SuperClassMemberInvokeContext ctx) {
 		Integer res = visitChildren(ctx);
 		referedExpression rexp = null;
-		ReferedExpressionContext rexpctx = ctx.referedExpression();
+		FirstArgReferedExpressionContext rexpctx = ctx.firstArgReferedExpression();
 		if (rexpctx != null)
 		{
 			rexp = (referedExpression) usedobj.poll();
@@ -657,7 +672,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	public Integer visitNewClassInvoke(Java8Parser.NewClassInvokeContext ctx) {
 		Integer res = visitChildren(ctx);
 		referedExpression rexp = null;
-		ReferedExpressionContext rexpctx = ctx.referedExpression();
+		FirstArgReferedExpressionContext rexpctx = ctx.firstArgReferedExpression();
 		if (rexpctx != null)
 		{
 			rexp = (referedExpression) usedobj.poll();

@@ -8,7 +8,7 @@ import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TypeCheck;
 
-public class preExist extends identifier{
+public class preExist extends referedExpression{
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
