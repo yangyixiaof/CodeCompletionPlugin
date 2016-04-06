@@ -7,27 +7,33 @@ import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class CSFlowLineQueue {
 	
-	FlowLineNode<CSFlowLineData> last = null;
+	private FlowLineNode<CSFlowLineData> last = null;
 	
 	/*protected CSFlowLineQueue() {
 		// only can be invoked from subclass.
 	}*/
 	
 	public CSFlowLineQueue(FlowLineNode<CSFlowLineData> last) {
-		this.last = last;
+		this.setLast(last);
 	}
 	
 	public SynthesisHandler GetLastHandler()
 	{
-		return last.getData().getHandler();
+		return getLast().getData().getHandler();
 	}
 	
 	public int GenerateNewNodeId()
 	{
-		CheckUtil.CheckNotNull(last, "the 'last' member of CSFlowLineQueue is null, serious error, the system will exit.");
-		return last.getData().getScm().GenerateNextLevelId();
+		CheckUtil.CheckNotNull(getLast(), "the 'last' member of CSFlowLineQueue is null, serious error, the system will exit.");
+		return getLast().getData().getScm().GenerateNextLevelId();
 	}
-	
-	
+
+	public FlowLineNode<CSFlowLineData> getLast() {
+		return last;
+	}
+
+	public void setLast(FlowLineNode<CSFlowLineData> last) {
+		this.last = last;
+	}
 	
 }

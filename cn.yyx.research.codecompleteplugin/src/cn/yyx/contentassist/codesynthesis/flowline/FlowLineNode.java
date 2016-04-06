@@ -3,12 +3,16 @@ package cn.yyx.contentassist.codesynthesis.flowline;
 public class FlowLineNode<T> {
 	
 	private T data = null;
-	private double probability = 0;
-	private boolean couldextend = true;
+	private double probability = 0;// probability of the data T. Used in all the execution flow of the framework. So put it in here not in data T.
 	private FlowLineNode<T> prev = null;
 	private FlowLineNode<T> next = null;
 	private FlowLineNode<T> silbprev = null;
 	private FlowLineNode<T> silbnext = null;
+	
+	// this integer variable is set by framework. represents the length to the head including the head and itself.
+	private int length = 0;
+	// this boolean variable could only be used by the framework.
+	private boolean couldextend = true;
 	
 	public FlowLineNode(T t, double prob) {
 		this.data = t;
@@ -77,6 +81,14 @@ public class FlowLineNode<T> {
 
 	public void setCouldextend(boolean couldextend) {
 		this.couldextend = couldextend;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
 	}
 	
 }

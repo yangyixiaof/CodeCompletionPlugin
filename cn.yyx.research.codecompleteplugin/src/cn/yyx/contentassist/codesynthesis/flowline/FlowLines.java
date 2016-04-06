@@ -42,6 +42,7 @@ public class FlowLines<T> {
 		if (prenode == null)
 		{
 			// operate heads.
+			addnode.setLength(1);
 			if (heads == null)
 			{
 				heads = addnode;
@@ -53,6 +54,7 @@ public class FlowLines<T> {
 		}
 		else
 		{
+			addnode.setLength(prenode.getLength()+1);
 			addnode.setPrev(prenode);
 			FlowLineNode<T> nextfst = prenode.getNext();
 			if (nextfst == null)
