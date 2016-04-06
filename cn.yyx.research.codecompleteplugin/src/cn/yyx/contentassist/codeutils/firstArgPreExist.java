@@ -34,6 +34,7 @@ public class firstArgPreExist extends referedExpression{
 			}
 			if (tmpdata instanceof CSEnterParamInfoData)
 			{
+				realhandler.setMostfar(tmp);
 				mstop = tmppre;
 				CSEnterParamInfoData ce = (CSEnterParamInfoData) tmpdata;
 				if (ce.getUsedtimes() <= 0)
@@ -49,6 +50,8 @@ public class firstArgPreExist extends referedExpression{
 		{
 			throw new CodeSynthesisException("No firstArg start or stop, conflict happens.");
 		}
+		mstart.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
+		mstop.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
 		// int argsize = realhandler.getArgsize();
 		return CSFlowLineBackTraceGenerationHelper.GenerateSynthesisCode(squeue, realhandler, mstart, mstop);
 	}

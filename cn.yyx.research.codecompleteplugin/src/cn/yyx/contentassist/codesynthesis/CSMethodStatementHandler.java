@@ -16,6 +16,9 @@ public class CSMethodStatementHandler extends CSStatementHandler{
 	// this variable is used to speed up the search.
 	private FlowLineNode<CSFlowLineData> nextstart = null;
 	
+	// this points to where the @Em is.
+	private FlowLineNode<CSFlowLineData> mostfar = null;
+	
 	public CSMethodStatementHandler(String methodname, CSStatementHandler csh) {
 		super(csh.getSete(), csh.getProb());
 		this.setMethodname(methodname);
@@ -53,6 +56,14 @@ public class CSMethodStatementHandler extends CSStatementHandler{
 
 	public void setNextstart(FlowLineNode<CSFlowLineData> nextstart) {
 		this.nextstart = nextstart;
+	}
+
+	public FlowLineNode<CSFlowLineData> getMostfar() {
+		return mostfar;
+	}
+
+	public void setMostfar(FlowLineNode<CSFlowLineData> mostfar) {
+		this.mostfar = mostfar;
 	}
 	
 }
