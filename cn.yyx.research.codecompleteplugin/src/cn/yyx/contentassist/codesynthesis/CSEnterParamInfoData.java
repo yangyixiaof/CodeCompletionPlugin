@@ -2,6 +2,7 @@ package cn.yyx.contentassist.codesynthesis;
 
 import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class CSEnterParamInfoData extends CSFlowLineData{
@@ -10,7 +11,7 @@ public class CSEnterParamInfoData extends CSFlowLineData{
 	
 	public CSEnterParamInfoData(int times, Integer id, Sentence sete, String data, Integer structsignal, Class<?> dcls,
 			boolean hashole, SynthesisHandler handler) {
-		super(id, sete, data, structsignal, dcls, hashole, handler);
+		super(id, sete, data, structsignal, dcls, hashole, TypeComputationKind.NoOptr, handler);
 		this.times = times;
 	}
 	

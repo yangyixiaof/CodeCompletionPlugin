@@ -4,9 +4,11 @@ import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.commonutils.CheckUtil;
 
 public class firstArgPreExist extends referedExpression{
 
@@ -14,6 +16,9 @@ public class firstArgPreExist extends referedExpression{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		// TODO Auto-generated method stub
+		CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
+		CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
+		int argsize = realhandler.getArgsize();
 		
 		return null;
 	}

@@ -38,7 +38,7 @@ public class CodeSynthesisHelper {
 			List<FlowLineNode<CSFlowLineData>> ls = id.HandleCodeSynthesis(squeue, smthandler);
 			fin.append(" " + ls.get(0).getData().getData());
 		}
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), fin.toString(), null, void.class, false, squeue.GetLastHandler()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), fin.toString(), null, void.class, false, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
 	}
 	
@@ -73,7 +73,7 @@ public class CodeSynthesisHelper {
 			String member = ramm.getMember();
 			String membertype = ramm.getMembertype();
 			Class<?> c = TypeResolver.ResolveType(membertype, squeue.GetLastHandler().getContextHandler().getJavacontext());
-			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ref + "." + member, null, c, false, squeue.GetLastHandler()), smthandler.getProb()));
+			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ref + "." + member, null, c, false, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
 		}
 		else
 		{
@@ -84,7 +84,7 @@ public class CodeSynthesisHelper {
 				String code = citr.next();
 				String type = po.get(code);
 				Class<?> c = TypeResolver.ResolveType(type, squeue.GetLastHandler().getContextHandler().getJavacontext());
-				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), code, null, c, false, squeue.GetLastHandler()), smthandler.getProb()));
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), code, null, c, false, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
 			}
 		}
 		return result;
@@ -120,7 +120,7 @@ public class CodeSynthesisHelper {
 			{
 				MethodTypeSignature mts = TypeCheckHelper.TranslateMethodMember(mm, squeue.GetLastHandler().getContextHandler().getJavacontext());
 				int id = squeue.GenerateNewNodeId();
-				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? methodname : beforemethodexp + "." + methodname), null, mts.getReturntype(), false, squeue.GetLastHandler()), smthandler.getProb()));
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? methodname : beforemethodexp + "." + methodname), null, mts.getReturntype(), false, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
 				smthandler.AddMethodTypeSigById(id, mts);
 			}
 		}

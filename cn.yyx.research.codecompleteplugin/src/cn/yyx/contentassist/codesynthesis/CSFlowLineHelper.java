@@ -57,7 +57,7 @@ public class CSFlowLineHelper {
 						}
 						String cnctcnt = (prefix == null ? "" : prefix) + str1 + (concator == null ? "" : concator) + str2 + (postfix == null ? "" : postfix);
 						double cnctprob = fln1.getProbability() + fln2.getProbability();
-						FlowLineNode<CSFlowLineData> cncted = new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), cnctcnt, structsignal, clz, d2.isHashole(), d1.getHandler()), cnctprob);
+						FlowLineNode<CSFlowLineData> cncted = new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), cnctcnt, structsignal, clz, d2.isHashole(), TypeComputationKind.NoOptr, d1.getHandler()), cnctprob);
 						result.add(cncted);
 					}
 				}

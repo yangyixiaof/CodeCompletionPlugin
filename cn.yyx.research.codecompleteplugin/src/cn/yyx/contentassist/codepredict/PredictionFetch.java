@@ -18,6 +18,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLines;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.ContextHandler;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
@@ -106,7 +107,7 @@ public class PredictionFetch {
 		// first level initial the CodeSynthesisFlowLine.
 		csfl.BeginOperation();
 		
-		VirtualCSFlowLineQueue vcsdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(-1, null, null, null, null, false, sh), 0));
+		VirtualCSFlowLineQueue vcsdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(-1, null, null, null, null, false, TypeComputationKind.NoOptr, sh), 0));
 		List<FlowLineNode<Sentence>> ots = fls.getOvertails();
 		Iterator<FlowLineNode<Sentence>> itr = ots.iterator();
 		while (itr.hasNext())
