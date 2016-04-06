@@ -57,7 +57,7 @@ public class FlowLineHelper {
 		}
 		if (needsize > 0)
 		{
-			int id = tmp.getData().getId();
+			String id = tmp.getData().getId();
 			FlowLineNode<Sentence> cnct = csfl.GetConnect(id);
 			List<Sentence> tmpres = LastNeededSentenceQueue(cnct, needsize);
 			result.addAll(0, tmpres);

@@ -6,7 +6,7 @@ import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class CSFlowLineData {
 	
-	private Integer id = null;
+	private String id = null;
 	private Sentence sete = null;
 	private String data = null;
 	private Integer structsignal = null;
@@ -20,6 +20,17 @@ public class CSFlowLineData {
 	private boolean isonestatementend = false;
 	
 	public CSFlowLineData(Integer id, Sentence sete, String data, Integer structsignal, Class<?> dcls, boolean hashole, TypeComputationKind tck, SynthesisHandler handler) {
+		this.setId(id + "");
+		this.setSete(sete);
+		this.setData(data);
+		this.setStructsignal(structsignal);
+		this.setDcls(dcls);
+		this.setHashole(hashole);
+		this.setTck(tck);
+		this.setHandler(handler);
+	}
+	
+	public CSFlowLineData(String id, Sentence sete, String data, Integer structsignal, Class<?> dcls, boolean hashole, TypeComputationKind tck, SynthesisHandler handler) {
 		this.setId(id);
 		this.setSete(sete);
 		this.setData(data);
@@ -78,11 +89,11 @@ public class CSFlowLineData {
 		this.structsignal = structsignal;
 	}
 
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

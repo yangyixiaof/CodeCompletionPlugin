@@ -9,7 +9,7 @@ import cn.yyx.contentassist.codepredict.Sentence;
 
 public class CodeSynthesisFlowLine extends FlowLines<CSFlowLineData> {
 	
-	Map<Integer, FlowLineNode<Sentence>> headsconnect = new TreeMap<Integer, FlowLineNode<Sentence>>();
+	Map<String, FlowLineNode<Sentence>> headsconnect = new TreeMap<String, FlowLineNode<Sentence>>();
 	
 	public CodeSynthesisFlowLine() {
 	}
@@ -18,12 +18,12 @@ public class CodeSynthesisFlowLine extends FlowLines<CSFlowLineData> {
 	public void AddToFirstLevel(FlowLineNode<CSFlowLineData> addnode, FlowLineNode<Sentence> prenode)
 	{
 		CSFlowLineData data = addnode.getData();
-		Integer id = data.getId();
+		String id = data.getId();
 		headsconnect.put(id, prenode);
 		AddToNextLevel(addnode, null);
 	}
 	
-	public FlowLineNode<Sentence> GetConnect(Integer tid)
+	public FlowLineNode<Sentence> GetConnect(String tid)
 	{
 		return headsconnect.get(tid);
 	}

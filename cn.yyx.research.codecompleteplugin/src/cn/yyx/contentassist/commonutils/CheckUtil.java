@@ -2,8 +2,6 @@ package cn.yyx.contentassist.commonutils;
 
 import cn.yyx.contentassist.codesynthesis.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
-import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 
 public class CheckUtil {
 	
@@ -49,13 +47,13 @@ public class CheckUtil {
 		System.exit(1);
 	}
 	
-	public static void CheckStartNodeMustNotHaveAnyHoles(FlowLineNode<CSFlowLineData> startnode)
+	/*public static void CheckStartNodeMustNotHaveAnyHoles(FlowLineNode<CSFlowLineData> startnode)
 	{
 		if (startnode.getData().isHashole())
 		{
 			System.err.println("What the fuck, start node in BackTraceGeneration has hole?. Serious error, the system will exit.");
 			System.exit(1);
 		}
-	}
+	}*/
 	
 }

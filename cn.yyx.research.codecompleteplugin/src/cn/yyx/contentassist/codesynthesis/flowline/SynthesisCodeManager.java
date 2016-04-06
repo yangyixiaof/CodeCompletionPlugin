@@ -7,31 +7,36 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
+
 public class SynthesisCodeManager {
 	
-	private int idx = 0;
-	private Map<String, SynthesisCode> syncodes = new TreeMap<String, SynthesisCode>();
+	public final static FlowLineNode<CSFlowLineData> InternNode = new FlowLineNode<CSFlowLineData>(new CSFlowLineData(0, null, null, null, null, false, TypeComputationKind.NoOptr, null), 0);
+	
+	private Map<String, FlowLineNode<CSFlowLineData>> syncodes = new TreeMap<String, FlowLineNode<CSFlowLineData>>();
+	private FlowLineNode<CSFlowLineData> blockstart = null;
+	
+	private int id = 0;
 	
 	public SynthesisCodeManager() {
 	}
 	
-	public int GenerateNextLevelId()
-	{
-		idx++;
-		return idx;
-	}
-	
-	public SynthesisCode GetSynthesisCodeByKey(String id)
+	public FlowLineNode<CSFlowLineData> GetSynthesisCodeByKey(String id)
 	{
 		return getSyncodes().get(id);
 	}
 	
-	public void AddSynthesisCode(String id, SynthesisCode sc)
+	public void SetBlockStartToInternNode()
+	{
+		blockstart = InternNode;
+	}
+	
+	public void AddSynthesisCode(String id, FlowLineNode<CSFlowLineData> sc)
 	{
 		getSyncodes().put(id, sc);
 	}
 	
-	public Map<String, SynthesisCode> getSyncodes() {
+	public Map<String, FlowLineNode<CSFlowLineData>> getSyncodes() {
 		return syncodes;
 	}
 	
@@ -43,14 +48,24 @@ public class SynthesisCodeManager {
 		while (itr.hasNext())
 		{
 			String key = itr.next();
-			SynthesisCode sc = syncodes.get(key);
-			if (sc.isValid())
-			{
-				String code = sc.getCode();
-				result.add(code);
-			}
+			FlowLineNode<CSFlowLineData> sc = syncodes.get(key);
+			String code = sc.getData().getData();
+			result.add(code);
 		}
 		return result;
+	}
+
+	public FlowLineNode<CSFlowLineData> getBlockstart() {
+		return blockstart;
+	}
+
+	public void setBlockstart(FlowLineNode<CSFlowLineData> blockstart) {
+		this.blockstart = blockstart;
+	}
+
+	public int GenerateNextLevelId() {
+		id++;
+		return id;
 	}
 	
 }
