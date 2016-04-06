@@ -70,7 +70,7 @@ public class CSFlowLineBackTraceGenerationHelper {
 		return result;
 	}
 	
-	private static String GetConcateId(FlowLineNode<CSFlowLineData> startnode, FlowLineNode<CSFlowLineData> stopnode)
+	public static String GetConcateId(FlowLineNode<CSFlowLineData> startnode, FlowLineNode<CSFlowLineData> stopnode)
 	{
 		String fin = null;
 		FlowLineNode<CSFlowLineData> tmp = startnode;

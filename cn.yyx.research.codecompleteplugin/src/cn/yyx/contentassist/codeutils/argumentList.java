@@ -143,21 +143,22 @@ public class argumentList implements OneCode {
 		List<referedExpression> reverseel = new ListDynamicHeper<referedExpression>().ReverseList(el);
 		List<List<FlowLineNode<CSFlowLineData>>> positiveargs = new LinkedList<List<FlowLineNode<CSFlowLineData>>>();
 		Iterator<referedExpression> ritr = reverseel.iterator();
+		List<FlowLineNode<CSFlowLineData>> invokers = null;
 		while (ritr.hasNext()) {
 			referedExpression re = ritr.next();
 			List<FlowLineNode<CSFlowLineData>> oneargpospossibles = re.HandleCodeSynthesis(squeue, smthandler);
 			if (!ritr.hasNext()) {
 				// handle invoker.
-				List<FlowLineNode<CSFlowLineData>> invokers = oneargpospossibles;
+				invokers = oneargpospossibles;
 				Iterator<FlowLineNode<CSFlowLineData>> itr = invokers.iterator();
 				while (itr.hasNext()) {
 					FlowLineNode<CSFlowLineData> fln = itr.next();
 					CSFlowLineData data = fln.getData();
 					MethodTypeSignature msig = realhandler.GetMethodTypeSigById(data.getId());
+					StringBuilder sb = new StringBuilder(data.getData());
 					if (msig == null) {
 						// directly add argument.
 						Iterator<List<FlowLineNode<CSFlowLineData>>> pitr = positiveargs.iterator();
-						StringBuilder sb = new StringBuilder(data.getData());
 						sb.append("(");
 						while (pitr.hasNext()) {
 							List<FlowLineNode<CSFlowLineData>> pcnls = pitr.next();
@@ -172,7 +173,6 @@ public class argumentList implements OneCode {
 						List<Boolean> usedparams = ListHelper.InitialBooleanArray(positiveargs.size());
 						List<Class<?>> tps = msig.getArgtypes();
 						Iterator<Class<?>> tpitr = tps.iterator();
-						StringBuilder sb = new StringBuilder(data.getData());
 						sb.append("(");
 						while (tpitr.hasNext()) {
 							Class<?> c = tpitr.next();
@@ -184,12 +184,18 @@ public class argumentList implements OneCode {
 						}
 						sb.append(")");
 					}
+					data.setData(sb.toString());
+					FlowLineNode<CSFlowLineData> mf = realhandler.getMostfar();
+					if (mf != null)
+					{
+						data.getSynthesisCodeManager().setBlockstart(mf);
+					}
 				}
 			} else {
 				positiveargs.add(oneargpospossibles);
 			}
 		}
-		return null;
+		return invokers;
 	}
 
 }

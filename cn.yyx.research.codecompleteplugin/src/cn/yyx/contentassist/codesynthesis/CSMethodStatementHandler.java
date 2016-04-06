@@ -11,7 +11,7 @@ public class CSMethodStatementHandler extends CSStatementHandler{
 	
 	private int argsize = -1;
 	private String methodname = null;
-	private Map<Integer, MethodTypeSignature> mtsmap = new TreeMap<Integer, MethodTypeSignature>();
+	private Map<String, MethodTypeSignature> mtsmap = new TreeMap<String, MethodTypeSignature>();
 	
 	// this variable is used to speed up the search.
 	private FlowLineNode<CSFlowLineData> nextstart = null;
@@ -32,12 +32,12 @@ public class CSMethodStatementHandler extends CSStatementHandler{
 		this.methodname = methodname;
 	}
 	
-	public MethodTypeSignature GetMethodTypeSigById(Integer id)
+	public MethodTypeSignature GetMethodTypeSigById(String id)
 	{
 		return mtsmap.get(id);
 	}
 	
-	public void AddMethodTypeSigById(Integer id, MethodTypeSignature mts)
+	public void AddMethodTypeSigById(String id, MethodTypeSignature mts)
 	{
 		mtsmap.put(id, mts);
 	}

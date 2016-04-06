@@ -121,7 +121,7 @@ public class CodeSynthesisHelper {
 				MethodTypeSignature mts = TypeCheckHelper.TranslateMethodMember(mm, squeue.GetLastHandler().getContextHandler().getJavacontext());
 				int id = squeue.GenerateNewNodeId();
 				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? methodname : beforemethodexp + "." + methodname), null, mts.getReturntype(), false, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
-				smthandler.AddMethodTypeSigById(id, mts);
+				smthandler.AddMethodTypeSigById(id+"", mts);
 			}
 		}
 		return result;
