@@ -65,6 +65,7 @@ public class methodInvocationStatement extends expressionStatement{
 		List<FlowLineNode<CSFlowLineData>> nls = name.HandleCodeSynthesis(squeue, smthandler);
 		String methodname = nls.get(0).getData().getData();
 		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(methodname, smthandler);
+		csmsh.setNextstart(squeue.getLast());
 		return argList.HandleCodeSynthesis(squeue, csmsh);
 	}
 
