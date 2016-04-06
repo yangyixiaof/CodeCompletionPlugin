@@ -16,6 +16,9 @@ public class CSFlowLineData {
 	private SynthesisHandler handler = null;
 	private SynthesisCodeManager scm = new SynthesisCodeManager();
 	
+	// this boolean field should be set at some specific kind of statement.
+	private boolean isonestatementend = false;
+	
 	public CSFlowLineData(Integer id, Sentence sete, String data, Integer structsignal, Class<?> dcls, boolean hashole, TypeComputationKind tck, SynthesisHandler handler) {
 		this.setId(id);
 		this.setSete(sete);
@@ -97,6 +100,14 @@ public class CSFlowLineData {
 
 	public void setTck(TypeComputationKind tck) {
 		this.tck = tck;
+	}
+
+	public boolean isIsonestatementend() {
+		return isonestatementend;
+	}
+
+	public void setIsonestatementend(boolean isonestatementend) {
+		this.isonestatementend = isonestatementend;
 	}
 	
 }
