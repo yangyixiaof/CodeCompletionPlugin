@@ -2,6 +2,9 @@ package cn.yyx.contentassist.codesynthesis;
 
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.flowline.SynthesisCode;
+import cn.yyx.contentassist.codesynthesis.flowline.SynthesisCodeManager;
+import cn.yyx.contentassist.commonutils.CheckUtil;
 
 public class CSFlowLineBackTraceGenerationHelper {
 	
@@ -20,21 +23,31 @@ public class CSFlowLineBackTraceGenerationHelper {
 		
 		FlowLineNode<CSFlowLineData> last = squeue.getLast();
 		FlowLineNode<CSFlowLineData> tmp = last;
+		FlowLineNode<CSFlowLineData> tmppre = null;
+		String expectkey = null;
 		boolean startrun = false;
 		while (tmp != null)
 		{
+			if (startrun)
+			{
+				CheckUtil.CheckStartNodeMustNotHaveAnyHoles(startnode);
+				CSFlowLineData tmpdata = tmp.getData();
+				SynthesisCodeManager tmpscm = tmpdata.getSynthesisCodeManager();
+				expectkey = tmpdata.getId() + "." + expectkey;
+				SynthesisCode sc = tmpscm.GetSynthesisCodeByKey(expectkey);
+				
+			}
 			if (tmp == startnode)
 			{
 				startrun = true;
+				expectkey = tmp.getData().getId() + "";
 			}
-			if (startrun)
-			{
-				
-			}
+			tmppre = tmp;
 			if (tmp == stopnode)
 			{
 				break;
 			}
+			tmp = tmp.getPrev();
 		}
 		
 	}

@@ -25,7 +25,7 @@ public class CSFlowLineQueue {
 	public int GenerateNewNodeId()
 	{
 		CheckUtil.CheckNotNull(getLast(), "the 'last' member of CSFlowLineQueue is null, serious error, the system will exit.");
-		return getLast().getData().getScm().GenerateNextLevelId();
+		return getLast().getData().getSynthesisCodeManager().GenerateNextLevelId();
 	}
 
 	public FlowLineNode<CSFlowLineData> getLast() {

@@ -62,7 +62,7 @@ public class CSFlowLineData {
 		this.handler = handler;
 	}
 
-	public SynthesisCodeManager getScm() {
+	public SynthesisCodeManager getSynthesisCodeManager() {
 		return scm;
 	}
 

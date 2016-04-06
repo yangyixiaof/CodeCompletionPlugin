@@ -36,7 +36,7 @@ public class CodeSynthesisFlowLine extends FlowLines<CSFlowLineData> {
 		while (tmp != null)
 		{
 			CSFlowLineData data = tmp.getData();
-			SynthesisCodeManager scm = data.getScm();
+			SynthesisCodeManager scm = data.getSynthesisCodeManager();
 			res.addAll(scm.GetSynthesisedCode());
 			tmp = head.getSilbnext();
 		}

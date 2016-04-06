@@ -21,6 +21,11 @@ public class SynthesisCodeManager {
 		return idx;
 	}
 	
+	public SynthesisCode GetSynthesisCodeByKey(String id)
+	{
+		return getSyncodes().get(id);
+	}
+	
 	public void AddSynthesisCode(String id, SynthesisCode sc)
 	{
 		getSyncodes().put(id, sc);
