@@ -48,6 +48,10 @@ public class CSFlowLineBackTraceGenerationHelper {
 			String tresid = GetConcateId(mergestart, ssn);
 			ssnscm.AddSynthesisCode(tresid, tres);
 			
+			snscm.setBlockstart(ssn);
+			pvsn.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
+			ssnscm.setBlockstart(ssn);
+			
 			mergestart = ssn;
 		}
 		
