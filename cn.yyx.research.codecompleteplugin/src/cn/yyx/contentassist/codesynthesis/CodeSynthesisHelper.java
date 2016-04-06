@@ -99,7 +99,7 @@ public class CodeSynthesisHelper {
 		{
 			type ttp = itr.next();
 			List<FlowLineNode<CSFlowLineData>> tmpls = ttp.HandleCodeSynthesis(squeue, smthandler);
-			ls = CSFlowLineHelper.ConcateTwoFlowLineNodes(null, ls, concator, tmpls, null, TypeComputationKind.NoOptr, squeue, smthandler, null);
+			ls = CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, ls, concator, tmpls, null, TypeComputationKind.NoOptr, squeue, smthandler, null);
 		}
 		return ls;
 	}

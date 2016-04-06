@@ -1,8 +1,10 @@
 package cn.yyx.contentassist.codesynthesis;
 
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.SynthesisCodeManager;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class CSFlowLineBackTraceGenerationHelper {
 
@@ -13,9 +15,10 @@ public class CSFlowLineBackTraceGenerationHelper {
 	 * @param squeue
 	 * @param startnode
 	 * @param stopnode
+	 * @throws CodeSynthesisException 
 	 */
-	public static void GenerateSynthesisCode(CSFlowLineQueue squeue, FlowLineNode<CSFlowLineData> startnode,
-			FlowLineNode<CSFlowLineData> stopnode) {
+	public static void GenerateSynthesisCode(CSFlowLineQueue squeue, CSStatementHandler smthandler, FlowLineNode<CSFlowLineData> startnode,
+			FlowLineNode<CSFlowLineData> stopnode) throws CodeSynthesisException {
 		// before invoking this method, the related '@Em' or '@(' counts should
 		// be computed.
 		// start node must be the descendant of the stop node.
@@ -28,39 +31,88 @@ public class CSFlowLineBackTraceGenerationHelper {
 			FlowLineNode<CSFlowLineData> pvsn = sn.getPrev();
 			FlowLineNode<CSFlowLineData> ssn = SearchForWholeNode(pvsn);
 			
+			FlowLineNode<CSFlowLineData> one = ssn;
+			FlowLineNode<CSFlowLineData> two = sn;
+			SynthesisCodeManager ssnscm = ssn.getData().getSynthesisCodeManager();
+			SynthesisCodeManager snscm = sn.getData().getSynthesisCodeManager();
+			if (ssnscm.getBlockstart() != null)
+			{
+				one = ssnscm.GetSynthesisCodeByKey(GetConcateId(pvsn, ssn));
+			}
+			if (snscm.getBlockstart() != null)
+			{
+				two = snscm.GetSynthesisCodeByKey(GetConcateId(mergestart, sn));
+			}
+			
+			FlowLineNode<CSFlowLineData> tres = CSFlowLineHelper.ConcateTwoFlowLineNode(null, one, null, two, null, TypeComputationKind.NotSureOptr, squeue, smthandler, null);
+			String tresid = GetConcateId(mergestart, ssn);
+			ssnscm.AddSynthesisCode(tresid, tres);
+			
 			mergestart = ssn;
 		}
-
-	}
-
-	private static FlowLineNode<CSFlowLineData> SearchForWholeNode(FlowLineNode<CSFlowLineData> tailnode) {
-		String expectkey = null;
-		FlowLineNode<CSFlowLineData> tmp = tailnode;
-		FlowLineNode<CSFlowLineData> tmppre = null;
-		while (tmp != null) {
-			CSFlowLineData tmpdata = tmp.getData();
-
-			if (expectkey == null) {
-				expectkey = tmpdata.getId() + "";
-			} else {
-				expectkey = tmpdata.getId() + "." + expectkey;
-			}
-
-			FlowLineNode<CSFlowLineData> pv = tmp.getPrev();
-			if (pv == null) {
-				return tmp;
-			} else {
-				CSFlowLineData pvdata = pv.getData();
-				SynthesisCodeManager pvscm = pvdata.getSynthesisCodeManager();
-				FlowLineNode<CSFlowLineData> sc = pvscm.GetSynthesisCodeByKey(expectkey);
-				if (sc == null) {
-					return tmp;
-				}
-			}
-			tmppre = tmp;
-			tmp = tmp.getPrev();
+		
+		if (mergestart == null)
+		{
+			System.out.println("Back merge stop node and start node not in a block. Serious error, the system will exit.");
+			System.exit(1);
 		}
-		return tmppre;
 	}
+	
+	private static String GetConcateId(FlowLineNode<CSFlowLineData> startnode, FlowLineNode<CSFlowLineData> stopnode)
+	{
+		String fin = null;
+		FlowLineNode<CSFlowLineData> tmp = startnode;
+		while (tmp != stopnode)
+		{
+			if (fin == null)
+			{
+				fin = tmp.getData().getId();
+			}
+			else
+			{
+				fin = tmp.getData().getId() + "." + fin;
+			}
+		}
+		if (fin == null)
+		{
+			fin = tmp.getData().getId();
+		}
+		else
+		{
+			fin = tmp.getData().getId() + "." + fin;
+		}
+		return fin;
+	}
+
+	private static FlowLineNode<CSFlowLineData> SearchForWholeNode(FlowLineNode<CSFlowLineData> tailnode) throws CodeSynthesisException {
+		SynthesisCodeManager tailscm = tailnode.getData().getSynthesisCodeManager();
+		FlowLineNode<CSFlowLineData> bs = tailscm.getBlockstart();
+		if (bs == null)
+		{
+			return tailnode;
+		}
+		if (bs == SynthesisCodeManager.InternNode)
+		{
+			throw new CodeSynthesisException("Error happens in Search for whole node. The tail node is an intern node.");
+		}
+		return bs;
+	}
+
+	/*
+	 * private static FlowLineNode<CSFlowLineData>
+	 * SearchForWholeNode(FlowLineNode<CSFlowLineData> tailnode) { String
+	 * expectkey = null; FlowLineNode<CSFlowLineData> tmp = tailnode;
+	 * FlowLineNode<CSFlowLineData> tmppre = null; while (tmp != null) {
+	 * CSFlowLineData tmpdata = tmp.getData();
+	 * 
+	 * if (expectkey == null) { expectkey = tmpdata.getId() + ""; } else {
+	 * expectkey = tmpdata.getId() + "." + expectkey; }
+	 * 
+	 * FlowLineNode<CSFlowLineData> pv = tmp.getPrev(); if (pv == null) { return
+	 * tmp; } else { CSFlowLineData pvdata = pv.getData(); SynthesisCodeManager
+	 * pvscm = pvdata.getSynthesisCodeManager(); FlowLineNode<CSFlowLineData> sc
+	 * = pvscm.GetSynthesisCodeByKey(expectkey); if (sc == null) { return tmp; }
+	 * } tmppre = tmp; tmp = tmp.getPrev(); } return tmppre; }
+	 */
 
 }

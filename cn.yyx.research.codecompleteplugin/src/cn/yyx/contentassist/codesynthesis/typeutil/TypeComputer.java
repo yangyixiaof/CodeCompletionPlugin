@@ -7,6 +7,7 @@ public class TypeComputer {
 	public static Class<?> ComputeType(Class<?> c1, Class<?> c2, TypeComputationKind tck) throws TypeConflictException
 	{
 		switch (tck) {
+		case NotSureOptr:
 		case NoOptr:
 			if (c1 != null && c2 == null)
 			{
