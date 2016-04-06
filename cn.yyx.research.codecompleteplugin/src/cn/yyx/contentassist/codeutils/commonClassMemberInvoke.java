@@ -20,7 +20,7 @@ public class commonClassMemberInvoke extends classInvoke{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		return CodeSynthesisHelper.HandleClassInvokeCodeSynthesis(squeue, smthandler, rexp);
+		return CodeSynthesisHelper.HandleClassInvokeCodeSynthesis(squeue, smthandler, rexp, null);
 	}
 
 	@Override
