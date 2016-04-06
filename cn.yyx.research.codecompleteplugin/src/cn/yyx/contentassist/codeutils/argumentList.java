@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
@@ -189,6 +190,8 @@ public class argumentList implements OneCode {
 					if (mf != null)
 					{
 						data.getSynthesisCodeManager().setBlockstart(mf);
+						String id = CSFlowLineBackTraceGenerationHelper.GetConcateId(squeue.getLast(), mf) + "." + data.getId();
+						mf.getData().getSynthesisCodeManager().AddSynthesisCode(id, fln);
 					}
 				}
 			} else {
