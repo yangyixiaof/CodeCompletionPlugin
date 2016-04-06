@@ -1,5 +1,8 @@
 package cn.yyx.contentassist.codesynthesis;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -17,7 +20,7 @@ public class CSFlowLineBackTraceGenerationHelper {
 	 * @param stopnode
 	 * @throws CodeSynthesisException 
 	 */
-	public static void GenerateSynthesisCode(CSFlowLineQueue squeue, CSStatementHandler smthandler, FlowLineNode<CSFlowLineData> startnode,
+	public static List<FlowLineNode<CSFlowLineData>> GenerateSynthesisCode(CSFlowLineQueue squeue, CSStatementHandler smthandler, FlowLineNode<CSFlowLineData> startnode,
 			FlowLineNode<CSFlowLineData> stopnode) throws CodeSynthesisException {
 		// before invoking this method, the related '@Em' or '@(' counts should
 		// be computed.
@@ -45,7 +48,7 @@ public class CSFlowLineBackTraceGenerationHelper {
 			}
 			
 			FlowLineNode<CSFlowLineData> tres = CSFlowLineHelper.ConcateTwoFlowLineNode(null, one, null, two, null, TypeComputationKind.NotSureOptr, squeue, smthandler, null);
-			String tresid = GetConcateId(mergestart, ssn);
+			String tresid = GetConcateId(startnode, ssn);
 			ssnscm.AddSynthesisCode(tresid, tres);
 			
 			snscm.setBlockstart(ssn);
@@ -60,6 +63,11 @@ public class CSFlowLineBackTraceGenerationHelper {
 			System.out.println("Back merge stop node and start node not in a block. Serious error, the system will exit.");
 			System.exit(1);
 		}
+		
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		String id = GetConcateId(startnode, stopnode);
+		result.add(stopnode.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(id));
+		return result;
 	}
 	
 	private static String GetConcateId(FlowLineNode<CSFlowLineData> startnode, FlowLineNode<CSFlowLineData> stopnode)

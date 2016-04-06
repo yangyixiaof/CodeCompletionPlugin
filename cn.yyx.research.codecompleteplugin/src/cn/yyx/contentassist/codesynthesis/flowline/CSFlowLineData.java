@@ -16,6 +16,8 @@ public class CSFlowLineData {
 	private SynthesisHandler handler = null;
 	private SynthesisCodeManager scm = new SynthesisCodeManager();
 	
+	// this boolean field is used to skip some useless node.
+	private boolean shouldskip = false;
 	// this boolean field should be set at some specific kind of statement.
 	private boolean isonestatementend = false;
 	
@@ -119,6 +121,14 @@ public class CSFlowLineData {
 
 	public void setIsonestatementend(boolean isonestatementend) {
 		this.isonestatementend = isonestatementend;
+	}
+
+	public boolean isShouldskip() {
+		return shouldskip;
+	}
+
+	public void setShouldskip(boolean shouldskip) {
+		this.shouldskip = shouldskip;
 	}
 	
 }

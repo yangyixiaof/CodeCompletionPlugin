@@ -8,14 +8,15 @@ import cn.yyx.contentassist.commonutils.SynthesisHandler;
 public class CSEnterParamInfoData extends CSFlowLineData{
 	
 	private int times = -1;
+	private int usedtimes = -1;
 	
 	public CSEnterParamInfoData(int times, Integer id, Sentence sete, String data, Integer structsignal, Class<?> dcls,
 			boolean hashole, SynthesisHandler handler) {
 		super(id, sete, data, structsignal, dcls, hashole, TypeComputationKind.NoOptr, handler);
 		this.times = times;
+		this.usedtimes = times;
+		this.setShouldskip(true);
 	}
-	
-	private int usedtimes = -1;
 	
 	/*public CSEnterParamInfoData(int times, SynthesisHandler handler) {
 		super(handler);
