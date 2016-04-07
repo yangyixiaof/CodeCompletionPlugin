@@ -4,9 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
-import cn.yyx.contentassist.codesynthesis.CSNode;
-import cn.yyx.contentassist.codesynthesis.CSNodeHelper;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
