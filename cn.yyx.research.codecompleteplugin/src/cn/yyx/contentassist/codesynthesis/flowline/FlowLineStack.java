@@ -15,8 +15,17 @@ public class FlowLineStack {
 		last.getData().setStructsignal(structuresignal);
 	}
 
-	public FlowLineNode<CSFlowLineData> BackSearchForStructureSignal(int singal) {
-		
+	public FlowLineNode<CSFlowLineData> BackSearchForStructureSignal(int signal) {
+		FlowLineNode<CSFlowLineData> tmp = last;
+		while (tmp.HasPrev())
+		{
+			Integer sig = tmp.getData().getStructsignal();
+			if ((sig != null) && (sig == signal))
+			{
+				return tmp;
+			}
+			tmp = tmp.getPrev();
+		}
 		return null;
 	}
 

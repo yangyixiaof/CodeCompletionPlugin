@@ -1,13 +1,15 @@
 package cn.yyx.contentassist.codeutils;
 
-import java.util.Stack;
+import java.util.List;
 
-import cn.yyx.contentassist.codesynthesis.CSNode;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFieldAccessStatementHandler;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class fieldAccess extends referedExpression{
 	
@@ -37,7 +39,7 @@ public class fieldAccess extends referedExpression{
 		return 0;
 	}
 
-	@Override
+	/*@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		CSNode idcs = new CSNode(CSNodeType.TempUsed);
@@ -48,6 +50,19 @@ public class fieldAccess extends referedExpression{
 		result.setContenttype(CSNodeType.HalfFullExpression);
 		boolean conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, result, nai);
 		return conflict;
+	}*/
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
+		CSFieldAccessStatementHandler csfash = new CSFieldAccessStatementHandler(idls.get(0).getData().getData(), smthandler);
+		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, csfash);
+		if (!(csfash.isFieldused()))
+		{
+			return CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, idls, ".", rels, null, TypeComputationKind.NoOptr, squeue, smthandler, null);
+		}
+		return rels;
 	}
 	
 }
