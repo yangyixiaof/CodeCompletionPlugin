@@ -10,7 +10,16 @@ public class FlowLineStack {
 	
 	public void SetLastStructureSignal(int structuresignal)
 	{
+		last.getData().setStructsignal(structuresignal);
+	}
+
+	public FlowLineNode<CSFlowLineData> BackSearchForStructureSignal(int arrayinitialblock) {
 		
+		return null;
+	}
+
+	public FlowLineNode<CSFlowLineData> GetSearchedAndHandledBlockStart() {
+		return last.getData().getSynthesisCodeManager().getBlockstart();
 	}
 	
 }

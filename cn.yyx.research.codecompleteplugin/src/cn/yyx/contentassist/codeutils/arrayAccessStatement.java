@@ -1,19 +1,16 @@
 package cn.yyx.contentassist.codeutils;
 
 import java.util.List;
-import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class arrayAccessStatement extends statement{
 	
@@ -45,7 +42,7 @@ public class arrayAccessStatement extends statement{
 		return 0;
 	}
 
-	@Override
+	/*@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		CSNode smt = new CSNode(CSNodeType.ReferedExpression);
@@ -78,12 +75,19 @@ public class arrayAccessStatement extends statement{
 		squeue.add(smt);
 		expected.pop();
 		return false;
-	}
+	}*/
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
+		List<FlowLineNode<CSFlowLineData>> rals = rarr.HandleCodeSynthesis(squeue, smthandler);
+		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+		String postfix = null;
+		if (accessEnd)
+		{
+			postfix = "]";
+		}
+		CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, rals, "[", rels, postfix, TypeComputationKind.NoOptr, squeue, smthandler, null);
 		return null;
 	}
 

@@ -36,4 +36,22 @@ public class CSFlowLineQueue {
 		this.last = last;
 	}
 	
+	public void SetLastHasHole()
+	{
+		last.getData().setHashole(true);
+	}
+
+	public FlowLineNode<CSFlowLineData> BackSearchForStructureSignal(int signal) {
+		FlowLineNode<CSFlowLineData> tmp = last;
+		while (tmp != null)
+		{
+			Integer struct = tmp.getData().getStructsignal();
+			if (struct != null && struct == signal)
+			{
+				return tmp;
+			}
+		}
+		return null;
+	}
+	
 }

@@ -1,24 +1,24 @@
 package cn.yyx.contentassist.codeutils;
 
-import java.util.Stack;
+import java.util.List;
 
-import cn.yyx.contentassist.codesynthesis.CSNode;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
 
-public class arrayInitializerEndStatement extends statement implements CloseBlock{
+public class arrayInitializerEndStatement extends statement{
 
-	@Override
+	/*@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		CSNode cs = new CSNode(CSNodeType.SymbolMark);
 		cs.AddOneData("}", null);
 		return false;
-	}
+	}*/
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
@@ -38,7 +38,7 @@ public class arrayInitializerEndStatement extends statement implements CloseBloc
 		return 0;
 	}
 
-	@Override
+	/*@Override
 	public boolean HandleOverSignal(Stack<Integer> cstack) {
 		Integer res = cstack.peek();
 		if (res == null || res != StructureSignalMetaInfo.ArrayInitialBlock)
@@ -46,6 +46,31 @@ public class arrayInitializerEndStatement extends statement implements CloseBloc
 			return true;
 		}
 		cstack.pop();
+		return false;
+	}*/
+	
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForStructureSignal(StructureSignalMetaInfo.ArrayInitialBlock);
+		if (cnode != null)
+		{
+			cnode.getData().setStructsignal(null);
+		}
+		else
+		{
+			throw new CodeSynthesisException("Wrong access block, there is no corresponding.");
+		}
+		return null;
+	}
+	
+	@Override
+	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
+		FlowLineNode<CSFlowLineData> cnode = cstack.GetSearchedAndHandledBlockStart();
+		if (cnode == null)
+		{
+			throw new CodeSynthesisException("Wrong access block, there is no corresponding.");
+		}
 		return false;
 	}
 	

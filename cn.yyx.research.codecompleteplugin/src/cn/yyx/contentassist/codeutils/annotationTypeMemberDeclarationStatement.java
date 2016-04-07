@@ -86,7 +86,7 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 		}
 		else
 		{
-			CSFlowLineHelper.ConcateOneFlowLineNodes(null, tps, "()");
+			CSFlowLineHelper.ConcateOneFlowLineNodeList(null, tps, "()");
 			return tps;
 		}
 	}

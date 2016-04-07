@@ -110,7 +110,7 @@ public class CSFlowLineHelper {
 	 * @param one
 	 * @param postfix
 	 */
-	public static void ConcateOneFlowLineNodes(String prefix, List<FlowLineNode<CSFlowLineData>> one, String postfix) {
+	public static List<FlowLineNode<CSFlowLineData>> ConcateOneFlowLineNodeList(String prefix, List<FlowLineNode<CSFlowLineData>> one, String postfix) {
 		Iterator<FlowLineNode<CSFlowLineData>> itr = one.iterator();
 		while (itr.hasNext()) {
 			FlowLineNode<CSFlowLineData> fln = itr.next();
@@ -119,6 +119,7 @@ public class CSFlowLineHelper {
 			cnt = (prefix == null ? "" : prefix) + cnt + (postfix == null ? "" : postfix);
 			dt.setData(cnt);
 		}
+		return one;
 	}
 
 }
