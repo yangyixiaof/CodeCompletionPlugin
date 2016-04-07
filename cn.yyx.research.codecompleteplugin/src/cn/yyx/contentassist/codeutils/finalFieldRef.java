@@ -7,7 +7,7 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.commonutils.ErrorUtil;
+import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 
 public class finalFieldRef extends identifier{
@@ -41,7 +41,7 @@ public class finalFieldRef extends identifier{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		ErrorUtil.CanNeverReachHere("finalFieldRef is not just handled.");
+		CheckUtil.CanNeverReachHere("finalFieldRef is not just handled.");
 		return null;
 	}
 	
