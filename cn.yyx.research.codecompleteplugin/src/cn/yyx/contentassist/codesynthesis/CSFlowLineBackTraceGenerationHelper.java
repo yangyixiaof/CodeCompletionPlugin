@@ -29,33 +29,35 @@ public class CSFlowLineBackTraceGenerationHelper {
 		// the start node itself must be handled before invoke this function.
 
 		FlowLineNode<CSFlowLineData> mergestart = startnode;
+		String preid = null;
 		while (mergestart != stopnode) {
-			FlowLineNode<CSFlowLineData> sn = SearchForWholeNode(mergestart);
-			FlowLineNode<CSFlowLineData> pvsn = sn.getPrev();
-			FlowLineNode<CSFlowLineData> ssn = SearchForWholeNode(pvsn);
-			
-			FlowLineNode<CSFlowLineData> one = ssn;
-			FlowLineNode<CSFlowLineData> two = sn;
-			SynthesisCodeManager ssnscm = ssn.getData().getSynthesisCodeManager();
-			SynthesisCodeManager snscm = sn.getData().getSynthesisCodeManager();
-			if (ssnscm.getBlockstart() != null)
+			FlowLineNode<CSFlowLineData> two = SearchForWholeNode(mergestart);
+			FlowLineNode<CSFlowLineData> one = SearchForWholeNode(two.getPrev());
+			String twoid = preid;
+			if (preid == null)
 			{
-				one = ssnscm.GetSynthesisCodeByKey(GetConcateId(pvsn, ssn));
+				twoid = GetConcateId(mergestart, two);
 			}
-			if (snscm.getBlockstart() != null)
+			if (two.getData().getSynthesisCodeManager().getBlockstart() != null)
 			{
-				two = snscm.GetSynthesisCodeByKey(GetConcateId(mergestart, sn));
+				two = two.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(twoid);
+			}
+			String oneid = GetConcateId(two.getPrev(), one);
+			if (one.getData().getSynthesisCodeManager().getBlockstart() != null)
+			{
+				one = one.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(oneid);
 			}
 			
 			FlowLineNode<CSFlowLineData> tres = CSFlowLineHelper.ConcateTwoFlowLineNode(null, one, null, two, null, TypeComputationKind.NotSureOptr, squeue, smthandler, null);
-			String tresid = GetConcateId(startnode, ssn);
-			ssnscm.AddSynthesisCode(tresid, tres);
+			String tresid = oneid + "." + twoid;
+			one.getData().getSynthesisCodeManager().AddSynthesisCode(tresid, tres);
 			
-			snscm.setBlockstart(ssn);
-			pvsn.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
-			ssnscm.setBlockstart(ssn);
+			two.getData().getSynthesisCodeManager().setBlockstart(one);
+			two.getPrev().getData().getSynthesisCodeManager().SetBlockStartToInternNode();
+			one.getData().getSynthesisCodeManager().setBlockstart(one);
 			
-			mergestart = ssn;
+			mergestart = one;
+			preid = tresid;
 		}
 		
 		if (mergestart == null)
