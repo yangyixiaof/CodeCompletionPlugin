@@ -110,6 +110,12 @@ public class CSFlowLineBackTraceGenerationHelper {
 		return bs;
 	}
 
+	public static List<FlowLineNode<CSFlowLineData>> GenerateNotYetAddedSynthesisCode(CSFlowLineQueue squeue,
+			CSStatementHandler smthandler, FlowLineNode<CSFlowLineData> cnode, FlowLineNode<CSFlowLineData> cnode2) {
+		
+		return null;
+	}
+
 	/*
 	 * private static FlowLineNode<CSFlowLineData>
 	 * SearchForWholeNode(FlowLineNode<CSFlowLineData> tailnode) { String

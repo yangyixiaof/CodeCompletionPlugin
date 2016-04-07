@@ -3,6 +3,7 @@ package cn.yyx.contentassist.codeutils;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
@@ -56,13 +57,12 @@ public class arrayInitializerEndStatement extends statement{
 		if (cnode != null)
 		{
 			cnode.getData().setStructsignal(null);
-			// TODO
+			return CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, cnode, cnode);
 		}
 		else
 		{
 			throw new CodeSynthesisException("Wrong access block, there is no corresponding.");
 		}
-		return null;
 	}
 	
 	@Override
