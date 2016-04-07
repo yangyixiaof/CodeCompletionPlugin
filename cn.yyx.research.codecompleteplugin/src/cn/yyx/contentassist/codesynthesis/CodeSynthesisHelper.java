@@ -13,6 +13,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeConflictException;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeResolver;
 import cn.yyx.contentassist.codeutils.identifier;
 import cn.yyx.contentassist.codeutils.referedExpression;
@@ -25,6 +26,7 @@ import cn.yyx.contentassist.specification.MembersOfAReference;
 import cn.yyx.contentassist.specification.MethodMember;
 import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;
 import cn.yyx.contentassist.specification.SpecificationHelper;
+import cn.yyx.contentassist.specification.TypeMember;
 
 public class CodeSynthesisHelper {
 	
@@ -161,5 +163,33 @@ public class CodeSynthesisHelper {
 		}
 		return false;
 	}*/
+	
+	public static List<FlowLineNode<CSFlowLineData>> HandleTypeSpecificationInfer(List<FlowLineNode<CSFlowLineData>> tmp, List<FlowLineNode<CSFlowLineData>> tpls, CSFlowLineQueue squeue, CSStatementHandler smthandler) throws TypeConflictException
+	{
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		Iterator<FlowLineNode<CSFlowLineData>> itr = tmp.iterator();
+		while (itr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> fln = itr.next();
+			List<TypeMember> tmm = SearchSpecificationOfAReference.SearchTypeSpecificationByPrefix(fln.getData().getData() + ".", squeue.GetLastHandler().getContextHandler().getJavacontext(), null);
+			Iterator<TypeMember> titr = tmm.iterator();
+			while (titr.hasNext())
+			{
+				TypeMember tm = titr.next();
+				String cmp = tm.getType();
+				Iterator<FlowLineNode<CSFlowLineData>> tpitr = tpls.iterator();
+				while (tpitr.hasNext())
+				{
+					FlowLineNode<CSFlowLineData> tp = tpitr.next();
+					String cmped = tp.getData().getData();
+					if (SimilarityHelper.ComputeTwoStringSimilarity(cmp, cmped) > PredictMetaInfo.TwoStringSimilarThreshold)
+					{
+						result.add(CSFlowLineHelper.ConcateTwoFlowLineNode(null, fln, ".", tp, null, TypeComputationKind.NoOptr, squeue, smthandler, null));
+					}
+				}
+			}
+		}
+		return result;
+	}
 	
 }
