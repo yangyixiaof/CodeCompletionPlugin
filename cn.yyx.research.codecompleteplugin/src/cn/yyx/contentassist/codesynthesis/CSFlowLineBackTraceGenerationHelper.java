@@ -8,6 +8,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.SynthesisCodeManager;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeConflictException;
 
 public class CSFlowLineBackTraceGenerationHelper {
 
@@ -31,33 +32,10 @@ public class CSFlowLineBackTraceGenerationHelper {
 		FlowLineNode<CSFlowLineData> mergestart = startnode;
 		String preid = null;
 		while (mergestart != stopnode) {
-			FlowLineNode<CSFlowLineData> two = SearchForWholeNode(mergestart);
+			FlowLineNode<CSFlowLineData> two = mergestart;
 			FlowLineNode<CSFlowLineData> one = SearchForWholeNode(two.getPrev());
-			String twoid = preid;
-			if (preid == null)
-			{
-				twoid = GetConcateId(mergestart, two);
-			}
-			if (two.getData().getSynthesisCodeManager().getBlockstart() != null)
-			{
-				two = two.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(twoid);
-			}
-			String oneid = GetConcateId(two.getPrev(), one);
-			if (one.getData().getSynthesisCodeManager().getBlockstart() != null)
-			{
-				one = one.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(oneid);
-			}
-			
-			FlowLineNode<CSFlowLineData> tres = CSFlowLineHelper.ConcateTwoFlowLineNode(null, one, null, two, null, TypeComputationKind.NotSureOptr, squeue, smthandler, null);
-			String tresid = oneid + "." + twoid;
-			one.getData().getSynthesisCodeManager().AddSynthesisCode(tresid, tres);
-			
-			two.getData().getSynthesisCodeManager().setBlockstart(one);
-			two.getPrev().getData().getSynthesisCodeManager().SetBlockStartToInternNode();
-			one.getData().getSynthesisCodeManager().setBlockstart(one);
-			
+			preid = ConcateTwoNodes(one, two.getPrev(), two, startnode, preid, squeue, smthandler);
 			mergestart = one;
-			preid = tresid;
 		}
 		
 		if (mergestart == null)
@@ -70,6 +48,36 @@ public class CSFlowLineBackTraceGenerationHelper {
 		String id = GetConcateId(startnode, stopnode);
 		result.add(stopnode.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(id));
 		return result;
+	}
+	
+	private static String ConcateTwoNodes(FlowLineNode<CSFlowLineData> one, FlowLineNode<CSFlowLineData> onestart, FlowLineNode<CSFlowLineData> two, FlowLineNode<CSFlowLineData> twostart, String preid, CSFlowLineQueue squeue, CSStatementHandler smthandler) throws TypeConflictException
+	{
+		assert (twostart != null && preid == null) && (twostart == null && preid != null);
+		String twoid = preid;
+		if (preid == null)
+		{
+			twoid = GetConcateId(twostart, two);
+		}
+		if (two.getData().getSynthesisCodeManager().getBlockstart() != null)
+		{
+			two = two.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(twoid);
+		}
+		String oneid = GetConcateId(two.getPrev(), one);
+		if (one.getData().getSynthesisCodeManager().getBlockstart() != null)
+		{
+			one = one.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(oneid);
+		}
+		
+		FlowLineNode<CSFlowLineData> tres = CSFlowLineHelper.ConcateTwoFlowLineNode(null, one, null, two, null, TypeComputationKind.NotSureOptr, squeue, smthandler, null);
+		String tresid = oneid + "." + twoid;
+		one.getData().getSynthesisCodeManager().AddSynthesisCode(tresid, tres);
+		
+		twostart.getData().getSynthesisCodeManager().setBlockstart(one);
+		two.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
+		onestart.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
+		one.getData().getSynthesisCodeManager().setBlockstart(one);
+		
+		return tresid;
 	}
 	
 	public static String GetConcateId(FlowLineNode<CSFlowLineData> startnode, FlowLineNode<CSFlowLineData> stopnode)
@@ -114,49 +122,17 @@ public class CSFlowLineBackTraceGenerationHelper {
 
 	public static List<FlowLineNode<CSFlowLineData>> GenerateNotYetAddedSynthesisCode(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, FlowLineNode<CSFlowLineData> startnode, FlowLineNode<CSFlowLineData> stopnode) throws CodeSynthesisException {
-		FlowLineNode<CSFlowLineData> queuelast = squeue.getLast();
-		FlowLineNode<CSFlowLineData> ltsn = SearchForWholeNode(queuelast);
-		FlowLineNode<CSFlowLineData> csone = ltsn;
-		FlowLineNode<CSFlowLineData> cstwo = startnode;
-		if (csone.getData().getSynthesisCodeManager().getBlockstart() != null)
-		{
-			csone = csone.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(GetConcateId(queuelast, ltsn));
-		}
-		FlowLineNode<CSFlowLineData> cstres = CSFlowLineHelper.ConcateTwoFlowLineNode(null, csone, null, cstwo, null, TypeComputationKind.NotSureOptr, squeue, smthandler, null);
-		String cstresid = GetConcateId(queuelast, csone) + "." + startnode.getData().getId();
-		csone.getData().getSynthesisCodeManager().AddSynthesisCode(cstresid, cstres);
-		cstwo.getData().getSynthesisCodeManager().setBlockstart(csone);
-		queuelast.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
-		csone.getData().getSynthesisCodeManager().setBlockstart(csone);
 		
-		FlowLineNode<CSFlowLineData> mergestart = csone;
+		FlowLineNode<CSFlowLineData> queuestartnode = squeue.getLast();
+		FlowLineNode<CSFlowLineData> snqueuestartnode = SearchForWholeNode(queuestartnode);
+		String preid = ConcateTwoNodes(snqueuestartnode, queuestartnode, startnode, startnode, GetConcateId(startnode, startnode), squeue, smthandler);
+		
+		FlowLineNode<CSFlowLineData> mergestart = snqueuestartnode;
 		while (mergestart != stopnode) {
-			FlowLineNode<CSFlowLineData> sn = SearchForWholeNode(mergestart);
-			FlowLineNode<CSFlowLineData> pvsn = sn.getPrev();
-			FlowLineNode<CSFlowLineData> ssn = SearchForWholeNode(pvsn);
-			
-			FlowLineNode<CSFlowLineData> one = ssn;
-			FlowLineNode<CSFlowLineData> two = sn;
-			SynthesisCodeManager ssnscm = ssn.getData().getSynthesisCodeManager();
-			SynthesisCodeManager snscm = sn.getData().getSynthesisCodeManager();
-			if (ssnscm.getBlockstart() != null)
-			{
-				one = ssnscm.GetSynthesisCodeByKey(GetConcateId(pvsn, ssn));
-			}
-			if (snscm.getBlockstart() != null)
-			{
-				two = snscm.GetSynthesisCodeByKey(GetConcateId(mergestart, sn));
-			}
-			
-			FlowLineNode<CSFlowLineData> tres = CSFlowLineHelper.ConcateTwoFlowLineNode(null, one, null, two, null, TypeComputationKind.NotSureOptr, squeue, smthandler, null);
-			String tresid = GetConcateId(queuelast, ssn)  + "." + startnode.getData().getId();
-			ssnscm.AddSynthesisCode(tresid, tres);
-			
-			snscm.setBlockstart(ssn);
-			pvsn.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
-			ssnscm.setBlockstart(ssn);
-			
-			mergestart = ssn;
+			FlowLineNode<CSFlowLineData> two = mergestart;
+			FlowLineNode<CSFlowLineData> one = SearchForWholeNode(two.getPrev());
+			preid = ConcateTwoNodes(one, two.getPrev(), two, startnode, preid, squeue, smthandler);
+			mergestart = one;
 		}
 		
 		if (mergestart == null)
