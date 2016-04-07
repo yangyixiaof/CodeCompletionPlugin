@@ -38,12 +38,15 @@ public class methodArgPreExist extends referedExpression{
 				realhandler.setNextstart(tmp);
 				realhandler.setMostfar(tmp);
 				mstop = tmppre;
-				CSEnterParamInfoData ce = (CSEnterParamInfoData) tmpdata;
-				if (ce.getUsedtimes() <= 0)
+				if (tmpdata instanceof CSEnterParamInfoData)
 				{
-					throw new CodeSynthesisException("CSEnterParamInfoData times < 0, conflict happens.");
+					CSEnterParamInfoData ce = (CSEnterParamInfoData) tmpdata;
+					if (ce.getUsedtimes() <= 0)
+					{
+						throw new CodeSynthesisException("CSEnterParamInfoData times < 0, conflict happens.");
+					}
+					ce.decreaseUsedtimes(1);
 				}
-				ce.decreaseUsedtimes(1);
 			}
 			tmppre = tmp;
 			tmp = tmp.getPrev();
