@@ -1,18 +1,15 @@
 package cn.yyx.contentassist.codeutils;
 
 import java.util.List;
-import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputer;
 
 public class assignmentStatement extends expressionStatement{
 	referedExpression left = null;
@@ -46,7 +43,7 @@ public class assignmentStatement extends expressionStatement{
 		return 0;
 	}
 
-	@Override
+	/*@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		CSNode lt = new CSNode(CSNodeType.ReferedExpression);
@@ -66,13 +63,14 @@ public class assignmentStatement extends expressionStatement{
 		fin.setDatas(CSNodeHelper.ConcatTwoNodesDatasWithTypeChecking(lt, rt, -1));
 		squeue.add(fin);
 		return false;
-	}
+	}*/
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		List<FlowLineNode<CSFlowLineData>> leftls = left.HandleCodeSynthesis(squeue, smthandler);
+		List<FlowLineNode<CSFlowLineData>> rightls = right.HandleCodeSynthesis(squeue, smthandler);
+		return CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, leftls, optr, rightls, null, TypeComputer.ComputeKindFromRawString(optr), squeue, smthandler, null);
 	}
 
 	@Override
