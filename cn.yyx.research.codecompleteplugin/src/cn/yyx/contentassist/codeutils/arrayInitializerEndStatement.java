@@ -1,5 +1,6 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
@@ -9,6 +10,7 @@ import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
 
 public class arrayInitializerEndStatement extends statement{
@@ -56,8 +58,12 @@ public class arrayInitializerEndStatement extends statement{
 		FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForStructureSignal(StructureSignalMetaInfo.ArrayInitialBlock);
 		if (cnode != null)
 		{
+			squeue.SetLastHasHole();
 			cnode.getData().setStructsignal(null);
-			return CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, cnode, cnode);
+			List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+			FlowLineNode<CSFlowLineData> nl = new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "}", null, null, false, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb());
+			result.add(nl);
+			return CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, nl, cnode);
 		}
 		else
 		{
