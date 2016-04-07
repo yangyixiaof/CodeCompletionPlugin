@@ -30,12 +30,19 @@ public class CSFlowLineBackTraceGenerationHelper {
 		// the start node itself must be handled before invoke this function.
 
 		FlowLineNode<CSFlowLineData> mergestart = startnode;
+		FlowLineNode<CSFlowLineData> thelastone = mergestart;
 		String preid = null;
 		while (mergestart != stopnode) {
 			FlowLineNode<CSFlowLineData> two = mergestart;
 			FlowLineNode<CSFlowLineData> one = SearchForWholeNode(two.getPrev());
+			if (one == two)
+			{
+				// reach to the head of the queue.
+				break;
+			}
 			preid = ConcateTwoNodes(one, two.getPrev(), two, startnode, preid, squeue, smthandler);
 			mergestart = one;
+			thelastone = one;
 		}
 		
 		if (mergestart == null)
@@ -45,8 +52,15 @@ public class CSFlowLineBackTraceGenerationHelper {
 		}
 		
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		String id = GetConcateId(startnode, stopnode);
-		result.add(stopnode.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(id));
+		// String id = GetConcateId(startnode, stopnode);
+		if (preid == null)
+		{
+			result.add(startnode);
+		}
+		else
+		{
+			result.add(thelastone.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(preid));
+		}
 		return result;
 	}
 	
@@ -128,11 +142,18 @@ public class CSFlowLineBackTraceGenerationHelper {
 		String preid = ConcateTwoNodes(snqueuestartnode, queuestartnode, startnode, startnode, GetConcateId(startnode, startnode), squeue, smthandler);
 		
 		FlowLineNode<CSFlowLineData> mergestart = snqueuestartnode;
+		FlowLineNode<CSFlowLineData> thelastone = mergestart;
 		while (mergestart != stopnode) {
 			FlowLineNode<CSFlowLineData> two = mergestart;
 			FlowLineNode<CSFlowLineData> one = SearchForWholeNode(two.getPrev());
+			if (one == two)
+			{
+				// reach to the head of the queue.
+				break;
+			}
 			preid = ConcateTwoNodes(one, two.getPrev(), two, startnode, preid, squeue, smthandler);
 			mergestart = one;
+			thelastone = one;
 		}
 		
 		if (mergestart == null)
@@ -142,8 +163,8 @@ public class CSFlowLineBackTraceGenerationHelper {
 		}
 		
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		String id = GetConcateId(startnode, stopnode);
-		result.add(stopnode.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(id));
+		// String id = GetConcateId(startnode, stopnode);
+		result.add(thelastone.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(preid));
 		return result;
 	}
 
