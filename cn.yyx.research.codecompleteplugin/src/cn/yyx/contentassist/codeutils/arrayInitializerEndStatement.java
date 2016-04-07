@@ -56,6 +56,7 @@ public class arrayInitializerEndStatement extends statement{
 		if (cnode != null)
 		{
 			cnode.getData().setStructsignal(null);
+			// TODO
 		}
 		else
 		{
