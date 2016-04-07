@@ -12,19 +12,19 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 
 public class methodInvocationStatement extends expressionStatement{
 	
-	identifier name = null;
-	argumentList argList = null;
+	identifier id = null;
+	argumentList arglist = null;
 	
 	public methodInvocationStatement(identifier name, argumentList argList) {
-		this.name = name;
-		this.argList = argList;
+		this.id = name;
+		this.arglist = argList;
 	}
 	
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof methodInvocationStatement)
 		{
-			if (name.CouldThoughtSame(((methodInvocationStatement) t).name) || argList.CouldThoughtSame(((methodInvocationStatement) t).argList))
+			if (id.CouldThoughtSame(((methodInvocationStatement) t).id) || arglist.CouldThoughtSame(((methodInvocationStatement) t).arglist))
 			{
 				return true;
 			}
@@ -36,7 +36,7 @@ public class methodInvocationStatement extends expressionStatement{
 	public double Similarity(OneCode t) {
 		if (t instanceof methodInvocationStatement)
 		{
-			return 0.3 + 0.7*(0.5*(name.Similarity(((methodInvocationStatement) t).name)) + 0.5*(argList.Similarity(((methodInvocationStatement) t).argList)));
+			return 0.3 + 0.7*(0.5*(id.Similarity(((methodInvocationStatement) t).id)) + 0.5*(arglist.Similarity(((methodInvocationStatement) t).arglist)));
 		}
 		return 0;
 	}
@@ -62,11 +62,11 @@ public class methodInvocationStatement extends expressionStatement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		List<FlowLineNode<CSFlowLineData>> nls = name.HandleCodeSynthesis(squeue, smthandler);
+		List<FlowLineNode<CSFlowLineData>> nls = id.HandleCodeSynthesis(squeue, smthandler);
 		String methodname = nls.get(0).getData().getData();
 		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(methodname, smthandler);
 		csmsh.setNextstart(squeue.getLast());
-		return argList.HandleCodeSynthesis(squeue, csmsh);
+		return arglist.HandleCodeSynthesis(squeue, csmsh);
 	}
 
 	@Override
