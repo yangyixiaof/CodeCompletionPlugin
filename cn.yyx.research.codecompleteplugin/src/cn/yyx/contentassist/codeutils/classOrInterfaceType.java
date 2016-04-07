@@ -1,14 +1,14 @@
 package cn.yyx.contentassist.codeutils;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Stack;
 
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class classOrInterfaceType extends type{
 	
@@ -36,7 +36,7 @@ public class classOrInterfaceType extends type{
 		return 0;
 	}
 
-	@Override
+	/*@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		Iterator<type> itr = tps.iterator();
@@ -53,6 +53,12 @@ public class classOrInterfaceType extends type{
 		}
 		CSNodeHelper.HandleTypeByTypeCodes(result);
 		return false;
+	}*/
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		return CodeSynthesisHelper.HandleMultipleConcateType(squeue, smthandler, tps, ".");
 	}
 	
 }

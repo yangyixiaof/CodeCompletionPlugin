@@ -90,7 +90,7 @@ public class CodeSynthesisHelper {
 		return result;
 	}
 	
-	public static List<FlowLineNode<CSFlowLineData>> HandleIntersectionOrUnionType(CSFlowLineQueue squeue, CSStatementHandler smthandler, List<type> tps, String concator) throws CodeSynthesisException
+	public static List<FlowLineNode<CSFlowLineData>> HandleMultipleConcateType(CSFlowLineQueue squeue, CSStatementHandler smthandler, List<type> tps, String concator) throws CodeSynthesisException
 	{
 		Iterator<type> itr = tps.iterator();
 		type tp = itr.next();

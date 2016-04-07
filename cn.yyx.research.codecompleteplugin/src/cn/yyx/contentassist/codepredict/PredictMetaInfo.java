@@ -23,4 +23,6 @@ public class PredictMetaInfo {
 	
 	public static final double MethodSimilarityThreshold = 0.7;
 	
+	public static final int MaxTypeConcateSize = 2;
+	
 }

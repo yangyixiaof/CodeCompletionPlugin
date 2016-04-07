@@ -1,13 +1,14 @@
 package cn.yyx.contentassist.codeutils;
 
-import java.util.Stack;
+import java.util.List;
 
-import cn.yyx.contentassist.codesynthesis.CSNode;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 
 public class classInnerDeclarationStatement extends statement{
 	
@@ -35,13 +36,7 @@ public class classInnerDeclarationStatement extends statement{
 		return 0;
 	}
 	
-	@Override
-	public boolean HandleOverSignal(Stack<Integer> cstack) {
-		cstack.pop();
-		return false;
-	}
-
-	@Override
+	/*@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		CSNode tid = new CSNode(CSNodeType.HalfFullExpression);
@@ -49,6 +44,19 @@ public class classInnerDeclarationStatement extends statement{
 		tid.setPrefix("public class ");
 		squeue.add(tid);
 		return false;
+	}*/
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
+		return CSFlowLineHelper.ConcateOneFlowLineNodeList("public class ", idls, "{\n\n}");
+	}
+
+	@Override
+	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
+		cstack.EnsureAllSignalNull();
+		return true;
 	}
 	
 }

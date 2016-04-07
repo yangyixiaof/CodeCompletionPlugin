@@ -39,7 +39,7 @@ public class unionType extends type{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		return CodeSynthesisHelper.HandleIntersectionOrUnionType(squeue, smthandler, tps, "|");
+		return CodeSynthesisHelper.HandleMultipleConcateType(squeue, smthandler, tps, "|");
 	}
 	
 }
