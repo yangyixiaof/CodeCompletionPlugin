@@ -189,28 +189,35 @@ public class CSFlowLineBackTraceGenerationHelper {
 				if (rm > 0)
 				{
 					int tt = Math.max(rm - times, 0);
-					times -= (rm - tt);
+					int used = rm - tt;
+					times -= used;
 					tmp = rt.getMostleft();
 					if (times == 0)
 					{
 						cr.setMostleft(tmp);
 						cr.setMostleftremain(tt);
+						CSLeftParenInfoData tmpdata = (CSLeftParenInfoData)tmp.getData();
+						tmpdata.AddThreadLeftUsedTimesInfo(Thread.currentThread().getId(), used);
 					}
-					continue;
 				}
 			}
-			if (td instanceof CSLeftParenInfoData)
-			{
-				CSLeftParenInfoData lt = (CSLeftParenInfoData)td;
-				int tms = lt.getTimes();
-				int ttp = times;
-				times = Math.max(0, times-tms);
-				if (times == 0)
+			else {
+				if (td instanceof CSLeftParenInfoData)
 				{
-					cr.setMostleft(tmp);
-					cr.setMostleftremain(tt);
+					// this represents td must not be ever used.
+					CSLeftParenInfoData lt = (CSLeftParenInfoData)td;
+					int lttimes = lt.getTimes();
+					int ltremain = Math.max(0, lttimes-times);
+					int used = lttimes - ltremain;
+					times -= used;
+					if (times == 0)
+					{
+						cr.setMostleft(tmp);
+						cr.setMostleftremain(ltremain);
+						CSLeftParenInfoData tmpdata = (CSLeftParenInfoData)tmp.getData();
+						tmpdata.AddThreadLeftUsedTimesInfo(Thread.currentThread().getId(), used);
+					}
 				}
-				continue;
 			}
 			tmp = tmp.getPrev();
 		}
