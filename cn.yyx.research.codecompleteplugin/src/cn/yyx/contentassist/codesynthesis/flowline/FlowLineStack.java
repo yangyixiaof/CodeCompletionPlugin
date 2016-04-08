@@ -33,9 +33,9 @@ public class FlowLineStack {
 		return last.getData().getSynthesisCodeManager().getBlockstart();
 	}
 	
-	public void EnsureAllSignalNull() throws CodeSynthesisException {
-		FlowLineNode<CSFlowLineData> tmp = last;
-		while (tmp.HasPrev())
+	public void EnsureAllSignalNull(FlowLineNode<CSFlowLineData> fromwhere) throws CodeSynthesisException {
+		FlowLineNode<CSFlowLineData> tmp = fromwhere;
+		while (tmp != null)
 		{
 			if (tmp.getData().getStructsignal() != null)
 			{
@@ -43,6 +43,15 @@ public class FlowLineStack {
 			}
 			tmp = tmp.getPrev();
 		}
+	}
+	
+	public void EnsureAllSignalNull() throws CodeSynthesisException
+	{
+		EnsureAllSignalNull(last);
+	}
+	
+	public void EnsureAllSignalNullFromSecondLast() throws CodeSynthesisException {
+		EnsureAllSignalNull(last.getPrev());
 	}
 	
 }

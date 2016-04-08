@@ -1,29 +1,33 @@
 package cn.yyx.contentassist.codeutils;
 
-import java.util.Stack;
+import java.util.List;
 
-import cn.yyx.contentassist.codesynthesis.CSNode;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class methodDeclarationStatement extends statement{
 	
 	typeList typelist = null;
-	identifier name = null;
+	identifier id = null;
+	type rt = null;
 	
-	public methodDeclarationStatement(typeList typelist, identifier name) {
+	public methodDeclarationStatement(typeList typelist, identifier name, type rt) {
 		this.typelist = typelist;
-		this.name = name;
+		this.id = name;
+		this.rt = rt;
 	}
 	
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof methodDeclarationStatement)
 		{
-			if (typelist.CouldThoughtSame(((methodDeclarationStatement) t).typelist) || name.CouldThoughtSame(((methodDeclarationStatement) t).name))
+			if (typelist.CouldThoughtSame(((methodDeclarationStatement) t).typelist) || id.CouldThoughtSame(((methodDeclarationStatement) t).id))
 			{
 				return true;
 			}
@@ -35,21 +39,16 @@ public class methodDeclarationStatement extends statement{
 	public double Similarity(OneCode t) {
 		if (t instanceof methodDeclarationStatement)
 		{
-			return 0.3 + 0.7*(0.6*(typelist.Similarity(((methodDeclarationStatement) t).typelist)) + 0.4*(name.Similarity(((methodDeclarationStatement) t).name)));
+			return 0.3 + 0.7*(0.6*(typelist.Similarity(((methodDeclarationStatement) t).typelist)) + 0.4*(id.Similarity(((methodDeclarationStatement) t).id)));
 		}
 		return 0;
 	}
-	
-	@Override
-	public boolean HandleOverSignal(Stack<Integer> cstack) {
-		return false;
-	}
 
-	@Override
+	/*@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		CSNode nacs = new CSNode(CSNodeType.ReferedExpression);
-		boolean conflict = name.HandleCodeSynthesis(squeue, expected, handler, nacs, ai);
+		boolean conflict = id.HandleCodeSynthesis(squeue, expected, handler, nacs, ai);
 		if (conflict)
 		{
 			return true;
@@ -64,6 +63,30 @@ public class methodDeclarationStatement extends statement{
 		fcs.AddOneData(nacs.GetFirstDataWithoutTypeCheck() + tpscs.GetFirstDataWithoutTypeCheck(), null);
 		squeue.add(fcs);
 		return false;
+	}*/
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
+		List<FlowLineNode<CSFlowLineData>> mergedls = null;
+		if (typelist != null)
+		{
+			List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
+			mergedls = CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, idls, null, tpls, "{\n\n}", TypeComputationKind.NoOptr, squeue, smthandler, null);
+		}
+		else
+		{
+			mergedls = CSFlowLineHelper.ConcateOneFlowLineNodeList(null, idls, "(){\n\n}");
+		}
+		List<FlowLineNode<CSFlowLineData>> rtls = rt.HandleCodeSynthesis(squeue, smthandler);
+		return CSFlowLineHelper.ConcateTwoFlowLineNodeList("public ", rtls, " ", mergedls, null, TypeComputationKind.NoOptr, squeue, smthandler, null);
+	}
+
+	@Override
+	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
+		cstack.EnsureAllSignalNull();
+		return true;
 	}
 	
 }

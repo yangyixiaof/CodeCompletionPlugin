@@ -23,4 +23,6 @@ public class aaaaImportantMustTodo {
 	// TODO int must be translated to Integer. boolean float double char are the same. This must be done in program-processor phase.
 	
 	// Solved. anonymousBegin need to be added to sequence. No problem.
+	
+	// TODO method declaration should add return type.
 }

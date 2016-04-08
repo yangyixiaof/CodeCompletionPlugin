@@ -62,7 +62,7 @@ public class forStatement extends statement{
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		cstack.EnsureAllSignalNull();
+		cstack.EnsureAllSignalNullFromSecondLast();
 		return false;
 	}
 

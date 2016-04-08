@@ -1,14 +1,15 @@
 package cn.yyx.contentassist.codeutils;
 
-import java.util.Stack;
+import java.util.List;
 
-import cn.yyx.contentassist.codesynthesis.CSNode;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
-import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
+import cn.yyx.contentassist.codesynthesis.typeutil.CSFlowLineTypeCheckHelper;
 
 public class ifStatement extends statement{
 	
@@ -36,7 +37,7 @@ public class ifStatement extends statement{
 		return 0;
 	}
 
-	@Override
+	/*@Override
 	public boolean HandleOverSignal(Stack<Integer> cstack) {
 		int waitkind = cstack.peek();
 		if (waitkind == StructureSignalMetaInfo.AllKindWaitingOver)
@@ -50,7 +51,6 @@ public class ifStatement extends statement{
 	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
-		// TODO Auto-generated method stub
 		TypeCheck tc = new TypeCheck();
 		tc.setExpreturntype("Boolean");
 		tc.setExpreturntypeclass(Boolean.class);
@@ -63,6 +63,19 @@ public class ifStatement extends statement{
 		
 		expected.pop();
 		return false;
+	}*/
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+		return CSFlowLineTypeCheckHelper.RetainTheFallThroughFlowLineNodes(CSFlowLineHelper.ConcateOneFlowLineNodeList("if (", rels, ") {\n}"), Boolean.class);
+	}
+
+	@Override
+	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
+		cstack.EnsureAllSignalNull();
+		return true;
 	}
 	
 }

@@ -246,7 +246,8 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		if (ctx.typeList() != null) {
 			typelist = usedobj.poll();
 		}
-		smt = new methodDeclarationStatement((typeList) typelist, (identifier) name);
+		Object rt = usedobj.poll();
+		smt = new methodDeclarationStatement((typeList) typelist, (identifier) name, (type)rt);
 		return res;
 	}
 
