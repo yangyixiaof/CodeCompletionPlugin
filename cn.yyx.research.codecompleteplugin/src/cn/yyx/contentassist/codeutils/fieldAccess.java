@@ -60,6 +60,7 @@ public class fieldAccess extends referedExpression{
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, csfash);
 		if (!(csfash.isFieldused()))
 		{
+			// TODO
 			return CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, idls, ".", rels, null, TypeComputationKind.NoOptr, squeue, smthandler, null);
 		}
 		return rels;
