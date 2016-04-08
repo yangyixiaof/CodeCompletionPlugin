@@ -87,7 +87,7 @@ public class arrayAccessStatement extends statement{
 		{
 			postfix = "]";
 		}
-		CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, rals, "[", rels, postfix, TypeComputationKind.NoOptr, squeue, smthandler, null);
+		CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, rals, "[", rels, postfix, TypeComputationKind.NoOptr, squeue, smthandler, (accessEnd ? null : StructureSignalMetaInfo.ArrayAccessBlcok));
 		return null;
 	}
 

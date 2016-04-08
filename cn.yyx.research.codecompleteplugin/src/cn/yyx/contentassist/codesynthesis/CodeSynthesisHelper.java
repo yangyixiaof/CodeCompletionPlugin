@@ -58,6 +58,7 @@ public class CodeSynthesisHelper {
 	public static List<FlowLineNode<CSFlowLineData>> HandleVarRefCodeSynthesis(Map<String, String> po, CSFlowLineQueue squeue, CSStatementHandler smthandler)
 	{
 		// TODO handle CSMethodReferenceStatementHandler
+		// TODO partialMethodPreRerferedExpressionEndStatement is not considered.
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		if ((smthandler instanceof CSFieldAccessStatementHandler) || (smthandler instanceof CSMethodStatementHandler))
 		{

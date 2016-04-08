@@ -7,10 +7,10 @@ import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
 
 public class rightParentheseStatement extends statement implements CloseBlock {
 	
-	int count = 0;
+	int times = 0;
 	
 	public rightParentheseStatement(int count) {
-		this.count = count;
+		this.times = count;
 	}
 	
 	@Override
@@ -39,11 +39,11 @@ public class rightParentheseStatement extends statement implements CloseBlock {
 			return true;
 		}
 		ComplicatedSignal cs = ComplicatedSignal.ParseComplicatedSignal(hint);
-		if (cs == null || cs.getSign() == StructureSignalMetaInfo.ParentheseBlock || count > cs.getCount())
+		if (cs == null || cs.getSign() == StructureSignalMetaInfo.ParentheseBlock || times > cs.getCount())
 		{
 			return true;
 		}
-		int remaincounts = cs.getCount() - count;
+		int remaincounts = cs.getCount() - times;
 		if (remaincounts == 0)
 		{
 			cstack.pop();

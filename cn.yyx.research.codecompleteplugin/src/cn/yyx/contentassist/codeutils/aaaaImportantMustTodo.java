@@ -25,4 +25,6 @@ public class aaaaImportantMustTodo {
 	// Solved. anonymousBegin need to be added to sequence. No problem.
 	
 	// TODO method declaration should add return type.
+	
+	// TODO a[a[]] need to be tested.
 }

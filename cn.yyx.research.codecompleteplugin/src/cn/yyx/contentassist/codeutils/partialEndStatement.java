@@ -1,18 +1,17 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
 
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.CSParLineNode;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class partialEndStatement extends statement{
-
-	@Override
-	public boolean HandleCodeSynthesis(CSFlowLineQueue squeue, List<CSParLineNode> nextpars) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
@@ -31,9 +30,18 @@ public class partialEndStatement extends statement{
 		}
 		return 0;
 	}
+	
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		squeue.SetLastHasHole();
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ",", null, null, true, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
+		return result;
+	}
 
 	@Override
-	public boolean HandleOverSignal(Stack<Integer> cstack) {
+	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		return false;
 	}
 

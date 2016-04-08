@@ -170,6 +170,11 @@ public class CSFlowLineBackTraceGenerationHelper {
 		return result;
 	}
 
+	public static FlowLineNode<CSFlowLineData> GetWholeNodeCode(FlowLineNode<CSFlowLineData> last) throws CodeSynthesisException {
+		FlowLineNode<CSFlowLineData> start = SearchForWholeNode(last);
+		return start.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(GetConcateId(last, start));
+	}
+
 	/*
 	 * private static FlowLineNode<CSFlowLineData>
 	 * SearchForWholeNode(FlowLineNode<CSFlowLineData> tailnode) { String
