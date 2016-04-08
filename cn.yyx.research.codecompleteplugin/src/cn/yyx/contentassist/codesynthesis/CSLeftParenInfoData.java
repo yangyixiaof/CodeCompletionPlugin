@@ -8,7 +8,6 @@ import cn.yyx.contentassist.commonutils.SynthesisHandler;
 public class CSLeftParenInfoData extends CSFlowLineData{
 	
 	private int times = -1;
-	private int usedtimes = -1;
 	
 	public CSLeftParenInfoData(int times, Integer id, Sentence sete, String data, Integer structsignal, Class<?> dcls,
 			boolean hashole, SynthesisHandler handler) {
@@ -22,14 +21,6 @@ public class CSLeftParenInfoData extends CSFlowLineData{
 
 	public void setTimes(int times) {
 		this.times = times;
-	}
-
-	public int getUsedtimes() {
-		return usedtimes;
-	}
-
-	public void decreaseUsedtimes(int usedtimes) {
-		this.usedtimes -= usedtimes;
 	}
 	
 }

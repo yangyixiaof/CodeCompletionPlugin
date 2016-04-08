@@ -1,11 +1,19 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.List;
 import java.util.Stack;
 
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.commonutils.ComplicatedSignal;
 import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
 
-public class rightParentheseStatement extends statement implements CloseBlock {
+public class rightParentheseStatement extends statement{
 	
 	int times = 0;
 	
@@ -52,6 +60,19 @@ public class rightParentheseStatement extends statement implements CloseBlock {
 		{
 			cs.setCount(remaincounts);
 		}
+		return false;
+	}
+	
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		CSFlowLineBackTraceGenerationHelper.SearchAndModifyLeftParentheseNode(squeue, smthandler, times);
+		return null;
+	}
+	
+	@Override
+	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
+		// TODO Auto-generated method stub
 		return false;
 	}
 	

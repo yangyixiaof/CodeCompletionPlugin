@@ -175,6 +175,20 @@ public class CSFlowLineBackTraceGenerationHelper {
 		return start.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(GetConcateId(last, start));
 	}
 
+	public static void SearchAndModifyLeftParentheseNode(CSFlowLineQueue squeue, CSStatementHandler smthandler,
+			int times) {
+		FlowLineNode<CSFlowLineData> last = squeue.getLast();
+		FlowLineNode<CSFlowLineData> tmp = last;
+		while (tmp != null && times > 0)
+		{
+			CSFlowLineData td = tmp.getData();
+			if (td instanceof CSLeftParenInfoData)
+			{
+				
+			}
+		}
+	}
+
 	/*
 	 * private static FlowLineNode<CSFlowLineData>
 	 * SearchForWholeNode(FlowLineNode<CSFlowLineData> tailnode) { String
