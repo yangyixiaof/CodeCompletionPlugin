@@ -19,6 +19,7 @@ import cn.yyx.contentassist.codeutils.identifier;
 import cn.yyx.contentassist.codeutils.referedExpression;
 import cn.yyx.contentassist.codeutils.type;
 import cn.yyx.contentassist.commonutils.CheckUtil;
+import cn.yyx.contentassist.commonutils.NameConvention;
 import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.StringUtil;
@@ -248,6 +249,20 @@ public class CodeSynthesisHelper {
 			}
 		}
 		return result;
+	}
+	
+	public static void DirectlyGenerateNameOfType(List<FlowLineNode<CSFlowLineData>> tpls, CSFlowLineQueue squeue, CSStatementHandler smthandler)
+	{
+		Iterator<FlowLineNode<CSFlowLineData>> itr = tpls.iterator();
+		while (itr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> fln = itr.next();
+			CSFlowLineData data = fln.getData();
+			String returntype = data.getData();
+			String modifidedname = squeue.GetLastHandler().getScopeOffsetRefHandler().GenerateNewDeclaredVariable(NameConvention.GetAbbreviationOfType(returntype), returntype);
+			String modifieddata = returntype + " " + modifidedname;
+			data.setData(modifieddata);
+		}
 	}
 	
 }
