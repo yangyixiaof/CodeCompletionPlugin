@@ -27,4 +27,6 @@ public class aaaaImportantMustTodo {
 	// TODO method declaration should add return type.
 	
 	// TODO a[a[]] need to be tested.
+	
+	// TODO cstack must not set the structure info to null, the whole judge schema should be changed.
 }

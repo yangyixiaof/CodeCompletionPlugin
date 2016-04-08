@@ -1,14 +1,14 @@
 package cn.yyx.contentassist.codeutils;
 
-import java.util.Stack;
+import java.util.List;
 
-import cn.yyx.contentassist.codesynthesis.CSNode;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
-import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 
 public class synchronizedStatement extends statement{
 	
@@ -36,7 +36,7 @@ public class synchronizedStatement extends statement{
 		return 0;
 	}
 	
-	@Override
+	/*@Override
 	public boolean HandleOverSignal(Stack<Integer> cstack) {
 		Integer signal = cstack.peek();
 		if (signal != StructureSignalMetaInfo.AllKindWaitingOver)
@@ -56,10 +56,23 @@ public class synchronizedStatement extends statement{
 		{
 			return true;
 		}
-		fcs.setPrefix("synchronized (");
-		fcs.setPostfix("){\n\n}");
+		fcs.setPrefix("");
+		fcs.setPostfix("");
 		squeue.add(fcs);
 		return false;
+	}*/
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+		return CSFlowLineHelper.ConcateOneFlowLineNodeList("synchronized (", rels, "){\n\n}");
+	}
+
+	@Override
+	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
+		cstack.EnsureAllSignalNull();
+		return true;
 	}
 	
 }

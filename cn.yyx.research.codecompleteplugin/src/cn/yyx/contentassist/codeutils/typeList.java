@@ -5,6 +5,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
@@ -70,5 +76,20 @@ public class typeList implements OneCode {
 		CSNode fcs = new CSNode(CSNodeType.HalfFullExpression);
 		fcs.AddOneData(sb.toString(), null);
 		return false;
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		Iterator<type> itr = tps.iterator();
+		type tp = itr.next();
+		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
+		while (itr.hasNext())
+		{
+			type ntp = itr.next();
+			List<FlowLineNode<CSFlowLineData>> ntpls = ntp.HandleCodeSynthesis(squeue, smthandler);
+			tpls = CSFlowLineHelper.ConcateTwoFlowLineNodeList(prefix, flnsone, concator, flnstwo, postfix, tck, squeue, smthandler, structsignal);
+		}
+		return null;
 	}
 }
