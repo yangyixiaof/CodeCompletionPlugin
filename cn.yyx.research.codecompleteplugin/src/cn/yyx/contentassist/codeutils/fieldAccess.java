@@ -7,6 +7,7 @@ import cn.yyx.contentassist.codesynthesis.CSFieldAccessStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
@@ -60,8 +61,12 @@ public class fieldAccess extends referedExpression{
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, csfash);
 		if (!(csfash.isFieldused()))
 		{
-			// TODO
-			return CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, idls, ".", rels, null, TypeComputationKind.NoOptr, squeue, smthandler, null);
+			List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleFieldSpecificationInfer(rels, idls, squeue, smthandler, ".");
+			if (ls.size() == 0)
+			{
+				return CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, idls, ".", rels, null, TypeComputationKind.NoOptr, squeue, smthandler, null);
+			}
+			return ls;
 		}
 		return rels;
 	}

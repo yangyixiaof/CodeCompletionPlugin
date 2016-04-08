@@ -22,6 +22,7 @@ import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.StringUtil;
+import cn.yyx.contentassist.specification.FieldMember;
 import cn.yyx.contentassist.specification.MembersOfAReference;
 import cn.yyx.contentassist.specification.MethodMember;
 import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;
@@ -56,6 +57,7 @@ public class CodeSynthesisHelper {
 	
 	public static List<FlowLineNode<CSFlowLineData>> HandleVarRefCodeSynthesis(Map<String, String> po, CSFlowLineQueue squeue, CSStatementHandler smthandler)
 	{
+		// TODO handle CSMethodReferenceStatementHandler
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		if ((smthandler instanceof CSFieldAccessStatementHandler) || (smthandler instanceof CSMethodStatementHandler))
 		{
@@ -185,6 +187,34 @@ public class CodeSynthesisHelper {
 					if (SimilarityHelper.ComputeTwoStringSimilarity(cmp, cmped) > PredictMetaInfo.TwoStringSimilarThreshold)
 					{
 						result.add(CSFlowLineHelper.ConcateTwoFlowLineNode(null, fln, ".", tp, null, TypeComputationKind.NoOptr, squeue, smthandler, null));
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	public static List<FlowLineNode<CSFlowLineData>> HandleFieldSpecificationInfer(List<FlowLineNode<CSFlowLineData>> tmp, List<FlowLineNode<CSFlowLineData>> idls, CSFlowLineQueue squeue, CSStatementHandler smthandler, String concator) throws TypeConflictException
+	{
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		Iterator<FlowLineNode<CSFlowLineData>> itr = tmp.iterator();
+		while (itr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> fln = itr.next();
+			List<FieldMember> fmm = SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix(fln.getData().getData() + concator, squeue.GetLastHandler().getContextHandler().getJavacontext(), null);
+			Iterator<FieldMember> fitr = fmm.iterator();
+			while (fitr.hasNext())
+			{
+				FieldMember fm = fitr.next();
+				String cmp = fm.getType();
+				Iterator<FlowLineNode<CSFlowLineData>> iditr = idls.iterator();
+				while (iditr.hasNext())
+				{
+					FlowLineNode<CSFlowLineData> id = iditr.next();
+					String cmped = id.getData().getData();
+					if (SimilarityHelper.ComputeTwoStringSimilarity(cmp, cmped) > PredictMetaInfo.TwoStringSimilarThreshold)
+					{
+						result.add(CSFlowLineHelper.ConcateTwoFlowLineNode(null, fln, ".", id, null, TypeComputationKind.NoOptr, squeue, smthandler, null));
 					}
 				}
 			}
