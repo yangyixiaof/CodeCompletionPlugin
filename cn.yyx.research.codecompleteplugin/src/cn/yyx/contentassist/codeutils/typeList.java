@@ -5,8 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-import cn.yyx.contentassist.codesynthesis.CSNode;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
@@ -15,6 +13,7 @@ import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class typeList implements OneCode {
 	
+	// need to add '(' '£©' to left and right.
 	private List<type> tps = new LinkedList<type>();
 	
 	public typeList() {

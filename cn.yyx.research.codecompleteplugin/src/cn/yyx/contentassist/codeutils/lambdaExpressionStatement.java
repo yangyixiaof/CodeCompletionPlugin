@@ -1,20 +1,23 @@
 package cn.yyx.contentassist.codeutils;
 
-import java.util.Stack;
+import java.util.LinkedList;
+import java.util.List;
 
-import cn.yyx.contentassist.codesynthesis.CSNode;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class lambdaExpressionStatement extends statement{
 	
-	typeList tlist = null;
+	typeList typelist = null;
 	
 	public lambdaExpressionStatement(typeList tlist) {
-		this.tlist = tlist;
+		this.typelist = tlist;
 	}
 
 	@Override
@@ -30,27 +33,22 @@ public class lambdaExpressionStatement extends statement{
 	public double Similarity(OneCode t) {
 		if (t instanceof lambdaExpressionStatement)
 		{
-			return 0.4 + 0.6*(tlist.Similarity(((lambdaExpressionStatement) t).tlist));
+			return 0.4 + 0.6*(typelist.Similarity(((lambdaExpressionStatement) t).typelist));
 		}
 		return 0;
 	}
-
-	@Override
-	public boolean HandleOverSignal(Stack<Integer> cstack) {
-		return false;
-	}
-
-	@Override
+	
+	/*@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		CSNode cs = new CSNode(CSNodeType.HalfFullExpression);
-		if (tlist == null)
+		if (typelist == null)
 		{
 			cs.AddOneData("()->", null);
 		}
 		else
 		{
-			boolean conflict = tlist.HandleCodeSynthesis(squeue, expected, handler, cs, ai);
+			boolean conflict = typelist.HandleCodeSynthesis(squeue, expected, handler, cs, ai);
 			if (conflict)
 			{
 				return true;
@@ -60,6 +58,28 @@ public class lambdaExpressionStatement extends statement{
 		}
 		squeue.add(cs);
 		return false;
+	}*/
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		if (typelist == null)
+		{
+			List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "()->{\n\n}", null, null, false, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
+			return result;
+		}
+		else
+		{
+			List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
+			return CSFlowLineHelper.ConcateOneFlowLineNodeList(null, tpls, "->{\n\n}");
+		}
+	}
+
+	@Override
+	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
+		cstack.EnsureAllSignalNull();
+		return true;
 	}
 	
 }
