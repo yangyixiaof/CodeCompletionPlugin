@@ -3,7 +3,6 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
@@ -11,11 +10,8 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class typeList implements OneCode {
 	
@@ -53,7 +49,7 @@ public class typeList implements OneCode {
 		return 0;
 	}
 
-	@Override
+	/*@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		StringBuilder sb = new StringBuilder();
@@ -76,7 +72,7 @@ public class typeList implements OneCode {
 		CSNode fcs = new CSNode(CSNodeType.HalfFullExpression);
 		fcs.AddOneData(sb.toString(), null);
 		return false;
-	}
+	}*/
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
@@ -88,7 +84,7 @@ public class typeList implements OneCode {
 		{
 			type ntp = itr.next();
 			List<FlowLineNode<CSFlowLineData>> ntpls = ntp.HandleCodeSynthesis(squeue, smthandler);
-			tpls = CSFlowLineHelper.ConcateTwoFlowLineNodeList(prefix, flnsone, concator, flnstwo, postfix, tck, squeue, smthandler, structsignal);
+			tpls = CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, tpls, ",", ntpls, null, TypeComputationKind.NoOptr, squeue, smthandler, null);
 		}
 		return null;
 	}

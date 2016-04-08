@@ -13,11 +13,11 @@ import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class methodDeclarationStatement extends statement{
 	
-	typeList typelist = null;
+	argTypeList typelist = null;
 	identifier id = null;
 	type rt = null;
 	
-	public methodDeclarationStatement(typeList typelist, identifier name, type rt) {
+	public methodDeclarationStatement(argTypeList typelist, identifier name, type rt) {
 		this.typelist = typelist;
 		this.id = name;
 		this.rt = rt;

@@ -14,9 +14,9 @@ import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class lambdaExpressionStatement extends statement{
 	
-	typeList typelist = null;
+	argTypeList typelist = null;
 	
-	public lambdaExpressionStatement(typeList tlist) {
+	public lambdaExpressionStatement(argTypeList tlist) {
 		this.typelist = tlist;
 	}
 

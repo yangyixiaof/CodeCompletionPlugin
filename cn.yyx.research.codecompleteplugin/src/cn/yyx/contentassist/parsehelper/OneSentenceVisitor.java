@@ -7,6 +7,7 @@ import java.util.Queue;
 
 import SJ8Parse.Java8BaseVisitor;
 import SJ8Parse.Java8Parser;
+import SJ8Parse.Java8Parser.ArgTypeListContext;
 import SJ8Parse.Java8Parser.ArgumentListContext;
 import SJ8Parse.Java8Parser.BothTypeContext;
 import SJ8Parse.Java8Parser.CommonClassMemberInvokeContext;
@@ -22,7 +23,6 @@ import SJ8Parse.Java8Parser.OffsetContext;
 import SJ8Parse.Java8Parser.ParameterizedTypeContext;
 import SJ8Parse.Java8Parser.SimpleTypeContext;
 import SJ8Parse.Java8Parser.TypeContext;
-import SJ8Parse.Java8Parser.TypeListContext;
 import SJ8Parse.Java8Parser.UnionFirstTypeContext;
 import SJ8Parse.Java8Parser.UnionSecondTypeContext;
 import SJ8Parse.Java8Parser.WildcardBoundsContext;
@@ -234,11 +234,11 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		Integer res = visitChildren(ctx);
 		Object name = usedobj.poll();
 		Object typelist = null;
-		if (ctx.typeList() != null) {
+		if (ctx.argTypeList() != null) {
 			typelist = usedobj.poll();
 		}
 		Object rt = usedobj.poll();
-		smt = new methodDeclarationStatement((typeList) typelist, (identifier) name, (type)rt);
+		smt = new methodDeclarationStatement((argTypeList) typelist, (identifier) name, (type)rt);
 		return res;
 	}
 
@@ -284,12 +284,12 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	@Override
 	public Integer visitLambdaExpressionStatement(Java8Parser.LambdaExpressionStatementContext ctx) {
 		Integer res = visitChildren(ctx);
-		TypeListContext tl = ctx.typeList();
+		ArgTypeListContext tl = ctx.argTypeList();
 		Object tlist = null;
 		if (tl != null) {
 			tlist = usedobj.poll();
 		}
-		smt = new lambdaExpressionStatement((typeList) tlist);
+		smt = new lambdaExpressionStatement((argTypeList) tlist);
 		return res;
 	}
 
@@ -722,6 +722,21 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	public Integer visitTypeList(Java8Parser.TypeListContext ctx) {
 		Integer res = visitChildren(ctx);
 		typeList al = new typeList();
+		List<TypeContext> rl = ctx.type();
+		Iterator<TypeContext> itr = rl.iterator();
+		while (itr.hasNext()) {
+			itr.next();
+			Object o = usedobj.poll();
+			al.AddToFirst((type) o);
+		}
+		usedobj.add(al);
+		return res;
+	}
+	
+	@Override
+	public Integer visitArgTypeList(ArgTypeListContext ctx) {
+		Integer res = visitChildren(ctx);
+		argTypeList al = new argTypeList();
 		List<TypeContext> rl = ctx.type();
 		Iterator<TypeContext> itr = rl.iterator();
 		while (itr.hasNext()) {
