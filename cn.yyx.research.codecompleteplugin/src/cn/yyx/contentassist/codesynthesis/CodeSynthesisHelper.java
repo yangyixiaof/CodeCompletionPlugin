@@ -47,10 +47,15 @@ public class CodeSynthesisHelper {
 	
 	public static String GenerateDimens(int count)
 	{
+		return GenerateCopiedContent(count, "[]");
+	}
+	
+	public static String GenerateCopiedContent(int count, String cnt)
+	{
 		StringBuilder sb = new StringBuilder("");
 		for (int i=0;i<count;i++)
 		{
-			sb.append("[]");
+			sb.append(cnt);
 		}
 		return sb.toString();
 	}
