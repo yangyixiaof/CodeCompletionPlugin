@@ -12,6 +12,8 @@ import cn.yyx.contentassist.codesynthesis.typeutil.TypeConflictException;
 
 public class CSFlowLineBackTraceGenerationHelper {
 
+	// TODO extreme case : start node and stop node is same and is itself not considered.
+	
 	/**
 	 * Reminder : Before invoking this method, the related '@Em' or '@(' counts
 	 * should be computed.

@@ -222,4 +222,26 @@ public class CodeSynthesisHelper {
 		return result;
 	}
 	
+	public static List<FlowLineNode<CSFlowLineData>> HandleRawTypeSpecificationInfer(List<FlowLineNode<CSFlowLineData>> rawtypes, CSFlowLineQueue squeue, CSStatementHandler smthandler)
+	{
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		Iterator<FlowLineNode<CSFlowLineData>> itr = rawtypes.iterator();
+		while (itr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> fln = itr.next();
+			String rawtype = fln.getData().getData();
+			List<TypeMember> tps = SearchSpecificationOfAReference.SearchTypeSpecificationByPrefix(rawtype, squeue.GetLastHandler().getContextHandler().getJavacontext(), null);
+			Iterator<TypeMember> tpitr = tps.iterator();
+			while (tpitr.hasNext())
+			{
+				TypeMember tp = tpitr.next();
+				if (SimilarityHelper.ComputeTwoStringSimilarity(rawtype, tp.getType()) > PredictMetaInfo.TwoStringSimilarThreshold)
+				{
+					result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), tp.getType(), null, tp.getClass(), false, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
+				}
+			}
+		}
+		return result;
+	}
+	
 }

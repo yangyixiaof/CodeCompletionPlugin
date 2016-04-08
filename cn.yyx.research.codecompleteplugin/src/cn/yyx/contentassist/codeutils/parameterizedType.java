@@ -1,22 +1,24 @@
 package cn.yyx.contentassist.codeutils;
 
-import java.util.Stack;
+import java.util.List;
 
-import cn.yyx.contentassist.codesynthesis.CSNode;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class parameterizedType extends type{
 	
 	identifier id = null;
-	typeList tlist = null;
+	typeList typelist = null;
 	
 	public parameterizedType(identifier id, typeList tlist) {
 		this.id = id;
-		this.tlist = tlist;
+		this.typelist = tlist;
 	}
 
 	@Override
@@ -40,7 +42,7 @@ public class parameterizedType extends type{
 		return 0;
 	}
 
-	@Override
+	/*@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		CSNode cs = new CSNode(CSNodeType.HalfFullExpression);
@@ -50,13 +52,26 @@ public class parameterizedType extends type{
 			return true;
 		}
 		CSNode tcs = new CSNode(CSNodeType.HalfFullExpression);
-		conflict = tlist.HandleCodeSynthesis(squeue, expected, handler, tcs, ai);
+		conflict = typelist.HandleCodeSynthesis(squeue, expected, handler, tcs, ai);
 		if (conflict)
 		{
 			return true;
 		}
 		result.AddOneData(cs.GetFirstDataWithoutTypeCheck()+"<"+tcs.GetFirstDataWithoutTypeCheck()+">", null);
 		return false;
+	}*/
+	
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
+		List<FlowLineNode<CSFlowLineData>> modifiedidls = CodeSynthesisHelper.HandleRawTypeSpecificationInfer(idls, squeue, smthandler);
+		if (modifiedidls.size() == 0)
+		{
+			modifiedidls = idls;
+		}
+		List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
+		return CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, modifiedidls, "<", tpls, ">", TypeComputationKind.NoOptr, squeue, smthandler, null);
 	}
 	
 }

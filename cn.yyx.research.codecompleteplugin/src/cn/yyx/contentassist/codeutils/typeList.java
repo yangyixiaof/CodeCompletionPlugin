@@ -13,7 +13,7 @@ import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class typeList implements OneCode {
 	
-	// need to add '(' '£©' to left and right.
+	// reminder not to add '(' ')' to left and right.
 	private List<type> tps = new LinkedList<type>();
 	
 	public typeList() {

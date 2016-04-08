@@ -73,7 +73,7 @@ public class methodDeclarationStatement extends statement{
 		if (typelist != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
-			mergedls = CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, idls, null, tpls, "{\n\n}", TypeComputationKind.NoOptr, squeue, smthandler, null);
+			mergedls = CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, idls, "(", tpls, "){\n\n}", TypeComputationKind.NoOptr, squeue, smthandler, null);
 		}
 		else
 		{
