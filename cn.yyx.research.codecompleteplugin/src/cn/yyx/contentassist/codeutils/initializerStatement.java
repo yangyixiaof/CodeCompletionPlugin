@@ -1,12 +1,13 @@
 package cn.yyx.contentassist.codeutils;
 
-import java.util.Stack;
+import java.util.List;
 
-import cn.yyx.contentassist.codesynthesis.CSNode;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 
 public class initializerStatement extends statement{
 
@@ -27,15 +28,15 @@ public class initializerStatement extends statement{
 		}
 		return 0;
 	}
-
+	
 	@Override
-	public boolean HandleOverSignal(Stack<Integer> cstack) {
-		return false;
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		return null;
 	}
 
 	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
+	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		return false;
 	}
 	

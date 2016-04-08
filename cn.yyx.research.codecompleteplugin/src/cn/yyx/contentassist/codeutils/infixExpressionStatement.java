@@ -1,23 +1,25 @@
 package cn.yyx.contentassist.codeutils;
 
-import java.util.Stack;
+import java.util.List;
 
-import cn.yyx.contentassist.codesynthesis.CSNode;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputer;
 
 public class infixExpressionStatement extends expressionStatement{
 	
-	referedExpression lexp = null;
-	referedExpression rexp = null;
+	referedExpression left = null;
+	referedExpression right = null;
 	String optr = null;
 	
 	public infixExpressionStatement(referedExpression lexp, String optr, referedExpression rexp) {
-		this.lexp = lexp;
-		this.rexp = rexp;
+		this.left = lexp;
+		this.right = rexp;
 		this.optr = optr;
 	}
 
@@ -39,22 +41,17 @@ public class infixExpressionStatement extends expressionStatement{
 		{
 			if (optr.equals(((infixExpressionStatement) t).optr))
 			{
-				return 0.5 + 0.5*(0.5*(rexp.Similarity(((infixExpressionStatement) t).rexp)) + 0.5*(lexp.Similarity(((infixExpressionStatement) t).lexp)));
+				return 0.5 + 0.5*(0.5*(right.Similarity(((infixExpressionStatement) t).right)) + 0.5*(left.Similarity(((infixExpressionStatement) t).left)));
 			}
 		}
 		return 0;
 	}
-
-	@Override
-	public boolean HandleOverSignal(Stack<Integer> cstack) {
-		return false;
-	}
-
-	@Override
+	
+	/*@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		CSNode ltcs = new CSNode(CSNodeType.HalfFullExpression);
-		boolean conflict = lexp.HandleCodeSynthesis(squeue, expected, handler, ltcs, ai);
+		boolean conflict = left.HandleCodeSynthesis(squeue, expected, handler, ltcs, ai);
 		if (conflict)
 		{
 			return true;
@@ -62,12 +59,25 @@ public class infixExpressionStatement extends expressionStatement{
 		ltcs.setPostfix(optr);
 		squeue.add(ltcs);
 		CSNode rtcs = new CSNode(CSNodeType.HalfFullExpression);
-		conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, rtcs, ai);
+		conflict = right.HandleCodeSynthesis(squeue, expected, handler, rtcs, ai);
 		if (conflict)
 		{
 			return true;
 		}
 		squeue.add(rtcs);
+		return false;
+	}*/
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		List<FlowLineNode<CSFlowLineData>> leftls = left.HandleCodeSynthesis(squeue, smthandler);
+		List<FlowLineNode<CSFlowLineData>> rightls = right.HandleCodeSynthesis(squeue, smthandler);
+		return CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, leftls, optr, rightls, null, TypeComputer.ComputeKindFromRawString(optr), squeue, smthandler, null);
+	}
+
+	@Override
+	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		return false;
 	}
 	
