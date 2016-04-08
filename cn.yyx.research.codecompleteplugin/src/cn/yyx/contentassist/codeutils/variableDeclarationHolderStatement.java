@@ -1,10 +1,15 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import cn.yyx.contentassist.codesynthesis.CSNode;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisQueue;
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.commonutils.AdditionalInfo;
 import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.NameConvention;
@@ -55,11 +60,6 @@ public class variableDeclarationHolderStatement extends statement{
 	}
 	
 	@Override
-	public boolean HandleOverSignal(Stack<Integer> cstack) {
-		return false;
-	}
-
-	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		String type = handler.getRecenttype();
@@ -93,6 +93,18 @@ public class variableDeclarationHolderStatement extends statement{
 			cs.AddOneData(modifidedname, null);
 			squeue.add(cs);
 		}
+		return false;
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		return false;
 	}
 	
