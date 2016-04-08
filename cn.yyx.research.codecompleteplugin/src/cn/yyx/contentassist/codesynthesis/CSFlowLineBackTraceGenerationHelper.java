@@ -191,6 +191,11 @@ public class CSFlowLineBackTraceGenerationHelper {
 					int tt = Math.max(rm - times, 0);
 					times -= (rm - tt);
 					tmp = rt.getMostleft();
+					if (times == 0)
+					{
+						cr.setMostleft(tmp);
+						cr.setMostleftremain(tt);
+					}
 					continue;
 				}
 			}
@@ -198,8 +203,14 @@ public class CSFlowLineBackTraceGenerationHelper {
 			{
 				CSLeftParenInfoData lt = (CSLeftParenInfoData)td;
 				int tms = lt.getTimes();
+				int ttp = times;
 				times = Math.max(0, times-tms);
-				
+				if (times == 0)
+				{
+					cr.setMostleft(tmp);
+					cr.setMostleftremain(tt);
+				}
+				continue;
 			}
 			tmp = tmp.getPrev();
 		}
