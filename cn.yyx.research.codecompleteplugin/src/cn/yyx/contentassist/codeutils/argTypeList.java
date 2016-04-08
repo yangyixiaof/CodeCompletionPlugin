@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSArgTypeStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
@@ -45,14 +46,15 @@ public class argTypeList implements OneCode {
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
+		CSArgTypeStatementHandler csats = new CSArgTypeStatementHandler('A', smthandler);
 		Iterator<argType> itr = tps.iterator();
 		argType tp = itr.next();
-		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
+		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, csats);
 		while (itr.hasNext())
 		{
 			argType ntp = itr.next();
-			List<FlowLineNode<CSFlowLineData>> ntpls = ntp.HandleCodeSynthesis(squeue, smthandler);
-			tpls = CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, tpls, ",", ntpls, null, TypeComputationKind.NoOptr, squeue, smthandler, null);
+			List<FlowLineNode<CSFlowLineData>> ntpls = ntp.HandleCodeSynthesis(squeue, csats);
+			tpls = CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, tpls, ",", ntpls, null, TypeComputationKind.NoOptr, squeue, csats, null);
 		}
 		return tpls;
 	}
