@@ -7,6 +7,7 @@ import java.util.Queue;
 
 import SJ8Parse.Java8BaseVisitor;
 import SJ8Parse.Java8Parser;
+import SJ8Parse.Java8Parser.ArgTypeContext;
 import SJ8Parse.Java8Parser.ArgTypeListContext;
 import SJ8Parse.Java8Parser.ArgumentListContext;
 import SJ8Parse.Java8Parser.BothTypeContext;
@@ -734,15 +735,23 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	}
 	
 	@Override
+	public Integer visitArgType(ArgTypeContext ctx) {
+		Integer res = visitChildren(ctx);
+		Object tp = usedobj.poll();
+		usedobj.add(new argType((type) tp));
+		return res;
+	}
+	
+	@Override
 	public Integer visitArgTypeList(ArgTypeListContext ctx) {
 		Integer res = visitChildren(ctx);
 		argTypeList al = new argTypeList();
-		List<TypeContext> rl = ctx.type();
-		Iterator<TypeContext> itr = rl.iterator();
+		List<ArgTypeContext> rl = ctx.argType();
+		Iterator<ArgTypeContext> itr = rl.iterator();
 		while (itr.hasNext()) {
 			itr.next();
 			Object o = usedobj.poll();
-			al.AddToFirst((type) o);
+			al.AddToFirst((argType) o);
 		}
 		usedobj.add(al);
 		return res;

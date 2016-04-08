@@ -86,6 +86,6 @@ public class typeList implements OneCode {
 			List<FlowLineNode<CSFlowLineData>> ntpls = ntp.HandleCodeSynthesis(squeue, smthandler);
 			tpls = CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, tpls, ",", ntpls, null, TypeComputationKind.NoOptr, squeue, smthandler, null);
 		}
-		return null;
+		return tpls;
 	}
 }
