@@ -69,7 +69,7 @@ public class ifStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineTypeCheckHelper.RetainTheFallThroughFlowLineNodes(CSFlowLineHelper.ConcateOneFlowLineNodeList("if (", rels, ") {\n}"), Boolean.class);
+		return CSFlowLineTypeCheckHelper.RetainTheFallThroughFlowLineNodes(CSFlowLineHelper.ConcateOneFLStamp("if (", rels, ") {\n}"), Boolean.class);
 	}
 
 	@Override

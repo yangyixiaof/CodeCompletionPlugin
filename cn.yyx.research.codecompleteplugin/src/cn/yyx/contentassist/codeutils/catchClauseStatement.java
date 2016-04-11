@@ -51,7 +51,7 @@ public class catchClauseStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateOneFlowLineNodeList("catch (", tpls, " e)");
+		return CSFlowLineHelper.ConcateOneFLStamp("catch (", tpls, " e)");
 	}
 
 	@Override

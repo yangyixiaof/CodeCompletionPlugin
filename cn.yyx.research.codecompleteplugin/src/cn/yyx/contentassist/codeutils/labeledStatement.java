@@ -50,7 +50,7 @@ public class labeledStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateOneFlowLineNodeList(null, idls, ":");
+		return CSFlowLineHelper.ConcateOneFLStamp(null, idls, ":");
 	}
 
 	@Override

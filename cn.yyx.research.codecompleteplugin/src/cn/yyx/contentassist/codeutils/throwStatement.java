@@ -49,7 +49,7 @@ public class throwStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		CSFlowLineHelper.ConcateOneFlowLineNodeList("throw ", rels, null);
+		CSFlowLineHelper.ConcateOneFLStamp("throw ", rels, null);
 		return null;
 	}
 

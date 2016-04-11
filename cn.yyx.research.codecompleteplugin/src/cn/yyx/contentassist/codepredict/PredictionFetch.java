@@ -10,6 +10,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineStamp;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.VirtualCSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
@@ -107,7 +108,7 @@ public class PredictionFetch {
 		// first level initial the CodeSynthesisFlowLine.
 		csfl.BeginOperation();
 		
-		VirtualCSFlowLineQueue vcsdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(-1, null, null, null, null, false, TypeComputationKind.NoOptr, sh), 0));
+		VirtualCSFlowLineQueue vcsdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(-1, null, null, null, null, false, false, TypeComputationKind.NoOptr, TypeComputationKind.NoOptr, sh), 0));
 		List<FlowLineNode<Sentence>> ots = fls.getOvertails();
 		Iterator<FlowLineNode<Sentence>> itr = ots.iterator();
 		while (itr.hasNext())
@@ -159,10 +160,10 @@ public class PredictionFetch {
 			CSStatementHandler csh = new CSStatementHandler(pred, ppp.getProb());
 			statement predsmt = pred.getSmt();
 			try {
-				List<FlowLineNode<CSFlowLineData>> addnodes = predsmt.HandleCodeSynthesis(csdflq, csh);
-				if (addnodes != null)
+				CSFlowLineStamp addnodes = predsmt.HandleCodeSynthesis(csdflq, csh);
+				if (addnodes != null && addnodes.Size() > 0)
 				{
-					Iterator<FlowLineNode<CSFlowLineData>> aitr = addnodes.iterator();
+					Iterator<FlowLineNode<CSFlowLineData>> aitr = addnodes.Iterator();
 					while (aitr.hasNext())
 					{
 						FlowLineNode<CSFlowLineData> addnode = aitr.next();

@@ -58,7 +58,7 @@ public class prefixExpressionStatement extends expressionStatement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateOneFlowLineNodeList(optr, rels, null);
+		return CSFlowLineHelper.ConcateOneFLStamp(optr, rels, null);
 	}
 
 	@Override

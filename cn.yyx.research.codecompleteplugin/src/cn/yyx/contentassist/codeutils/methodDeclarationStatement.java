@@ -77,7 +77,7 @@ public class methodDeclarationStatement extends statement{
 		}
 		else
 		{
-			mergedls = CSFlowLineHelper.ConcateOneFlowLineNodeList(null, idls, "(){\n\n}");
+			mergedls = CSFlowLineHelper.ConcateOneFLStamp(null, idls, "(){\n\n}");
 		}
 		List<FlowLineNode<CSFlowLineData>> rtls = rt.HandleCodeSynthesis(squeue, smthandler);
 		return CSFlowLineHelper.ConcateTwoFlowLineNodeList("public ", rtls, " ", mergedls, null, TypeComputationKind.NoOptr, squeue, smthandler, null);

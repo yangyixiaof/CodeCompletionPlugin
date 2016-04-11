@@ -196,5 +196,17 @@ public class TypeComputer {
 			throw new CodeSynthesisException("Unknown optr:" + optr + ".");
 		}
 	}
+
+	public static TypeComputationKind ChooseOne(TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
+		if (oneafter == TypeComputationKind.NoOptr || oneafter == TypeComputationKind.NotSureOptr)
+		{
+			return beforetwo;
+		}
+		if (oneafter.equals(beforetwo))
+		{
+			return oneafter;
+		}
+		throw new CodeSynthesisException("Type Conflict in choose before and after types!");
+	}
 	
 }

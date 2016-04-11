@@ -56,7 +56,7 @@ public class whileStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateOneFlowLineNodeList("while (", rels, ") {\n\n}");
+		return CSFlowLineHelper.ConcateOneFLStamp("while (", rels, ") {\n\n}");
 	}
 
 	@Override

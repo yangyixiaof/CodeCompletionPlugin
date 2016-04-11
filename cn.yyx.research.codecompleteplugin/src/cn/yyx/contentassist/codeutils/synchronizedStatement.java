@@ -66,7 +66,7 @@ public class synchronizedStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateOneFlowLineNodeList("synchronized (", rels, "){\n\n}");
+		return CSFlowLineHelper.ConcateOneFLStamp("synchronized (", rels, "){\n\n}");
 	}
 
 	@Override

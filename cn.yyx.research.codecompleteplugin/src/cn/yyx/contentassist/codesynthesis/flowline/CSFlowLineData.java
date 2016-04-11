@@ -11,35 +11,42 @@ public class CSFlowLineData {
 	private String data = null;
 	private Integer structsignal = null;
 	private Class<?> dcls = null;
-	private boolean hashole = false;
-	private TypeComputationKind tck = TypeComputationKind.NoOptr;
 	private SynthesisHandler handler = null;
 	private SynthesisCodeManager scm = new SynthesisCodeManager();
 	
+	private boolean haspre = false;
+	private boolean hashole = false;
+	private TypeComputationKind pretck = TypeComputationKind.NoOptr;
+	private TypeComputationKind posttck = TypeComputationKind.NoOptr;
+	
 	// this boolean field is used to skip some useless node.
-	private boolean shouldskip = false;
+	// private boolean shouldskip = false;
 	// this boolean field should be set at some specific kind of statement.
 	private boolean isonestatementend = false;
 	
-	public CSFlowLineData(Integer id, Sentence sete, String data, Integer structsignal, Class<?> dcls, boolean hashole, TypeComputationKind tck, SynthesisHandler handler) {
+	public CSFlowLineData(Integer id, Sentence sete, String data, Integer structsignal, Class<?> dcls, boolean haspre, boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
 		this.setId(id + "");
 		this.setSete(sete);
 		this.setData(data);
 		this.setStructsignal(structsignal);
 		this.setDcls(dcls);
+		this.setHaspre(haspre);
 		this.setHashole(hashole);
-		this.setTck(tck);
+		this.setPretck(pretck);
+		this.setPosttck(posttck);
 		this.setHandler(handler);
 	}
 	
-	public CSFlowLineData(String id, Sentence sete, String data, Integer structsignal, Class<?> dcls, boolean hashole, TypeComputationKind tck, SynthesisHandler handler) {
-		this.setId(id);
+	public CSFlowLineData(String id, Sentence sete, String data, Integer structsignal, Class<?> dcls, boolean haspre, boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
+		this.setId(id + "");
 		this.setSete(sete);
 		this.setData(data);
 		this.setStructsignal(structsignal);
 		this.setDcls(dcls);
+		this.setHaspre(haspre);
 		this.setHashole(hashole);
-		this.setTck(tck);
+		this.setPretck(pretck);
+		this.setPosttck(posttck);
 		this.setHandler(handler);
 	}
 	
@@ -107,14 +114,6 @@ public class CSFlowLineData {
 		this.sete = sete;
 	}
 
-	public TypeComputationKind getTck() {
-		return tck;
-	}
-
-	public void setTck(TypeComputationKind tck) {
-		this.tck = tck;
-	}
-
 	public boolean isIsonestatementend() {
 		return isonestatementend;
 	}
@@ -123,12 +122,36 @@ public class CSFlowLineData {
 		this.isonestatementend = isonestatementend;
 	}
 
-	public boolean isShouldskip() {
+	public TypeComputationKind getPretck() {
+		return pretck;
+	}
+
+	public void setPretck(TypeComputationKind pretck) {
+		this.pretck = pretck;
+	}
+
+	public TypeComputationKind getPosttck() {
+		return posttck;
+	}
+
+	public void setPosttck(TypeComputationKind posttck) {
+		this.posttck = posttck;
+	}
+
+	public boolean isHaspre() {
+		return haspre;
+	}
+
+	public void setHaspre(boolean haspre) {
+		this.haspre = haspre;
+	}
+
+	/*public boolean isShouldskip() {
 		return shouldskip;
 	}
 
 	public void setShouldskip(boolean shouldskip) {
 		this.shouldskip = shouldskip;
-	}
+	}*/
 	
 }

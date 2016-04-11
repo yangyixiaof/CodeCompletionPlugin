@@ -54,7 +54,7 @@ public class enumDeclarationStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateOneFlowLineNodeList("public enum ", idls, " {\n}");
+		return CSFlowLineHelper.ConcateOneFLStamp("public enum ", idls, " {\n}");
 	}
 
 	@Override

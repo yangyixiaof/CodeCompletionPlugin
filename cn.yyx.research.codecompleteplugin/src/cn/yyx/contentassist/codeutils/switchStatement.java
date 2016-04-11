@@ -61,7 +61,7 @@ public class switchStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		CSFlowLineHelper.ConcateOneFlowLineNodeList("switch (", rels, "){\n\n}");
+		CSFlowLineHelper.ConcateOneFLStamp("switch (", rels, "){\n\n}");
 		return null;
 	}
 

@@ -12,6 +12,8 @@ public class CSFlowLineQueue {
 	/*protected CSFlowLineQueue() {
 		// only can be invoked from subclass.
 	}*/
+	private String recenttype = null;
+	private Class<?> recenttypeclass = null;
 	
 	public CSFlowLineQueue(FlowLineNode<CSFlowLineData> last) {
 		this.setLast(last);
@@ -52,6 +54,22 @@ public class CSFlowLineQueue {
 			}
 		}
 		return null;
+	}
+
+	public Class<?> getRecenttypeclass() {
+		return recenttypeclass;
+	}
+
+	public void setRecenttypeclass(Class<?> recenttypeclass) {
+		this.recenttypeclass = recenttypeclass;
+	}
+
+	public String getRecenttype() {
+		return recenttype;
+	}
+
+	public void setRecenttype(String recenttype) {
+		this.recenttype = recenttype;
 	}
 	
 }
