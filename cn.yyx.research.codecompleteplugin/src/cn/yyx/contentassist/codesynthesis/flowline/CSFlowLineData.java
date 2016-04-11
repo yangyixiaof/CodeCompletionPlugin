@@ -9,7 +9,7 @@ public class CSFlowLineData {
 	private String id = null;
 	private Sentence sete = null;
 	private String data = null;
-	private Integer structsignal = null;
+	// private Integer structsignal = null;
 	private Class<?> dcls = null;
 	private SynthesisHandler handler = null;
 	private SynthesisCodeManager scm = new SynthesisCodeManager();
@@ -24,11 +24,11 @@ public class CSFlowLineData {
 	// this boolean field should be set at some specific kind of statement.
 	private boolean isonestatementend = false;
 	
-	public CSFlowLineData(Integer id, Sentence sete, String data, Integer structsignal, Class<?> dcls, boolean haspre, boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
+	public CSFlowLineData(Integer id, Sentence sete, String data, Class<?> dcls, boolean haspre, boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
 		this.setId(id + "");
 		this.setSete(sete);
 		this.setData(data);
-		this.setStructsignal(structsignal);
+		// this.setStructsignal(structsignal);
 		this.setDcls(dcls);
 		this.setHaspre(haspre);
 		this.setHashole(hashole);
@@ -37,11 +37,11 @@ public class CSFlowLineData {
 		this.setHandler(handler);
 	}
 	
-	public CSFlowLineData(String id, Sentence sete, String data, Integer structsignal, Class<?> dcls, boolean haspre, boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
+	public CSFlowLineData(String id, Sentence sete, String data, Class<?> dcls, boolean haspre, boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
 		this.setId(id + "");
 		this.setSete(sete);
 		this.setData(data);
-		this.setStructsignal(structsignal);
+		// this.setStructsignal(structsignal);
 		this.setDcls(dcls);
 		this.setHaspre(haspre);
 		this.setHashole(hashole);
@@ -90,13 +90,13 @@ public class CSFlowLineData {
 		this.scm = scm;
 	}
 
-	public Integer getStructsignal() {
+	/*public Integer getStructsignal() {
 		return structsignal;
 	}
 
 	public void setStructsignal(Integer structsignal) {
 		this.structsignal = structsignal;
-	}
+	}*/
 
 	public String getId() {
 		return id;

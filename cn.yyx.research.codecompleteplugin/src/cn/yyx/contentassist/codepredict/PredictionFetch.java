@@ -108,7 +108,7 @@ public class PredictionFetch {
 		// first level initial the CodeSynthesisFlowLine.
 		csfl.BeginOperation();
 		
-		VirtualCSFlowLineQueue vcsdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(-1, null, null, null, null, false, false, TypeComputationKind.NoOptr, TypeComputationKind.NoOptr, sh), 0));
+		VirtualCSFlowLineQueue vcsdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(-1, null, null, null, false, false, TypeComputationKind.NoOptr, TypeComputationKind.NoOptr, sh), 0));
 		List<FlowLineNode<Sentence>> ots = fls.getOvertails();
 		Iterator<FlowLineNode<Sentence>> itr = ots.iterator();
 		while (itr.hasNext())
