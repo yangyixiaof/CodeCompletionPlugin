@@ -1,9 +1,13 @@
 package cn.yyx.contentassist.codesynthesis.data;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
-public class CSExtraData {
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+
+public class CSExtraData implements CSSelfClosedMergable{
 	
 	Map<String, Object> extras = null;
 	
@@ -26,6 +30,68 @@ public class CSExtraData {
 			return null;
 		}
 		return extras.get(key);
+	}
+	
+	public boolean IsEmpty()
+	{
+		return extras == null || extras.size() == 0;
+	}
+	
+	@Override
+	public Object SelfClosedMerge(Object tobj) throws CodeSynthesisException {
+		CSExtraData t = (CSExtraData)tobj;
+		if (IsEmpty())
+		{
+			return t;
+		}
+		if (t.IsEmpty())
+		{
+			return this;
+		}
+		// both have values.
+		CSExtraData result = new CSExtraData();
+		Set<String> keys = extras.keySet();
+		Iterator<String> kitr = keys.iterator();
+		while (kitr.hasNext())
+		{
+			String key = kitr.next();
+			Object v = extras.get(key);
+			Object tv = t.extras.get(key);
+			if (tv != null)
+			{
+				if (v instanceof CSSelfClosedMergable)
+				{
+					if (!(tv.getClass().equals(v.getClass())))
+					{
+						throw new CodeSynthesisException("the corresponding class can not be multi casted.");
+					}
+					else
+					{
+						result.AddExtraData(key, ((CSSelfClosedMergable) v).SelfClosedMerge(tv));
+					}
+				}
+				else
+				{
+					throw new CodeSynthesisException("the corresponding tv can not be merged.");
+				}
+			}
+			else
+			{
+				result.AddExtraData(key, v);
+			}
+		}
+		Set<String> tkeys = t.extras.keySet();
+		Iterator<String> titr = tkeys.iterator();
+		while (titr.hasNext())
+		{
+			String tkey = titr.next();
+			if (!extras.containsKey(tkey))
+			{
+				Object tv = t.extras.get(tkey);
+				result.AddExtraData(tkey, tv);
+			}
+		}
+		return result;
 	}
 	
 }

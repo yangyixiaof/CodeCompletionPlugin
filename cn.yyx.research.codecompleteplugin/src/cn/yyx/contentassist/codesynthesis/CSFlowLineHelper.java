@@ -10,7 +10,6 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableHolderExtraInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputer;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeConflictException;
 
 public class CSFlowLineHelper {
@@ -54,7 +53,7 @@ public class CSFlowLineHelper {
 		}
 	}
 	
-	public List<FlowLineNode<CSFlowLineData>> ForwardMerge(String prefix, List<FlowLineNode<CSFlowLineData>> one, String concator, List<FlowLineNode<CSFlowLineData>> two, String postfix, CSFlowLineQueue squeue, CSStatementHandler smthandler, Integer structsignal, TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
+	public List<FlowLineNode<CSFlowLineData>> ForwardMerge(String prefix, List<FlowLineNode<CSFlowLineData>> one, String concator, List<FlowLineNode<CSFlowLineData>> two, String postfix, CSFlowLineQueue squeue, CSStatementHandler smthandler, TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
 		if (one.size() == 0) {
 			if (two == null || two.size() == 0) {
 				return null;
@@ -96,7 +95,7 @@ public class CSFlowLineHelper {
 						try {
 							
 							tmp = ConcateTwoFlowLineNode(prefix, fln1, concator, fln2, postfix, squeue, smthandler,
-									structsignal, oneafter, beforetwo);
+									 oneafter, beforetwo);
 						} catch (TypeConflictException e) {
 							e.printStackTrace();
 							continue;
@@ -122,26 +121,12 @@ public class CSFlowLineHelper {
 	
 	public static FlowLineNode<CSFlowLineData> ConcateTwoFlowLineNode(String prefix, FlowLineNode<CSFlowLineData> one,
 			String concator, FlowLineNode<CSFlowLineData> two, String postfix, 
-			CSFlowLineQueue squeue, CSStatementHandler smthandler, Integer structsignal, TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
+			CSFlowLineQueue squeue, CSStatementHandler smthandler, TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
 		CSFlowLineData d1 = one.getData();
-		String str1 = d1.getData();
 		CSFlowLineData d2 = two.getData();
-		String str2 = d2.getData();
-		Class<?> clz = null;
-		if (oneafter == null || oneafter == TypeComputationKind.NotSureOptr || oneafter == TypeComputationKind.NoOptr) {
-			oneafter = d1.getPosttck();
-		}
-		if (beforetwo == null || beforetwo == TypeComputationKind.NotSureOptr || beforetwo == TypeComputationKind.NoOptr) {
-			beforetwo = d2.getPretck();
-		}
-		TypeComputationKind tck = TypeComputer.ChooseOne(oneafter, beforetwo);
-		clz = TypeComputer.ComputeType(d1.getDcls(), d2.getDcls(), tck);
-		String cnctcnt = (prefix == null ? "" : prefix) + str1 + (concator == null ? "" : concator) + str2
-				+ (postfix == null ? "" : postfix);
+		CSFlowLineData data = d1.Merge(prefix, concator, d2, postfix, squeue, smthandler, oneafter, beforetwo);
 		double cnctprob = one.getProbability() + two.getProbability();
-		FlowLineNode<CSFlowLineData> cncted = new FlowLineNode<CSFlowLineData>(
-				new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), cnctcnt, clz,
-						d1.isHaspre(), d2.isHashole(), d2.getPretck(), d2.getPosttck(), d1.getHandler()), cnctprob);
+		FlowLineNode<CSFlowLineData> cncted = new FlowLineNode<CSFlowLineData>(data, cnctprob);
 		return cncted;
 	}
 	
