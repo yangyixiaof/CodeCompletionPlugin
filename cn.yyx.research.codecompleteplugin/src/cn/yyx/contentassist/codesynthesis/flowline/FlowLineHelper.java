@@ -39,7 +39,7 @@ public class FlowLineHelper {
 	private static List<Sentence> setelistref = null;
 	private static Sentence seteref = null;
 	
-	public static List<Sentence> LastNeededSentenceQueue(FlowLineNode<CSFlowLineData> tail, CodeSynthesisFlowLine csfl,
+	public static List<Sentence> LastNeededSentenceQueue(FlowLineNode<CSFlowLineData> tail, CodeSynthesisFlowLines csfl,
 			int needsize) {
 		CSFlowLineData data = tail.getData();
 		if (seteref != null && seteref == data.getSete())

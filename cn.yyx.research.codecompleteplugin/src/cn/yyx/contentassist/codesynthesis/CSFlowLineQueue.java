@@ -12,8 +12,8 @@ public class CSFlowLineQueue {
 	/*protected CSFlowLineQueue() {
 		// only can be invoked from subclass.
 	}*/
-	private String recenttype = null;
-	private Class<?> recenttypeclass = null;
+	// private String recenttype = null;
+	// private Class<?> recenttypeclass = null;
 	
 	public CSFlowLineQueue(FlowLineNode<CSFlowLineData> last) {
 		this.setLast(last);
@@ -43,7 +43,20 @@ public class CSFlowLineQueue {
 		last.getData().setHashole(true);
 	}
 
-	public FlowLineNode<CSFlowLineData> BackSearchForStructureSignal(int signal) {
+	public FlowLineNode<CSFlowLineData> SearcheForRecentVariableDeclaredNode() {
+		FlowLineNode<CSFlowLineData> tmp = last;
+		while (tmp != null)
+		{
+			CSFlowLineData tmpdata = tmp.getData();
+			if (tmpdata instanceof CSVariableDeclarationData)
+			{
+				return tmp;
+			}
+		}
+		return null;
+	}
+
+	/*public FlowLineNode<CSFlowLineData> BackSearchForStructureSignal(int signal) {
 		FlowLineNode<CSFlowLineData> tmp = last;
 		while (tmp != null)
 		{
@@ -70,6 +83,6 @@ public class CSFlowLineQueue {
 
 	public void setRecenttype(String recenttype) {
 		this.recenttype = recenttype;
-	}
+	}*/
 	
 }

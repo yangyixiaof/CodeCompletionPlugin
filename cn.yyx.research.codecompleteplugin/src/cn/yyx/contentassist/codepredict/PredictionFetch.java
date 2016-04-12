@@ -14,7 +14,7 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineStamp;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.VirtualCSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.flowline.CodeSynthesisFlowLine;
+import cn.yyx.contentassist.codesynthesis.flowline.CodeSynthesisFlowLines;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
@@ -85,7 +85,7 @@ public class PredictionFetch {
 		ScopeOffsetRefHandler handler = fmastv.GenerateScopeOffsetRefHandler();
 		ContextHandler ch = new ContextHandler(javacontext, monitor);
 		SynthesisHandler sh = new SynthesisHandler(handler, ch);
-		CodeSynthesisFlowLine csfl = new CodeSynthesisFlowLine();
+		CodeSynthesisFlowLines csfl = new CodeSynthesisFlowLines();
 		DoRealCodePredictAndSynthesis(sh, alc, fls, csfl);
 		
 		alc.Destroy();
@@ -94,7 +94,7 @@ public class PredictionFetch {
 		return list;
 	}
 
-	private void DoRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, CodeSynthesisFlowLine csfl) {
+	private void DoRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, CodeSynthesisFlowLines csfl) {
 		DoFirstRealCodePredictAndSynthesis(sh, alc, fls, csfl);
 		// normal extend.
 		int extendtimes = 1;
@@ -104,7 +104,7 @@ public class PredictionFetch {
 		}
 	}
 	
-	private void DoFirstRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, CodeSynthesisFlowLine csfl) {
+	private void DoFirstRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, CodeSynthesisFlowLines csfl) {
 		// first level initial the CodeSynthesisFlowLine.
 		csfl.BeginOperation();
 		
@@ -128,7 +128,7 @@ public class PredictionFetch {
 	 * @param fls
 	 * @param csfl
 	 */
-	private void DoOneRealCodePredictAndSynthesis(AeroLifeCycle alc, CodeSynthesisFlowLine csfl) {
+	private void DoOneRealCodePredictAndSynthesis(AeroLifeCycle alc, CodeSynthesisFlowLines csfl) {
 		csfl.BeginOperation();
 		
 		List<FlowLineNode<CSFlowLineData>> tails = csfl.getTails();
@@ -150,7 +150,7 @@ public class PredictionFetch {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void HandleExtendOneCodeSynthesis(List<PredictProbPair> pps, CSFlowLineQueue csdflq, FlowLineNode<?> fln, CodeSynthesisFlowLine csfl)
+	private void HandleExtendOneCodeSynthesis(List<PredictProbPair> pps, CSFlowLineQueue csdflq, FlowLineNode<?> fln, CodeSynthesisFlowLines csfl)
 	{
 		Iterator<PredictProbPair> pitr = pps.iterator();
 		while (pitr.hasNext())

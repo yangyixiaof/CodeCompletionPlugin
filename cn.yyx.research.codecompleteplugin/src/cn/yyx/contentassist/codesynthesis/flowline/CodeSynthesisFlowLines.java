@@ -7,11 +7,11 @@ import java.util.TreeMap;
 
 import cn.yyx.contentassist.codepredict.Sentence;
 
-public class CodeSynthesisFlowLine extends FlowLines<CSFlowLineData> {
+public class CodeSynthesisFlowLines extends FlowLines<CSFlowLineData> {
 	
 	Map<String, FlowLineNode<Sentence>> headsconnect = new TreeMap<String, FlowLineNode<Sentence>>();
 	
-	public CodeSynthesisFlowLine() {
+	public CodeSynthesisFlowLines() {
 	}
 	
 	// only for First Level

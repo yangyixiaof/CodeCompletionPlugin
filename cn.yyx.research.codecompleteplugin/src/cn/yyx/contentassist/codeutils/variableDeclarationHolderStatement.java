@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineStamp;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -97,9 +98,23 @@ public class variableDeclarationHolderStatement extends statement{
 	}
 
 	@Override
-	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+	public CSFlowLineStamp HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
+		FlowLineNode<CSFlowLineData> typenode = squeue.SearcheForRecentVariableDeclaredNode();
+		if (typenode == null)
+		{
+			throw new CodeSynthesisException("typenode null, what the fuck?");
+		}
+		String name = NameConvention.GetAbbreviationOfType(typenode);
+		if (rexp != null)
+		{
+			
+		}
+		else
+		{
+			
+		}
+		
 		return null;
 	}
 
