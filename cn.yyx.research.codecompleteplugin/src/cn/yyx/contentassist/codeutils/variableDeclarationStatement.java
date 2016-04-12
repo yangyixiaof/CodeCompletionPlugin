@@ -1,18 +1,16 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSVariableDeclarationData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
 
 public class variableDeclarationStatement extends statement{
 	
@@ -43,7 +41,7 @@ public class variableDeclarationStatement extends statement{
 		return 0;
 	}
 	
-	@Override
+	/*@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		CSNode tpcs = new CSNode(CSNodeType.VariableDeclaration);
@@ -55,13 +53,20 @@ public class variableDeclarationStatement extends statement{
 		handler.setRecenttype(tpcs.GetFirstDataWithoutTypeCheck());
 		squeue.add(tpcs);
 		return false;
-	}
+	}*/
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
+		Iterator<FlowLineNode<CSFlowLineData>> itr = tpls.iterator();
+		while (itr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> fln = itr.next();
+			result.add(new FlowLineNode<CSFlowLineData>(new CSVariableDeclarationData(fln.getData()), fln.getProbability()));
+		}
+		return result;
 	}
 
 	@Override

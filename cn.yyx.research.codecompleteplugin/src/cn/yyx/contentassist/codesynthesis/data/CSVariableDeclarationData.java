@@ -10,6 +10,8 @@ public class CSVariableDeclarationData extends CSFlowLineData{
 		super(id, sete, data, dcls, haspre, hashole, pretck, posttck, handler);
 	}
 	
-	
+	public CSVariableDeclarationData(CSFlowLineData cd) {
+		super(cd.getId(), cd.getSete(), cd.getData(), cd.getDcls(), cd.isHaspre(), cd.isHashole(), cd.getPretck(), cd.getPosttck(), cd.getHandler());
+	}
 	
 }
