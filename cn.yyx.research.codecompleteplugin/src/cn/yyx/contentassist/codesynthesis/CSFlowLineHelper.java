@@ -1,8 +1,11 @@
 package cn.yyx.contentassist.codesynthesis;
 
 import java.util.Iterator;
+import java.util.List;
 
+import cn.yyx.contentassist.codesynthesis.data.CSDataMetaInfo;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSVariableHolderExtraInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 
 public class CSFlowLineHelper {
@@ -15,8 +18,8 @@ public class CSFlowLineHelper {
 	 * @param one
 	 * @param postfix
 	 */
-	public static CSFlowLineStamp ConcateOneFLStamp(String prefix, CSFlowLineStamp one, String postfix) {
-		Iterator<FlowLineNode<CSFlowLineData>> itr = one.Iterator();
+	public static List<FlowLineNode<CSFlowLineData>> ConcateOneFLStamp(String prefix, List<FlowLineNode<CSFlowLineData>> one, String postfix) {
+		Iterator<FlowLineNode<CSFlowLineData>> itr = one.iterator();
 		while (itr.hasNext()) {
 			FlowLineNode<CSFlowLineData> fln = itr.next();
 			CSFlowLineData dt = fln.getData();
@@ -26,5 +29,24 @@ public class CSFlowLineHelper {
 		}
 		return one;
 	}
-
+	
+	public static void AddToEveryParNodeExtraInfo(List<FlowLineNode<CSFlowLineData>> one, String key, Object info)
+	{
+		Iterator<FlowLineNode<CSFlowLineData>> itr = one.iterator();
+		while (itr.hasNext()) {
+			FlowLineNode<CSFlowLineData> fln = itr.next();
+			fln.getData().getExtraData().AddExtraData(key, info);
+		}
+	}
+	
+	public static void AddToEveryRexpParNodeExtraVariableHolderInfo(List<FlowLineNode<CSFlowLineData>> one, String varname)
+	{
+		Iterator<FlowLineNode<CSFlowLineData>> itr = one.iterator();
+		while (itr.hasNext()) {
+			FlowLineNode<CSFlowLineData> fln = itr.next();
+			CSFlowLineData flndata = fln.getData();
+			flndata.getExtraData().AddExtraData(CSDataMetaInfo.VariableHolders, new CSVariableHolderExtraInfo(varname, flndata.getClass()));
+		}
+	}
+	
 }

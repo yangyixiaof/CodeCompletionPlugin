@@ -1,7 +1,11 @@
 package cn.yyx.contentassist.codesynthesis;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableDeclarationData;
+import cn.yyx.contentassist.codesynthesis.data.CSVariableHolderData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
@@ -53,6 +57,26 @@ public class CSFlowLineQueue {
 			{
 				return tmp;
 			}
+			tmp = tmp.getPrev();
+		}
+		return null;
+	}
+
+	public List<String> SearchForVariableDeclareHolderNames() {
+		List<String> result = new LinkedList<String>();
+		FlowLineNode<CSFlowLineData> tmp = last;
+		while (tmp != null)
+		{
+			CSFlowLineData tmpdata = tmp.getData();
+			if (tmpdata instanceof CSVariableHolderData)
+			{
+				result.add(0, ((CSVariableHolderData) tmpdata).getVarname());
+			}
+			if (tmpdata instanceof CSVariableDeclarationData)
+			{
+				return result;
+			}
+			tmp = tmp.getPrev();
 		}
 		return null;
 	}

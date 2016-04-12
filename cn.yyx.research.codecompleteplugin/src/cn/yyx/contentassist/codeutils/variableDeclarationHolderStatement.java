@@ -1,22 +1,17 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.CSFlowLineStamp;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSVariableHolderData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.commonutils.AdditionalInfo;
-import cn.yyx.contentassist.commonutils.CSNodeType;
 import cn.yyx.contentassist.commonutils.NameConvention;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TypeCheck;
-import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class variableDeclarationHolderStatement extends statement{
 	
@@ -60,7 +55,7 @@ public class variableDeclarationHolderStatement extends statement{
 		return 0;
 	}
 	
-	@Override
+	/*@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		String type = handler.getRecenttype();
@@ -95,27 +90,50 @@ public class variableDeclarationHolderStatement extends statement{
 			squeue.add(cs);
 		}
 		return false;
-	}
-
+	}*/
+	
 	@Override
-	public CSFlowLineStamp HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		FlowLineNode<CSFlowLineData> typenode = squeue.SearcheForRecentVariableDeclaredNode();
 		if (typenode == null)
 		{
 			throw new CodeSynthesisException("typenode null, what the fuck?");
 		}
-		String name = NameConvention.GetAbbreviationOfType(typenode);
+		String typecode = typenode.getData().getData();
+		String name = NameConvention.GetAbbreviationOfType(typecode);
+		List<FlowLineNode<CSFlowLineData>> result = null;
+		String modified = null;
 		if (rexp != null)
 		{
-			
+			modified = GetModifiedName(squeue, smthandler, typecode, name);
+			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+			CSFlowLineHelper.ConcateOneFLStamp(modified + " = ", rels, null);
+			result = rels;
 		}
 		else
 		{
-			
+			result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+			modified = GetModifiedName(squeue, smthandler, typecode, name);
+			result.add(new FlowLineNode<CSFlowLineData>(new CSVariableHolderData(modified, squeue.GenerateNewNodeId(), smthandler.getSete(), modified, null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		}
-		
-		return null;
+		if (modified == null)
+		{
+			throw new CodeSynthesisException("modified name in variableHolder null, what the fuck?");
+		}
+		CSFlowLineHelper.AddToEveryRexpParNodeExtraVariableHolderInfo(result, modified);
+		return result;
+	}
+	
+	private String GetModifiedName(CSFlowLineQueue squeue, CSStatementHandler smthandler, String typecode, String name) throws CodeSynthesisException
+	{
+		List<String> holderlist = squeue.SearchForVariableDeclareHolderNames();
+		if (holderlist == null)
+		{
+			throw new CodeSynthesisException("No CSVariableDeclaration Node when handling CSVariableHolder.");
+		}
+		String modified = squeue.GetLastHandler().getScopeOffsetRefHandler().GenerateNewDeclaredVariable(name, typecode, holderlist);
+		return modified;
 	}
 
 	@Override

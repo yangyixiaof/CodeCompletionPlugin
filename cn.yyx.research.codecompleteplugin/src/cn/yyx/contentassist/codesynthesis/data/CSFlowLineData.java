@@ -35,6 +35,8 @@ public class CSFlowLineData {
 		this.setDcls(dcls);
 		this.setHaspre(haspre);
 		this.setHashole(hashole);
+		pretck = (pretck == null ? TypeComputationKind.NoOptr : pretck);
+		posttck = (posttck == null ? TypeComputationKind.NoOptr : posttck);
 		this.setPretck(pretck);
 		this.setPosttck(posttck);
 		this.setHandler(handler);
@@ -48,6 +50,8 @@ public class CSFlowLineData {
 		this.setDcls(dcls);
 		this.setHaspre(haspre);
 		this.setHashole(hashole);
+		pretck = (pretck == null ? TypeComputationKind.NoOptr : pretck);
+		posttck = (posttck == null ? TypeComputationKind.NoOptr : posttck);
 		this.setPretck(pretck);
 		this.setPosttck(posttck);
 		this.setHandler(handler);
@@ -149,11 +153,11 @@ public class CSFlowLineData {
 		this.haspre = haspre;
 	}
 
-	public CSExtraData getCsed() {
+	public CSExtraData getExtraData() {
 		return csed;
 	}
 
-	public void setCsed(CSExtraData csed) {
+	public void setExtraData(CSExtraData csed) {
 		this.csed = csed;
 	}
 
