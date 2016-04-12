@@ -10,7 +10,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.CSFlowLineStamp;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.VirtualCSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
@@ -160,10 +159,10 @@ public class PredictionFetch {
 			CSStatementHandler csh = new CSStatementHandler(pred, ppp.getProb());
 			statement predsmt = pred.getSmt();
 			try {
-				CSFlowLineStamp addnodes = predsmt.HandleCodeSynthesis(csdflq, csh);
-				if (addnodes != null && addnodes.Size() > 0)
+				List<FlowLineNode<CSFlowLineData>> addnodes = predsmt.HandleCodeSynthesis(csdflq, csh);
+				if (addnodes != null && addnodes.size() > 0)
 				{
-					Iterator<FlowLineNode<CSFlowLineData>> aitr = addnodes.Iterator();
+					Iterator<FlowLineNode<CSFlowLineData>> aitr = addnodes.iterator();
 					while (aitr.hasNext())
 					{
 						FlowLineNode<CSFlowLineData> addnode = aitr.next();
