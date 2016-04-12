@@ -93,7 +93,6 @@ public class CSFlowLineHelper {
 						FlowLineNode<CSFlowLineData> fln2 = itr2.next();
 						FlowLineNode<CSFlowLineData> tmp = null;
 						try {
-							
 							tmp = ConcateTwoFlowLineNode(prefix, fln1, concator, fln2, postfix, squeue, smthandler,
 									 oneafter, beforetwo);
 						} catch (TypeConflictException e) {
