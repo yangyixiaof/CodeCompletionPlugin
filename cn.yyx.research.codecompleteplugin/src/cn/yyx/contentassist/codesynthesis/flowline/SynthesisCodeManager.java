@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class SynthesisCodeManager {

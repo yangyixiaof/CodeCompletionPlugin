@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import cn.yyx.contentassist.codepredict.Sentence;
+import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 
 public class CodeSynthesisFlowLines extends FlowLines<CSFlowLineData> {
 	

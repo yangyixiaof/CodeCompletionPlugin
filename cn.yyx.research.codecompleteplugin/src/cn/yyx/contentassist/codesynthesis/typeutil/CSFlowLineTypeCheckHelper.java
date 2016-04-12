@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 
 public class CSFlowLineTypeCheckHelper {

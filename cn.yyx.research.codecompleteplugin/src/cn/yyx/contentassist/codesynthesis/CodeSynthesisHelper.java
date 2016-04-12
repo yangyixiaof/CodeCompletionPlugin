@@ -8,7 +8,7 @@ import java.util.Set;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codepredict.PredictMetaInfo;
-import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;

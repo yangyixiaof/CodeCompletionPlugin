@@ -7,7 +7,7 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
-import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 

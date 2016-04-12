@@ -1,6 +1,7 @@
 package cn.yyx.contentassist.codesynthesis;
 
-import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSVariableDeclarationData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;

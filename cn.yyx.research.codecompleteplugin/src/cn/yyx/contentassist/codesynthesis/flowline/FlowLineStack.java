@@ -1,6 +1,7 @@
 package cn.yyx.contentassist.codesynthesis.flowline;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 
 public class FlowLineStack {
 	

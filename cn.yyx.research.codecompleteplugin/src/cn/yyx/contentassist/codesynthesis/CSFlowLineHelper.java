@@ -2,7 +2,7 @@ package cn.yyx.contentassist.codesynthesis;
 
 import java.util.Iterator;
 
-import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 
 public class CSFlowLineHelper {

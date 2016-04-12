@@ -1,6 +1,7 @@
-package cn.yyx.contentassist.codesynthesis.flowline;
+package cn.yyx.contentassist.codesynthesis.data;
 
 import cn.yyx.contentassist.codepredict.Sentence;
+import cn.yyx.contentassist.codesynthesis.flowline.SynthesisCodeManager;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
@@ -18,6 +19,8 @@ public class CSFlowLineData {
 	private boolean hashole = false;
 	private TypeComputationKind pretck = TypeComputationKind.NoOptr;
 	private TypeComputationKind posttck = TypeComputationKind.NoOptr;
+	
+	private CSExtraData csed = new CSExtraData();
 	
 	// this boolean field is used to skip some useless node.
 	// private boolean shouldskip = false;
@@ -144,6 +147,14 @@ public class CSFlowLineData {
 
 	public void setHaspre(boolean haspre) {
 		this.haspre = haspre;
+	}
+
+	public CSExtraData getCsed() {
+		return csed;
+	}
+
+	public void setCsed(CSExtraData csed) {
+		this.csed = csed;
 	}
 
 	/*public boolean isShouldskip() {

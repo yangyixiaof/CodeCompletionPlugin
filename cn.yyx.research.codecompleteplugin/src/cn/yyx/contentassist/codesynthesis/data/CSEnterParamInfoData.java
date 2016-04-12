@@ -1,7 +1,6 @@
-package cn.yyx.contentassist.codesynthesis;
+package cn.yyx.contentassist.codesynthesis.data;
 
 import cn.yyx.contentassist.codepredict.Sentence;
-import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 

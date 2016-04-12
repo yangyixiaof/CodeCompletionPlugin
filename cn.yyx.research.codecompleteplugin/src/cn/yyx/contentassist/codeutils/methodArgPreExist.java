@@ -3,14 +3,14 @@ package cn.yyx.contentassist.codeutils;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
-import cn.yyx.contentassist.codesynthesis.CSEnterParamInfoData;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSMethodStatementHandler;
-import cn.yyx.contentassist.codesynthesis.CSPrData;
-import cn.yyx.contentassist.codesynthesis.CSPsData;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
-import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSEnterParamInfoData;
+import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSPrData;
+import cn.yyx.contentassist.codesynthesis.data.CSPsData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.commonutils.CheckUtil;
 

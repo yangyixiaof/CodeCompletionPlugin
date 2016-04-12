@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.Sentence;
+import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codeutils.statement;
 
 public class FlowLineHelper {

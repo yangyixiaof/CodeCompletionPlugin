@@ -4,7 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
-import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSLeftParenInfoData;
+import cn.yyx.contentassist.codesynthesis.data.CSRightParenInfoData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.SynthesisCodeManager;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;

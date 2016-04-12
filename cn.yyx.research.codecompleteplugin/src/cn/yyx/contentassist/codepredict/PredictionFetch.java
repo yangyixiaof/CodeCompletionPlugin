@@ -13,7 +13,7 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineStamp;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.VirtualCSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.CodeSynthesisFlowLines;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;

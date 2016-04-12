@@ -3,7 +3,7 @@ package cn.yyx.contentassist.codesynthesis;
 import java.util.Map;
 import java.util.TreeMap;
 
-import cn.yyx.contentassist.codesynthesis.flowline.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 
