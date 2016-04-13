@@ -9,7 +9,6 @@ import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class arrayInitializerSplitCommaStatement extends statement{
 
@@ -43,9 +42,8 @@ public class arrayInitializerSplitCommaStatement extends statement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		squeue.SetLastHasHole();
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ",", null, null, true, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ",", null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
 	}
 

@@ -6,11 +6,10 @@ import java.util.List;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.data.CSArrayInitializerStartData;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class arrayInitializerStartStatement extends statement{
 
@@ -45,7 +44,7 @@ public class arrayInitializerStartStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "{", DataStructureSignalMetaInfo.ArrayInitialBlock, null, true, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSArrayInitializerStartData(squeue.GenerateNewNodeId(), smthandler.getSete(), "{", null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
 	}
 

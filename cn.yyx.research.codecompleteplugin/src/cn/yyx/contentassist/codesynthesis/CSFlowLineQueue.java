@@ -81,6 +81,19 @@ public class CSFlowLineQueue {
 		return null;
 	}
 
+	public FlowLineNode<CSFlowLineData> BackSearchForSpecialClass(Class<?> cls) {
+		FlowLineNode<CSFlowLineData> tmp = last;
+		while (tmp != null)
+		{
+			CSFlowLineData tmpdata = tmp.getData();
+			if (tmpdata.getClass().equals(cls))
+			{
+				return tmp;
+			}
+		}
+		return null;
+	}
+
 	/*public FlowLineNode<CSFlowLineData> BackSearchForStructureSignal(int signal) {
 		FlowLineNode<CSFlowLineData> tmp = last;
 		while (tmp != null)
