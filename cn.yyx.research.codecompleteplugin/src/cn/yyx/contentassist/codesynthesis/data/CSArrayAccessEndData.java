@@ -12,11 +12,7 @@ public class CSArrayAccessEndData extends CSFlowLineData{
 	
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException{
-		Integer sl = signals.peek();
-		if (sl == null || sl != DataStructureSignalMetaInfo.ArrayAccessBlcok)
-		{
-			signals.pop();
-		}
+		signals.push(DataStructureSignalMetaInfo.ArrayAccessBlcok);
 	}
 	
 }

@@ -11,6 +11,4 @@ public class CSArrayInitializerEndData extends CSFlowLineData{
 		super(id, sete, data, dcls, haspre, hashole, pretck, posttck, handler);
 	}
 	
-	TODO check that some data handle the signals are in reversal order.
-	
 }

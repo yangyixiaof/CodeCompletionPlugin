@@ -46,7 +46,33 @@ public class CSLeftParenInfoData extends CSFlowLineData{
 	
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException{
-		signals.push(ComplicatedSignal.GenerateComplicatedSignal(DataStructureSignalMetaInfo.ParentheseBlock, times));
+		boolean couldstop = false;
+		int usetimes = times;
+		while (!couldstop)
+		{
+			Integer hint = signals.peek();
+			if (hint == null)
+			{
+				throw new CodeSynthesisException("Right parenthese stack signal handling runs into error.");
+			}
+			ComplicatedSignal cs = ComplicatedSignal.ParseComplicatedSignal(hint);
+			if (cs == null || cs.getSign() == DataStructureSignalMetaInfo.ParentheseBlock)
+			{
+				throw new CodeSynthesisException("Right parenthese stack signal handling runs into error.");
+			}
+			int remaincounts = Math.max(0, cs.getCount() - usetimes);
+			usetimes = (usetimes - (cs.getCount() - remaincounts));
+			signals.pop();
+			if (remaincounts > 0)
+			{
+				cs.setCount(remaincounts);
+				signals.push(cs.GetSignal());
+			}
+			if (usetimes == 0)
+			{
+				couldstop = true;
+			}
+		}
 	}
 	
 }

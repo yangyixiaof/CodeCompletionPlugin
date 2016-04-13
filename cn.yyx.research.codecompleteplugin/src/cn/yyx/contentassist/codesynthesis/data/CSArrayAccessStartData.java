@@ -12,7 +12,12 @@ public class CSArrayAccessStartData extends CSFlowLineData{
 	
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException{
-		signals.push(DataStructureSignalMetaInfo.ArrayAccessBlcok);
+		Integer sl = signals.peek();
+		if (sl == null || sl != DataStructureSignalMetaInfo.ArrayAccessBlcok)
+		{
+			throw new CodeSynthesisException("array access does not in right block.");
+		}
+		signals.pop();
 	}
 	
 }
