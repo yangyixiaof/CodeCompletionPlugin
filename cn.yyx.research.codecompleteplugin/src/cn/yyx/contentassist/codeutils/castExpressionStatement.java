@@ -66,7 +66,7 @@ public class castExpressionStatement extends expressionStatement{
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateTwoFlowLineNodeList("(", tpls, ")", rels, null, TypeComputationKind.AssignOptr, squeue, smthandler, null);
+		return CSFlowLineHelper.ForwardMerge("(", tpls, ")", rels, null, squeue, smthandler, TypeComputationKind.AssignOptr, TypeComputationKind.AssignOptr);
 	}
 
 	@Override
