@@ -11,7 +11,7 @@ public class FlowLineStack {
 		this.last = last;
 	}
 	
-	public void SetLastStructureSignal(int structuresignal)
+	/*public void SetLastStructureSignal(int structuresignal)
 	{
 		last.getData().setStructsignal(structuresignal);
 	}
@@ -28,9 +28,10 @@ public class FlowLineStack {
 			tmp = tmp.getPrev();
 		}
 		return null;
-	}
+	}*/
 	
 	public void EnsureAllSignalNull(FlowLineNode<CSFlowLineData> fromwhere) throws CodeSynthesisException {
+		
 		FlowLineNode<CSFlowLineData> tmp = fromwhere;
 		while (tmp != null)
 		{
