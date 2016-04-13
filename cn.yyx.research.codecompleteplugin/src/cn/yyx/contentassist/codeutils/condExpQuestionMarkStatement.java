@@ -57,7 +57,7 @@ public class condExpQuestionMarkStatement extends statement{
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForSpecialClass(CSCondExpBeginData.class);
+		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSCondExpBeginData.class);
 		if (cnode == null)
 		{
 			throw new CodeSynthesisException("No conditional expression start signal.");

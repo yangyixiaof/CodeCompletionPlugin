@@ -46,7 +46,7 @@ public class FlowLineStack {
 		}
 	}
 	
-	public FlowLineNode<CSFlowLineData> BackSearchForSpecialClass(Class<?> cls) {
+	public FlowLineNode<CSFlowLineData> BackSearchForFirstSpecialClass(Class<?> cls) {
 		FlowLineNode<CSFlowLineData> tmp = last;
 		while (tmp != null)
 		{

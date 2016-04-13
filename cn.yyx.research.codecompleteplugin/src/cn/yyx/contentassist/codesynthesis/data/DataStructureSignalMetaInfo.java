@@ -8,12 +8,13 @@ public class DataStructureSignalMetaInfo {
 	
 	// predict over waiting.
 	// public static final int AllKindWaitingOver = 4;
-	// public static final int CommonForKindWaitingOver = 5;
-	// public static final int CommonForInitWaitingOver = 6;
-	// public static final int CommonForExpWaitingOver = 7;
-	// public static final int ConditionExpressionStart = 8;
-	// public static final int ConditionExpressionQuestion = 9;
-	// public static final int ConditionExpressionColon = 10;
-	// public static final int IfOver = 11;
+	public static final int CommonForKindWaitingOver = 5;
+	public static final int CommonForInitWaitingOver = 6;
+	public static final int CommonForExpWaitingOver = 7;
+	public static final int CommonForUpdWaitingOver = 8;
+	public static final int ConditionExpressionStart = 9;
+	public static final int ConditionExpressionQuestion = 10;
+	public static final int ConditionExpressionColon = 11;
+	// public static final int IfOver = 12;
 
 }

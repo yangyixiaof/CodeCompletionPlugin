@@ -7,10 +7,10 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
+import cn.yyx.contentassist.codesynthesis.data.CSForExpOverData;
+import cn.yyx.contentassist.codesynthesis.data.CSForUpdOverData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class forUpdOverStatement extends statement {
 
@@ -49,20 +49,18 @@ public class forUpdOverStatement extends statement {
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(),
-				") {\n}", null, null, true, TypeComputationKind.NoOptr, squeue.GetLastHandler()),
+		result.add(new FlowLineNode<CSFlowLineData>(new CSForUpdOverData(squeue.GenerateNewNodeId(), smthandler.getSete(),
+				") {\n}", null, true, true, null, null, squeue.GetLastHandler()),
 				smthandler.getProb()));
 		return result;
 	}
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		FlowLineNode<CSFlowLineData> cnode = cstack
-				.BackSearchForStructureSignal(DataStructureSignalMetaInfo.CommonForExpWaitingOver);
-		if (cnode != null) {
-			cnode.getData().setStructsignal(null);
-		} else {
-			throw new CodeSynthesisException("for exp over does not have init over in pre.");
+		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSForExpOverData.class);
+		if (cnode == null)
+		{
+			throw new CodeSynthesisException("for upd over does not have init over in pre.");
 		}
 		return false;
 	}
