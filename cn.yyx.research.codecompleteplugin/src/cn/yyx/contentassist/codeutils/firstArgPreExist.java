@@ -24,31 +24,37 @@ public class firstArgPreExist extends referedExpression{
 		FlowLineNode<CSFlowLineData> tmp = ns;
 		FlowLineNode<CSFlowLineData> mstart = null;
 		FlowLineNode<CSFlowLineData> mstop = null;
-		FlowLineNode<CSFlowLineData> tmppre = null;
+		// FlowLineNode<CSFlowLineData> tmppre = null;
+		int waittoconsumedpr = 0;
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();
 			if (tmpdata instanceof CSPrData)
 			{
 				mstart = tmp;
+				waittoconsumedpr++;
 			}
 			if (tmpdata instanceof CSEnterParamInfoData)
 			{
 				realhandler.setMostfar(tmp);
-				mstop = tmppre;
+				// mstop = tmppre;
+				mstop = tmp;
 				CSEnterParamInfoData ce = (CSEnterParamInfoData) tmpdata;
-				if (ce.getUsedtimes() <= 0)
+				int alltimes = ce.getTimes();
+				int allremain = Math.max(0, alltimes - waittoconsumedpr);
+				int consumed = alltimes - allremain;
+				waittoconsumedpr -= consumed;
+				if (waittoconsumedpr == 0)
 				{
-					throw new CodeSynthesisException("CSEnterParamInfoData times < 0, conflict happens.");
+					break;
 				}
-				ce.decreaseUsedtimes(1);
 			}
-			tmppre = tmp;
+			// tmppre = tmp;
 			tmp = tmp.getPrev();
 		}
-		if (mstart == null || mstop == null)
+		if (mstart == null || mstop == null || tmp == null)
 		{
-			throw new CodeSynthesisException("No firstArg start or stop, conflict happens.");
+			throw new CodeSynthesisException("No firstArg start or stop, conflict happens. CSEnterParamInfoData times < 0, conflict happens.");
 		}
 		mstart.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
 		mstop.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
