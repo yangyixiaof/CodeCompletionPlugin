@@ -1,6 +1,7 @@
 package cn.yyx.contentassist.codesynthesis.data;
 
 import java.util.Map;
+import java.util.Stack;
 import java.util.TreeMap;
 
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
@@ -35,6 +36,11 @@ public class CSLeftParenInfoData extends CSFlowLineData{
 	public void AddThreadLeftUsedTimesInfo(Long threadid, int usedtimes)
 	{
 		tempusedtimes.put(threadid, usedtimes);
+	}
+	
+	@Override
+	public void HandleStackSignal(Stack<Integer> signals) {
+		
 	}
 	
 }

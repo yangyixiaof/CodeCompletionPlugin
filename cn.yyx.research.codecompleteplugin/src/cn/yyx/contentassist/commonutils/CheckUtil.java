@@ -31,7 +31,7 @@ public class CheckUtil {
 		System.exit(1);
 	}
 	
-	public static void CheckDirectlyMemberHintInAINotNull(AdditionalInfo ai)
+	/*public static void CheckDirectlyMemberHintInAINotNull(AdditionalInfo ai)
 	{
 		if (ai == null || (ai.getDirectlyMemberHint() == null))
 		{
@@ -39,7 +39,7 @@ public class CheckUtil {
 			new Exception().printStackTrace();
 			System.exit(1);
 		}
-	}
+	}*/
 	
 	public static void CanNeverReachHere(String info)
 	{

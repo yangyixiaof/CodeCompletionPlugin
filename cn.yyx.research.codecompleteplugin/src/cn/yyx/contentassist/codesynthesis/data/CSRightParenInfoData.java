@@ -1,5 +1,7 @@
 package cn.yyx.contentassist.codesynthesis.data;
 
+import java.util.Stack;
+
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 
 public class CSRightParenInfoData extends CSFlowLineData{
@@ -35,6 +37,11 @@ public class CSRightParenInfoData extends CSFlowLineData{
 
 	public void setMostleft(FlowLineNode<CSFlowLineData> mostleft) {
 		this.mostleft = mostleft;
+	}
+	
+	@Override
+	public void HandleStackSignal(Stack<Integer> signals) {
+		
 	}
 	
 }
