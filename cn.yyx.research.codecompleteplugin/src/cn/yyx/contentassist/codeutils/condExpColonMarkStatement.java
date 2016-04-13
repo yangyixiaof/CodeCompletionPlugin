@@ -6,11 +6,11 @@ import java.util.List;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.data.CSCondExpColonMarkData;
+import cn.yyx.contentassist.codesynthesis.data.CSCondExpQuestionMarkData;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class condExpColonMarkStatement extends statement{
 
@@ -49,20 +49,15 @@ public class condExpColonMarkStatement extends statement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		squeue.SetLastHasHole();
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ":", null, null, true, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSCondExpColonMarkData(squeue.GenerateNewNodeId(), smthandler.getSete(), ":", null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
 	}
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForStructureSignal(DataStructureSignalMetaInfo.ConditionExpressionQuestion);
-		if (cnode != null)
-		{
-			cnode.getData().setStructsignal(null);
-		}
-		else
+		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForSpecialClass(CSCondExpQuestionMarkData.class);
+		if (cnode == null)
 		{
 			throw new CodeSynthesisException("No conditional expression start signal.");
 		}

@@ -9,7 +9,6 @@ import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class enhancedForStatement extends statement{
 	
@@ -59,7 +58,7 @@ public class enhancedForStatement extends statement{
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateTwoFlowLineNodeList("for (", tpls, " et: ", rels, "){\n\n}", TypeComputationKind.NoOptr, squeue, smthandler, null);
+		return CSFlowLineHelper.ForwardMerge("for (", tpls, " et: ", rels, "){\n\n}", squeue, smthandler, null, null);
 	}
 
 	@Override

@@ -10,7 +10,6 @@ import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class fieldAccess extends referedExpression{
 	
@@ -64,7 +63,7 @@ public class fieldAccess extends referedExpression{
 			List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleFieldSpecificationInfer(rels, idls, squeue, smthandler, ".");
 			if (ls.size() == 0)
 			{
-				return CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, idls, ".", rels, null, TypeComputationKind.NoOptr, squeue, smthandler, null);
+				return CSFlowLineHelper.ForwardMerge(null, idls, ".", rels, null, squeue, smthandler, null, null);
 			}
 			return ls;
 		}
