@@ -9,7 +9,6 @@ import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class annotationTypeMemberDeclarationStatement extends statement{
 	
@@ -81,7 +80,7 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 		if (drexp != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> drs = drexp.HandleCodeSynthesis(squeue, smthandler);
-			List<FlowLineNode<CSFlowLineData>> cect = CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, tps, "() default", drs, null, TypeComputationKind.NoOptr, squeue, smthandler, null);
+			List<FlowLineNode<CSFlowLineData>> cect = CSFlowLineHelper.ForwardMerge(null, tps, "() default", drs, null, squeue, smthandler, null, null);
 			return cect;
 		}
 		else

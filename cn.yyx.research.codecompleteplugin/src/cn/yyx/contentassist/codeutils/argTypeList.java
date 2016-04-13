@@ -11,7 +11,6 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class argTypeList implements OneCode {
 	
@@ -54,7 +53,7 @@ public class argTypeList implements OneCode {
 		{
 			argType ntp = itr.next();
 			List<FlowLineNode<CSFlowLineData>> ntpls = ntp.HandleCodeSynthesis(squeue, csats);
-			tpls = CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, tpls, ",", ntpls, null, TypeComputationKind.NoOptr, squeue, csats, null);
+			tpls = CSFlowLineHelper.ForwardMerge(null, tpls, ",", ntpls, null, squeue, csats, null, null);
 		}
 		return tpls;
 	}

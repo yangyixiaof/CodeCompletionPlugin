@@ -1,15 +1,17 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.data.CSArrayAccessStartData;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.StructureSignalMetaInfo;
 
 public class arrayAccessStatement extends statement{
@@ -87,8 +89,16 @@ public class arrayAccessStatement extends statement{
 		{
 			postfix = "]";
 		}
-		CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, rals, "[", rels, postfix, TypeComputationKind.NoOptr, squeue, smthandler, (accessEnd ? null : StructureSignalMetaInfo.ArrayAccessBlcok));
-		return null;
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		List<FlowLineNode<CSFlowLineData>> fmls = CSFlowLineHelper.ForwardMerge(null, rals, "[", rels, postfix, squeue, smthandler, null, null);
+		Iterator<FlowLineNode<CSFlowLineData>> itr = fmls.iterator();
+		while (itr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> fln = itr.next();
+			result.add(new FlowLineNode<CSFlowLineData>(new CSArrayAccessStartData(fln.getData()), fln.getProbability()));
+		}
+		// (accessEnd ? null : StructureSignalMetaInfo.ArrayAccessBlcok
+		return result;
 	}
 
 	@Override
