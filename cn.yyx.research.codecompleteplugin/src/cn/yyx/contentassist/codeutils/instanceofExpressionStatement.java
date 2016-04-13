@@ -9,7 +9,6 @@ import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class instanceofExpressionStatement extends expressionStatement{
 	
@@ -66,7 +65,7 @@ public class instanceofExpressionStatement extends expressionStatement{
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
 		List<FlowLineNode<CSFlowLineData>> tpls = type.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, rels, " instanceof ", tpls, null, TypeComputationKind.NoOptr, squeue, smthandler, null);
+		return CSFlowLineHelper.ForwardMerge(null, rels, " instanceof ", tpls, null, squeue, smthandler, null, null);
 	}
 
 	@Override

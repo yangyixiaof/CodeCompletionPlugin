@@ -5,8 +5,11 @@ import java.util.Stack;
 import java.util.TreeMap;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.ComplicatedSignal;
+import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class CSLeftParenInfoData extends CSFlowLineData{
 	
@@ -15,8 +18,9 @@ public class CSLeftParenInfoData extends CSFlowLineData{
 	// only temp used.
 	private Map<Long, Integer> tempusedtimes = new TreeMap<Long, Integer>();
 	
-	public CSLeftParenInfoData(int times, CSFlowLineData dt) {
-		super(dt.getId(), dt.getSete(), dt.getData(), dt.getDcls(), dt.isHaspre(), dt.isHashole(), dt.getPretck(), dt.getPosttck(), dt.getHandler());
+	public CSLeftParenInfoData(int times, Integer id, Sentence sete, String data, Class<?> dcls, boolean haspre,
+			boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
+		super(id, sete, data, dcls, haspre, hashole, pretck, posttck, handler);
 		this.setTimes(times);
 	}
 
