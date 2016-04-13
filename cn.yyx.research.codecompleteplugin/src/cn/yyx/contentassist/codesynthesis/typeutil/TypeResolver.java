@@ -1,5 +1,7 @@
 package cn.yyx.contentassist.codesynthesis.typeutil;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
@@ -28,6 +30,18 @@ public class TypeResolver {
 			return Object.class;
 		}
 		return tmlist.get(0).getTypeclass();
+	}
+	
+	public static List<Class<?>> ResolveType(List<String> types, JavaContentAssistInvocationContext javacontext)
+	{
+		List<Class<?>> result = new LinkedList<Class<?>>();
+		Iterator<String> itr = types.iterator();
+		while (itr.hasNext())
+		{
+			String tp = itr.next();
+			result.add(ResolveType(tp, javacontext));
+		}
+		return result;
 	}
 	
 }

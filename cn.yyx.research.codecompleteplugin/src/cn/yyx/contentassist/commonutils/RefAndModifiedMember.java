@@ -1,15 +1,19 @@
 package cn.yyx.contentassist.commonutils;
 
+import cn.yyx.contentassist.specification.MethodMember;
+
 public class RefAndModifiedMember {
 	
 	private String ref = null;
 	private String member = null;
 	private String membertype = null;
+	private MethodMember maxMm = null;
 	
-	public RefAndModifiedMember(String ref, String member, String membertype) {
+	public RefAndModifiedMember(String ref, String member, String membertype, MethodMember maxMm) {
 		this.setRef(ref);
 		this.setMember(member);
 		this.setMembertype(membertype);
+		this.setMaxMm(maxMm);
 	}
 
 	public String getRef() {
@@ -34,6 +38,14 @@ public class RefAndModifiedMember {
 
 	public void setMembertype(String membertype) {
 		this.membertype = membertype;
+	}
+
+	public MethodMember getMaxMm() {
+		return maxMm;
+	}
+
+	public void setMaxMm(MethodMember maxMm) {
+		this.maxMm = maxMm;
 	}
 	
 }

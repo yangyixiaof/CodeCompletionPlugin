@@ -10,11 +10,12 @@ import cn.yyx.contentassist.commonutils.SimilarityHelper;
 
 public class SpecificationHelper {
 	
-	public static RefAndModifiedMember GetMostLikelyRef(ContextHandler ch, Map<String, String> po, String hint, boolean hintismethod)
+	public static RefAndModifiedMember GetMostLikelyRef(ContextHandler ch, Map<String, String> po, String hint, boolean hintismethod, String concator)
 	{
 		String maxRef = null;
 		String maxMember = null;
 		String maxMemberType = null;
+		MethodMember maxMm = null;
 		Set<String> keys = po.keySet();
 		Iterator<String> itr = keys.iterator();
 		double maxsimilar = 0;
@@ -22,7 +23,7 @@ public class SpecificationHelper {
 		{
 			String type = itr.next();
 			String refname = po.get(type);
-			MembersOfAReference members = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(refname + ".", ch.getJavacontext(), ch.getMonitor());
+			MembersOfAReference members = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(refname + concator, ch.getJavacontext(), ch.getMonitor());
 			if (hintismethod)
 			{
 				Iterator<MethodMember> mmitr = members.GetMethodMemberIterator();
@@ -38,6 +39,7 @@ public class SpecificationHelper {
 						maxMember = cmp;
 						maxRef = refname;
 						maxMemberType = mm.getReturntype();
+						maxMm = mm;
 					}
 				}
 			}
@@ -60,7 +62,7 @@ public class SpecificationHelper {
 				}
 			}
 		}
-		RefAndModifiedMember result = new RefAndModifiedMember(maxRef, maxMember, maxMemberType);
+		RefAndModifiedMember result = new RefAndModifiedMember(maxRef, maxMember, maxMemberType, maxMm);
 		return result;
 	}
 	
@@ -115,7 +117,7 @@ public class SpecificationHelper {
 		RefAndModifiedMember result = null;
 		if (maxMember == null || maxMemberType == null)
 		{
-			result = new RefAndModifiedMember(maxRef, maxMember, maxMemberType);
+			result = new RefAndModifiedMember(maxRef, maxMember, maxMemberType, null);
 		}
 		return result;
 	}

@@ -12,8 +12,6 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeConflictException;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeResolver;
 import cn.yyx.contentassist.codeutils.identifier;
 import cn.yyx.contentassist.codeutils.referedExpression;
@@ -63,28 +61,45 @@ public class CodeSynthesisHelper {
 	
 	public static List<FlowLineNode<CSFlowLineData>> HandleVarRefCodeSynthesis(Map<String, String> po, CSFlowLineQueue squeue, CSStatementHandler smthandler)
 	{
-		// TODO handle CSMethodReferenceStatementHandler
-		// TODO partialMethodPreRerferedExpressionEndStatement is not considered.
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		if ((smthandler instanceof CSFieldAccessStatementHandler) || (smthandler instanceof CSMethodStatementHandler))
+		if ((smthandler instanceof CSFieldAccessStatementHandler) || (smthandler instanceof CSMethodStatementHandler) || (smthandler instanceof CSMethodReferenceStatementHandler))
 		{
 			boolean ismethod = false;
 			String hint = null;
+			String concator = null;
 			if (smthandler instanceof CSFieldAccessStatementHandler)
 			{
 				hint = ((CSFieldAccessStatementHandler) smthandler).getField();
 			}
-			else
+			if (smthandler instanceof CSMethodStatementHandler)
 			{
 				hint = ((CSMethodStatementHandler)smthandler).getMethodname();
 				ismethod = true;
+				concator = ".";
 			}
-			RefAndModifiedMember ramm = SpecificationHelper.GetMostLikelyRef(squeue.GetLastHandler().getContextHandler(), po, hint, ismethod);
+			if (smthandler instanceof CSMethodReferenceStatementHandler)
+			{
+				hint = ((CSMethodReferenceStatementHandler)smthandler).getField();
+				ismethod = true;
+				concator = "::";
+			}
+			RefAndModifiedMember ramm = SpecificationHelper.GetMostLikelyRef(squeue.GetLastHandler().getContextHandler(), po, hint, ismethod, concator);
 			String ref = ramm.getRef();
 			String member = ramm.getMember();
 			String membertype = ramm.getMembertype();
 			Class<?> c = TypeResolver.ResolveType(membertype, squeue.GetLastHandler().getContextHandler().getJavacontext());
-			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ref + "." + member, null, c, false, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
+			FlowLineNode<CSFlowLineData> sqdata = new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ref + "." + member, c, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb());
+			if (smthandler instanceof CSMethodStatementHandler)
+			{
+				MethodMember mm = ramm.getMaxMm();
+				if (mm != null)
+				{
+					Class<?> rt = TypeResolver.ResolveType(mm.getReturntype(), squeue.GetLastHandler().getContextHandler().getJavacontext());
+					List<Class<?>> arts = TypeResolver.ResolveType(mm.getArgtypelist(), squeue.GetLastHandler().getContextHandler().getJavacontext());
+					((CSMethodStatementHandler)smthandler).AddMethodTypeSigById(sqdata.getData().getId(), new MethodTypeSignature(rt, arts));
+				}
+			}
+			result.add(sqdata);
 		}
 		else
 		{
@@ -95,7 +110,7 @@ public class CodeSynthesisHelper {
 				String code = citr.next();
 				String type = po.get(code);
 				Class<?> c = TypeResolver.ResolveType(type, squeue.GetLastHandler().getContextHandler().getJavacontext());
-				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), code, null, c, false, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), code, c, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 			}
 		}
 		return result;

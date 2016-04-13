@@ -13,7 +13,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class partialMethodPreRerferedExpressionEndStatement extends statement{
-
+	
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof partialMethodPreRerferedExpressionEndStatement)
