@@ -1,5 +1,7 @@
 package cn.yyx.contentassist.codesynthesis.flowline;
 
+import java.util.Stack;
+
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 
@@ -31,15 +33,16 @@ public class FlowLineStack {
 	}*/
 	
 	public void EnsureAllSignalNull(FlowLineNode<CSFlowLineData> fromwhere) throws CodeSynthesisException {
-		
+		Stack<Integer> signals = new Stack<Integer>();
 		FlowLineNode<CSFlowLineData> tmp = fromwhere;
 		while (tmp != null)
 		{
-			if (tmp.getData().getStructsignal() != null)
-			{
-				throw new CodeSynthesisException("Has signal on stack, it should have no signals.");
-			}
+			tmp.getData().HandleStackSignal(signals);
 			tmp = tmp.getPrev();
+		}
+		if (!signals.isEmpty())
+		{
+			throw new CodeSynthesisException("Has signal on stack, it should have no signals.");
 		}
 	}
 	

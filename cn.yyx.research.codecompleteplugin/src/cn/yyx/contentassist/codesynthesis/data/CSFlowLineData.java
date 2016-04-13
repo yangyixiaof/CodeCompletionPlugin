@@ -1,5 +1,7 @@
 package cn.yyx.contentassist.codesynthesis.data;
 
+import java.util.Stack;
+
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
@@ -201,6 +203,11 @@ public class CSFlowLineData {
 		// merge extra data info.
 		cf.setExtraData((CSExtraData) csed.SelfClosedMerge(d2.csed));
 		return cf;
+	}
+	
+	public void HandleStackSignal(Stack<Integer> signals)
+	{
+		// do nothing.
 	}
 	
 }
