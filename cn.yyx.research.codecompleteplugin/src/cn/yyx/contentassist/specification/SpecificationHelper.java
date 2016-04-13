@@ -66,7 +66,7 @@ public class SpecificationHelper {
 		return result;
 	}
 	
-	public static RefAndModifiedMember GetMostLikelyRef(ContextHandler ch, Set<String> codes, String hint, boolean hintismethod)
+	public static RefAndModifiedMember GetMostLikelyRef(ContextHandler ch, Set<String> codes, String hint, boolean hintismethod, String concator)
 	{
 		String maxRef = null;
 		String maxMember = null;
@@ -76,7 +76,7 @@ public class SpecificationHelper {
 		while (itr.hasNext())
 		{
 			String code = itr.next();
-			MembersOfAReference members = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(code, ch.getJavacontext(), ch.getMonitor());
+			MembersOfAReference members = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(code + concator, ch.getJavacontext(), ch.getMonitor());
 			if (hintismethod)
 			{
 				Iterator<MethodMember> mmitr = members.GetMethodMemberIterator();

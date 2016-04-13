@@ -92,12 +92,8 @@ public class CodeSynthesisHelper {
 			if (smthandler instanceof CSMethodStatementHandler)
 			{
 				MethodMember mm = ramm.getMaxMm();
-				if (mm != null)
-				{
-					Class<?> rt = TypeResolver.ResolveType(mm.getReturntype(), squeue.GetLastHandler().getContextHandler().getJavacontext());
-					List<Class<?>> arts = TypeResolver.ResolveType(mm.getArgtypelist(), squeue.GetLastHandler().getContextHandler().getJavacontext());
-					((CSMethodStatementHandler)smthandler).AddMethodTypeSigById(sqdata.getData().getId(), new MethodTypeSignature(rt, arts));
-				}
+				MethodTypeSignature mts = MethodTypeSignature.GenerateMethodTypeSignature(mm, squeue.GetLastHandler().getContextHandler().getJavacontext());
+				((CSMethodStatementHandler)smthandler).AddMethodTypeSigById(sqdata.getData().getId(), mts);
 			}
 			result.add(sqdata);
 		}

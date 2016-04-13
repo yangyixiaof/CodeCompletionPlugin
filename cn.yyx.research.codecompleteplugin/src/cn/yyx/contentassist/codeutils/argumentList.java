@@ -3,6 +3,8 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
@@ -16,7 +18,9 @@ import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
 import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.commonutils.ListDynamicHeper;
 import cn.yyx.contentassist.commonutils.ListHelper;
+import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
+import cn.yyx.contentassist.specification.SpecificationHelper;
 
 public class argumentList implements OneCode {
 	
@@ -146,7 +150,6 @@ public class argumentList implements OneCode {
 		Iterator<referedExpression> ritr = reverseel.iterator();
 		List<FlowLineNode<CSFlowLineData>> invokers = null;
 		while (ritr.hasNext()) {
-			// TODO partialMethodPreRerferedExpressionEndStatement is not considered.
 			referedExpression re = ritr.next();
 			List<FlowLineNode<CSFlowLineData>> oneargpospossibles = re.HandleCodeSynthesis(squeue, smthandler);
 			if (!ritr.hasNext()) {
@@ -159,33 +162,45 @@ public class argumentList implements OneCode {
 					MethodTypeSignature msig = realhandler.GetMethodTypeSigById(data.getId());
 					StringBuilder sb = new StringBuilder(data.getData());
 					if (msig == null) {
-						// directly add argument.
-						Iterator<List<FlowLineNode<CSFlowLineData>>> pitr = positiveargs.iterator();
-						sb.append("(");
-						while (pitr.hasNext()) {
-							List<FlowLineNode<CSFlowLineData>> pcnls = pitr.next();
-							sb.append(pcnls.get(0).getData().getData());
-							if (pitr.hasNext()) {
-								sb.append(",");
-							}
+						String sepc = data.getData();
+						Set<String> specs = new TreeSet<String>();
+						specs.add(sepc);
+						RefAndModifiedMember ramm = SpecificationHelper.GetMostLikelyRef(squeue.GetLastHandler().getContextHandler(), specs, realhandler.getMethodname(), true, ".");
+						if (ramm != null)
+						{
+							msig = MethodTypeSignature.GenerateMethodTypeSignature(ramm.getMaxMm(), squeue.GetLastHandler().getContextHandler().getJavacontext());	
 						}
-						sb.append(")");
-					} else {
-						// check and add argument.
-						List<Boolean> usedparams = ListHelper.InitialBooleanArray(positiveargs.size());
-						List<Class<?>> tps = msig.getArgtypes();
-						Iterator<Class<?>> tpitr = tps.iterator();
-						sb.append("(");
-						while (tpitr.hasNext()) {
-							Class<?> c = tpitr.next();
-							String ct = HandleOneClassParamNodes(c, positiveargs, usedparams);
-							sb.append(ct);
-							if (tpitr.hasNext()) {
-								sb.append(",");
+						if (msig == null)
+						{
+							// directly add argument.
+							Iterator<List<FlowLineNode<CSFlowLineData>>> pitr = positiveargs.iterator();
+							sb.append("(");
+							while (pitr.hasNext()) {
+								List<FlowLineNode<CSFlowLineData>> pcnls = pitr.next();
+								sb.append(pcnls.get(0).getData().getData());
+								if (pitr.hasNext()) {
+									sb.append(",");
+								}
 							}
+							sb.append(")");
 						}
-						sb.append(")");
 					}
+					
+					// check and add argument.
+					List<Boolean> usedparams = ListHelper.InitialBooleanArray(positiveargs.size());
+					List<Class<?>> tps = msig.getArgtypes();
+					Iterator<Class<?>> tpitr = tps.iterator();
+					sb.append("(");
+					while (tpitr.hasNext()) {
+						Class<?> c = tpitr.next();
+						String ct = HandleOneClassParamNodes(c, positiveargs, usedparams);
+						sb.append(ct);
+						if (tpitr.hasNext()) {
+							sb.append(",");
+						}
+					}
+					sb.append(")");
+						
 					data.setData(sb.toString());
 					FlowLineNode<CSFlowLineData> mf = realhandler.getMostfar();
 					if (mf != null)

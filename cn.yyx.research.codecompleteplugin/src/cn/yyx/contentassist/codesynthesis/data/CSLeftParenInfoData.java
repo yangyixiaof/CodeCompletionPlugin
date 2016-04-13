@@ -3,20 +3,17 @@ package cn.yyx.contentassist.codesynthesis.data;
 import java.util.Map;
 import java.util.TreeMap;
 
-import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class CSLeftParenInfoData extends CSFlowLineData{
 	
 	private int times = -1;
 	
+	// only tempused.
 	private Map<Long, Integer> tempusedtimes = new TreeMap<Long, Integer>();
 	
-	public CSLeftParenInfoData(int times, Integer id, Sentence sete, String data, Integer structsignal, Class<?> dcls,
-			boolean hashole, SynthesisHandler handler) {
-		super(id, sete, data, structsignal, dcls, hashole, TypeComputationKind.NoOptr, handler);
+	public CSLeftParenInfoData(int times, CSFlowLineData dt) {
+		super(dt.getId(), dt.getSete(), dt.getData(), dt.getDcls(), dt.isHaspre(), dt.isHashole(), dt.getPretck(), dt.getPosttck(), dt.getHandler());
 		this.setTimes(times);
 	}
 

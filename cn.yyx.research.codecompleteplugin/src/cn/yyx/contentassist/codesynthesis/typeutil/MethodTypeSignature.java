@@ -2,10 +2,25 @@ package cn.yyx.contentassist.codesynthesis.typeutil;
 
 import java.util.List;
 
+import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
+
+import cn.yyx.contentassist.specification.MethodMember;
+
 public class MethodTypeSignature {
 	
 	private Class<?> returntype = null;
 	private List<Class<?>> argtypes = null;
+	
+	public static MethodTypeSignature GenerateMethodTypeSignature(MethodMember mm, JavaContentAssistInvocationContext javacontext)
+	{
+		if (mm != null)
+		{
+			Class<?> rt = TypeResolver.ResolveType(mm.getReturntype(), javacontext);
+			List<Class<?>> arts = TypeResolver.ResolveType(mm.getArgtypelist(), javacontext);
+			return new MethodTypeSignature(rt, arts);
+		}
+		return null;
+	}
 	
 	public MethodTypeSignature(Class<?> returntype, List<Class<?>> argtypes) {
 		this.setReturntype(returntype);

@@ -1,9 +1,6 @@
 package cn.yyx.contentassist.codesynthesis.data;
 
-import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
-import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class CSRightParenInfoData extends CSFlowLineData{
 	
@@ -11,9 +8,8 @@ public class CSRightParenInfoData extends CSFlowLineData{
 	private FlowLineNode<CSFlowLineData> mostleft = null;
 	private int mostleftremain = 0;
 	
-	public CSRightParenInfoData(int times, Integer id, Sentence sete, String data, Integer structsignal, Class<?> dcls,
-			boolean hashole, TypeComputationKind tck, SynthesisHandler handler) {
-		super(id, sete, data, structsignal, dcls, hashole, tck, handler);
+	public CSRightParenInfoData(int times, CSFlowLineData dt) {
+		super(dt.getId(), dt.getSete(), dt.getData(), dt.getDcls(), dt.isHaspre(), dt.isHashole(), dt.getPretck(), dt.getPosttck(), dt.getHandler());
 		this.setTimes(times);
 	}
 
