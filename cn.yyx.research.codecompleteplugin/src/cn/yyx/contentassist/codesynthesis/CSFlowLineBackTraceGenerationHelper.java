@@ -9,8 +9,6 @@ import cn.yyx.contentassist.codesynthesis.data.CSLeftParenInfoData;
 import cn.yyx.contentassist.codesynthesis.data.CSRightParenInfoData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.SynthesisCodeManager;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeConflictException;
 
 public class CSFlowLineBackTraceGenerationHelper {
 
@@ -68,7 +66,7 @@ public class CSFlowLineBackTraceGenerationHelper {
 		return result;
 	}
 	
-	private static String ConcateTwoNodes(FlowLineNode<CSFlowLineData> one, FlowLineNode<CSFlowLineData> onestart, FlowLineNode<CSFlowLineData> two, FlowLineNode<CSFlowLineData> twostart, String preid, CSFlowLineQueue squeue, CSStatementHandler smthandler) throws TypeConflictException
+	private static String ConcateTwoNodes(FlowLineNode<CSFlowLineData> one, FlowLineNode<CSFlowLineData> onestart, FlowLineNode<CSFlowLineData> two, FlowLineNode<CSFlowLineData> twostart, String preid, CSFlowLineQueue squeue, CSStatementHandler smthandler) throws CodeSynthesisException
 	{
 		assert (twostart != null && preid == null) && (twostart == null && preid != null);
 		String twoid = preid;
@@ -86,7 +84,7 @@ public class CSFlowLineBackTraceGenerationHelper {
 			one = one.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(oneid);
 		}
 		
-		FlowLineNode<CSFlowLineData> tres = CSFlowLineHelper.ConcateTwoFlowLineNode(null, one, null, two, null, TypeComputationKind.NotSureOptr, squeue, smthandler, null);
+		FlowLineNode<CSFlowLineData> tres = CSFlowLineHelper.ConcateTwoFlowLineNode(null, one, null, two, null, squeue, smthandler, null, null);
 		String tresid = oneid + "." + twoid;
 		one.getData().getSynthesisCodeManager().AddSynthesisCode(tresid, tres);
 		

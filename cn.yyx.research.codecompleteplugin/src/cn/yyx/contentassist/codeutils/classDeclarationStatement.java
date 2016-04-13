@@ -50,7 +50,7 @@ public class classDeclarationStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateOneFLStamp("public class ", idls, "{\n\n}");
+		return CSFlowLineHelper.ConcateOneFlowLineList("public class ", idls, "{\n\n}");
 	}
 
 	@Override

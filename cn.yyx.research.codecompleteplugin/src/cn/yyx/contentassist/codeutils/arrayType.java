@@ -58,7 +58,7 @@ public class arrayType extends type {
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> ls = tp.HandleCodeSynthesis(squeue, smthandler);
 		String dimens = CodeSynthesisHelper.GenerateDimens(count);
-		return CSFlowLineHelper.ConcateOneFLStamp(null, ls, dimens);
+		return CSFlowLineHelper.ConcateOneFlowLineList(null, ls, dimens);
 	}
 	
 }

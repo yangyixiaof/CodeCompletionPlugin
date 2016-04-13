@@ -53,7 +53,7 @@ public class arrayCreationStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> ls = tp.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateOneFLStamp("new ", ls, null);
+		return CSFlowLineHelper.ConcateOneFlowLineList("new ", ls, null);
 	}
 
 	@Override

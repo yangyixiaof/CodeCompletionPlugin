@@ -72,7 +72,7 @@ public class lambdaExpressionStatement extends statement{
 		else
 		{
 			List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
-			return CSFlowLineHelper.ConcateOneFLStamp("(", tpls, ")->{\n\n}");
+			return CSFlowLineHelper.ConcateOneFlowLineList("(", tpls, ")->{\n\n}");
 		}
 	}
 

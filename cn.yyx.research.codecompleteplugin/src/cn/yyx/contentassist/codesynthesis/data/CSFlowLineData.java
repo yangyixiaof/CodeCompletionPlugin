@@ -175,11 +175,19 @@ public class CSFlowLineData {
 	
 	public CSFlowLineData Merge(String prefix, String concator, CSFlowLineData d2, String postfix, CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
-		if (oneafter == null || oneafter == TypeComputationKind.NotSureOptr || oneafter == TypeComputationKind.NoOptr) {
+		if (oneafter == null || oneafter == TypeComputationKind.NotSureOptr || oneafter == TypeComputationKind.NoOptr)
+		{
 			oneafter = getPosttck();
+		}
+		if (oneafter == null) {
+			oneafter = TypeComputationKind.NoOptr;
 		}
 		if (beforetwo == null || beforetwo == TypeComputationKind.NotSureOptr || beforetwo == TypeComputationKind.NoOptr) {
 			beforetwo = d2.getPretck();
+		}
+		if (beforetwo == null)
+		{
+			beforetwo = TypeComputationKind.NoOptr;
 		}
 		TypeComputationKind tck = TypeComputer.ChooseOne(oneafter, beforetwo);
 		Class<?> clz = null;

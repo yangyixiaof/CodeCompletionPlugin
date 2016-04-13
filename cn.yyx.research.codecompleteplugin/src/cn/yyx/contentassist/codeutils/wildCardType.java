@@ -90,7 +90,7 @@ public class wildCardType extends type{
 		if (tp != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
-			return CSFlowLineHelper.ConcateOneFLStamp("?" + (extended ? " extends " : " super "), tpls, null);
+			return CSFlowLineHelper.ConcateOneFlowLineList("?" + (extended ? " extends " : " super "), tpls, null);
 		}
 		else
 		{

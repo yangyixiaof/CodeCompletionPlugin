@@ -42,7 +42,7 @@ public class CodeSynthesisHelper {
 			List<FlowLineNode<CSFlowLineData>> ls = id.HandleCodeSynthesis(squeue, smthandler);
 			fin.append(" " + ls.get(0).getData().getData());
 		}
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), fin.toString(), null, void.class, false, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), fin.toString(), void.class, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
 	}
 	
@@ -73,11 +73,11 @@ public class CodeSynthesisHelper {
 			if (smthandler instanceof CSFieldAccessStatementHandler)
 			{
 				hint = ((CSFieldAccessStatementHandler) smthandler).getField();
-				ismethod = true;
 			}
 			else
 			{
 				hint = ((CSMethodStatementHandler)smthandler).getMethodname();
+				ismethod = true;
 			}
 			RefAndModifiedMember ramm = SpecificationHelper.GetMostLikelyRef(squeue.GetLastHandler().getContextHandler(), po, hint, ismethod);
 			String ref = ramm.getRef();
@@ -110,7 +110,7 @@ public class CodeSynthesisHelper {
 		{
 			type ttp = itr.next();
 			List<FlowLineNode<CSFlowLineData>> tmpls = ttp.HandleCodeSynthesis(squeue, smthandler);
-			ls = CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, ls, concator, tmpls, null, TypeComputationKind.NoOptr, squeue, smthandler, null);
+			ls = CSFlowLineHelper.ForwardMerge(null, ls, concator, tmpls, null, squeue, smthandler, null, null);
 		}
 		return ls;
 	}
@@ -131,7 +131,7 @@ public class CodeSynthesisHelper {
 			{
 				MethodTypeSignature mts = TypeCheckHelper.TranslateMethodMember(mm, squeue.GetLastHandler().getContextHandler().getJavacontext());
 				int id = squeue.GenerateNewNodeId();
-				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? methodname : beforemethodexp + "." + methodname), null, mts.getReturntype(), false, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? methodname : beforemethodexp + "." + methodname), mts.getReturntype(), false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 				smthandler.AddMethodTypeSigById(id+"", mts);
 			}
 		}
@@ -173,7 +173,7 @@ public class CodeSynthesisHelper {
 		return false;
 	}*/
 	
-	public static List<FlowLineNode<CSFlowLineData>> HandleTypeSpecificationInfer(List<FlowLineNode<CSFlowLineData>> tmp, List<FlowLineNode<CSFlowLineData>> tpls, CSFlowLineQueue squeue, CSStatementHandler smthandler) throws TypeConflictException
+	public static List<FlowLineNode<CSFlowLineData>> HandleTypeSpecificationInfer(List<FlowLineNode<CSFlowLineData>> tmp, List<FlowLineNode<CSFlowLineData>> tpls, CSFlowLineQueue squeue, CSStatementHandler smthandler) throws CodeSynthesisException
 	{
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		Iterator<FlowLineNode<CSFlowLineData>> itr = tmp.iterator();
@@ -193,7 +193,7 @@ public class CodeSynthesisHelper {
 					String cmped = tp.getData().getData();
 					if (SimilarityHelper.ComputeTwoStringSimilarity(cmp, cmped) > PredictMetaInfo.TwoStringSimilarThreshold)
 					{
-						result.add(CSFlowLineHelper.ConcateTwoFlowLineNode(null, fln, ".", tp, null, TypeComputationKind.NoOptr, squeue, smthandler, null));
+						result.add(CSFlowLineHelper.ConcateTwoFlowLineNode(null, fln, ".", tp, null, squeue, smthandler, null, null));
 					}
 				}
 			}
@@ -201,7 +201,7 @@ public class CodeSynthesisHelper {
 		return result;
 	}
 	
-	public static List<FlowLineNode<CSFlowLineData>> HandleFieldSpecificationInfer(List<FlowLineNode<CSFlowLineData>> tmp, List<FlowLineNode<CSFlowLineData>> idls, CSFlowLineQueue squeue, CSStatementHandler smthandler, String concator) throws TypeConflictException
+	public static List<FlowLineNode<CSFlowLineData>> HandleFieldSpecificationInfer(List<FlowLineNode<CSFlowLineData>> tmp, List<FlowLineNode<CSFlowLineData>> idls, CSFlowLineQueue squeue, CSStatementHandler smthandler, String concator) throws CodeSynthesisException
 	{
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		Iterator<FlowLineNode<CSFlowLineData>> itr = tmp.iterator();
@@ -221,7 +221,7 @@ public class CodeSynthesisHelper {
 					String cmped = id.getData().getData();
 					if (SimilarityHelper.ComputeTwoStringSimilarity(cmp, cmped) > PredictMetaInfo.TwoStringSimilarThreshold)
 					{
-						result.add(CSFlowLineHelper.ConcateTwoFlowLineNode(null, fln, ".", id, null, TypeComputationKind.NoOptr, squeue, smthandler, null));
+						result.add(CSFlowLineHelper.ConcateTwoFlowLineNode(null, fln, ".", id, null, squeue, smthandler, null, null));
 					}
 				}
 			}
@@ -244,7 +244,7 @@ public class CodeSynthesisHelper {
 				TypeMember tp = tpitr.next();
 				if (SimilarityHelper.ComputeTwoStringSimilarity(rawtype, tp.getType()) > PredictMetaInfo.TwoStringSimilarThreshold)
 				{
-					result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), tp.getType(), null, tp.getClass(), false, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
+					result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), tp.getType(), tp.getClass(), false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 				}
 			}
 		}
@@ -259,7 +259,7 @@ public class CodeSynthesisHelper {
 			FlowLineNode<CSFlowLineData> fln = itr.next();
 			CSFlowLineData data = fln.getData();
 			String returntype = data.getData();
-			String modifidedname = squeue.GetLastHandler().getScopeOffsetRefHandler().GenerateNewDeclaredVariable(NameConvention.GetAbbreviationOfType(returntype), returntype);
+			String modifidedname = squeue.GetLastHandler().getScopeOffsetRefHandler().GenerateNewDeclaredVariable(NameConvention.GetAbbreviationOfType(returntype), returntype, null);
 			String modifieddata = returntype + " " + modifidedname;
 			data.setData(modifieddata);
 		}

@@ -58,7 +58,7 @@ public class postfixExpressionStatement extends expressionStatement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateOneFLStamp(null, rels, optr);
+		return CSFlowLineHelper.ConcateOneFlowLineList(null, rels, optr);
 	}
 
 	@Override

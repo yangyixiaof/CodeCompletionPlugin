@@ -50,7 +50,7 @@ public class switchCaseStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateOneFLStamp("case ", rels, ":\n");
+		return CSFlowLineHelper.ConcateOneFlowLineList("case ", rels, ":\n");
 	}
 
 	@Override

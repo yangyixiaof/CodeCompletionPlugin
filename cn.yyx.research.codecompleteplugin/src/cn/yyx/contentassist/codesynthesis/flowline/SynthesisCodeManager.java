@@ -12,7 +12,7 @@ import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class SynthesisCodeManager {
 	
-	public final static FlowLineNode<CSFlowLineData> InternNode = new FlowLineNode<CSFlowLineData>(new CSFlowLineData(0, null, null, null, null, false, false, TypeComputationKind.NoOptr, TypeComputationKind.NoOptr, null), 0);
+	public final static FlowLineNode<CSFlowLineData> InternNode = new FlowLineNode<CSFlowLineData>(new CSFlowLineData(0, null, null, null, false, false, TypeComputationKind.NoOptr, TypeComputationKind.NoOptr, null), 0);
 	
 	private Map<String, FlowLineNode<CSFlowLineData>> syncodes = new TreeMap<String, FlowLineNode<CSFlowLineData>>();
 	private FlowLineNode<CSFlowLineData> blockstart = null;

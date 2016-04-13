@@ -53,7 +53,7 @@ public class atInterfaceStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateOneFLStamp("public @interface ", idls, "{\n\n}");
+		return CSFlowLineHelper.ConcateOneFlowLineList("public @interface ", idls, "{\n\n}");
 	}
 
 	@Override

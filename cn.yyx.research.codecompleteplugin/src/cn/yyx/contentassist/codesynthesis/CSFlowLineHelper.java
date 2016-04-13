@@ -22,7 +22,7 @@ public class CSFlowLineHelper {
 	 * @param one
 	 * @param postfix
 	 */
-	public static List<FlowLineNode<CSFlowLineData>> ConcateOneFLStamp(String prefix, List<FlowLineNode<CSFlowLineData>> one, String postfix) {
+	public static List<FlowLineNode<CSFlowLineData>> ConcateOneFlowLineList(String prefix, List<FlowLineNode<CSFlowLineData>> one, String postfix) {
 		Iterator<FlowLineNode<CSFlowLineData>> itr = one.iterator();
 		while (itr.hasNext()) {
 			FlowLineNode<CSFlowLineData> fln = itr.next();
@@ -53,7 +53,7 @@ public class CSFlowLineHelper {
 		}
 	}
 	
-	public List<FlowLineNode<CSFlowLineData>> ForwardMerge(String prefix, List<FlowLineNode<CSFlowLineData>> one, String concator, List<FlowLineNode<CSFlowLineData>> two, String postfix, CSFlowLineQueue squeue, CSStatementHandler smthandler, TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
+	public static List<FlowLineNode<CSFlowLineData>> ForwardMerge(String prefix, List<FlowLineNode<CSFlowLineData>> one, String concator, List<FlowLineNode<CSFlowLineData>> two, String postfix, CSFlowLineQueue squeue, CSStatementHandler smthandler, TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
 		if (one.size() == 0) {
 			if (two == null || two.size() == 0) {
 				return null;
@@ -67,7 +67,7 @@ public class CSFlowLineHelper {
 				else
 				{
 					CheckConcator(concator);
-					return CSFlowLineHelper.ConcateOneFLStamp(concator, two, postfix);
+					return CSFlowLineHelper.ConcateOneFlowLineList(concator, two, postfix);
 				}
 			}
 		} else {
@@ -81,7 +81,7 @@ public class CSFlowLineHelper {
 				else
 				{
 					CheckConcator(concator);
-					return CSFlowLineHelper.ConcateOneFLStamp(prefix, one, concator);
+					return CSFlowLineHelper.ConcateOneFlowLineList(prefix, one, concator);
 				}
 			} else {
 				List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
