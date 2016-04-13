@@ -25,6 +25,11 @@ public class ComplicatedSignal {
 		return new ComplicatedSignal(hint>>SignBits, hint&((1<<SignBits)-1));
 	}
 	
+	public Integer GetSignal()
+	{
+		return (sign<<SignBits)+count;
+	}
+	
 	public static Integer GenerateComplicatedSignal(int sign, int count)
 	{
 		return (sign<<SignBits)+count;

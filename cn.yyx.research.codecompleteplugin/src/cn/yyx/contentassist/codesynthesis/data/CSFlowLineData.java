@@ -206,7 +206,7 @@ public class CSFlowLineData implements CSDataStructure{
 	}
 	
 	@Override
-	public void HandleStackSignal(Stack<Integer> signals) {
+	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException{
 		// do nothing.
 	}
 	

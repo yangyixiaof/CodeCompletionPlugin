@@ -4,13 +4,15 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.TreeMap;
 
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
+import cn.yyx.contentassist.commonutils.ComplicatedSignal;
 
 public class CSLeftParenInfoData extends CSFlowLineData{
 	
 	private int times = -1;
 	
-	// only tempused.
+	// only temp used.
 	private Map<Long, Integer> tempusedtimes = new TreeMap<Long, Integer>();
 	
 	public CSLeftParenInfoData(int times, CSFlowLineData dt) {
@@ -39,8 +41,8 @@ public class CSLeftParenInfoData extends CSFlowLineData{
 	}
 	
 	@Override
-	public void HandleStackSignal(Stack<Integer> signals) {
-		
+	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException{
+		signals.push(ComplicatedSignal.GenerateComplicatedSignal(DataStructureSignalMetaInfo.ParentheseBlock, times));
 	}
 	
 }

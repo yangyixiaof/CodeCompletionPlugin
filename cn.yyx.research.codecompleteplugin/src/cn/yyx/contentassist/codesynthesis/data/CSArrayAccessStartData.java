@@ -2,6 +2,8 @@ package cn.yyx.contentassist.codesynthesis.data;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+
 public class CSArrayAccessStartData extends CSFlowLineData{
 	
 	public CSArrayAccessStartData(CSFlowLineData dt) {
@@ -9,7 +11,7 @@ public class CSArrayAccessStartData extends CSFlowLineData{
 	}
 	
 	@Override
-	public void HandleStackSignal(Stack<Integer> signals) {
+	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException{
 		signals.push(DataStructureSignalMetaInfo.ArrayAccessBlcok);
 	}
 	
