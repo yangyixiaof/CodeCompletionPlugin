@@ -7,7 +7,7 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.StructureSignalMetaInfo;
+import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
@@ -57,7 +57,7 @@ public class condExpQuestionMarkStatement extends statement{
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForStructureSignal(StructureSignalMetaInfo.ConditionExpressionStart);
+		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForStructureSignal(DataStructureSignalMetaInfo.ConditionExpressionStart);
 		if (cnode != null)
 		{
 			cnode.getData().setStructsignal(null);

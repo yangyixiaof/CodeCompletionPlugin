@@ -8,7 +8,7 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.StructureSignalMetaInfo;
+import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
@@ -55,7 +55,7 @@ public class arrayInitializerEndStatement extends statement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForStructureSignal(StructureSignalMetaInfo.ArrayInitialBlock);
+		FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForStructureSignal(DataStructureSignalMetaInfo.ArrayInitialBlock);
 		if (cnode != null)
 		{
 			squeue.SetLastHasHole();

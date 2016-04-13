@@ -1,6 +1,6 @@
 package cn.yyx.contentassist.codesynthesis.data;
 
-public class StructureSignalMetaInfo {
+public class DataStructureSignalMetaInfo {
 
 	public static final int ArrayInitialBlock = 1;
 	public static final int ArrayAccessBlcok = 2;

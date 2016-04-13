@@ -10,8 +10,11 @@ public class CSArrayAccessEndData extends CSFlowLineData{
 	
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) {
-		
-		super.HandleStackSignal(signals);
+		Integer sl = signals.peek();
+		if (sl == null || sl != DataStructureSignalMetaInfo.ArrayAccessBlcok)
+		{
+			signals.pop();
+		}
 	}
 	
 }

@@ -10,7 +10,7 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSArrayAccessStartData;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.StructureSignalMetaInfo;
+import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 
@@ -105,7 +105,7 @@ public class arrayAccessStatement extends statement{
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		if (!accessEnd)
 		{
-			cstack.SetLastStructureSignal(StructureSignalMetaInfo.ArrayAccessBlcok);
+			cstack.SetLastStructureSignal(DataStructureSignalMetaInfo.ArrayAccessBlcok);
 		}
 		return false;
 	}
