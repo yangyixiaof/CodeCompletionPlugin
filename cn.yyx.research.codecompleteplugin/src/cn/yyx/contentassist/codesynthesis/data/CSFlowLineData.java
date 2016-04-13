@@ -11,7 +11,7 @@ import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputer;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
-public class CSFlowLineData {
+public class CSFlowLineData implements CSDataStructure{
 	
 	private String id = null;
 	private Sentence sete = null;
@@ -205,8 +205,8 @@ public class CSFlowLineData {
 		return cf;
 	}
 	
-	public void HandleStackSignal(Stack<Integer> signals)
-	{
+	@Override
+	public void HandleStackSignal(Stack<Integer> signals) {
 		// do nothing.
 	}
 	
