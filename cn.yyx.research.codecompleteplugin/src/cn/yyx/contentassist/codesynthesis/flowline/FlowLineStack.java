@@ -29,10 +29,6 @@ public class FlowLineStack {
 		}
 		return null;
 	}
-
-	public FlowLineNode<CSFlowLineData> GetSearchedAndHandledBlockStart() {
-		return last.getData().getSynthesisCodeManager().getBlockstart();
-	}
 	
 	public void EnsureAllSignalNull(FlowLineNode<CSFlowLineData> fromwhere) throws CodeSynthesisException {
 		FlowLineNode<CSFlowLineData> tmp = fromwhere;
@@ -44,6 +40,10 @@ public class FlowLineStack {
 			}
 			tmp = tmp.getPrev();
 		}
+	}
+	
+	public FlowLineNode<CSFlowLineData> GetSearchedAndHandledBlockStart() {
+		return last.getData().getSynthesisCodeManager().getBlockstart();
 	}
 	
 	public void EnsureAllSignalNull() throws CodeSynthesisException
