@@ -1,5 +1,7 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
@@ -7,6 +9,7 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 
@@ -66,7 +69,16 @@ public class methodInvocationStatement extends expressionStatement{
 		String methodname = nls.get(0).getData().getData();
 		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(methodname, smthandler);
 		csmsh.setNextstart(squeue.getLast());
-		return arglist.HandleCodeSynthesis(squeue, csmsh);
+		List<FlowLineNode<CSFlowLineData>> alls = arglist.HandleCodeSynthesis(squeue, csmsh);
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		Iterator<FlowLineNode<CSFlowLineData>> itr = alls.iterator();
+		while (itr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> fln = itr.next();
+			CSMethodInvocationData dt = new CSMethodInvocationData(fln.getData());
+			result.add(new FlowLineNode<CSFlowLineData>(dt, fln.getProbability()));
+		}
+		return result;
 	}
 
 	@Override
