@@ -26,7 +26,6 @@ public class methodArgPreExist extends referedExpression{
 		FlowLineNode<CSFlowLineData> mstart = null;
 		FlowLineNode<CSFlowLineData> mstop = null;
 		FlowLineNode<CSFlowLineData> tmppre = null;
-		int waittoconsumedpr = 0;
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();

@@ -5,11 +5,14 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 public class CSMethodInvocationData extends CSFlowLineData{
 	
 	private FlowLineNode<CSFlowLineData> mostfarem = null;
+	private int mostfarused = 0;
 	private boolean hasem = false;
 	
-	public CSMethodInvocationData(boolean hasem, CSFlowLineData dt) {
+	public CSMethodInvocationData(FlowLineNode<CSFlowLineData> mostfarem, int mostfarused, boolean hasem, CSFlowLineData dt) {
 		super(dt.getId(), dt.getSete(), dt.getData(), dt.getDcls(), dt.isHaspre(), dt.isHashole(), dt.getPretck(), dt.getPosttck(), dt.getHandler());
 		this.setHasem(hasem);
+		this.setMostfarused(mostfarused);
+		this.setMostfarem(mostfarem);
 	}
 	
 	public FlowLineNode<CSFlowLineData> getMostfarem() {
@@ -26,6 +29,14 @@ public class CSMethodInvocationData extends CSFlowLineData{
 	
 	public void setHasem(boolean hasem) {
 		this.hasem = hasem;
+	}
+
+	public int getMostfarused() {
+		return mostfarused;
+	}
+
+	public void setMostfarused(int mostfarused) {
+		this.mostfarused = mostfarused;
 	}
 	
 }
