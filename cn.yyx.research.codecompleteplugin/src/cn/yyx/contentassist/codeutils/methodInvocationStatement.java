@@ -10,6 +10,8 @@ import cn.yyx.contentassist.codesynthesis.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationData;
+import cn.yyx.contentassist.codesynthesis.data.CSPrData;
+import cn.yyx.contentassist.codesynthesis.data.CSPsData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 
@@ -65,6 +67,12 @@ public class methodInvocationStatement extends expressionStatement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
+		CSFlowLineData tlast = squeue.getLast().getData();
+		boolean hasem = false;
+		if ((tlast instanceof CSPsData) || (tlast instanceof CSPrData))
+		{
+			hasem = true;
+		}
 		List<FlowLineNode<CSFlowLineData>> nls = id.HandleCodeSynthesis(squeue, smthandler);
 		String methodname = nls.get(0).getData().getData();
 		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(methodname, smthandler);
@@ -75,7 +83,7 @@ public class methodInvocationStatement extends expressionStatement{
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
-			CSMethodInvocationData dt = new CSMethodInvocationData(fln.getData());
+			CSMethodInvocationData dt = new CSMethodInvocationData(hasem, fln.getData());
 			result.add(new FlowLineNode<CSFlowLineData>(dt, fln.getProbability()));
 		}
 		return result;
