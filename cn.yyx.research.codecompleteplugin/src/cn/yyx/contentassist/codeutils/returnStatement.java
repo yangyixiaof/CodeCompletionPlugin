@@ -10,7 +10,6 @@ import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class returnStatement extends statement{
 	
@@ -68,7 +67,7 @@ public class returnStatement extends statement{
 		else
 		{
 			List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "return;", null, null, false, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
+			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "return;", null, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 			return result;
 		}
 	}

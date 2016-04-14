@@ -12,7 +12,6 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSRightParenInfoData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class rightParentheseStatement extends statement{
 	
@@ -69,7 +68,7 @@ public class rightParentheseStatement extends statement{
 			throws CodeSynthesisException {
 		squeue.SetLastHasHole();
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		CSRightParenInfoData cr = new CSRightParenInfoData(times, squeue.GenerateNewNodeId(), smthandler.getSete(), CodeSynthesisHelper.GenerateCopiedContent(times, ")"), null, null, true, TypeComputationKind.NoOptr, squeue.GetLastHandler());
+		CSRightParenInfoData cr = new CSRightParenInfoData(times, squeue.GenerateNewNodeId(), smthandler.getSete(), CodeSynthesisHelper.GenerateCopiedContent(times, ")"), null, true, true, null, null, squeue.GetLastHandler());
 		result.add(new FlowLineNode<CSFlowLineData>(cr, smthandler.getProb()));
 		CSFlowLineBackTraceGenerationHelper.SearchAndModifyLeftParentheseNode(squeue, smthandler, cr, times);
 		return result;

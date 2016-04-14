@@ -10,7 +10,6 @@ import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 
 public class simpleType extends type{
@@ -70,7 +69,7 @@ public class simpleType extends type{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), text, null, null, false, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), text, null, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		List<FlowLineNode<CSFlowLineData>> rtls = CodeSynthesisHelper.HandleRawTypeSpecificationInfer(result, squeue, smthandler);
 		if (rtls.size() == 0)
 		{

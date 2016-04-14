@@ -10,7 +10,6 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 
 public class typeList implements OneCode {
@@ -84,7 +83,7 @@ public class typeList implements OneCode {
 		{
 			type ntp = itr.next();
 			List<FlowLineNode<CSFlowLineData>> ntpls = ntp.HandleCodeSynthesis(squeue, smthandler);
-			tpls = CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, tpls, ",", ntpls, null, TypeComputationKind.NoOptr, squeue, smthandler, null);
+			tpls = CSFlowLineHelper.ForwardMerge(null, tpls, ",", ntpls, null, squeue, smthandler, null, null);
 		}
 		return tpls;
 	}
