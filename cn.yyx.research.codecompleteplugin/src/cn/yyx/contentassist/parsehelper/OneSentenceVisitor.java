@@ -1043,13 +1043,19 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		usedobj.add(new nullLiteral());
 		return visitChildren(ctx);
 	}
-
+	
 	@Override
-	public Integer visitUnaryOperator(Java8Parser.UnaryOperatorContext ctx) {
-		usedobj.add(new unaryOperator(ctx.getText()));
+	public Integer visitPrefixUnaryOperator(Java8Parser.PrefixUnaryOperatorContext ctx) {
+		usedobj.add(new prefixUnaryOperator(ctx.getText()));
 		return visitChildren(ctx);
 	}
-
+	
+	@Override
+	public Integer visitPostfixUnaryOperator(Java8Parser.PostfixUnaryOperatorContext ctx) {
+		usedobj.add(new postfixUnaryOperator(ctx.getText()));
+		return visitChildren(ctx);
+	}
+	
 	@Override
 	public Integer visitBinaryOperator(Java8Parser.BinaryOperatorContext ctx) {
 		usedobj.add(new binaryOperator(ctx.getText()));

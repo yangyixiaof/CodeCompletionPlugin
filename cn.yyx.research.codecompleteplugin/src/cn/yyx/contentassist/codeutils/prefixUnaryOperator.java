@@ -11,19 +11,19 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputer;
 
-public class unaryOperator implements OneCode{
+public class prefixUnaryOperator implements OneCode{
 	
 	String optr = null;
 	
-	public unaryOperator(String text) {
+	public prefixUnaryOperator(String text) {
 		this.optr = text;
 	}
 	
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		if (t instanceof unaryOperator)
+		if (t instanceof prefixUnaryOperator)
 		{
-			if (optr.equals(((unaryOperator) t).optr))
+			if (optr.equals(((prefixUnaryOperator) t).optr))
 			{
 				return true;
 			}
@@ -33,10 +33,10 @@ public class unaryOperator implements OneCode{
 	
 	@Override
 	public double Similarity(OneCode t) {
-		if (t instanceof unaryOperator)
+		if (t instanceof prefixUnaryOperator)
 		{
 			double prob = 0;
-			if (optr.equals(((unaryOperator) t).optr))
+			if (optr.equals(((prefixUnaryOperator) t).optr))
 			{
 				prob = 1;
 			}
