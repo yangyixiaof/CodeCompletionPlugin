@@ -9,7 +9,6 @@ import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class methodDeclarationStatement extends statement{
 	
@@ -73,14 +72,14 @@ public class methodDeclarationStatement extends statement{
 		if (typelist != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
-			mergedls = CSFlowLineHelper.ConcateTwoFlowLineNodeList(null, idls, "(", tpls, "){\n\n}", TypeComputationKind.NoOptr, squeue, smthandler, null);
+			mergedls = CSFlowLineHelper.ForwardMerge(null, idls, "(", tpls, "){\n\n}", squeue, smthandler, null, null);
 		}
 		else
 		{
 			mergedls = CSFlowLineHelper.ConcateOneFlowLineList(null, idls, "(){\n\n}");
 		}
 		List<FlowLineNode<CSFlowLineData>> rtls = rt.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateTwoFlowLineNodeList("public ", rtls, " ", mergedls, null, TypeComputationKind.NoOptr, squeue, smthandler, null);
+		return CSFlowLineHelper.ForwardMerge("public ", rtls, " ", mergedls, null, squeue, smthandler, null, null);
 	}
 
 	@Override
