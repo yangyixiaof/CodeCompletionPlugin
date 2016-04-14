@@ -1,5 +1,8 @@
 package cn.yyx.contentassist.codesynthesis.data;
 
+import java.util.Stack;
+
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 
 public class CSMethodInvocationData extends CSFlowLineData{
@@ -37,6 +40,11 @@ public class CSMethodInvocationData extends CSFlowLineData{
 
 	public void setMostfarused(int mostfarused) {
 		this.mostfarused = mostfarused;
+	}
+	
+	@Override
+	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
+		signals.push(DataStructureSignalMetaInfo.MethodInvocation);
 	}
 	
 }

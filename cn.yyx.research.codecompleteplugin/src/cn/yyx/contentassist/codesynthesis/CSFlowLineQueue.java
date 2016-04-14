@@ -2,12 +2,21 @@ package cn.yyx.contentassist.codesynthesis;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.data.CSEnterParamInfoData;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationData;
+import cn.yyx.contentassist.codesynthesis.data.CSMethodSignalHandleResult;
+import cn.yyx.contentassist.codesynthesis.data.CSPrData;
+import cn.yyx.contentassist.codesynthesis.data.CSPsData;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableDeclarationData;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableHolderData;
+import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.commonutils.CheckUtil;
+import cn.yyx.contentassist.commonutils.ComplicatedSignal;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class CSFlowLineQueue {
@@ -92,6 +101,47 @@ public class CSFlowLineQueue {
 			}
 		}
 		return null;
+	}
+
+	public CSMethodSignalHandleResult BackSearchForMethodRelatedSignal() throws CodeSynthesisException {
+		Stack<Integer> signals = new Stack<Integer>();
+		FlowLineNode<CSFlowLineData> tmp = last;
+		int faremused = 0;
+		while (tmp != null)
+		{
+			CSFlowLineData tmpdata = tmp.getData();
+			if (!(tmpdata instanceof CSPrData || tmpdata instanceof CSPsData || tmpdata instanceof CSMethodInvocationData || tmpdata instanceof CSEnterParamInfoData))
+			{
+				continue;
+			}
+			tmpdata.HandleStackSignal(signals);
+			if ((signals.size() == 1))
+			{
+				Integer top = signals.peek();
+				ComplicatedSignal cs = ComplicatedSignal.ParseComplicatedSignal(top);
+				int sign = cs.getSign();
+				int count = cs.getCount();
+				if (sign == DataStructureSignalMetaInfo.MethodEnterParam)
+				{
+					if (tmpdata instanceof CSEnterParamInfoData)
+					{
+						faremused = (((CSEnterParamInfoData) tmpdata).getTimes() - count);
+					}
+					else
+					{
+						throw new CodeSynthesisException("What the fuck! the signal on top is MethodEnterParam but the corresponding data is not?");
+					}
+					break;
+				}
+			}
+			tmp = tmp.getPrev();
+		}
+		if (faremused == 0 || tmp == null)
+		{
+			throw new CodeSynthesisException("faremused is 0?");
+		}
+		CSMethodSignalHandleResult csres = new CSMethodSignalHandleResult(tmp, faremused);
+		return csres;
 	}
 
 	/*public FlowLineNode<CSFlowLineData> BackSearchForStructureSignal(int signal) {

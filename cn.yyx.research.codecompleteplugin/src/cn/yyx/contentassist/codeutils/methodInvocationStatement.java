@@ -10,6 +10,7 @@ import cn.yyx.contentassist.codesynthesis.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationData;
+import cn.yyx.contentassist.codesynthesis.data.CSMethodSignalHandleResult;
 import cn.yyx.contentassist.codesynthesis.data.CSPrData;
 import cn.yyx.contentassist.codesynthesis.data.CSPsData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -73,6 +74,7 @@ public class methodInvocationStatement extends expressionStatement{
 		{
 			hasem = true;
 		}
+		CSMethodSignalHandleResult csmshr = squeue.BackSearchForMethodRelatedSignal();
 		List<FlowLineNode<CSFlowLineData>> nls = id.HandleCodeSynthesis(squeue, smthandler);
 		String methodname = nls.get(0).getData().getData();
 		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(methodname, smthandler);
@@ -83,7 +85,7 @@ public class methodInvocationStatement extends expressionStatement{
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
-			CSMethodInvocationData dt = new CSMethodInvocationData(hasem, fln.getData());
+			CSMethodInvocationData dt = new CSMethodInvocationData(csmshr.getFarem(), csmshr.getFaremused(), hasem, fln.getData());
 			result.add(new FlowLineNode<CSFlowLineData>(dt, fln.getProbability()));
 		}
 		return result;

@@ -1,7 +1,11 @@
 package cn.yyx.contentassist.codesynthesis.data;
 
+import java.util.Stack;
+
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
+import cn.yyx.contentassist.commonutils.ComplicatedSignal;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class CSEnterParamInfoData extends CSFlowLineData{
@@ -25,6 +29,20 @@ public class CSEnterParamInfoData extends CSFlowLineData{
 
 	public void setTimes(int times) {
 		this.times = times;
+	}
+	
+	@Override
+	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
+		int tttimes = times;
+		while (!signals.isEmpty() && tttimes > 0)
+		{
+			tttimes--;
+			signals.pop();
+		}
+		if (signals.isEmpty())
+		{
+			signals.push(ComplicatedSignal.GenerateComplicatedSignal(DataStructureSignalMetaInfo.MethodEnterParam, tttimes));
+		}
 	}
 	
 }
