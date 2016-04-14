@@ -26,12 +26,14 @@ public class methodArgPreExist extends referedExpression{
 		FlowLineNode<CSFlowLineData> mstart = null;
 		FlowLineNode<CSFlowLineData> mstop = null;
 		FlowLineNode<CSFlowLineData> tmppre = null;
+		int waittoconsumedpr = 0;
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();
-			if (tmpdata instanceof CSPrData)
+			if (tmpdata instanceof CSPsData)
 			{
 				mstart = tmp;
+				waittoconsumedpr++;
 			}
 			if (tmpdata instanceof CSEnterParamInfoData || tmpdata instanceof CSPsData)
 			{
@@ -60,7 +62,7 @@ public class methodArgPreExist extends referedExpression{
 		// int argsize = realhandler.getArgsize();
 		return CSFlowLineBackTraceGenerationHelper.GenerateSynthesisCode(squeue, realhandler, mstart, mstop);
 	}
-
+	
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof methodArgPreExist)
@@ -69,7 +71,7 @@ public class methodArgPreExist extends referedExpression{
 		}
 		return false;
 	}
-
+	
 	@Override
 	public double Similarity(OneCode t) {
 		if (t instanceof methodArgPreExist)
@@ -78,5 +80,5 @@ public class methodArgPreExist extends referedExpression{
 		}
 		return 0;
 	}
-
+	
 }
