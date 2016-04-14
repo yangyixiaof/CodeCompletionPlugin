@@ -10,7 +10,6 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSPrData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class partialMethodPreRerferedExpressionEndStatement extends statement{
 	
@@ -36,7 +35,7 @@ public class partialMethodPreRerferedExpressionEndStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSPrData(squeue.GenerateNewNodeId(), smthandler.getSete(), "", null, null, true, TypeComputationKind.NoOptr, squeue.GetLastHandler()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSPrData(squeue.GenerateNewNodeId(), smthandler.getSete(), "", null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
 	}
 	
