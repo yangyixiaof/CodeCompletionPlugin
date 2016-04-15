@@ -9,6 +9,7 @@ import cn.yyx.contentassist.codesynthesis.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSEnterParamInfoData;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationData;
 import cn.yyx.contentassist.codesynthesis.data.CSPrData;
 import cn.yyx.contentassist.codesynthesis.data.CSPsData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -25,16 +26,56 @@ public class methodArgPreExist extends referedExpression{
 		FlowLineNode<CSFlowLineData> tmp = ns;
 		FlowLineNode<CSFlowLineData> mstart = null;
 		FlowLineNode<CSFlowLineData> mstop = null;
-		FlowLineNode<CSFlowLineData> tmppre = null;
+		boolean flag = false;
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();
+			if (flag)
+			{
+				if (tmpdata instanceof CSEnterParamInfoData || tmpdata instanceof CSPsData || tmpdata instanceof CSPrData)
+				{
+					mstop = tmp;
+					if (tmpdata instanceof CSPsData || tmpdata instanceof CSPrData)
+					{
+						realhandler.setNextstart(mstop);
+						realhandler.setMostfar(mstop.getNext());
+					}
+					else
+					{
+						realhandler.setNextstart(mstop.getPrev());
+						realhandler.setMostfar(mstop);
+					}
+					break;
+				}
+				if (tmpdata instanceof CSMethodInvocationData)
+				{
+					CSMethodInvocationData csmedt = (CSMethodInvocationData)tmpdata;
+					FlowLineNode<CSFlowLineData> mfem = csmedt.getMostfarem();
+					if (mfem != null)
+					{
+						int alltimes = ((CSEnterParamInfoData)mfem.getData()).getTimes();
+						int left = alltimes - csmedt.getMostfarused();
+						if (left > 0)
+						{
+							mstop = mfem;
+							realhandler.setNextstart(null);
+							// mstop.getPrev()
+							realhandler.setMostfar(mstop);
+							break;
+						}
+						else
+						{
+							tmp = mfem;
+						}
+					}
+				}
+			}
 			if (tmpdata instanceof CSPsData)
 			{
 				mstart = tmp;
-				waittoconsumedpr++;
+				flag = true;
 			}
-			if (tmpdata instanceof CSEnterParamInfoData || tmpdata instanceof CSPsData)
+			/*if (tmpdata instanceof CSEnterParamInfoData || tmpdata instanceof CSPsData)
 			{
 				realhandler.setNextstart(tmp);
 				realhandler.setMostfar(tmp);
@@ -48,8 +89,7 @@ public class methodArgPreExist extends referedExpression{
 					}
 					ce.decreaseUsedtimes(1);
 				}
-			}
-			tmppre = tmp;
+			}*/
 			tmp = tmp.getPrev();
 		}
 		if (mstart == null || mstop == null)
