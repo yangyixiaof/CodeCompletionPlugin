@@ -29,4 +29,6 @@ public class aaaaImportantMustTodo {
 	// TODO a[a[]] need to be tested.
 	
 	// TODO cstack must not set the structure info to null, the whole judge schema should be changed.
+	
+	// TODO field declare not handled.
 }
