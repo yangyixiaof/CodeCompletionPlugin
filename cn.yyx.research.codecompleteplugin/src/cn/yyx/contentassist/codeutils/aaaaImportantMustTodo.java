@@ -13,13 +13,13 @@ public class aaaaImportantMustTodo {
 	// method arg split should use DH@@, instead of DH@, to distinguish with common , Oh, this should be ignored.
 	
 	// Solved. Question: int a[][][] = new int[][][]; | int a[][][] = {......};the [][][] behind new should be considered. This needs the whole effort. But it may be included in ArrayType. ArrayClassCreation just handles it.
-	// TODO reminder to add '{' and '}' to the begin and end of type declaration.
+	// Solved. reminder to add '{' and '}' to the begin and end of type declaration. There is no need to do that.
 	
-	// TODO if has hint, must handled directly add the modified to result.
+	// Solved. if has hint, must handled directly add the modified to result. This is handled in the new mechanism.
 	
-	// TODO int[] when inferring specification, [] should be eliminated, this must be considered.
+	// Solved. int[] when inferring specification, [] should be eliminated, this must be considered.
 	
-	// TODO int must be translated to Integer. boolean float double char are the same. This must be done in program-processor phase.
+	// Solved. int must be translated to Integer. boolean float double char are the same. This must be done in program-processor phase. Not done in program-processor phase but handled in the plugin.
 	
 	// Solved. anonymousBegin need to be added to sequence. No problem.
 	
@@ -27,7 +27,7 @@ public class aaaaImportantMustTodo {
 	
 	// TODO a[a[]] need to be tested.
 	
-	// TODO cstack must not set the structure info to null, the whole judge schema should be changed.
+	// Solved. cstack must not set the structure info to null, the whole judge schema should be changed. Now changed to all-search.
 	
 	// TODO field declare not handled.
 }
