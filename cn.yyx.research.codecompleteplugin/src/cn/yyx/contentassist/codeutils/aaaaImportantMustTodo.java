@@ -29,5 +29,5 @@ public class aaaaImportantMustTodo {
 	
 	// Solved. cstack must not set the structure info to null, the whole judge schema should be changed. Now changed to all-search.
 	
-	// TODO field declare not handled.
+	// Solved. field declare not handled.
 }
