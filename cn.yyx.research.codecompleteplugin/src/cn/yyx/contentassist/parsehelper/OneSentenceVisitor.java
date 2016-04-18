@@ -13,6 +13,7 @@ import SJ8Parse.Java8Parser.ArgumentListContext;
 import SJ8Parse.Java8Parser.BothTypeContext;
 import SJ8Parse.Java8Parser.CommonClassMemberInvokeContext;
 import SJ8Parse.Java8Parser.EndOfArrayDeclarationIndexExpressionContext;
+import SJ8Parse.Java8Parser.EnumConstantDeclarationSplitCommaStatementContext;
 import SJ8Parse.Java8Parser.ExtendBoundContext;
 import SJ8Parse.Java8Parser.FirstArgPreExistContext;
 import SJ8Parse.Java8Parser.FirstArgReferedExpressionContext;
@@ -554,7 +555,14 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		smt = new arrayInitializerEndStatement();
 		return visitChildren(ctx);
 	}
-
+	
+	@Override
+	public Integer visitEnumConstantDeclarationSplitCommaStatement(
+			EnumConstantDeclarationSplitCommaStatementContext ctx) {
+		smt = new enumConstantDeclarationSplitCommaStatement();
+		return visitChildren(ctx);
+	}
+	
 	@Override
 	public Integer visitForStatement(Java8Parser.ForStatementContext ctx) {
 		smt = new forStatement();

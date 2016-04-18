@@ -74,7 +74,7 @@ public class enumConstantDeclarationStatement extends statement{
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		return false;
+		return true;
 	}
 	
 }
