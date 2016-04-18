@@ -29,6 +29,7 @@ import SJ8Parse.Java8Parser.UnionFirstTypeContext;
 import SJ8Parse.Java8Parser.UnionSecondTypeContext;
 import SJ8Parse.Java8Parser.WildcardBoundsContext;
 import cn.yyx.contentassist.codeutils.*;
+import cn.yyx.contentassist.commonutils.StringUtil;
 
 public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
@@ -450,7 +451,10 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 			new Exception().printStackTrace();
 			System.exit(1);
 		}
-		smt = new partialEndArrayAccessStatement((expressionStatement)smt);
+		EndOfArrayDeclarationIndexExpressionContext eae = ctx.endOfArrayDeclarationIndexExpression();
+		String eaetx = eae.getText();
+		int acount = StringUtil.CountHappenTimes(eaetx, ']');
+		smt = new partialEndArrayAccessStatement((expressionStatement)smt, acount);
 		return res;
 	}
 	

@@ -15,4 +15,19 @@ public class StringUtil {
 		}
 	}
 	
+	public static int CountHappenTimes(String content, char needcount)
+	{
+		int allcount = 0;
+		int len = content.length();
+		for (int i=0;i<len;i++)
+		{
+			char t = content.charAt(i);
+			if (t == needcount)
+			{
+				allcount++;
+			}
+		}
+		return allcount;
+	}
+	
 }

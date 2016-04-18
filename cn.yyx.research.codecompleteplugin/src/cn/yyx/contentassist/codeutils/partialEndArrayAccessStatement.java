@@ -15,9 +15,11 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 public class partialEndArrayAccessStatement extends statement{
 	
 	expressionStatement es = null;
+	int endrtimes = -1;
 	
-	public partialEndArrayAccessStatement(expressionStatement es) {
+	public partialEndArrayAccessStatement(expressionStatement es, int endrtimes) {
 		this.es = es;
+		this.endrtimes = endrtimes;
 	}
 
 	@Override
@@ -71,6 +73,7 @@ public class partialEndArrayAccessStatement extends statement{
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
+		TODO
 		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSArrayAccessStartData.class);
 		if (cnode == null)
 		{
