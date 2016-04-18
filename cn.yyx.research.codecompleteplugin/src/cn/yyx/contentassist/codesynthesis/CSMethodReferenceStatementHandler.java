@@ -7,7 +7,7 @@ public class CSMethodReferenceStatementHandler extends CSStatementHandler{
 	private boolean fieldused = false;
 	
 	public CSMethodReferenceStatementHandler(String field, CSStatementHandler csh) {
-		super(csh.getSete(), csh.getProb());
+		super(csh.getSete(), csh.getProb(), csh.getAoi());
 		this.setField(field);
 	}
 

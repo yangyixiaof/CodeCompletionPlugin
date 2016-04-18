@@ -20,7 +20,7 @@ public class CSMethodStatementHandler extends CSStatementHandler{
 	private FlowLineNode<CSFlowLineData> mostfar = null;
 	
 	public CSMethodStatementHandler(String methodname, CSStatementHandler csh) {
-		super(csh.getSete(), csh.getProb());
+		super(csh.getSete(), csh.getProb(), csh.getAoi());
 		this.setMethodname(methodname);
 	}
 	

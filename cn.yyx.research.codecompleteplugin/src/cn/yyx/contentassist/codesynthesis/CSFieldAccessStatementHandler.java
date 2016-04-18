@@ -7,7 +7,7 @@ public class CSFieldAccessStatementHandler extends CSStatementHandler{
 	private boolean fieldused = false;
 	
 	public CSFieldAccessStatementHandler(String field, CSStatementHandler csh) {
-		super(csh.getSete(), csh.getProb());
+		super(csh.getSete(), csh.getProb(), csh.getAoi());
 		this.setField(field);
 	}
 

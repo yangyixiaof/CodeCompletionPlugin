@@ -5,7 +5,7 @@ public class CSArgTypeStatementHandler extends CSStatementHandler{
 	private char prec = 'A';
 	
 	public CSArgTypeStatementHandler(char prec, CSStatementHandler csh) {
-		super(csh.getSete(), csh.getProb());
+		super(csh.getSete(), csh.getProb(), csh.getAoi());
 		this.setPrec(prec);
 	}
 
