@@ -90,12 +90,19 @@ public class CSFlowLineQueue {
 		return null;
 	}
 
-	public FlowLineNode<CSFlowLineData> BackSearchForSpecialClass(Class<?> cls) {
+	public FlowLineNode<CSFlowLineData> BackSearchForSpecialClass(Class<?> cls) throws CodeSynthesisException {
+		Stack<Integer> signals = new Stack<Integer>();
+		return BackSearchForSpecialClass(cls, signals);
+	}
+	
+	public FlowLineNode<CSFlowLineData> BackSearchForSpecialClass(Class<?> cls,
+			Stack<Integer> signals) throws CodeSynthesisException {
 		FlowLineNode<CSFlowLineData> tmp = last;
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();
-			if (tmpdata.getClass().equals(cls))
+			tmpdata.HandleStackSignal(signals);
+			if (tmpdata.getClass().equals(cls) && signals.isEmpty())
 			{
 				return tmp;
 			}
@@ -143,7 +150,7 @@ public class CSFlowLineQueue {
 		CSMethodSignalHandleResult csres = new CSMethodSignalHandleResult(tmp, faremused);
 		return csres;
 	}
-
+	
 	/*public FlowLineNode<CSFlowLineData> BackSearchForStructureSignal(int signal) {
 		FlowLineNode<CSFlowLineData> tmp = last;
 		while (tmp != null)

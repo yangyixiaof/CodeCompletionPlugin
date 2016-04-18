@@ -2,8 +2,10 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.data.CSArrayAccessEndData;
@@ -67,18 +69,22 @@ public class partialEndArrayAccessStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSArrayAccessEndData(squeue.GenerateNewNodeId(), smthandler.getSete(), "]", null, true, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+		CSArrayAccessEndData caaed = new CSArrayAccessEndData(endrtimes, squeue.GenerateNewNodeId(), smthandler.getSete(), "]", null, true, false, null, null, squeue.GetLastHandler());
+		FlowLineNode<CSFlowLineData> fln = new FlowLineNode<CSFlowLineData>(caaed, smthandler.getProb());
+		Stack<Integer> signals = new Stack<Integer>();
+		caaed.HandleStackSignal(signals);
+		FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForSpecialClass(CSArrayAccessStartData.class, signals);
+		if (cnode == null)
+		{
+			throw new CodeSynthesisException("ArrayAccessBlcok disappeared.");
+		}
+		CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, cnode);
+		result.add(fln);
 		return result;
 	}
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		TODO
-		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSArrayAccessStartData.class);
-		if (cnode == null)
-		{
-			throw new CodeSynthesisException("ArrayAccessBlcok disappeared.");
-		}
 		return false;
 	}
 	

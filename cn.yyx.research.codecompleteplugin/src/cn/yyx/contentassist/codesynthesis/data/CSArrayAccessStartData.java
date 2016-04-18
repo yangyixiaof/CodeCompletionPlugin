@@ -3,6 +3,7 @@ package cn.yyx.contentassist.codesynthesis.data;
 import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.commonutils.ComplicatedSignal;
 
 public class CSArrayAccessStartData extends CSFlowLineData{
 	
@@ -13,11 +14,21 @@ public class CSArrayAccessStartData extends CSFlowLineData{
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException{
 		Integer sl = signals.peek();
-		if (sl == null || sl != DataStructureSignalMetaInfo.ArrayAccessBlcok)
+		if (sl != null)
 		{
-			throw new CodeSynthesisException("array access does not in right block.");
+			ComplicatedSignal cs = ComplicatedSignal.ParseComplicatedSignal(sl);
+			if (cs.getSign() == DataStructureSignalMetaInfo.ArrayAccessBlcok)
+			{
+				int count = cs.getCount()-1;
+				signals.pop();
+				if (count > 0)
+				{
+					cs.setCount(count);
+					signals.push(cs.GetSignal());
+				}
+			}
 		}
-		signals.pop();
+		throw new CodeSynthesisException("array access does not in right block.");
 	}
 	
 }
