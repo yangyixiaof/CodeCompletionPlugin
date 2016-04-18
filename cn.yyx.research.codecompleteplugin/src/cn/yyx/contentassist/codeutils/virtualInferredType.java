@@ -38,7 +38,7 @@ public class virtualInferredType extends type{
 		CheckUtil.CheckStatementHandlerIsArgTypeStatementHandler(smthandler);
 		CSArgTypeStatementHandler ats = (CSArgTypeStatementHandler)smthandler;
 		String returntype = "Infer" + ats.GetAndIncreaseChar();
-		String modifidedname = squeue.GetLastHandler().getScopeOffsetRefHandler().GenerateNewDeclaredVariable(NameConvention.GetAbbreviationOfType(returntype), returntype, null);
+		String modifidedname = squeue.GetLastHandler().getScopeOffsetRefHandler().GenerateNewDeclaredVariable(NameConvention.GetAbbreviationOfType(returntype), returntype, null, smthandler.getAoi().isInFieldLevel());
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), modifidedname, null, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;

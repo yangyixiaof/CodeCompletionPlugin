@@ -270,7 +270,7 @@ public class CodeSynthesisHelper {
 			FlowLineNode<CSFlowLineData> fln = itr.next();
 			CSFlowLineData data = fln.getData();
 			String returntype = data.getData();
-			String modifidedname = squeue.GetLastHandler().getScopeOffsetRefHandler().GenerateNewDeclaredVariable(NameConvention.GetAbbreviationOfType(returntype), returntype, null);
+			String modifidedname = squeue.GetLastHandler().getScopeOffsetRefHandler().GenerateNewDeclaredVariable(NameConvention.GetAbbreviationOfType(returntype), returntype, null, smthandler.getAoi().isInFieldLevel());
 			String modifieddata = returntype + " " + modifidedname;
 			data.setData(modifieddata);
 		}

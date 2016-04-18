@@ -73,7 +73,7 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 		Iterator<String> vitr = varocs.iterator();
 		while (vitr.hasNext()) {
 			String vs = vitr.next();
-			clonedsc.NewDeclaredVariable(vs, detp);
+			clonedsc.NewDeclaredVariable(vs, detp, smthandler.getAoi().isInFieldLevel());
 		}
 		return pd;
 	}

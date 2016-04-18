@@ -132,7 +132,7 @@ public class variableDeclarationHolderStatement extends statement{
 		{
 			throw new CodeSynthesisException("No CSVariableDeclaration Node when handling CSVariableHolder.");
 		}
-		String modified = squeue.GetLastHandler().getScopeOffsetRefHandler().GenerateNewDeclaredVariable(name, typecode, holderlist);
+		String modified = squeue.GetLastHandler().getScopeOffsetRefHandler().GenerateNewDeclaredVariable(name, typecode, holderlist, smthandler.getAoi().isInFieldLevel());
 		return modified;
 	}
 
