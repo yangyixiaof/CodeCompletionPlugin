@@ -7,7 +7,7 @@ public class aaaaImportantMustTodo {
 	// be sure this happens: A@$C0?0=@HO IxE@1+@HO. Not this: A@$C0?0=@HO IxE@1+2 IxE@@pre+2.
 	// Such as : A@$C0?0=@HO m() ma(@pre).
 	
-	// TODO what is exactly the field offset?
+	// Solved. what is exactly the field offset? Now just the declaration position.
 	
 	// TODO what is behind enumConstantDeclarationStatement, can that cause stopping? If not, change that. This is very important.
 	
