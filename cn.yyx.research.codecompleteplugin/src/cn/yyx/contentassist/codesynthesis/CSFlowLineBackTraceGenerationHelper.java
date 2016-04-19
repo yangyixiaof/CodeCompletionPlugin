@@ -13,6 +13,9 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class CSFlowLineBackTraceGenerationHelper {
 
+	// TODO long term: debug to do, remember to do type check in some place.
+	// TODO long term: partialMethodPreRerferedExpressionEndStatement is not considered. Not know this question.
+	
 	// TODO extreme case : start node and stop node is same and is itself not considered.
 	// TODO remember to add extra data Last Node to extra data of the last node. 
 	
@@ -27,13 +30,10 @@ public class CSFlowLineBackTraceGenerationHelper {
 	 */
 	public static List<FlowLineNode<CSFlowLineData>> GenerateSynthesisCode(CSFlowLineQueue squeue, CSStatementHandler smthandler, FlowLineNode<CSFlowLineData> startnode,
 			FlowLineNode<CSFlowLineData> stopnode) throws CodeSynthesisException {
-		// before invoking this method, the related '@Em' or '@(' counts should
-		// be computed.
+		// before invoking this method, the related '@Em' or '@(' counts should be computed.
 		// start node must be the descendant of the stop node.
 		// the generated code includes start node and stop node.
 		// the start node itself must be handled before invoke this function.
-		
-		// TODO partialMethodPreRerferedExpressionEndStatement is not considered.
 		
 		FlowLineNode<CSFlowLineData> mergestart = startnode;
 		FlowLineNode<CSFlowLineData> thelastone = mergestart;
