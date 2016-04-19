@@ -3,7 +3,7 @@ package cn.yyx.contentassist.intellijcodecompletion;
 public class TODO {
 	
 	// Solved. exact match must merge the possibility.
-	// TODO Some small part of a statement duplicate its possibility, this is a serious problem.
+	// Solved. Some small part of a statement duplicate its possibility, this is a serious problem. Just judge two sentence if same, if same not merge probability.
 	
 	// Solved. multiple '(' or ')' should merge. multiple '{' or '}' should merge.
 	
