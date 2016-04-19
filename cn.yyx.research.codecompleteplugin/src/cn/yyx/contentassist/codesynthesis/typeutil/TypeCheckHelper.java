@@ -5,17 +5,16 @@ import java.util.LinkedList;
 
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 
-import cn.yyx.contentassist.commonutils.TypeCheck;
 import cn.yyx.contentassist.specification.MethodMember;
 
 public class TypeCheckHelper {
 	
-	public static boolean CanBeMutualCast(TypeCheck one, TypeCheck two)
+	/*public static boolean CanBeMutualCast(TypeCheck one, TypeCheck two)
 	{
 		Class<?> onetype = one.getExpreturntypeclass();
 		Class<?> twotype = two.getExpreturntypeclass();
 		return CanBeMutualCast(onetype, twotype);
-	}
+	}*/
 	
 	public static boolean CanBeMutualCast(Class<?> onetype, Class<?> twotype)
 	{
