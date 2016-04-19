@@ -2,13 +2,13 @@ package cn.yyx.contentassist.intellijcodecompletion;
 
 public class TODO {
 	
-	// TODO exact match must merge the possibility.
+	// Solved. exact match must merge the possibility.
 	// TODO Some small part of a statement duplicate its possibility, this must be solved.
 	
 	// TODO multiple '(' or ')' should merge. multiple '{' or '}' should merge.
 	
-	// TODO do-while should before judge.
-	// TODO do statement should be eliminated. do-while become do.
+	// Solved. do-while should before judge.
+	// Solved. do statement should be eliminated. do-while become do.
 	
 	// Solved. the sequence has not been eliminated by LCS.
 	
