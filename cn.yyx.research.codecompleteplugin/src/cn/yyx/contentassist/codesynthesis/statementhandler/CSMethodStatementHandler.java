@@ -1,4 +1,4 @@
-package cn.yyx.contentassist.codesynthesis;
+package cn.yyx.contentassist.codesynthesis.statementhandler;
 
 import java.util.Map;
 import java.util.TreeMap;

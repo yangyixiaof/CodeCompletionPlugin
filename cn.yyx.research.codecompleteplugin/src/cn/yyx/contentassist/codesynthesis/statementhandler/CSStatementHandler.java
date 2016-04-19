@@ -1,4 +1,4 @@
-package cn.yyx.contentassist.codesynthesis;
+package cn.yyx.contentassist.codesynthesis.statementhandler;
 
 import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;

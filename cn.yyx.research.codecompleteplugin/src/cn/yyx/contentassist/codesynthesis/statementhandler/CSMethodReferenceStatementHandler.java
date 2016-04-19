@@ -1,12 +1,12 @@
-package cn.yyx.contentassist.codesynthesis;
+package cn.yyx.contentassist.codesynthesis.statementhandler;
 
-public class CSFieldAccessStatementHandler extends CSStatementHandler{
+public class CSMethodReferenceStatementHandler extends CSStatementHandler{
 	
 	private String field = null;
 	
 	private boolean fieldused = false;
 	
-	public CSFieldAccessStatementHandler(String field, CSStatementHandler csh) {
+	public CSMethodReferenceStatementHandler(String field, CSStatementHandler csh) {
 		super(csh.getSete(), csh.getProb(), csh.getAoi());
 		this.setField(field);
 	}
@@ -23,8 +23,8 @@ public class CSFieldAccessStatementHandler extends CSStatementHandler{
 		return fieldused;
 	}
 
-	public void setFieldunused(boolean fieldunused) {
-		this.fieldused = fieldunused;
+	public void setFieldused(boolean fieldused) {
+		this.fieldused = fieldused;
 	}
 	
 }

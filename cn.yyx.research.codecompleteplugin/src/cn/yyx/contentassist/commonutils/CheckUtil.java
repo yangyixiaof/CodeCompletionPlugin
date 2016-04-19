@@ -1,8 +1,8 @@
 package cn.yyx.contentassist.commonutils;
 
-import cn.yyx.contentassist.codesynthesis.CSArgTypeStatementHandler;
-import cn.yyx.contentassist.codesynthesis.CSMethodStatementHandler;
-import cn.yyx.contentassist.codesynthesis.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.statementhandler.CSArgTypeStatementHandler;
+import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
+import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class CheckUtil {
 	

@@ -5,10 +5,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.codesynthesis.data.CSDataMetaInfo;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableHolderExtraInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeConflictException;
 
@@ -124,9 +126,21 @@ public class CSFlowLineHelper {
 		CSFlowLineData d1 = one.getData();
 		CSFlowLineData d2 = two.getData();
 		CSFlowLineData data = d1.Merge(prefix, concator, d2, postfix, squeue, smthandler, oneafter, beforetwo);
-		double cnctprob = one.getProbability() + two.getProbability();
+		double cnctprob = MergeTwoDataProbability(d1.getSete(), one.getProbability(), d2.getSete(), two.getProbability());
 		FlowLineNode<CSFlowLineData> cncted = new FlowLineNode<CSFlowLineData>(data, cnctprob);
 		return cncted;
+	}
+	
+	public static double MergeTwoDataProbability(Sentence sete1, double prob1, Sentence sete2, double prob2)
+	{
+		if (sete1 == sete2)
+		{
+			return prob1;
+		}
+		else
+		{
+			return prob1 + prob2;
+		}
 	}
 	
 }

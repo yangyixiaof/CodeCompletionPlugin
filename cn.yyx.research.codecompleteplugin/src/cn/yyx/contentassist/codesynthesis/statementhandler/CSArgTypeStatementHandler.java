@@ -1,4 +1,4 @@
-package cn.yyx.contentassist.codesynthesis;
+package cn.yyx.contentassist.codesynthesis.statementhandler;
 
 public class CSArgTypeStatementHandler extends CSStatementHandler{
 	
