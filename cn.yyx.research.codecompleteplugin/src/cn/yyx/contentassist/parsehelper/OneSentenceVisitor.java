@@ -244,6 +244,19 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		smt = new methodDeclarationStatement((argTypeList) typelist, (identifier) name, (type)rt);
 		return res;
 	}
+	
+
+	@Override
+	public Integer visitConstructionDeclarationStatement(Java8Parser.ConstructionDeclarationStatementContext ctx) {
+		Integer res = visitChildren(ctx);
+		Object name = usedobj.poll();
+		Object typelist = null;
+		if (ctx.argTypeList() != null) {
+			typelist = usedobj.poll();
+		}
+		smt = new constructionDeclarationStatement((argTypeList) typelist, (identifier) name);
+		return res;
+	}
 
 	@Override
 	public Integer visitEnumConstantDeclarationStatement(Java8Parser.EnumConstantDeclarationStatementContext ctx) {
