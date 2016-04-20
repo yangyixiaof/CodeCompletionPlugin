@@ -4,9 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.data.CSDataMetaInfo;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.CSLeftParenInfoData;
-import cn.yyx.contentassist.codesynthesis.data.CSRightParenInfoData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.SynthesisCodeManager;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
@@ -16,8 +15,8 @@ public class CSFlowLineBackTraceGenerationHelper {
 	// TODO long term: debug to do, remember to do type check in some place.
 	// TODO long term: partialMethodPreRerferedExpressionEndStatement is not considered. Not know this question.
 	
-	// TODO extreme case : start node and stop node is same and is itself not considered.
-	// TODO remember to add extra data Last Node to extra data of the last node. 
+	// Solved. extreme case : start node and stop node is same and is itself not considered.
+	// TODO remember to add extra data Last Node to extra data of the last node.
 	
 	/**
 	 * Reminder : Before invoking this method, the related '@Em' or '@(' counts
@@ -34,6 +33,7 @@ public class CSFlowLineBackTraceGenerationHelper {
 		// start node must be the descendant of the stop node.
 		// the generated code includes start node and stop node.
 		// the start node itself must be handled before invoke this function.
+		PreAddExtraLastNodeToStopNode(stopnode);
 		
 		FlowLineNode<CSFlowLineData> mergestart = startnode;
 		FlowLineNode<CSFlowLineData> thelastone = mergestart;
@@ -142,6 +142,7 @@ public class CSFlowLineBackTraceGenerationHelper {
 
 	public static List<FlowLineNode<CSFlowLineData>> GenerateNotYetAddedSynthesisCode(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, FlowLineNode<CSFlowLineData> startnode, FlowLineNode<CSFlowLineData> stopnode) throws CodeSynthesisException {
+		PreAddExtraLastNodeToStopNode(stopnode);
 		
 		FlowLineNode<CSFlowLineData> queuestartnode = squeue.getLast();
 		FlowLineNode<CSFlowLineData> snqueuestartnode = SearchForWholeNode(queuestartnode);
@@ -174,12 +175,16 @@ public class CSFlowLineBackTraceGenerationHelper {
 		return result;
 	}
 
+	private static void PreAddExtraLastNodeToStopNode(FlowLineNode<CSFlowLineData> stopnode) {
+		stopnode.getData().getExtraData().AddExtraData(CSDataMetaInfo.LastNode, stopnode);
+	}
+
 	public static FlowLineNode<CSFlowLineData> GetWholeNodeCode(FlowLineNode<CSFlowLineData> last) throws CodeSynthesisException {
 		FlowLineNode<CSFlowLineData> start = SearchForWholeNode(last);
 		return start.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(GetConcateId(last, start));
 	}
 
-	public static FlowLineNode<CSFlowLineData> SearchAndModifyLeftParentheseNode(CSFlowLineQueue squeue, CSStatementHandler smthandler,
+	/*public static FlowLineNode<CSFlowLineData> SearchAndModifyLeftParentheseNode(CSFlowLineQueue squeue, CSStatementHandler smthandler,
 			CSRightParenInfoData cr, int times) {
 		FlowLineNode<CSFlowLineData> last = squeue.getLast();
 		FlowLineNode<CSFlowLineData> tmp = last;
@@ -226,7 +231,7 @@ public class CSFlowLineBackTraceGenerationHelper {
 			tmp = tmp.getPrev();
 		}
 		return tmp;
-	}
+	}*/
 
 	/*
 	 * private static FlowLineNode<CSFlowLineData>

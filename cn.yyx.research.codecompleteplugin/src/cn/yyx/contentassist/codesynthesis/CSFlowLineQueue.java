@@ -52,10 +52,10 @@ public class CSFlowLineQueue {
 		this.last = last;
 	}
 	
-	public void SetLastHasHole()
+	/*public void SetLastHasHole()
 	{
 		last.getData().setHashole(true);
-	}
+	}*/
 
 	public FlowLineNode<CSFlowLineData> SearcheForRecentVariableDeclaredNode() {
 		FlowLineNode<CSFlowLineData> tmp = last;

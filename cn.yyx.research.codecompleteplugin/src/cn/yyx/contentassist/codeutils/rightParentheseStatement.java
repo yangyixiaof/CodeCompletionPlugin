@@ -2,12 +2,14 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSLeftParenInfoData;
 import cn.yyx.contentassist.codesynthesis.data.CSRightParenInfoData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
@@ -66,11 +68,15 @@ public class rightParentheseStatement extends statement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		squeue.SetLastHasHole();
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		CSRightParenInfoData cr = new CSRightParenInfoData(times, squeue.GenerateNewNodeId(), smthandler.getSete(), CodeSynthesisHelper.GenerateCopiedContent(times, ")"), null, true, true, null, null, squeue.GetLastHandler());
-		result.add(new FlowLineNode<CSFlowLineData>(cr, smthandler.getProb()));
-		CSFlowLineBackTraceGenerationHelper.SearchAndModifyLeftParentheseNode(squeue, smthandler, cr, times);
+		FlowLineNode<CSFlowLineData> fln = new FlowLineNode<CSFlowLineData>(cr, smthandler.getProb());
+		result.add(fln);
+		Stack<Integer> signals = new Stack<Integer>();
+		cr.HandleStackSignal(signals);
+		FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForSpecialClass(CSLeftParenInfoData.class, signals);
+		CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, cnode);
+		// CSFlowLineBackTraceGenerationHelper.SearchAndModifyLeftParentheseNode(squeue, smthandler, cr, times);
 		return result;
 	}
 	

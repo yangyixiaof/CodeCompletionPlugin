@@ -4,7 +4,6 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codepredict.Sentence;
-import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.ComplicatedSignal;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
@@ -12,8 +11,8 @@ import cn.yyx.contentassist.commonutils.SynthesisHandler;
 public class CSRightParenInfoData extends CSFlowLineData{
 	
 	private int times = 0;
-	private FlowLineNode<CSFlowLineData> mostleft = null;
-	private int mostleftremain = 0;
+	// private FlowLineNode<CSFlowLineData> mostleft = null;
+	// private int mostleftremain = 0;
 	
 	public CSRightParenInfoData(int times, Integer id, Sentence sete, String data, Class<?> dcls, boolean haspre,
 			boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
@@ -29,7 +28,7 @@ public class CSRightParenInfoData extends CSFlowLineData{
 		this.times = times;
 	}
 
-	public int getMostleftremain() {
+	/*public int getMostleftremain() {
 		return mostleftremain;
 	}
 
@@ -43,7 +42,7 @@ public class CSRightParenInfoData extends CSFlowLineData{
 
 	public void setMostleft(FlowLineNode<CSFlowLineData> mostleft) {
 		this.mostleft = mostleft;
-	}
+	}*/
 	
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException{
