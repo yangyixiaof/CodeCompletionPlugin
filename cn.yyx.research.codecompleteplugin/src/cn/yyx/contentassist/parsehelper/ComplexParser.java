@@ -10,7 +10,7 @@ public class ComplexParser {
 		try {
 			ParseRoot.ParseOneSentence(str, evalVisitor, false);
 		} catch (Exception e) {
-			System.err.println("Parse One Sentence error! serious error, the system will exit.");
+			System.err.println("Parse One Sentence error! serious error, the system will exit. The error parsed setence is :" + str + ".");
 			e.printStackTrace();
 			System.exit(1);
 		}
