@@ -17,11 +17,11 @@ import SJ8Parse.Java8Parser.EnumConstantDeclarationSplitCommaStatementContext;
 import SJ8Parse.Java8Parser.ExtendBoundContext;
 import SJ8Parse.Java8Parser.FirstArgPreExistContext;
 import SJ8Parse.Java8Parser.FirstArgReferedExpressionContext;
+import SJ8Parse.Java8Parser.IntegerLiteralContext;
 import SJ8Parse.Java8Parser.IntersectionFirstTypeContext;
 import SJ8Parse.Java8Parser.IntersectionSecondTypeContext;
 import SJ8Parse.Java8Parser.MethodArgPreExistContext;
 import SJ8Parse.Java8Parser.MethodArgReferedExpressionContext;
-import SJ8Parse.Java8Parser.OffsetContext;
 import SJ8Parse.Java8Parser.ParameterizedTypeContext;
 import SJ8Parse.Java8Parser.SimpleTypeContext;
 import SJ8Parse.Java8Parser.TypeContext;
@@ -950,19 +950,19 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		return visitChildren(ctx);
 	}
 
-	@Override
+	/*@Override
 	public Integer visitIdRawLetter(Java8Parser.IdRawLetterContext ctx) {
 		usedobj.add(new idRawLetter(ctx.getText()));
 		return visitChildren(ctx);
-	}
+	}*/
 
 	@Override
 	public Integer visitClassRef(Java8Parser.ClassRefContext ctx) {
-		List<OffsetContext> list = ctx.offset();
-		Iterator<OffsetContext> itr = list.iterator();
-		OffsetContext scopelevel = itr.next();
+		List<IntegerLiteralContext> list = ctx.integerLiteral();
+		Iterator<IntegerLiteralContext> itr = list.iterator();
+		IntegerLiteralContext scopelevel = itr.next();
 		int scope = Integer.parseInt(scopelevel.getText());
-		OffsetContext offsetlevel = itr.next();
+		IntegerLiteralContext offsetlevel = itr.next();
 		int off = Integer.parseInt(offsetlevel.getText());
 		usedobj.add(new classRef(scope, off));
 		return visitChildren(ctx);
@@ -970,11 +970,11 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitFinalFieldRef(Java8Parser.FinalFieldRefContext ctx) {
-		List<OffsetContext> list = ctx.offset();
-		Iterator<OffsetContext> itr = list.iterator();
-		OffsetContext scopelevel = itr.next();
+		List<IntegerLiteralContext> list = ctx.integerLiteral();
+		Iterator<IntegerLiteralContext> itr = list.iterator();
+		IntegerLiteralContext scopelevel = itr.next();
 		int scope = Integer.parseInt(scopelevel.getText());
-		OffsetContext offsetlevel = itr.next();
+		IntegerLiteralContext offsetlevel = itr.next();
 		int off = Integer.parseInt(offsetlevel.getText());
 		usedobj.add(new finalFieldRef(scope, off));
 		return visitChildren(ctx);
@@ -982,11 +982,11 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitFinalVarRef(Java8Parser.FinalVarRefContext ctx) {
-		List<OffsetContext> list = ctx.offset();
-		Iterator<OffsetContext> itr = list.iterator();
-		OffsetContext scopelevel = itr.next();
+		List<IntegerLiteralContext> list = ctx.integerLiteral();
+		Iterator<IntegerLiteralContext> itr = list.iterator();
+		IntegerLiteralContext scopelevel = itr.next();
 		int scope = Integer.parseInt(scopelevel.getText());
-		OffsetContext offsetlevel = itr.next();
+		IntegerLiteralContext offsetlevel = itr.next();
 		int off = Integer.parseInt(offsetlevel.getText());
 		usedobj.add(new finalVarRef(scope, off));
 		return visitChildren(ctx);
@@ -994,11 +994,11 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitCommonFieldRef(Java8Parser.CommonFieldRefContext ctx) {
-		List<OffsetContext> list = ctx.offset();
-		Iterator<OffsetContext> itr = list.iterator();
-		OffsetContext scopelevel = itr.next();
+		List<IntegerLiteralContext> list = ctx.integerLiteral();
+		Iterator<IntegerLiteralContext> itr = list.iterator();
+		IntegerLiteralContext scopelevel = itr.next();
 		int scope = Integer.parseInt(scopelevel.getText());
-		OffsetContext offsetlevel = itr.next();
+		IntegerLiteralContext offsetlevel = itr.next();
 		int off = Integer.parseInt(offsetlevel.getText());
 		usedobj.add(new commonFieldRef(scope, off));
 		return visitChildren(ctx);
@@ -1006,20 +1006,20 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitCommonVarRef(Java8Parser.CommonVarRefContext ctx) {
-		List<OffsetContext> list = ctx.offset();
-		Iterator<OffsetContext> itr = list.iterator();
-		OffsetContext scopelevel = itr.next();
+		List<IntegerLiteralContext> list = ctx.integerLiteral();
+		Iterator<IntegerLiteralContext> itr = list.iterator();
+		IntegerLiteralContext scopelevel = itr.next();
 		int scope = Integer.parseInt(scopelevel.getText());
-		OffsetContext offsetlevel = itr.next();
+		IntegerLiteralContext offsetlevel = itr.next();
 		int off = Integer.parseInt(offsetlevel.getText());
 		usedobj.add(new commonVarRef(scope, off));
 		return visitChildren(ctx);
 	}
 
-	@Override
+	/*@Override
 	public Integer visitOffset(Java8Parser.OffsetContext ctx) {
 		return visitChildren(ctx);
-	}
+	}*/
 
 	@Override
 	public Integer visitCodeHole(Java8Parser.CodeHoleContext ctx) {
