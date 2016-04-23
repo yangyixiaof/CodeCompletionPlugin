@@ -1015,7 +1015,14 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		usedobj.add(new commonVarRef(scope, off));
 		return visitChildren(ctx);
 	}
-
+	
+	@Override
+	public Integer visitThisExpression(Java8Parser.ThisExpressionContext ctx)
+	{
+		usedobj.add(new ThisExpression());
+		return null;
+	}
+	
 	/*@Override
 	public Integer visitOffset(Java8Parser.OffsetContext ctx) {
 		return visitChildren(ctx);
