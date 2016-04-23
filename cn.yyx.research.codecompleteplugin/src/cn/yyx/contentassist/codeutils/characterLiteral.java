@@ -14,6 +14,10 @@ public class characterLiteral extends literal{
 	String literal = null;
 	
 	public characterLiteral(String text) {
+		if (text.equals("'@w'"))
+		{
+			text = "' '";
+		}
 		this.literal = text;
 	}
 

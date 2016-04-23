@@ -2,6 +2,8 @@ package cn.yyx.contentassist.codeutils;
 
 public class aaaaImportantMustTodo {
 	
+	// TODO some rule adds more conditions, must be handled. such superFieldAccess not exists in previous version.
+	
 	// Solved. the handle of @HO can only be in the very end. remember to handle @HO at very end. No need to do that, array start and array end signal has solved the problem.
 	// be sure this happens: A@$C0?0=@HO IxE@1+@HO. Not this: A@$C0?0=@HO IxE@1+2 IxE@@pre+2.
 	// Such as : A@$C0?0=@HO m() ma(@pre).
