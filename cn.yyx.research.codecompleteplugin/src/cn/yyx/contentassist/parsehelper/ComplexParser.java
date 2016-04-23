@@ -1,5 +1,9 @@
 package cn.yyx.contentassist.parsehelper;
 
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.misc.ParseCancellationException;
+
 import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.parse.specialparse.ParseRoot;
 
@@ -11,6 +15,18 @@ public class ComplexParser {
 			ParseRoot.ParseOneSentence(str, evalVisitor, false);
 		} catch (Exception e) {
 			System.err.println("Parse One Sentence error! serious error, the system will exit. The error parsed setence is :" + str + ".");
+			if (e instanceof ParseCancellationException)
+			{
+				ParseCancellationException pce = (ParseCancellationException)e;
+				Throwable pc = pce.getCause();
+				if (pc instanceof RecognitionException)
+				{
+					RecognitionException re = (RecognitionException)pce.getCause();
+				    ParserRuleContext context = (ParserRuleContext)re.getCtx();
+				    System.err.println(re);
+				    System.err.println(context);
+				}
+			}
 			e.printStackTrace();
 			System.exit(1);
 		} catch (Error e) {
