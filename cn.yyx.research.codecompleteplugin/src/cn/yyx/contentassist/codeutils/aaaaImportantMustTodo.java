@@ -8,6 +8,22 @@ public class aaaaImportantMustTodo {
 	
 	// TODO DH@then and DH@else are not handled.
 	
+	// TODO finallyStatement : 'DH@finally' are not handled.
+	
+	// TODO tryStatement : 'DH@try' are not handled.
+	
+	// TODO chainFieldAccess | commonFieldRef | directThisFieldAccess | referedFieldAccess are not handled.
+	
+	// TODO addPrefixExpression | subPrefixExpression changed two places.
+	
+	// TODO normalLiteralStatement | negativeLiteralStatement | positiveLiteralStatement are not handled.
+	
+	// TODO lambdaExpressionStatement has changed to two situations.
+	
+	// TODO	methodInvocationStatement add two new sub instance.
+	
+	// TODO methodReferenceStatement add a new sub instance.
+	
 	// Solved. the handle of @HO can only be in the very end. remember to handle @HO at very end. No need to do that, array start and array end signal has solved the problem.
 	// be sure this happens: A@$C0?0=@HO IxE@1+@HO. Not this: A@$C0?0=@HO IxE@1+2 IxE@@pre+2.
 	// Such as : A@$C0?0=@HO m() ma(@pre).
