@@ -11,10 +11,10 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class integerLiteral extends numberLiteral{
 
-	int value = -1;
+	private int value = -1;
 	
 	public integerLiteral(int parseInt) {
-		this.value = parseInt;
+		this.setValue(parseInt);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class integerLiteral extends numberLiteral{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), value+"", null, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), getValue()+"", null, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
 	}
 
@@ -55,6 +55,14 @@ public class integerLiteral extends numberLiteral{
 	public void HandleNegativeOperator() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
 	}
 
 }
