@@ -12,7 +12,7 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class methodDeclarationStatement extends statement{
 	
-	argTypeList typelist = null;
+	argTypeList typelist = null; // warning: typelist could be null.
 	identifier id = null;
 	type rt = null;
 	

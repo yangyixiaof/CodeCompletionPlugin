@@ -12,7 +12,7 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class continueStatement extends statement{
 	
-	identifier id = null;
+	identifier id = null; // warning: id could be null.
 	
 	public continueStatement(identifier name) {
 		this.id = name;

@@ -1,50 +1,43 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class breakStatement extends statement{
+public class typeArguments implements OneCode{
 	
-	identifier id = null; // warning: id could be null.
+	List<typeArgument> tas = new LinkedList<typeArgument>();
 	
-	public breakStatement(identifier name) {
-		this.id = name;
+	public typeArguments() {
 	}
 	
+	public void AddToFirst(typeArgument ta)
+	{
+		tas.add(0, ta);
+	}
+
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		if (t instanceof breakStatement)
-		{
-			return true;
-		}
+		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	@Override
 	public double Similarity(OneCode t) {
-		if (t instanceof breakStatement)
-		{
-			return 0.6 + 0.4*(id.Similarity(((breakStatement) t).id));
-		}
+		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		return CodeSynthesisHelper.HandleBreakContinueCodeSynthesis(id, squeue, smthandler, "break");
-	}
-
-	@Override
-	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		return false;
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

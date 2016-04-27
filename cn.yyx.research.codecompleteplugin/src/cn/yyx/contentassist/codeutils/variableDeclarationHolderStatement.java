@@ -15,7 +15,7 @@ import cn.yyx.contentassist.commonutils.NameConvention;
 
 public class variableDeclarationHolderStatement extends statement{
 	
-	referedExpression rexp = null;
+	referedExpression rexp = null; // warning: rexp could be null.
 	
 	public variableDeclarationHolderStatement(referedExpression rexp) {
 		this.rexp = rexp;

@@ -13,11 +13,11 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 public class parameterizedType extends type{
 	
 	identifier id = null;
-	typeList typelist = null;
+	typeArguments tas = null;
 	
-	public parameterizedType(identifier id, typeList tlist) {
+	public parameterizedType(identifier id, typeArguments tas) {
 		this.id = id;
-		this.typelist = tlist;
+		this.tas = tas;
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class parameterizedType extends type{
 		{
 			modifiedidls = idls;
 		}
-		List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
+		List<FlowLineNode<CSFlowLineData>> tpls = tas.HandleCodeSynthesis(squeue, smthandler);
 		return CSFlowLineHelper.ForwardMerge(null, modifiedidls, "<", tpls, ">", squeue, smthandler, null, null);
 	}
 	

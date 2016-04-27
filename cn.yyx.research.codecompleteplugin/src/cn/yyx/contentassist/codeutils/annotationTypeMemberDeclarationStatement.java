@@ -13,7 +13,7 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 public class annotationTypeMemberDeclarationStatement extends statement{
 	
 	type type = null;
-	referedExpression drexp = null;
+	referedExpression drexp = null; // warning: drexp could be null.
 	
 	public annotationTypeMemberDeclarationStatement(type type, referedExpression drexp) {
 		this.type = type;

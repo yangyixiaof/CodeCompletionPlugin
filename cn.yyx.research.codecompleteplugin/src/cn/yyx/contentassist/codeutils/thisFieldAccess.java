@@ -4,44 +4,40 @@ import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class commonClassMemberInvoke extends classInvoke{
+public class thisFieldAccess extends fieldAccess {
 	
-	firstArgReferedExpression rexp = null;
+	identifier id = null;
+	referedExpression rexp = null;
+	type tp = null;
+	// rexp and tp only one can be not null or both null.
 	
-	public commonClassMemberInvoke(firstArgReferedExpression rexp) {
+	public thisFieldAccess(identifier id, referedExpression rexp, type tp) {
+		this.id = id;
 		this.rexp = rexp;
+		this.tp = tp;
 	}
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		return CodeSynthesisHelper.HandleClassInvokeCodeSynthesis(squeue, smthandler, rexp, null);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		if (t instanceof commonClassMemberInvoke)
-		{
-			if (rexp.CouldThoughtSame(((commonClassMemberInvoke) t).rexp))
-			{
-				return true;
-			}
-		}
+		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		if (t instanceof commonClassMemberInvoke)
-		{
-			return 0.3+0.7*(rexp.Similarity(((commonClassMemberInvoke) t).rexp));
-		}
+		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 }

@@ -14,12 +14,12 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class argTypeList implements OneCode {
 	
-	private List<argType> tps = new LinkedList<argType>();
+	private List<type> tps = new LinkedList<type>();
 	
 	public argTypeList() {
 	}
 	
-	public void AddToFirst(argType re)
+	public void AddToFirst(type re)
 	{
 		tps.add(0, re);
 	}
@@ -46,12 +46,12 @@ public class argTypeList implements OneCode {
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		CSArgTypeStatementHandler csats = new CSArgTypeStatementHandler('A', smthandler);
-		Iterator<argType> itr = tps.iterator();
-		argType tp = itr.next();
+		Iterator<type> itr = tps.iterator();
+		type tp = itr.next();
 		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, csats);
 		while (itr.hasNext())
 		{
-			argType ntp = itr.next();
+			type ntp = itr.next();
 			List<FlowLineNode<CSFlowLineData>> ntpls = ntp.HandleCodeSynthesis(squeue, csats);
 			tpls = CSFlowLineHelper.ForwardMerge(null, tpls, ",", ntpls, null, squeue, csats, null, null);
 		}

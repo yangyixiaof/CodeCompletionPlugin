@@ -1,22 +1,11 @@
 package cn.yyx.contentassist.codeutils;
 
-import java.util.List;
-
-import cn.yyx.contentassist.codepredict.CodeSynthesisException;
-import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
-import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
-import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.codesynthesis.statementhandler.CSFieldAccessStatementHandler;
-import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
-
-public class fieldAccess extends referedExpression{
+public abstract class fieldAccess extends referedExpression{
 	
-	identifier id = null;
-	referedExpression rexp = null;
+	// identifier id = null;
+	// referedExpression rexp = null;
 	
-	public fieldAccess(identifier name, referedExpression rexp) {
+	/*public fieldAccess(identifier name, referedExpression rexp) {
 		this.id = name;
 		this.rexp = rexp;
 	}
@@ -39,7 +28,7 @@ public class fieldAccess extends referedExpression{
 		return 0;
 	}
 
-	/*@Override
+	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		CSNode idcs = new CSNode(CSNodeType.TempUsed);
@@ -50,7 +39,7 @@ public class fieldAccess extends referedExpression{
 		result.setContenttype(CSNodeType.HalfFullExpression);
 		boolean conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, result, nai);
 		return conflict;
-	}*/
+	}
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
@@ -68,6 +57,6 @@ public class fieldAccess extends referedExpression{
 			return ls;
 		}
 		return rels;
-	}
+	}*/
 	
 }

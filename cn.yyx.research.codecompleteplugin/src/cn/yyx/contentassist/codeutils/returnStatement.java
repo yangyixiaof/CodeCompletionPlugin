@@ -13,7 +13,7 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class returnStatement extends statement{
 	
-	referedExpression rexp = null;
+	referedExpression rexp = null; // warning: rexp could be null.
 	
 	public returnStatement(referedExpression rexp) {
 		this.rexp = rexp;

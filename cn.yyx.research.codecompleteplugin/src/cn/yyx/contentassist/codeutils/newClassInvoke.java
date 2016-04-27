@@ -11,9 +11,9 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class newClassInvoke extends classInvoke {
 	
-	referedExpression rexp = null;
+	firstArgReferedExpression rexp = null; // warning: rexp could be null.
 	
-	public newClassInvoke(referedExpression rexp) {
+	public newClassInvoke(firstArgReferedExpression rexp) {
 		this.rexp = rexp;
 	}
 

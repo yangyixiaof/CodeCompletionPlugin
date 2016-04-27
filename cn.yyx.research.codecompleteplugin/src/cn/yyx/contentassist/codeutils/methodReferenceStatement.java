@@ -3,26 +3,46 @@ package cn.yyx.contentassist.codeutils;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
-import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodReferenceStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class methodReferenceStatement extends expressionStatement{
 	
-	identifier id = null;
-	referedExpression rexp = null;
+	methodReferenceExpression mre = null;
 	
-	public methodReferenceStatement(identifier name, referedExpression mrexp) {
-		this.id = name;
-		this.rexp = mrexp;
+	public methodReferenceStatement(methodReferenceExpression mre) {
+		this.mre = mre;
 	}
 
 	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean CouldThoughtSame(OneCode t) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public double Similarity(OneCode t) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/*@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof methodReferenceStatement)
 		{
@@ -43,7 +63,7 @@ public class methodReferenceStatement extends expressionStatement{
 		return 0;
 	}
 	
-	/*@Override
+	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		CSNode nacs = new CSNode(CSNodeType.ReferedExpression);
@@ -59,7 +79,7 @@ public class methodReferenceStatement extends expressionStatement{
 		rexp.HandleCodeSynthesis(squeue, expected, handler, fcs, nai);
 		squeue.add(fcs);
 		return false;
-	}*/
+	}
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
@@ -82,6 +102,6 @@ public class methodReferenceStatement extends expressionStatement{
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		return false;
-	}
+	}*/
 	
 }

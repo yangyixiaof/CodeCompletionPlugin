@@ -16,21 +16,21 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class methodInvocationStatement extends expressionStatement{
+public class commonMethodInvocationStatement extends expressionStatement{
 	
 	identifier id = null;
 	argumentList arglist = null;
 	
-	public methodInvocationStatement(identifier name, argumentList argList) {
+	public commonMethodInvocationStatement(identifier name, argumentList argList) {
 		this.id = name;
 		this.arglist = argList;
 	}
 	
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		if (t instanceof methodInvocationStatement)
+		if (t instanceof commonMethodInvocationStatement)
 		{
-			if (id.CouldThoughtSame(((methodInvocationStatement) t).id) || arglist.CouldThoughtSame(((methodInvocationStatement) t).arglist))
+			if (id.CouldThoughtSame(((commonMethodInvocationStatement) t).id) || arglist.CouldThoughtSame(((commonMethodInvocationStatement) t).arglist))
 			{
 				return true;
 			}
@@ -40,9 +40,9 @@ public class methodInvocationStatement extends expressionStatement{
 	
 	@Override
 	public double Similarity(OneCode t) {
-		if (t instanceof methodInvocationStatement)
+		if (t instanceof commonMethodInvocationStatement)
 		{
-			return 0.3 + 0.7*(0.5*(id.Similarity(((methodInvocationStatement) t).id)) + 0.5*(arglist.Similarity(((methodInvocationStatement) t).arglist)));
+			return 0.3 + 0.7*(0.5*(id.Similarity(((commonMethodInvocationStatement) t).id)) + 0.5*(arglist.Similarity(((commonMethodInvocationStatement) t).arglist)));
 		}
 		return 0;
 	}

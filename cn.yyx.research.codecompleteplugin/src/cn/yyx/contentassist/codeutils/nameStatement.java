@@ -1,17 +1,8 @@
 package cn.yyx.contentassist.codeutils;
 
-import java.util.List;
-
-import cn.yyx.contentassist.codepredict.CodeSynthesisException;
-import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
-import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
-
-public class nameStatement extends expressionStatement{
+public abstract class nameStatement extends expressionStatement{
 	
-	identifier id = null;
+	/*identifier id = null;
 	
 	public nameStatement(identifier name) {
 		this.id = name;
@@ -35,14 +26,14 @@ public class nameStatement extends expressionStatement{
 		return 0;
 	}
 	
-	/*@Override
+	@Override
 	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
 			CSNode result, AdditionalInfo ai) {
 		CSNode fcs = new CSNode(CSNodeType.WholeStatement);
 		id.HandleCodeSynthesis(squeue, expected, handler, fcs, ai);
 		squeue.add(fcs);
 		return false;
-	}*/
+	}
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
@@ -53,6 +44,6 @@ public class nameStatement extends expressionStatement{
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		return false;
-	}
+	}*/
 
 }

@@ -11,9 +11,9 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class superClassMemberInvoke extends classInvoke{
 	
-	referedExpression rexp = null;
+	firstArgReferedExpression rexp = null; // warning: rexp could be null.
 	
-	public superClassMemberInvoke(referedExpression rexp) {
+	public superClassMemberInvoke(firstArgReferedExpression rexp) {
 		this.rexp = rexp;
 	}
 

@@ -13,10 +13,12 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class lambdaExpressionStatement extends statement{
 	
-	argTypeList typelist = null;
+	argTypeList typelist = null; //warning: typelist could be null.
+	referedExpression rexp = null; //warning: rexp could be null.
 	
-	public lambdaExpressionStatement(argTypeList tlist) {
+	public lambdaExpressionStatement(argTypeList tlist, referedExpression rexp) {
 		this.typelist = tlist;
+		this.rexp = rexp;
 	}
 
 	@Override
