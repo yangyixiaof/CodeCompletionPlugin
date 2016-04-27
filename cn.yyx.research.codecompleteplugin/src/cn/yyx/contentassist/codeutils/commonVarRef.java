@@ -11,7 +11,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 
-public class commonVarRef extends identifier{
+public class commonVarRef extends referedExpression{
 	
 	int scope = -1;
 	int off = -1;

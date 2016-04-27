@@ -45,4 +45,10 @@ public class stringLiteral extends literal{
 		return result;
 	}
 
+	@Override
+	public void HandleNegativeOperator() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

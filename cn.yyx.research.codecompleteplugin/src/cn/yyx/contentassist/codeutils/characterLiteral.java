@@ -54,5 +54,11 @@ public class characterLiteral extends literal{
 		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), literal, null, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
 	}
+
+	@Override
+	public void HandleNegativeOperator() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

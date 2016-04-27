@@ -10,7 +10,7 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 
-public class finalVarRef extends identifier{
+public class finalVarRef extends referedExpression{
 	
 	int scope = -1;
 	int off = -1;

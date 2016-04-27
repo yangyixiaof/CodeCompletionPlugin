@@ -51,4 +51,10 @@ public class integerLiteral extends numberLiteral{
 		return result;
 	}
 
+	@Override
+	public void HandleNegativeOperator() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

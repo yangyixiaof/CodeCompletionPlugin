@@ -56,5 +56,11 @@ public class booleanLiteral extends literal{
 		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ""+value, null, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
 	}
+
+	@Override
+	public void HandleNegativeOperator() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
