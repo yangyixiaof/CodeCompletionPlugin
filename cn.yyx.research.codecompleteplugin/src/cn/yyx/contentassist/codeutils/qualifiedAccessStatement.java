@@ -9,7 +9,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class qualifiedAccessStatement extends statement{
+public class qualifiedAccessStatement extends expressionStatement{
 	
 	fieldAccess fa = null;
 	

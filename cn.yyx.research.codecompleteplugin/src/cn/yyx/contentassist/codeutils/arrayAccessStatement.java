@@ -13,7 +13,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class arrayAccessStatement extends statement{
+public class arrayAccessStatement extends expressionStatement {
 	
 	referedExpression rarr = null;
 	referedExpression rexp = null;
