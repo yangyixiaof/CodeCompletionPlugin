@@ -307,11 +307,11 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	
 	@Override
 	public Integer visitReferedFieldAccess(ReferedFieldAccessContext ctx) {
-		// TODO
-		System.out.println(ctx.getText());
-		System.out.println("usedobj pre size:" + usedobj.size());
+		// tested
+		// System.out.println(ctx.getText());
+		// System.out.println("usedobj pre size:" + usedobj.size());
 		Integer res = visitChildren(ctx);
-		System.out.println("usedobj post size:" + usedobj.size());
+		// System.out.println("usedobj post size:" + usedobj.size());
 		referedExpression rexp = (referedExpression) usedobj.pop();
 		identifier name = (identifier) usedobj.pop();
 		usedobj.push(new referedFieldAccess(name, rexp));
@@ -1351,7 +1351,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	
 	@Override
 	public Integer visitIntegerLiteral(Java8Parser.IntegerLiteralContext ctx) {
-		usedobj.push(new integerLiteral(Integer.parseInt(ctx.getText())));
+		usedobj.push(new integerLiteral(ctx.getText()));
 		return visitChildren(ctx);
 	}
 
@@ -1577,7 +1577,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		Integer res = visitChildren(ctx);
 		integerLiteral offl = (integerLiteral) usedobj.pop();
 		integerLiteral scopel = (integerLiteral) usedobj.pop();
-		usedobj.push(new classRef(scopel.getValue(), offl.getValue()));
+		usedobj.push(new classRef(Integer.parseInt(scopel.getValue()), Integer.parseInt(offl.getValue())));
 		return res;
 	}
 
@@ -1586,7 +1586,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		Integer res = visitChildren(ctx);
 		integerLiteral offl = (integerLiteral) usedobj.pop();
 		integerLiteral scopel = (integerLiteral) usedobj.pop();
-		usedobj.push(new finalFieldRef(scopel.getValue(), offl.getValue()));
+		usedobj.push(new finalFieldRef(Integer.parseInt(scopel.getValue()), Integer.parseInt(offl.getValue())));
 		return res;
 	}
 
@@ -1595,7 +1595,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		Integer res = visitChildren(ctx);
 		integerLiteral offl = (integerLiteral) usedobj.pop();
 		integerLiteral scopel = (integerLiteral) usedobj.pop();
-		usedobj.push(new finalVarRef(scopel.getValue(), offl.getValue()));
+		usedobj.push(new finalVarRef(Integer.parseInt(scopel.getValue()), Integer.parseInt(offl.getValue())));
 		return res;
 	}
 
@@ -1604,7 +1604,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		Integer res = visitChildren(ctx);
 		integerLiteral offl = (integerLiteral) usedobj.pop();
 		integerLiteral scopel = (integerLiteral) usedobj.pop();
-		usedobj.push(new commonFieldRef(scopel.getValue(), offl.getValue()));
+		usedobj.push(new commonFieldRef(Integer.parseInt(scopel.getValue()), Integer.parseInt(offl.getValue())));
 		return res;
 	}
 
@@ -1613,7 +1613,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		Integer res = visitChildren(ctx);
 		integerLiteral offl = (integerLiteral) usedobj.pop();
 		integerLiteral scopel = (integerLiteral) usedobj.pop();
-		usedobj.push(new commonVarRef(scopel.getValue(), offl.getValue()));
+		usedobj.push(new commonVarRef(Integer.parseInt(scopel.getValue()), Integer.parseInt(offl.getValue())));
 		return res;
 	}
 	

@@ -11,9 +11,9 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class integerLiteral extends numberLiteral{
 
-	private int value = -1;
+	private String value = null;
 	
-	public integerLiteral(int parseInt) {
+	public integerLiteral(String parseInt) {
 		this.setValue(parseInt);
 	}
 
@@ -57,12 +57,12 @@ public class integerLiteral extends numberLiteral{
 		
 	}
 
-	public int getValue() {
+	public String getValue() {
 		return value;
 	}
 
-	public void setValue(int value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
-
+	
 }
