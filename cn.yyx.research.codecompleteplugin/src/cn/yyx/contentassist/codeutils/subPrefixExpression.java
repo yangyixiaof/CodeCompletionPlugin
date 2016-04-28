@@ -10,10 +10,10 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class subPrefixExpression extends referedExpression {
 	
-	referedExpression rexp = null;
+	private referedExpression rexp = null;
 	
 	public subPrefixExpression(referedExpression rexp) {
-		this.rexp = rexp;
+		this.setRexp(rexp);
 	}
 	
 	@Override
@@ -33,6 +33,14 @@ public class subPrefixExpression extends referedExpression {
 	public double Similarity(OneCode t) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public referedExpression getRexp() {
+		return rexp;
+	}
+
+	public void setRexp(referedExpression rexp) {
+		this.rexp = rexp;
 	}
 
 }

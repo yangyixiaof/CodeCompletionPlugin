@@ -8,6 +8,7 @@ import java.util.Stack;
 import SJ8Parse.Java8BaseVisitor;
 import SJ8Parse.Java8Parser;
 import SJ8Parse.Java8Parser.AddInfixExpressionStatementContext;
+import SJ8Parse.Java8Parser.AddPrefixExpressionContext;
 import SJ8Parse.Java8Parser.AddPrefixExpressionStatementContext;
 import SJ8Parse.Java8Parser.AddassignAssignmentStatementContext;
 import SJ8Parse.Java8Parser.AndInfixExpressionStatementContext;
@@ -65,6 +66,7 @@ import SJ8Parse.Java8Parser.RshiftInfixExpressionStatementContext;
 import SJ8Parse.Java8Parser.RshiftassignAssignmentStatementContext;
 import SJ8Parse.Java8Parser.SimpleTypeContext;
 import SJ8Parse.Java8Parser.SubInfixExpressionStatementContext;
+import SJ8Parse.Java8Parser.SubPrefixExpressionContext;
 import SJ8Parse.Java8Parser.SubPrefixExpressionStatementContext;
 import SJ8Parse.Java8Parser.SubassignAssignmentStatementContext;
 import SJ8Parse.Java8Parser.SuperConstructionInvocationStatementContext;
@@ -232,36 +234,36 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	@Override
 	public Integer visitCastExpressionStatement(Java8Parser.CastExpressionStatementContext ctx) {
 		Integer res = visitChildren(ctx);
-		Object rexp = usedobj.pop();
-		Object type = usedobj.pop();
-		smt = new castExpressionStatement((type) type, (referedExpression) rexp);
+		referedExpression rexp = (referedExpression) usedobj.pop();
+		type type = (cn.yyx.contentassist.codeutils.type) usedobj.pop();
+		smt = new castExpressionStatement(type, rexp);
 		return res;
 	}
 	
 	@Override
 	public Integer visitCommonMethodInvocationStatement(CommonMethodInvocationStatementContext ctx) {
 		Integer res = visitChildren(ctx);
-		Object argList = usedobj.pop();
-		Object name = usedobj.pop();
-		smt = new commonMethodInvocationStatement((identifier) name, (argumentList) argList);
+		argumentList argList = (argumentList) usedobj.pop();
+		identifier name = (identifier) usedobj.pop();
+		smt = new commonMethodInvocationStatement(name, argList);
 		return res;
 	}
 	
 	@Override
 	public Integer visitTypeCreationInvocationStatement(TypeCreationInvocationStatementContext ctx) {
 		Integer res = visitChildren(ctx);
-		Object argList = usedobj.pop();
-		Object tp = usedobj.pop();
-		smt = new typeCreationInvocationStatement((type) tp, (argumentList) argList);
+		argumentList argList = (argumentList) usedobj.pop();
+		type tp = (type) usedobj.pop();
+		smt = new typeCreationInvocationStatement(tp, argList);
 		return res;
 	}
 	
 	@Override
 	public Integer visitSuperConstructionInvocationStatement(SuperConstructionInvocationStatementContext ctx) {
 		Integer res = visitChildren(ctx);
-		Object argList = usedobj.pop();
-		Object name = new identifier("super");
-		smt = new commonMethodInvocationStatement((identifier) name, (argumentList) argList);
+		argumentList argList = (argumentList) usedobj.pop();
+		identifier name = new identifier("super");
+		smt = new commonMethodInvocationStatement(name, argList);
 		return res;
 	}
 	
@@ -269,9 +271,9 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	public Integer visitThisConstructionInvocationStatement(ThisConstructionInvocationStatementContext ctx)
 	{
 		Integer res = visitChildren(ctx);
-		Object argList = usedobj.pop();
-		Object name = new identifier("this");
-		smt = new commonMethodInvocationStatement((identifier) name, (argumentList) argList);
+		argumentList argList = (argumentList) usedobj.pop();
+		identifier name = new identifier("this");
+		smt = new commonMethodInvocationStatement(name, argList);
 		return res;
 	}
 	
@@ -283,16 +285,16 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	@Override
 	public Integer visitQualifiedAccessStatement(QualifiedAccessStatementContext ctx) {
 		Integer res = visitChildren(ctx);
-		Object fa = usedobj.pop();
-		smt = new qualifiedAccessStatement((fieldAccess) fa);
+		fieldAccess fa = (fieldAccess) usedobj.pop();
+		smt = new qualifiedAccessStatement(fa);
 		return res;
 	}
 	
 	@Override
 	public Integer visitFieldAccessStatement(Java8Parser.FieldAccessStatementContext ctx) {
 		Integer res = visitChildren(ctx);
-		Object fa = usedobj.pop();
-		smt = new fieldAccessStatement((fieldAccess) fa);
+		fieldAccess fa = (fieldAccess) usedobj.pop();
+		smt = new fieldAccessStatement(fa);
 		return res;
 	}
 	
@@ -353,8 +355,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		{
 			tp = (type) usedobj.pop();
 		}
-		identifier name = (identifier) usedobj.pop();
-		usedobj.push(new superFieldAccess(name, rexp, tp));
+		usedobj.push(new thisFieldAccess(rexp, tp));
 		return res;
 	}
 	
@@ -619,6 +620,22 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	}
 	
 	@Override
+	public Integer visitAddPrefixExpression(AddPrefixExpressionContext ctx) {
+		Integer res = visitChildren(ctx);
+		referedExpression rexp = (referedExpression) usedobj.pop();
+		usedobj.add(new addPrefixExpression(rexp));
+		return res;
+	}
+	
+	@Override
+	public Integer visitSubPrefixExpression(SubPrefixExpressionContext ctx) {
+		Integer res = visitChildren(ctx);
+		referedExpression rexp = (referedExpression) usedobj.pop();
+		usedobj.add(new subPrefixExpression(rexp));
+		return res;
+	}
+	
+	@Override
 	public Integer visitAddPrefixExpressionStatement(AddPrefixExpressionStatementContext ctx) {
 		Integer res = visitChildren(ctx);
 		addPrefixExpression addrexp = (addPrefixExpression) usedobj.pop();
@@ -630,9 +647,9 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	@Override
 	public Integer visitSubPrefixExpressionStatement(SubPrefixExpressionStatementContext ctx) {
 		Integer res = visitChildren(ctx);
-		addPrefixExpression addrexp = (addPrefixExpression) usedobj.pop();
+		subPrefixExpression subrexp = (subPrefixExpression) usedobj.pop();
 		String optr = "-";
-		smt = new prefixExpressionStatement(optr, addrexp.getRexp());
+		smt = new prefixExpressionStatement(optr, subrexp.getRexp());
 		return res;
 	}
 	
@@ -710,8 +727,9 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		if (ctx.referedExpression() != null) {
 			drexp = (referedExpression) usedobj.pop();
 		}
-		type type = (cn.yyx.contentassist.codeutils.type) usedobj.pop();
-		smt = new annotationTypeMemberDeclarationStatement(type, drexp);
+		identifier id = (identifier) usedobj.pop();
+		type type = (type) usedobj.pop();
+		smt = new annotationTypeMemberDeclarationStatement(type, id, drexp);
 		return res;
 	}
 
@@ -998,8 +1016,10 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		Integer res = visitChildren(ctx);
 		if (smt == null || !(smt instanceof expressionStatement)) {
 			System.err.println("PartialEndArrayAccessStatement does handle expressionStatement.");
+			System.err.println(smt == null ? "smt is null":"smt class:" + smt.getClass());
 			new Exception().printStackTrace();
-			System.exit(1);
+			System.err.println(1/0); // cause fatal error.
+			// System.exit(1);
 		}
 		EndOfArrayDeclarationIndexExpressionContext eae = ctx.endOfArrayDeclarationIndexExpression();
 		String eaetx = eae.getText();
@@ -1193,7 +1213,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	
 	@Override
 	public Integer visitFirstArgReferedExpression(FirstArgReferedExpressionContext ctx) {
-		// do nothing.
+		Integer res = visitChildren(ctx);
 		referedExpression rexp = null;
 		ReferedExpressionContext rexpctx = ctx.referedExpression();
 		if (rexpctx != null)
@@ -1208,7 +1228,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		}
 		firstArgReferedExpression fare = new firstArgReferedExpression(rexp, tp);
 		usedobj.push(fare);
-		return visitChildren(ctx);
+		return res;
 	}
 	
 	@Override
@@ -1381,9 +1401,10 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	
 	@Override
 	public Integer visitTypeLiteral(TypeLiteralContext ctx) {
+		Integer res = visitChildren(ctx);
 		type tp = (type) usedobj.pop();
 		usedobj.push(new typeLiteral(tp));
-		return visitChildren(ctx);
+		return res;
 	}
 	
 	@Override
@@ -1406,8 +1427,10 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 
 	@Override
 	public Integer visitSimpleType(SimpleTypeContext ctx) {
-		usedobj.push(new simpleType(ctx.getText()));
-		return visitChildren(ctx);
+		Integer res = visitChildren(ctx);
+		identifier id = (identifier) usedobj.pop();
+		usedobj.push(new simpleType(id.getValue()));
+		return res;
 	}
 	
 	@Override

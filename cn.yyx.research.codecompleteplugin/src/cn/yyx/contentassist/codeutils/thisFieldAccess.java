@@ -10,13 +10,11 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class thisFieldAccess extends fieldAccess {
 	
-	identifier id = null;
 	referedExpression rexp = null;
 	type tp = null;
 	// rexp and tp only one can be not null or both null.
 	
-	public thisFieldAccess(identifier id, referedExpression rexp, type tp) {
-		this.id = id;
+	public thisFieldAccess(referedExpression rexp, type tp) {
 		this.rexp = rexp;
 		this.tp = tp;
 	}

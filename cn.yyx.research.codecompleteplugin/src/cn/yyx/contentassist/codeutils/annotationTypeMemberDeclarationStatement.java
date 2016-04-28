@@ -13,10 +13,12 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 public class annotationTypeMemberDeclarationStatement extends statement{
 	
 	type type = null;
+	identifier id = null;
 	referedExpression drexp = null; // warning: drexp could be null.
 	
-	public annotationTypeMemberDeclarationStatement(type type, referedExpression drexp) {
+	public annotationTypeMemberDeclarationStatement(type type, identifier id, referedExpression drexp) {
 		this.type = type;
+		this.id = id;
 		this.drexp = drexp;
 	}
 	

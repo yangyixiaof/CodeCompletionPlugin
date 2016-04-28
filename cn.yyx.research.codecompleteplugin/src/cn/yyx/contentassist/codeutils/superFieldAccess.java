@@ -15,8 +15,8 @@ public class superFieldAccess extends fieldAccess{
 	type tp = null;
 	// rexp and tp only one can be not null or both null.
 	
-	public superFieldAccess(identifier id, referedExpression rexp, type tp) {
-		this.id = id;
+	public superFieldAccess(identifier name, referedExpression rexp, type tp) {
+		this.id = name;
 		this.rexp = rexp;
 		this.tp = tp;
 	}

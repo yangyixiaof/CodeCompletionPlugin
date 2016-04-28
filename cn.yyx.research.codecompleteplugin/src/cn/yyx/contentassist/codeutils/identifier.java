@@ -10,10 +10,10 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class identifier extends referedExpression{
 	
-	String id = null;
+	private String value = null;
 	
 	public identifier(String idpara) {
-		this.id = idpara;
+		this.setValue(idpara);
 	}
 	
 	@Override
@@ -33,6 +33,14 @@ public class identifier extends referedExpression{
 	public double Similarity(OneCode t) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 	
 }
