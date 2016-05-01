@@ -24,6 +24,8 @@ public class aaaaImportantMustTodo {
 	
 	// TODO methodReferenceStatement add a new sub instance.
 	
+	// TODO argTypeList adds lastArgType, due to only last of method declaration is handled, the modifications of ScopeOffsetHandler do not need to be considered.
+	
 	// Solved. the handle of @HO can only be in the very end. remember to handle @HO at very end. No need to do that, array start and array end signal has solved the problem.
 	// be sure this happens: A@$C0?0=@HO IxE@1+@HO. Not this: A@$C0?0=@HO IxE@1+2 IxE@@pre+2.
 	// Such as : A@$C0?0=@HO m() ma(@pre).
