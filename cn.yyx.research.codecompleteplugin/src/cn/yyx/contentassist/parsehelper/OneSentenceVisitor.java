@@ -45,6 +45,7 @@ import SJ8Parse.Java8Parser.IncPostfixExpressionStatementContext;
 import SJ8Parse.Java8Parser.IncPrefixExpressionStatementContext;
 import SJ8Parse.Java8Parser.IntersectionFirstTypeContext;
 import SJ8Parse.Java8Parser.IntersectionSecondTypeContext;
+import SJ8Parse.Java8Parser.LastArgTypeContext;
 import SJ8Parse.Java8Parser.LeInfixExpressionStatementContext;
 import SJ8Parse.Java8Parser.LshiftInfixExpressionStatementContext;
 import SJ8Parse.Java8Parser.LshiftassignAssignmentStatementContext;
@@ -1314,6 +1315,14 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		usedobj.push(al);
 		return res;
 	}
+	
+	@Override
+	public Integer visitLastArgType(LastArgTypeContext ctx) {
+		Integer res = visitChildren(ctx);
+		type tp = (type) usedobj.pop();
+		usedobj.add(new lastArgType(tp));
+		return res;
+	}
 
 	/*@Override
 	public Integer visitTypeList(Java8Parser.TypeListContext ctx) {
@@ -1342,6 +1351,12 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	public Integer visitArgTypeList(ArgTypeListContext ctx) {
 		Integer res = visitChildren(ctx);
 		argTypeList al = new argTypeList();
+		LastArgTypeContext lastArgTypeCtx = ctx.lastArgType();
+		if (lastArgTypeCtx != null)
+		{
+			lastArgType lat = (lastArgType) usedobj.pop();
+			al.AddToFirst(lat);
+		}
 		List<TypeContext> rl = ctx.type();
 		Iterator<TypeContext> itr = rl.iterator();
 		while (itr.hasNext()) {
