@@ -14,7 +14,7 @@ public class aaaaImportantMustTodo {
 	
 	// TODO chainFieldAccess | commonFieldRef | directThisFieldAccess | referedFieldAccess are not handled.
 	
-	// TODO addPrefixExpression | subPrefixExpression changed two places.
+	// Solved. addPrefixExpression | subPrefixExpression changed two places.
 	
 	// TODO normalLiteralStatement | negativeLiteralStatement | positiveLiteralStatement are not handled.
 	
@@ -24,7 +24,7 @@ public class aaaaImportantMustTodo {
 	
 	// TODO methodReferenceStatement add a new sub instance.
 	
-	// TODO argTypeList adds lastArgType, due to only last of method declaration is handled, the modifications of ScopeOffsetHandler do not need to be considered.
+	// Solved. argTypeList adds lastArgType, due to only last of method declaration is handled, the modifications of ScopeOffsetHandler do not need to be considered.
 	
 	// TODO List<SingleVariableDeclaration> params = node.parameters();
 	//		for (SingleVariableDeclaration svd : params)

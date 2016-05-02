@@ -1349,6 +1349,12 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	@Override
 	public Integer visitArgTypeList(ArgTypeListContext ctx) {
 		Integer res = visitChildren(ctx);
+		/*LastArgTypeContext latctx = ctx.lastArgType();
+		lastArgType lat = null;
+		if (latctx != null)
+		{
+			lat = (lastArgType) usedobj.pop();
+		}*/
 		argTypeList al = new argTypeList();
 		LastArgTypeContext lastArgTypeCtx = ctx.lastArgType();
 		if (lastArgTypeCtx != null)

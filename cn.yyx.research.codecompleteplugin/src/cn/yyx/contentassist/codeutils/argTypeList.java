@@ -14,7 +14,7 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class argTypeList implements OneCode {
 	
-	private List<type> tps = new LinkedList<type>();
+	List<type> tps = new LinkedList<type>();
 	
 	public argTypeList() {
 	}
