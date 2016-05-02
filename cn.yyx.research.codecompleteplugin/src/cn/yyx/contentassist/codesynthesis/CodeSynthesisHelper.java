@@ -319,4 +319,38 @@ public class CodeSynthesisHelper {
 		return result;
 	}
 	
+	public static List<FlowLineNode<CSFlowLineData>> HandleFieldAccess(CSFlowLineQueue squeue, CSStatementHandler smthandler, OneCode rexp, String betweencontent, String fieldnamepara, OneCode field) throws CodeSynthesisException
+	{
+		if (field == null)
+		{
+			String bts = ((betweencontent != null && !betweencontent.equals("")) ? betweencontent  : "") + (((betweencontent != null && !betweencontent.equals("")) && (fieldnamepara != null && !fieldnamepara.equals("")))? "." : "" + fieldnamepara);
+			// CSFieldAccessStatementHandler csfash = new CSFieldAccessStatementHandler(bts, smthandler);
+			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+			if (!bts.equals(""))
+			{
+				return CSFlowLineHelper.ConcateOneFlowLineList("", rels, "." + bts);
+			}
+			else
+			{
+				return rels;
+			}
+		}
+		else
+		{
+			List<FlowLineNode<CSFlowLineData>> idls = field.HandleCodeSynthesis(squeue, smthandler);
+			CSFieldAccessStatementHandler csfash = new CSFieldAccessStatementHandler(idls.get(0).getData().getData(), smthandler);
+			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, csfash);
+			if (!(csfash.isFieldused()))
+			{
+				List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleFieldSpecificationInfer(rels, idls, squeue, smthandler, ".");
+				if (ls.size() == 0)
+				{
+					return CSFlowLineHelper.ForwardMerge(null, idls, ".", rels, null, squeue, smthandler, null, null);
+				}
+				return ls;
+			}
+			return rels;
+		}
+	}
+	
 }

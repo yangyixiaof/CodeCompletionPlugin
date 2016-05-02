@@ -5,6 +5,7 @@ import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.ErrorCheck;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
@@ -59,8 +60,7 @@ public class booleanLiteral extends literal{
 
 	@Override
 	public void HandleNegativeOperator() {
-		// TODO Auto-generated method stub
-		
+		ErrorCheck.NoGenerationCheck("Boolean literal needs to handle negative operator?");
 	}
 	
 }
