@@ -9,6 +9,10 @@ import java.util.Set;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codepredict.PredictMetaInfo;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationData;
+import cn.yyx.contentassist.codesynthesis.data.CSMethodSignalHandleResult;
+import cn.yyx.contentassist.codesynthesis.data.CSPrData;
+import cn.yyx.contentassist.codesynthesis.data.CSPsData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSFieldAccessStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodReferenceStatementHandler;
@@ -17,6 +21,8 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeResolver;
+import cn.yyx.contentassist.codeutils.OneCode;
+import cn.yyx.contentassist.codeutils.argumentList;
 import cn.yyx.contentassist.codeutils.identifier;
 import cn.yyx.contentassist.codeutils.referedExpression;
 import cn.yyx.contentassist.codeutils.type;
@@ -278,6 +284,39 @@ public class CodeSynthesisHelper {
 			String modifieddata = returntype + " " + modifidedname;
 			data.setData(modifieddata);
 		}
+	}
+	
+	public static List<FlowLineNode<CSFlowLineData>> HandleMethodInvocation(CSFlowLineQueue squeue, CSStatementHandler smthandler, argumentList arglist, String methodnamepara, OneCode id) throws CodeSynthesisException
+	{
+		CSFlowLineData tlast = squeue.getLast().getData();
+		boolean hasem = false;
+		if ((tlast instanceof CSPsData) || (tlast instanceof CSPrData))
+		{
+			hasem = true;
+		}
+		String methodname = null;
+		CSMethodSignalHandleResult csmshr = squeue.BackSearchForMethodRelatedSignal();
+		if (id != null)
+		{
+			List<FlowLineNode<CSFlowLineData>> nls = id.HandleCodeSynthesis(squeue, smthandler);
+			methodname = nls.get(0).getData().getData();
+		}
+		else
+		{
+			methodname = methodnamepara;
+		}
+		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(methodname, smthandler);
+		csmsh.setNextstart(squeue.getLast());
+		List<FlowLineNode<CSFlowLineData>> alls = arglist.HandleCodeSynthesis(squeue, csmsh);
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		Iterator<FlowLineNode<CSFlowLineData>> itr = alls.iterator();
+		while (itr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> fln = itr.next();
+			CSMethodInvocationData dt = new CSMethodInvocationData(csmshr.getFarem(), csmshr.getFaremused(), hasem, fln.getData());
+			result.add(new FlowLineNode<CSFlowLineData>(dt, fln.getProbability()));
+		}
+		return result;
 	}
 	
 }

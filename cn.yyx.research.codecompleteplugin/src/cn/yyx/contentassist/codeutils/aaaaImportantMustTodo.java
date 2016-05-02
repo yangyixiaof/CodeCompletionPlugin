@@ -4,7 +4,7 @@ public class aaaaImportantMustTodo {
 	
 	// TODO some rule adds more conditions, must be handled. such superFieldAccess not exists in previous version.
 	
-	// TODO needs to handle java varargs: Object... as Object[].
+	// Solved. needs to handle java varargs: Object... as Object[].
 	
 	// TODO DH@then and DH@else are not handled.
 	
@@ -20,7 +20,7 @@ public class aaaaImportantMustTodo {
 	
 	// TODO lambdaExpressionStatement has changed to two situations.
 	
-	// TODO	methodInvocationStatement add two new sub instance.
+	// Solved.	methodInvocationStatement add three new sub instance.
 	
 	// TODO methodReferenceStatement add a new sub instance.
 	

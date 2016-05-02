@@ -264,7 +264,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		Integer res = visitChildren(ctx);
 		argumentList argList = (argumentList) usedobj.pop();
 		identifier name = new identifier("super");
-		smt = new commonMethodInvocationStatement(name, argList);
+		smt = new superConstructionInvocationStatement(name, argList);
 		return res;
 	}
 	
@@ -273,8 +273,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	{
 		Integer res = visitChildren(ctx);
 		argumentList argList = (argumentList) usedobj.pop();
-		identifier name = new identifier("this");
-		smt = new commonMethodInvocationStatement(name, argList);
+		smt = new thisConstructionInvocationStatement(argList);
 		return res;
 	}
 	

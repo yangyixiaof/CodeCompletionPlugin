@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
@@ -22,25 +23,32 @@ public class typeCreationInvocationStatement extends expressionStatement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		return CodeSynthesisHelper.HandleMethodInvocation(squeue, smthandler, arglist, null, tp);
 	}
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof typeCreationInvocationStatement)
+		{
+			if (tp.CouldThoughtSame(((typeCreationInvocationStatement) t).tp) || arglist.CouldThoughtSame(((typeCreationInvocationStatement) t).arglist))
+			{
+				return true;
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof typeCreationInvocationStatement)
+		{
+			return 0.2 + 0.4*tp.Similarity(((typeCreationInvocationStatement) t).tp) + 0.4*(arglist.Similarity(((typeCreationInvocationStatement) t).arglist));
+		}
 		return 0;
 	}
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
