@@ -3,6 +3,7 @@ package cn.yyx.contentassist.codeutils;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -19,20 +20,30 @@ public class commonNewMethodReferenceExpression extends methodReferenceExpressio
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
+		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+		CSFlowLineHelper.ConcateOneFlowLineList(null, rels, "::new");
 		return null;
 	}
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof commonNewMethodReferenceExpression)
+		{
+			if (rexp.CouldThoughtSame(((commonNewMethodReferenceExpression) t).rexp))
+			{
+				return true;
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof commonNewMethodReferenceExpression)
+		{
+			return 0.4+0.6*(rexp.Similarity(((commonNewMethodReferenceExpression) t).rexp));
+		}
 		return 0;
 	}
-
+	
 }

@@ -20,25 +20,32 @@ public class methodReferenceStatement extends expressionStatement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		return mre.HandleCodeSynthesis(squeue, smthandler);
 	}
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof methodReferenceStatement)
+		{
+			if (mre.CouldThoughtSame(((methodReferenceStatement) t).mre))
+			{
+				return true;
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof methodReferenceStatement)
+		{
+			return 0.3+0.7*(mre.Similarity(((methodReferenceStatement) t).mre));
+		}
 		return 0;
 	}
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
