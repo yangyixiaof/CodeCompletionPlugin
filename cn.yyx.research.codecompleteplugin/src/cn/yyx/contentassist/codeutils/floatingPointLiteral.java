@@ -45,8 +45,7 @@ public class floatingPointLiteral extends numberLiteral{
 
 	@Override
 	public void HandleNegativeOperator() {
-		// TODO Auto-generated method stub
-		
+		this.value = -value;
 	}
 	
 }

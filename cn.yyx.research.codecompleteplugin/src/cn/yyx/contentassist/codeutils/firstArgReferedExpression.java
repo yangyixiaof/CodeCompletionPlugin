@@ -20,21 +20,51 @@ public class firstArgReferedExpression extends referedExpression{
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof firstArgReferedExpression)
+		{
+			if (rexp != null)
+			{
+				if (rexp.CouldThoughtSame(((firstArgReferedExpression) t).rexp))
+				{
+					return true;
+				}
+			}
+			else
+			{
+				if (tp.CouldThoughtSame(((firstArgReferedExpression) t).tp))
+				{
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof firstArgReferedExpression)
+		{
+			if (rexp != null)
+			{
+				return 0.4+0.6*(rexp.Similarity(((firstArgReferedExpression) t).rexp));
+			}
+			else
+			{
+				return 0.4+0.6*(tp.Similarity(((firstArgReferedExpression) t).tp));
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		if (rexp != null)
+		{
+			return rexp.HandleCodeSynthesis(squeue, smthandler);
+		} else {
+			return tp.HandleCodeSynthesis(squeue, smthandler);
+		}
 	}
 	
 }

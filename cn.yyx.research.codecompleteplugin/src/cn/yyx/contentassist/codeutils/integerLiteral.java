@@ -53,8 +53,10 @@ public class integerLiteral extends numberLiteral{
 
 	@Override
 	public void HandleNegativeOperator() {
-		// TODO Auto-generated method stub
-		
+		if (!value.startsWith("-"))
+		{
+			value = "-" + value;
+		}
 	}
 
 	public String getValue() {

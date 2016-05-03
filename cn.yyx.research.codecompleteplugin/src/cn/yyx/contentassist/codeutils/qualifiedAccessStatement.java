@@ -20,25 +20,29 @@ public class qualifiedAccessStatement extends expressionStatement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		return fa.HandleCodeSynthesis(squeue, smthandler);
 	}
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof qualifiedAccessStatement)
+		{
+			return fa.CouldThoughtSame(((qualifiedAccessStatement) t).fa);
+		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof qualifiedAccessStatement)
+		{
+			return 0.4+0.6*(fa.Similarity(((qualifiedAccessStatement) t).fa));
+		}
 		return 0;
 	}
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

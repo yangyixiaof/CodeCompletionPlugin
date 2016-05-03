@@ -1,12 +1,15 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codepredict.PredictMetaInfo;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.commonutils.SimilarityHelper;
 
 public class identifier extends referedExpression{
 	
@@ -19,19 +22,27 @@ public class identifier extends referedExpression{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), value, null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+		return result;
 	}
 	
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof identifier)
+		{
+			double sim = SimilarityHelper.ComputeTwoStringSimilarity(value, ((identifier) t).value);
+			return sim >= PredictMetaInfo.TwoStringSimilarThreshold;
+		}
 		return false;
 	}
 	
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof identifier)
+		{
+			return SimilarityHelper.ComputeTwoStringSimilarity(value, ((identifier) t).value);
+		}
 		return 0;
 	}
 
