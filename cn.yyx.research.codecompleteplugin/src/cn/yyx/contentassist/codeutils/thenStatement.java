@@ -14,26 +14,32 @@ public class thenStatement extends statement {
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
+		// do nothing.
 		return null;
 	}
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof thenStatement)
+		{
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof thenStatement)
+		{
+			return 1;
+		}
 		return 0;
 	}
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return false;
+		cstack.EnsureAllSignalNull();
+		return true;
 	}
-
+	
 }

@@ -20,26 +20,33 @@ public class fieldRefNameStatement extends nameStatement {
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		return cfr.HandleCodeSynthesis(squeue, smthandler);
 	}
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof fieldRefNameStatement)
+		{
+			if (cfr.CouldThoughtSame(((fieldRefNameStatement) t).cfr))
+			{
+				return true;
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof fieldRefNameStatement)
+		{
+			return 0.4+0.6*(cfr.Similarity(((fieldRefNameStatement) t).cfr));
+		}
 		return 0;
 	}
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 }

@@ -20,25 +20,32 @@ public class commonNameStatement extends nameStatement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		return id.HandleCodeSynthesis(squeue, smthandler);
 	}
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof commonNameStatement)
+		{
+			if (id.CouldThoughtSame(((commonNameStatement) t).id))
+			{
+				return true;
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof commonNameStatement)
+		{
+			return 0.4 + 0.6*id.Similarity(((commonNameStatement) t).id);
+		}
 		return 0;
 	}
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
