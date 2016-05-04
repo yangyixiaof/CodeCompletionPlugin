@@ -263,8 +263,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	public Integer visitSuperConstructionInvocationStatement(SuperConstructionInvocationStatementContext ctx) {
 		Integer res = visitChildren(ctx);
 		argumentList argList = (argumentList) usedobj.pop();
-		identifier name = new identifier("super");
-		smt = new superConstructionInvocationStatement(name, argList);
+		smt = new superConstructionInvocationStatement(argList);
 		return res;
 	}
 	

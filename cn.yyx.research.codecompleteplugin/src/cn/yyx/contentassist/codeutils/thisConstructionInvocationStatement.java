@@ -10,7 +10,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class thisConstructionInvocationStatement extends expressionStatement{
+public class thisConstructionInvocationStatement extends methodInvocationStatement{
 	
 	argumentList arglist = null;
 	
