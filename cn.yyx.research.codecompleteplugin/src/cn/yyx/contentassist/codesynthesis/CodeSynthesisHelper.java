@@ -338,6 +338,11 @@ public class CodeSynthesisHelper {
 		else
 		{
 			List<FlowLineNode<CSFlowLineData>> idls = field.HandleCodeSynthesis(squeue, smthandler);
+			if (betweencontent != null && !betweencontent.equals(""))
+			{
+				// TODO
+				idls = CSFlowLineHelper.ConcateOneFlowLineList(null, idls, "." + betweencontent);
+			}
 			CSFieldAccessStatementHandler csfash = new CSFieldAccessStatementHandler(idls.get(0).getData().getData(), smthandler);
 			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, csfash);
 			if (!(csfash.isFieldused()))

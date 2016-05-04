@@ -25,19 +25,57 @@ public class superFieldAccess extends fieldAccess{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof superFieldAccess)
+		{
+			if (tp == null && rexp == null)
+			{
+				if (id.CouldThoughtSame(((superFieldAccess) t).id))
+				{
+					return true;
+				}
+			}
+			if (tp != null && rexp == null)
+			{
+				if (tp.CouldThoughtSame(((superFieldAccess) t).tp))
+				{
+					return true;
+				}
+			}
+			if (tp == null && rexp != null)
+			{
+				if (rexp.CouldThoughtSame(((superFieldAccess) t).rexp))
+				{
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof superFieldAccess)
+		{
+			if (tp == null && rexp == null)
+			{
+				return 0.4+0.6*(id.Similarity(((superFieldAccess) t).id));
+			}
+			if (tp != null && rexp == null)
+			{
+				return 0.2+0.4*(id.Similarity(((superFieldAccess) t).id))+0.4*(tp.Similarity(((superFieldAccess) t).tp));
+			}
+			if (tp == null && rexp != null)
+			{
+				return 0.2+0.4*(id.Similarity(((superFieldAccess) t).id))+0.4*(rexp.Similarity(((superFieldAccess) t).rexp));
+			}
+		}
 		return 0;
 	}
-
+	
 }
