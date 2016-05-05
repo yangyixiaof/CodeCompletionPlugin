@@ -14,8 +14,6 @@ import cn.yyx.contentassist.codesynthesis.data.CSMethodSignalHandleResult;
 import cn.yyx.contentassist.codesynthesis.data.CSPrData;
 import cn.yyx.contentassist.codesynthesis.data.CSPsData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.codesynthesis.statementhandler.CSFieldAccessStatementHandler;
-import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodReferenceStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
@@ -52,21 +50,6 @@ public class CodeSynthesisHelper {
 		}
 		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), fin.toString(), void.class, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
-	}
-	
-	public static String GenerateDimens(int count)
-	{
-		return GenerateCopiedContent(count, "[]");
-	}
-	
-	public static String GenerateCopiedContent(int count, String cnt)
-	{
-		StringBuilder sb = new StringBuilder("");
-		for (int i=0;i<count;i++)
-		{
-			sb.append(cnt);
-		}
-		return sb.toString();
 	}
 	
 	public static List<FlowLineNode<CSFlowLineData>> HandleVarRefCodeSynthesis(Map<String, String> po, CSFlowLineQueue squeue, CSStatementHandler smthandler)
@@ -319,7 +302,39 @@ public class CodeSynthesisHelper {
 		return result;
 	}
 	
-	public static List<FlowLineNode<CSFlowLineData>> HandleFieldAccess(CSFlowLineQueue squeue, CSStatementHandler smthandler, OneCode rexp, String betweencontent, String fieldnamepara, OneCode field) throws CodeSynthesisException
+	public static List<FlowLineNode<CSFlowLineData>> HandleInferredContent(CSFlowLineQueue squeue, CSStatementHandler smthandler, List<FlowLineNode<CSFlowLineData>> infermain, List<FlowLineNode<CSFlowLineData>> expectedinfer, String inferoperator) throws CodeSynthesisException
+	{
+		List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleFieldSpecificationInfer(infermain, expectedinfer, squeue, smthandler, inferoperator);
+		if (ls.size() == 0)
+		{
+			return CSFlowLineHelper.ForwardMerge(null, infermain, inferoperator, expectedinfer, null, squeue, smthandler, null, null);
+		}
+		return ls;
+	}
+	
+	public static List<FlowLineNode<CSFlowLineData>> HandleInferredField(List<FlowLineNode<CSFlowLineData>> infermain, CSFlowLineQueue squeue,
+			CSStatementHandler smthandler, String reservedword,
+			List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException 
+	{
+		if (reservedword != null && !reservedword.equals(""))
+		{
+			CSFlowLineHelper.ConcateOneFlowLineList(null, infermain, "."+reservedword);
+		}
+		return CodeSynthesisHelper.HandleInferredContent(squeue, smthandler, infermain, expectedinfer, ".");
+	}
+	
+	public static List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(List<FlowLineNode<CSFlowLineData>> infermain, CSFlowLineQueue squeue,
+			CSStatementHandler smthandler, String reservedword,
+			List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException 
+	{
+		if (reservedword != null && !reservedword.equals(""))
+		{
+			CSFlowLineHelper.ConcateOneFlowLineList(null, infermain, "."+reservedword);
+		}
+		return CodeSynthesisHelper.HandleInferredContent(squeue, smthandler, infermain, expectedinfer, "::");
+	}
+	
+	/*public static List<FlowLineNode<CSFlowLineData>> HandleFieldAccess(CSFlowLineQueue squeue, CSStatementHandler smthandler, OneCode rexp, String betweencontent, String fieldnamepara, OneCode field) throws CodeSynthesisException
 	{
 		if (field == null)
 		{
@@ -338,11 +353,6 @@ public class CodeSynthesisHelper {
 		else
 		{
 			List<FlowLineNode<CSFlowLineData>> idls = field.HandleCodeSynthesis(squeue, smthandler);
-			if (betweencontent != null && !betweencontent.equals(""))
-			{
-				// TODO
-				idls = CSFlowLineHelper.ConcateOneFlowLineList(null, idls, "." + betweencontent);
-			}
 			CSFieldAccessStatementHandler csfash = new CSFieldAccessStatementHandler(idls.get(0).getData().getData(), smthandler);
 			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, csfash);
 			if (!(csfash.isFieldused()))
@@ -356,6 +366,6 @@ public class CodeSynthesisHelper {
 			}
 			return rels;
 		}
-	}
+	}*/
 	
 }

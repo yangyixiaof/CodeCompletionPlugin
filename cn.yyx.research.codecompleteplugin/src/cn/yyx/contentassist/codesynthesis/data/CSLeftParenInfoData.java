@@ -6,10 +6,10 @@ import java.util.TreeMap;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codepredict.Sentence;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.ComplicatedSignal;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.research.language.Utility.StringUtil;
 
 public class CSLeftParenInfoData extends CSFlowLineData{
 	
@@ -36,7 +36,8 @@ public class CSLeftParenInfoData extends CSFlowLineData{
 	public String getData() {
 		Thread current = Thread.currentThread();
 		int usedtimes = tempusedtimes.get(current.getId());
-		return CodeSynthesisHelper.GenerateCopiedContent(usedtimes, "(");
+		return StringUtil.GenerateDuplicates("(", usedtimes);
+		//CodeSynthesisHelper.GenerateCopiedContent(usedtimes, "(");
 	}
 	
 	public void AddThreadLeftUsedTimesInfo(Long threadid, int usedtimes)

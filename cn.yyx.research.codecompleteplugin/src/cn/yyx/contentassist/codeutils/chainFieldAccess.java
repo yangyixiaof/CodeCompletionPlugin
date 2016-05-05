@@ -3,6 +3,7 @@ package cn.yyx.contentassist.codeutils;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
@@ -22,7 +23,9 @@ public class chainFieldAccess extends fieldAccess {
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		return CodeSynthesisHelper.HandleFieldAccess(squeue, smthandler, fa, null, null, id);
+		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
+		List<FlowLineNode<CSFlowLineData>> fals = fa.HandleCodeSynthesis(squeue, smthandler);
+		return CSFlowLineHelper.ForwardMerge(null, fals, ".", idls, null, squeue, smthandler, null, null);
 	}
 	
 	@Override
@@ -47,6 +50,20 @@ public class chainFieldAccess extends fieldAccess {
 			}
 		}
 		return 0;
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue,
+			CSStatementHandler smthandler, String reservedword,
+			List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
+		return CodeSynthesisHelper.HandleInferredField(HandleCodeSynthesis(squeue, smthandler), squeue, smthandler, reservedword, expectedinfer);
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
+			CSStatementHandler smthandler, String reservedword,
+			List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
+		return CodeSynthesisHelper.HandleInferredMethodReference(HandleCodeSynthesis(squeue, smthandler), squeue, smthandler, reservedword, expectedinfer);
 	}
 	
 }
