@@ -3,12 +3,14 @@ package cn.yyx.contentassist.codepredict;
 import java.util.Iterator;
 import java.util.List;
 
+import cn.yyx.contentassist.codeutils.OneCode;
 import cn.yyx.contentassist.codeutils.argType;
 import cn.yyx.contentassist.codeutils.statement;
+import cn.yyx.contentassist.codeutils.typeArgument;
 
 public class LCSComparison {
 	
-	public static double LCSSimilarityOneCode(List<argType> x, List<argType> y) {
+	public static double LCSSimilarityOneCode(List<OneCode> x, List<OneCode> y) {
 		int m = x.size();
 		int n = y.size();
 		double[][] c = new double[m+1][n+1];
@@ -20,18 +22,18 @@ public class LCSComparison {
 		{
 			c[0][j] = 0;
 		}
-		Iterator<argType> iitr = x.iterator();
+		Iterator<OneCode> iitr = x.iterator();
 		int iidx = 0;
 		while (iitr.hasNext())
 		{
 			iidx++;
-			argType ismt = iitr.next();
-			Iterator<argType> jitr = y.iterator();
+			OneCode ismt = iitr.next();
+			Iterator<OneCode> jitr = y.iterator();
 			int jidx = 0;
 			while (jitr.hasNext())
 			{
 				jidx++;
-				argType jsmt = jitr.next();
+				OneCode jsmt = jitr.next();
 				double sim = ismt.Similarity(jsmt);
 				if (sim >= PredictMetaInfo.OneSentenceSimilarThreshold)
 				{
@@ -108,6 +110,44 @@ public class LCSComparison {
 			{
 				jidx++;
 				argType jsmt = jitr.next();
+				double sim = ismt.Similarity(jsmt);
+				if (sim >= PredictMetaInfo.OneSentenceSimilarThreshold)
+				{
+					c[iidx][jidx] = c[iidx - 1][jidx - 1] + 1;
+				} else if (c[iidx - 1][jidx] >= c[iidx][jidx - 1]) {
+					c[iidx][jidx] = c[iidx - 1][jidx];
+				} else {
+					c[iidx][jidx] = c[iidx][jidx - 1];
+				}
+			}
+		}
+		return c[m][n]/(Math.min(m, n)*1.0);
+	}
+	
+	public static double LCSSimilarityTypeArgument(List<typeArgument> x, List<typeArgument> y) {
+		int m = x.size();
+		int n = y.size();
+		double[][] c = new double[m+1][n+1];
+		for (int i = 1; i <= m; i++)
+		{
+			c[i][0] = 0;
+		}
+		for (int j = 0; j <= n; j++)
+		{
+			c[0][j] = 0;
+		}
+		Iterator<typeArgument> iitr = x.iterator();
+		int iidx = 0;
+		while (iitr.hasNext())
+		{
+			iidx++;
+			typeArgument ismt = iitr.next();
+			Iterator<typeArgument> jitr = y.iterator();
+			int jidx = 0;
+			while (jitr.hasNext())
+			{
+				jidx++;
+				typeArgument jsmt = jitr.next();
 				double sim = ismt.Similarity(jsmt);
 				if (sim >= PredictMetaInfo.OneSentenceSimilarThreshold)
 				{

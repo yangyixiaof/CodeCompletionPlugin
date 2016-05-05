@@ -1,9 +1,13 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codepredict.LCSComparison;
+import cn.yyx.contentassist.codepredict.PredictMetaInfo;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -23,21 +27,37 @@ public class typeArguments implements OneCode{
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof typeArguments)
+		{
+			if (Similarity(t) > PredictMetaInfo.SequenceSimilarThreshold)
+			{
+				return true;
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof typeArguments)
+		{
+			return 0.4 + 0.6*(LCSComparison.LCSSimilarityTypeArgument(tas, ((typeArguments) t).tas));
+		}
 		return 0;
 	}
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		Iterator<typeArgument> itr = tas.iterator();
+		typeArgument ta = itr.next();
+		List<FlowLineNode<CSFlowLineData>> tals = ta.HandleCodeSynthesis(squeue, smthandler);
+		while (itr.hasNext())
+		{
+			ta = itr.next();
+			tals = CSFlowLineHelper.ForwardMerge(null, tals, ",", ta.HandleCodeSynthesis(squeue, smthandler), null, squeue, smthandler, null, null);
+		}
+		return CSFlowLineHelper.ConcateOneFlowLineList("<", tals, ">");
 	}
 	
 }

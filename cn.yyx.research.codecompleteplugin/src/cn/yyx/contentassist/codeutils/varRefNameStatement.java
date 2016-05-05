@@ -20,25 +20,32 @@ public class varRefNameStatement extends nameStatement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		return cvr.HandleCodeSynthesis(squeue, smthandler);
 	}
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof varRefNameStatement)
+		{
+			if (cvr.CouldThoughtSame(((varRefNameStatement) t).cvr))
+			{
+				return true;
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof varRefNameStatement)
+		{
+			return 0.3 + 0.7*(cvr.Similarity(((varRefNameStatement) t).cvr));
+		}
 		return 0;
 	}
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

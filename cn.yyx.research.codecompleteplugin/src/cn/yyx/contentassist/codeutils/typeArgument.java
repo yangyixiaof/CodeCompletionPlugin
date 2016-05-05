@@ -20,21 +20,44 @@ public class typeArgument implements OneCode{
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof typeArgument)
+		{
+			if (tp != null)
+			{
+				return tp.CouldThoughtSame(((typeArgument) t).tp);
+			}
+			if (wct != null)
+			{
+				return wct.CouldThoughtSame(((typeArgument) t).wct);
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof typeArgument)
+		{
+			if (tp != null)
+			{
+				return 0.4 + 0.6*tp.Similarity(((typeArgument) t).tp);
+			}
+			if (wct != null)
+			{
+				return 0.4 + 0.6*wct.Similarity(((typeArgument) t).wct);
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		if (tp !=  null)
+		{
+			return tp.HandleCodeSynthesis(squeue, smthandler);
+		}
+		return wct.HandleCodeSynthesis(squeue, smthandler);
 	}
 	
 }
