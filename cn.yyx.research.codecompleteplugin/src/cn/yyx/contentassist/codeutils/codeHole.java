@@ -8,8 +8,6 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.ErrorCheck;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.codesynthesis.statementhandler.CSFieldAccessStatementHandler;
-import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodReferenceStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class codeHole extends referedExpression{
@@ -53,7 +51,7 @@ public class codeHole extends referedExpression{
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue,
-			CSFieldAccessStatementHandler smthandler, String reservedword,
+			CSStatementHandler smthandler, String reservedword,
 			List<FlowLineNode<CSFlowLineData>> expectedinfer) {
 		ErrorCheck.NoGenerationCheck("codeHole should handle InferredField?");
 		return null;
@@ -61,7 +59,7 @@ public class codeHole extends referedExpression{
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
-			CSMethodReferenceStatementHandler smthandler, String reservedword,
+			CSStatementHandler smthandler, String reservedword,
 			List<FlowLineNode<CSFlowLineData>> expectedinfer) {
 		ErrorCheck.NoGenerationCheck("codeHole should handle InferredMethodReference?");
 		return null;

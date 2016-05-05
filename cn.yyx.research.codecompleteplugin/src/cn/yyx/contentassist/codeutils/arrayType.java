@@ -60,12 +60,5 @@ public class arrayType extends type {
 		String dimens = StringUtil.GenerateDuplicates("[]", count);
 		return CSFlowLineHelper.ConcateOneFlowLineList(null, ls, dimens);
 	}
-
-	@Override
-	public List<FlowLineNode<CSFlowLineData>> HandleArgumentType(CSFlowLineQueue squeue, CSStatementHandler smthandler,
-			char seed) throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 }

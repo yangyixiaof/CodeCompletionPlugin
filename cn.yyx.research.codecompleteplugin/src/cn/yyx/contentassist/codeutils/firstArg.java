@@ -10,7 +10,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 
-public abstract class firstArg extends referedExpression {
+public abstract class firstArg implements OneCode {
 	
 	public abstract List<FlowLineNode<CSFlowLineData>> HandleClassOrMethodInvoke(CSFlowLineQueue squeue, CSStatementHandler smthandler, String methodname, Map<String, MethodTypeSignature> mts)
 			throws CodeSynthesisException;

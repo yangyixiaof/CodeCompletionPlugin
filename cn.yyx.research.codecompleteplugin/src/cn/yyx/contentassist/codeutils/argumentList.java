@@ -26,6 +26,7 @@ import cn.yyx.contentassist.specification.SpecificationHelper;
 public class argumentList implements OneCode {
 
 	private List<referedExpression> el = new LinkedList<referedExpression>();
+	private firstArg fa = null; 
 
 	public argumentList() {
 	}
@@ -149,22 +150,17 @@ public class argumentList implements OneCode {
 		List<referedExpression> reverseel = new ListDynamicHeper<referedExpression>().ReverseList(el);
 		List<List<FlowLineNode<CSFlowLineData>>> positiveargs = new LinkedList<List<FlowLineNode<CSFlowLineData>>>();
 		Iterator<referedExpression> ritr = reverseel.iterator();
-		List<FlowLineNode<CSFlowLineData>> invokers = null;
-		FlowLineNode<CSFlowLineData> mf = null;
 		Map<String, MethodTypeSignature> mts = new TreeMap<String, MethodTypeSignature>();
 		while (ritr.hasNext()) {
 			referedExpression re = ritr.next();
 			// List<FlowLineNode<CSFlowLineData>> oneargpospossibles = ;
 			if (!ritr.hasNext()) {
-				// handle invoker.
-				firstArg fa = (firstArg) re;
-				invokers = fa.HandleClassOrMethodInvoke(squeue, smthandler, methodname, mts);
-				mf = fa.MostReachedFar();
-			} else {
 				positiveargs.add(re.HandleCodeSynthesis(squeue, smthandler));
 			}
 		}
 		// handle invoker.
+		List<FlowLineNode<CSFlowLineData>> invokers = fa.HandleClassOrMethodInvoke(squeue, smthandler, methodname, mts);
+		FlowLineNode<CSFlowLineData> mf = fa.MostReachedFar();
 		Iterator<FlowLineNode<CSFlowLineData>> itr = invokers.iterator();
 		while (itr.hasNext()) {
 			FlowLineNode<CSFlowLineData> fln = itr.next();
@@ -229,6 +225,14 @@ public class argumentList implements OneCode {
 		ErrorCheck.NoGenerationCheck(
 				"argumentList should not invoke HandleCodeSynthesis, should invoke HandleMethodIntegrationCodeSynthesis instead.");
 		return null;
+	}
+
+	public firstArg getFirstArgument() {
+		return fa;
+	}
+
+	public void setFirstArgument(firstArg fa) {
+		this.fa = fa;
 	}
 
 }

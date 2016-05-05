@@ -17,7 +17,6 @@ public class argTypeList implements OneCode {
 	
 	List<argType> tps = new LinkedList<argType>();
 	lastArgType lat = null;
-	// TODO lastArgType and argType must be handled separately.
 	
 	public argTypeList(lastArgType lat) {
 		this.lat = lat;
@@ -46,7 +45,8 @@ public class argTypeList implements OneCode {
 		{
 			if (lat != null)
 			{
-				return 0.9*(LCSComparison.LCSSimilarityArgType(tps, ((argTypeList) t).tps)) + 0.1*(lat.Similarity(((argTypeList) t).lat));
+				double latpriority = 1/(1+tps.size());
+				return (1-latpriority)*(LCSComparison.LCSSimilarityArgType(tps, ((argTypeList) t).tps)) + latpriority*(lat.Similarity(((argTypeList) t).lat));
 			}
 			else
 			{
@@ -59,20 +59,28 @@ public class argTypeList implements OneCode {
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
+		List<FlowLineNode<CSFlowLineData>> ntpls = null;
 		if (lat != null)
 		{
-			
+			ntpls = lat.HandleCodeSynthesis(squeue, smthandler);
 		}
 		Iterator<argType> itr = tps.iterator();
-		argType tp = itr.next();
-		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleArgumentType(squeue, smthandler, 'A');
+		char seed = 'A';
 		while (itr.hasNext())
 		{
-			type ntp = itr.next();
-			List<FlowLineNode<CSFlowLineData>> ntpls = ntp.HandleCodeSynthesis(squeue, smthandler);
-			tpls = CSFlowLineHelper.ForwardMerge(null, tpls, ",", ntpls, null, squeue, smthandler, null, null);
+			argType tp = itr.next();
+			List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleArgumentType(squeue, smthandler, seed);
+			seed = tp.HandleSeed(seed);
+			if (ntpls == null)
+			{
+				ntpls = tpls;
+			}
+			else
+			{
+				ntpls = CSFlowLineHelper.ForwardMerge(null, tpls, ",", ntpls, null, squeue, smthandler, null, null);
+			}
 		}
-		return tpls;
+		return ntpls;
 	}
 	
 }

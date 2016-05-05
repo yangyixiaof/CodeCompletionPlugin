@@ -1310,7 +1310,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 			al.AddToFirst((referedExpression) o);
 		}
 		firstArg firstArg = (firstArg) usedobj.pop();
-		al.AddToFirst(firstArg);
+		al.setFirstArgument(firstArg);
 		usedobj.push(al);
 		return res;
 	}
