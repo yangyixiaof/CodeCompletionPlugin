@@ -3,7 +3,9 @@ package cn.yyx.contentassist.codeutils;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
@@ -24,9 +26,20 @@ public class superFieldAccess extends fieldAccess{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		
-		return null;
+		if (tp != null && rexp == null)
+		{
+			List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
+			List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
+			return CSFlowLineHelper.ForwardMerge(null, tpls, ".super.", idls, null, squeue, smthandler, null, null);
+		}
+		if (tp == null && rexp != null)
+		{
+			List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
+			List<FlowLineNode<CSFlowLineData>> rexpls = rexp.HandleCodeSynthesis(squeue, smthandler);
+			return CSFlowLineHelper.ForwardMerge(null, rexpls, ".super.", idls, null, squeue, smthandler, null, null);
+		}
+		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
+		return CSFlowLineHelper.ConcateOneFlowLineList("super.", idls, null);
 	}
 
 	@Override
@@ -81,16 +94,14 @@ public class superFieldAccess extends fieldAccess{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue, CSStatementHandler smthandler,
 			String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		return CodeSynthesisHelper.HandleInferredField(HandleCodeSynthesis(squeue, smthandler), squeue, smthandler, reservedword, expectedinfer);
 	}
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		return CodeSynthesisHelper.HandleInferredMethodReference(HandleCodeSynthesis(squeue, smthandler), squeue, smthandler, reservedword, expectedinfer);
 	}
 	
 }

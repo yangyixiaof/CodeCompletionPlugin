@@ -7,13 +7,13 @@ import java.util.Stack;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSLeftParenInfoData;
 import cn.yyx.contentassist.codesynthesis.data.CSRightParenInfoData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.research.language.Utility.StringUtil;
 
 public class rightParentheseStatement extends statement{
 	
@@ -69,7 +69,7 @@ public class rightParentheseStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		CSRightParenInfoData cr = new CSRightParenInfoData(times, squeue.GenerateNewNodeId(), smthandler.getSete(), CodeSynthesisHelper.GenerateCopiedContent(times, ")"), null, true, true, null, null, squeue.GetLastHandler());
+		CSRightParenInfoData cr = new CSRightParenInfoData(times, squeue.GenerateNewNodeId(), smthandler.getSete(), StringUtil.GenerateDuplicates(")", times), null, true, true, null, null, squeue.GetLastHandler());
 		FlowLineNode<CSFlowLineData> fln = new FlowLineNode<CSFlowLineData>(cr, smthandler.getProb());
 		result.add(fln);
 		Stack<Integer> signals = new Stack<Integer>();
