@@ -1,5 +1,6 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
@@ -14,26 +15,33 @@ public class tryStatement extends statement {
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "try", null, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+		return result;
 	}
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof tryStatement)
+		{
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof tryStatement)
+		{
+			return 1;
+		}
 		return 0;
 	}
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return false;
+		cstack.EnsureAllSignalNull();
+		return true;
 	}
 	
 }
