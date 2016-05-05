@@ -9,7 +9,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class superClassMemberInvoke extends classInvoke{
+public class superClassMemberInvoke extends firstArg{
 	
 	firstArgReferedExpression rexp = null; // warning: rexp could be null.
 	

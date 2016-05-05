@@ -5,11 +5,11 @@ import java.util.List;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
+import cn.yyx.research.language.Utility.StringUtil;
 
 public class arrayType extends type {
 	
@@ -57,8 +57,15 @@ public class arrayType extends type {
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> ls = tp.HandleCodeSynthesis(squeue, smthandler);
-		String dimens = CodeSynthesisHelper.GenerateDimens(count);
+		String dimens = StringUtil.GenerateDuplicates("[]", count);
 		return CSFlowLineHelper.ConcateOneFlowLineList(null, ls, dimens);
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleArgumentType(CSFlowLineQueue squeue, CSStatementHandler smthandler,
+			char seed) throws CodeSynthesisException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

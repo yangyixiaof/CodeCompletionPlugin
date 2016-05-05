@@ -15,6 +15,7 @@ import cn.yyx.parse.szparse8java.Java8Parser.AddPrefixExpressionStatementContext
 import cn.yyx.parse.szparse8java.Java8Parser.AddassignAssignmentStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.AndInfixExpressionStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.AndassignAssignmentStatementContext;
+import cn.yyx.parse.szparse8java.Java8Parser.ArgTypeContext;
 import cn.yyx.parse.szparse8java.Java8Parser.ArgTypeListContext;
 import cn.yyx.parse.szparse8java.Java8Parser.AssignAssignmentStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.BangPrefixExpressionStatementContext;
@@ -1308,7 +1309,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 			Object o = usedobj.pop();
 			al.AddToFirst((referedExpression) o);
 		}
-		classInvoke firstArg = (classInvoke) usedobj.pop();
+		firstArg firstArg = (firstArg) usedobj.pop();
 		al.AddToFirst(firstArg);
 		usedobj.push(al);
 		return res;
@@ -1335,15 +1336,15 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		}
 		usedobj.push(al);
 		return res;
-	}
+	}*/
 	
 	@Override
 	public Integer visitArgType(ArgTypeContext ctx) {
 		Integer res = visitChildren(ctx);
-		Object tp = usedobj.pop();
-		usedobj.push(new argType((type) tp));
+		type tp = (type) usedobj.pop();
+		usedobj.push(new argType(tp));
 		return res;
-	}*/
+	}
 	
 	@Override
 	public Integer visitArgTypeList(ArgTypeListContext ctx) {
@@ -1354,18 +1355,19 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		{
 			lat = (lastArgType) usedobj.pop();
 		}*/
-		argTypeList al = new argTypeList();
+		lastArgType lat = null;
 		LastArgTypeContext lastArgTypeCtx = ctx.lastArgType();
 		if (lastArgTypeCtx != null)
 		{
-			lastArgType lat = (lastArgType) usedobj.pop();
-			al.AddToFirst(lat);
+			lat = (lastArgType) usedobj.pop();
+			// al.AddToFirst(lat);
 		}
-		List<TypeContext> rl = ctx.type();
-		Iterator<TypeContext> itr = rl.iterator();
+		argTypeList al = new argTypeList(lat);
+		List<ArgTypeContext> rl = ctx.argType();
+		Iterator<ArgTypeContext> itr = rl.iterator();
 		while (itr.hasNext()) {
 			itr.next();
-			type o = (type) usedobj.pop();
+			argType o = (argType) usedobj.pop();
 			al.AddToFirst(o);
 		}
 		usedobj.push(al);

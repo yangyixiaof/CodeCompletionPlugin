@@ -13,12 +13,15 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class argTypeList implements OneCode {
 	
-	List<type> tps = new LinkedList<type>();
+	List<argType> tps = new LinkedList<argType>();
+	lastArgType lat = null;
+	// TODO lastArgType and argType must be handled separately.
 	
-	public argTypeList() {
+	public argTypeList(lastArgType lat) {
+		this.lat = lat;
 	}
 	
-	public void AddToFirst(type re)
+	public void AddToFirst(argType re)
 	{
 		tps.add(0, re);
 	}

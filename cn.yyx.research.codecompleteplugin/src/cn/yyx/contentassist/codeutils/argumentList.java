@@ -3,18 +3,20 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.ErrorCheck;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
-import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.commonutils.ListDynamicHeper;
 import cn.yyx.contentassist.commonutils.ListHelper;
 import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
@@ -22,7 +24,7 @@ import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.specification.SpecificationHelper;
 
 public class argumentList implements OneCode {
-	
+
 	private List<referedExpression> el = new LinkedList<referedExpression>();
 
 	public argumentList() {
@@ -137,83 +139,96 @@ public class argumentList implements OneCode {
 		return unusedorlatestused;
 	}
 
-	@Override
-	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
-			throws CodeSynthesisException {
-		CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
-		CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
-		realhandler.setArgsize(el.size() - 1);
+	public List<FlowLineNode<CSFlowLineData>> HandleMethodIntegrationCodeSynthesis(CSFlowLineQueue squeue,
+			CSStatementHandler smthandler, String methodname) throws CodeSynthesisException {
+		// CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
+		// CSMethodStatementHandler realhandler = (CSMethodStatementHandler)
+		// smthandler;
+		// realhandler.setArgsize(el.size() - 1);
 		// change to reverse order list.
 		List<referedExpression> reverseel = new ListDynamicHeper<referedExpression>().ReverseList(el);
 		List<List<FlowLineNode<CSFlowLineData>>> positiveargs = new LinkedList<List<FlowLineNode<CSFlowLineData>>>();
 		Iterator<referedExpression> ritr = reverseel.iterator();
 		List<FlowLineNode<CSFlowLineData>> invokers = null;
+		FlowLineNode<CSFlowLineData> mf = null;
+		Map<String, MethodTypeSignature> mts = new TreeMap<String, MethodTypeSignature>();
 		while (ritr.hasNext()) {
 			referedExpression re = ritr.next();
-			List<FlowLineNode<CSFlowLineData>> oneargpospossibles = re.HandleCodeSynthesis(squeue, smthandler);
+			// List<FlowLineNode<CSFlowLineData>> oneargpospossibles = ;
 			if (!ritr.hasNext()) {
 				// handle invoker.
-				invokers = oneargpospossibles;
-				Iterator<FlowLineNode<CSFlowLineData>> itr = invokers.iterator();
-				while (itr.hasNext()) {
-					FlowLineNode<CSFlowLineData> fln = itr.next();
-					CSFlowLineData data = fln.getData();
-					MethodTypeSignature msig = realhandler.GetMethodTypeSigById(data.getId());
-					StringBuilder sb = new StringBuilder(data.getData());
-					if (msig == null) {
-						String sepc = data.getData();
-						Set<String> specs = new TreeSet<String>();
-						specs.add(sepc);
-						RefAndModifiedMember ramm = SpecificationHelper.GetMostLikelyRef(squeue.GetLastHandler().getContextHandler(), specs, realhandler.getMethodname(), true, ".");
-						if (ramm != null)
-						{
-							msig = MethodTypeSignature.GenerateMethodTypeSignature(ramm.getMaxMm(), squeue.GetLastHandler().getContextHandler().getJavacontext());	
-						}
-						if (msig == null)
-						{
-							// directly add argument.
-							Iterator<List<FlowLineNode<CSFlowLineData>>> pitr = positiveargs.iterator();
-							sb.append("(");
-							while (pitr.hasNext()) {
-								List<FlowLineNode<CSFlowLineData>> pcnls = pitr.next();
-								sb.append(pcnls.get(0).getData().getData());
-								if (pitr.hasNext()) {
-									sb.append(",");
-								}
-							}
-							sb.append(")");
-						}
-					}
-					
-					// check and add argument.
-					List<Boolean> usedparams = ListHelper.InitialBooleanArray(positiveargs.size());
-					List<Class<?>> tps = msig.getArgtypes();
-					Iterator<Class<?>> tpitr = tps.iterator();
+				firstArg fa = (firstArg) re;
+				invokers = fa.HandleClassOrMethodInvoke(squeue, smthandler, methodname, mts);
+				mf = fa.MostReachedFar();
+			} else {
+				positiveargs.add(re.HandleCodeSynthesis(squeue, smthandler));
+			}
+		}
+		// handle invoker.
+		Iterator<FlowLineNode<CSFlowLineData>> itr = invokers.iterator();
+		while (itr.hasNext()) {
+			FlowLineNode<CSFlowLineData> fln = itr.next();
+			CSFlowLineData data = fln.getData();
+			MethodTypeSignature msig = mts.get(data.getId());
+			StringBuilder sb = new StringBuilder(data.getData());
+			if (msig == null) {
+				String sepc = data.getData();
+				Set<String> specs = new TreeSet<String>();
+				specs.add(sepc);
+				RefAndModifiedMember ramm = SpecificationHelper.GetMostLikelyRef(
+						squeue.GetLastHandler().getContextHandler(), specs, methodname, true, ".");
+				if (ramm != null) {
+					msig = MethodTypeSignature.GenerateMethodTypeSignature(ramm.getMaxMm(),
+							squeue.GetLastHandler().getContextHandler().getJavacontext());
+				}
+				if (msig == null) {
+					// directly add argument.
+					Iterator<List<FlowLineNode<CSFlowLineData>>> pitr = positiveargs.iterator();
 					sb.append("(");
-					while (tpitr.hasNext()) {
-						Class<?> c = tpitr.next();
-						String ct = HandleOneClassParamNodes(c, positiveargs, usedparams);
-						sb.append(ct);
-						if (tpitr.hasNext()) {
+					while (pitr.hasNext()) {
+						List<FlowLineNode<CSFlowLineData>> pcnls = pitr.next();
+						sb.append(pcnls.get(0).getData().getData());
+						if (pitr.hasNext()) {
 							sb.append(",");
 						}
 					}
 					sb.append(")");
-						
-					data.setData(sb.toString());
-					FlowLineNode<CSFlowLineData> mf = realhandler.getMostfar();
-					if (mf != null)
-					{
-						data.getSynthesisCodeManager().setBlockstart(mf);
-						String id = CSFlowLineBackTraceGenerationHelper.GetConcateId(squeue.getLast(), mf) + "." + data.getId();
-						mf.getData().getSynthesisCodeManager().AddSynthesisCode(id, fln);
-					}
 				}
-			} else {
-				positiveargs.add(oneargpospossibles);
+			}
+			// msig != null.
+			// check and add argument.
+			List<Boolean> usedparams = ListHelper.InitialBooleanArray(positiveargs.size());
+			List<Class<?>> tps = msig.getArgtypes();
+			Iterator<Class<?>> tpitr = tps.iterator();
+			sb.append("(");
+			while (tpitr.hasNext()) {
+				Class<?> c = tpitr.next();
+				String ct = HandleOneClassParamNodes(c, positiveargs, usedparams);
+				sb.append(ct);
+				if (tpitr.hasNext()) {
+					sb.append(",");
+				}
+			}
+			sb.append(")");
+
+			data.setData(sb.toString());
+			// realhandler.getMostfar();
+			if (mf != null) {
+				data.getSynthesisCodeManager().setBlockstart(mf);
+				String id = CSFlowLineBackTraceGenerationHelper.GetConcateId(squeue.getLast(), mf) + "." + data.getId();
+				mf.getData().getSynthesisCodeManager().AddSynthesisCode(id, fln);
 			}
 		}
 		return invokers;
+	}
+
+	@Override
+	@Deprecated
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		ErrorCheck.NoGenerationCheck(
+				"argumentList should not invoke HandleCodeSynthesis, should invoke HandleMethodIntegrationCodeSynthesis instead.");
+		return null;
 	}
 
 }
