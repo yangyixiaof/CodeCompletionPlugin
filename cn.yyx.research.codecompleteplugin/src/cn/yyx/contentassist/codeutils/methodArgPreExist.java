@@ -15,7 +15,7 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHand
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.commonutils.CheckUtil;
 
-public class methodArgPreExist extends referedExpression{
+public class methodArgPreExist extends referedExpression {
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
