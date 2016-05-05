@@ -1,13 +1,16 @@
 package cn.yyx.contentassist.codeutils;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
+import cn.yyx.contentassist.codesynthesis.ErrorCheck;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 
 public class newClassInvoke extends firstArg {
 	
@@ -60,9 +63,19 @@ public class newClassInvoke extends firstArg {
 	}
 
 	@Override
+	@Deprecated
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		return CodeSynthesisHelper.HandleClassInvokeCodeSynthesis(squeue, smthandler, rexp, "new ");
+		ErrorCheck.NoGenerationCheck("commonClassMemberInvoke should not invoke HandleCodeSynthesis, but HandleClassOrMethodInvoke instead.");
+		// return CodeSynthesisHelper.HandleClassInvokeCodeSynthesis(squeue, smthandler, rexp, "new ");
+		return null;
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleClassOrMethodInvoke(CSFlowLineQueue squeue,
+			CSStatementHandler smthandler, String methodname, Map<String, MethodTypeSignature> mts)
+			throws CodeSynthesisException {
+		return CodeSynthesisHelper.HandleClassInvokeCodeSynthesis(squeue, smthandler, rexp, "new ", methodname, mts);
 	}
 	
 }

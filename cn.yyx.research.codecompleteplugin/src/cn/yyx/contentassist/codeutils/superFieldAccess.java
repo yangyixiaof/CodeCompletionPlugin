@@ -77,5 +77,20 @@ public class superFieldAccess extends fieldAccess{
 		}
 		return 0;
 	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue, CSStatementHandler smthandler,
+			String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
+			CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
+			throws CodeSynthesisException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

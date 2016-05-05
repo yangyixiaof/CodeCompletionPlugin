@@ -1,13 +1,16 @@
 package cn.yyx.contentassist.codeutils;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
+import cn.yyx.contentassist.codesynthesis.ErrorCheck;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 
 public class selfClassMemberInvoke extends firstArg{
 	
@@ -18,9 +21,12 @@ public class selfClassMemberInvoke extends firstArg{
 	}
 	
 	@Override
+	@Deprecated
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		return CodeSynthesisHelper.HandleClassInvokeCodeSynthesis(squeue, smthandler, rexp, null);
+		ErrorCheck.NoGenerationCheck("selfClassMemberInvoke should not invoke HandleCodeSynthesis, but HandleClassOrMethodInvoke instead.");
+		// return CodeSynthesisHelper.HandleClassInvokeCodeSynthesis(squeue, smthandler, rexp, null);
+		return null;
 	}
 	
 	/*@Override
@@ -63,6 +69,13 @@ public class selfClassMemberInvoke extends firstArg{
 			return 1;
 		}
 		return 0;
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleClassOrMethodInvoke(CSFlowLineQueue squeue,
+			CSStatementHandler smthandler, String methodname, Map<String, MethodTypeSignature> mts)
+			throws CodeSynthesisException {
+		return CodeSynthesisHelper.HandleClassInvokeCodeSynthesis(squeue, smthandler, rexp, null, methodname, mts);
 	}
 	
 }

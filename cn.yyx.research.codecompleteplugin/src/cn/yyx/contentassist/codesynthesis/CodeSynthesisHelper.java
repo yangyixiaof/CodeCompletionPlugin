@@ -18,8 +18,8 @@ import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeResolver;
 import cn.yyx.contentassist.codeutils.OneCode;
 import cn.yyx.contentassist.codeutils.argumentList;
+import cn.yyx.contentassist.codeutils.firstArgReferedExpression;
 import cn.yyx.contentassist.codeutils.identifier;
-import cn.yyx.contentassist.codeutils.referedExpression;
 import cn.yyx.contentassist.codeutils.type;
 import cn.yyx.contentassist.commonutils.NameConvention;
 import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
@@ -138,19 +138,19 @@ public class CodeSynthesisHelper {
 		return result;
 	}
 	
-	public static List<FlowLineNode<CSFlowLineData>> HandleClassInvokeCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler, referedExpression rexp, String between, String methodname, Map<String, MethodTypeSignature> mts)
+	public static List<FlowLineNode<CSFlowLineData>> HandleClassInvokeCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler, firstArgReferedExpression rexp, String between, String methodname, Map<String, MethodTypeSignature> mts)
 			throws CodeSynthesisException {
 		// CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
 		// CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
 		// String mcode = realhandler.getMethodname();
 		String rexpcode = null;
-		String mcode = methodname;
+		String mcode = ((between == null || between.equals("")) ? "" : between) + methodname;
 		if (rexp != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> ls = rexp.HandleCodeSynthesis(squeue, smthandler);
 			// TODO here should not just get the first element. such as commonFieldRef, they can not distinguish their priority.
 			rexpcode = ls.get(0).getData().getData();
-			mcode = rexpcode + "." + ((between == null || between.equals("")) ? "" : between) + mcode;
+			mcode = rexpcode + "." + mcode;
 		}
 		return CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, smthandler, mcode, rexpcode, mts);
 	}
