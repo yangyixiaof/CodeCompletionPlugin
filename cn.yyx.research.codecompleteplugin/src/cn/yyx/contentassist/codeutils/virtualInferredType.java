@@ -7,9 +7,7 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.codesynthesis.statementhandler.CSArgTypeStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
-import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.commonutils.NameConvention;
 
 public class virtualInferredType extends type{
@@ -33,11 +31,17 @@ public class virtualInferredType extends type{
 	}
 
 	@Override
+	@Deprecated
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		CheckUtil.CheckStatementHandlerIsArgTypeStatementHandler(smthandler);
-		CSArgTypeStatementHandler ats = (CSArgTypeStatementHandler)smthandler;
-		String returntype = "Infer" + ats.GetAndIncreaseChar();
+		// CheckUtil.CheckStatementHandlerIsArgTypeStatementHandler(smthandler);
+		// CSArgTypeStatementHandler ats = (CSArgTypeStatementHandler)smthandler;
+		return null;
+	}
+	
+	public List<FlowLineNode<CSFlowLineData>> HandleVirtualInferredTypeCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler, char c)
+			throws CodeSynthesisException {
+		String returntype = "Infer" + c;
 		String modifidedname = squeue.GetLastHandler().getScopeOffsetRefHandler().GenerateNewDeclaredVariable(NameConvention.GetAbbreviationOfType(returntype), returntype, null, smthandler.getAoi().isInFieldLevel());
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), modifidedname, null, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));

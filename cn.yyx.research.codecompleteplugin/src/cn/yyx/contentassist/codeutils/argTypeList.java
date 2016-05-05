@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codepredict.LCSComparison;
+import cn.yyx.contentassist.codepredict.PredictMetaInfo;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
@@ -30,7 +32,10 @@ public class argTypeList implements OneCode {
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof argTypeList)
 		{
-			return true;
+			if (Similarity(t) > PredictMetaInfo.SequenceSimilarThreshold)
+			{
+				return true;
+			}
 		}
 		return false;
 	}
@@ -39,7 +44,14 @@ public class argTypeList implements OneCode {
 	public double Similarity(OneCode t) {
 		if (t instanceof argTypeList)
 		{
-			return 1;
+			if (lat != null)
+			{
+				return 0.9*(LCSComparison.LCSSimilarityArgType(tps, ((argTypeList) t).tps)) + 0.1*(lat.Similarity(((argTypeList) t).lat));
+			}
+			else
+			{
+				return LCSComparison.LCSSimilarityArgType(tps, ((argTypeList) t).tps);
+			}
 		}
 		return 0;
 	}
@@ -47,8 +59,12 @@ public class argTypeList implements OneCode {
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		Iterator<type> itr = tps.iterator();
-		type tp = itr.next();
+		if (lat != null)
+		{
+			
+		}
+		Iterator<argType> itr = tps.iterator();
+		argType tp = itr.next();
 		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleArgumentType(squeue, smthandler, 'A');
 		while (itr.hasNext())
 		{
