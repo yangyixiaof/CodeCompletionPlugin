@@ -149,7 +149,7 @@ public class CodeSynthesisHelper {
 		if (rexp != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> ls = rexp.HandleCodeSynthesis(squeue, smthandler);
-			// TODO here should not just get the first element. such as commonFieldRef.
+			// TODO here should not just get the first element. such as commonFieldRef, they can not distinguish their priority.
 			rexpcode = ls.get(0).getData().getData();
 			mcode = rexpcode + "." + ((between == null || between.equals("")) ? "" : between) + mcode;
 		}
