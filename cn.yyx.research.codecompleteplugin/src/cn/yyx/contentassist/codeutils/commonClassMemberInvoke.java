@@ -5,6 +5,7 @@ import java.util.Map;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.ErrorCheck;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -53,14 +54,7 @@ public class commonClassMemberInvoke extends firstArg{
 	public List<FlowLineNode<CSFlowLineData>> HandleClassOrMethodInvoke(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String methodname, Map<String, MethodTypeSignature> mts)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public FlowLineNode<CSFlowLineData> MostReachedFar() throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		return CodeSynthesisHelper.HandleClassInvokeCodeSynthesis(squeue, smthandler, rexp, null, methodname, mts);
 	}
 	
 }

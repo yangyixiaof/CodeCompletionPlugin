@@ -45,5 +45,20 @@ public class commonFieldRef extends fieldAccess{
 		Map<String, String> po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(scope, off);
 		return CodeSynthesisHelper.HandleVarRefCodeSynthesis(po, squeue, smthandler);
 	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue, CSStatementHandler smthandler,
+			String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
+			CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
+			throws CodeSynthesisException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

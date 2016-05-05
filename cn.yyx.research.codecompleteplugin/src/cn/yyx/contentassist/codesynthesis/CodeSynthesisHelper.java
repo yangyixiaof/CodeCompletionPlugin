@@ -9,8 +9,6 @@ import java.util.Set;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codepredict.PredictMetaInfo;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationData;
-import cn.yyx.contentassist.codesynthesis.data.CSMethodSignalHandleResult;
 import cn.yyx.contentassist.codesynthesis.data.CSPrData;
 import cn.yyx.contentassist.codesynthesis.data.CSPsData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -24,7 +22,6 @@ import cn.yyx.contentassist.codeutils.argumentList;
 import cn.yyx.contentassist.codeutils.identifier;
 import cn.yyx.contentassist.codeutils.referedExpression;
 import cn.yyx.contentassist.codeutils.type;
-import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.commonutils.NameConvention;
 import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
@@ -120,7 +117,7 @@ public class CodeSynthesisHelper {
 	}
 	
 	public static List<FlowLineNode<CSFlowLineData>> HandleMethodSpecificationInfer(CSFlowLineQueue squeue,
-			CSMethodStatementHandler smthandler, String spechint, String beforemethodexp) {
+			CSStatementHandler smthandler, String spechint, String beforemethodexp, Map<String, MethodTypeSignature> mts) {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		MembersOfAReference res = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(spechint, squeue.GetLastHandler().getContextHandler().getJavacontext(), null);
 		List<MethodMember> mms = res.getMmlist();
@@ -133,28 +130,29 @@ public class CodeSynthesisHelper {
 			double sim = SimilarityHelper.ComputeTwoStringSimilarity(cmp, methodname);
 			if (sim > PredictMetaInfo.MethodSimilarityThreshold)
 			{
-				MethodTypeSignature mts = TypeCheckHelper.TranslateMethodMember(mm, squeue.GetLastHandler().getContextHandler().getJavacontext());
+				MethodTypeSignature mtsone = TypeCheckHelper.TranslateMethodMember(mm, squeue.GetLastHandler().getContextHandler().getJavacontext());
 				int id = squeue.GenerateNewNodeId();
-				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? methodname : beforemethodexp + "." + methodname), mts.getReturntype(), false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
-				smthandler.AddMethodTypeSigById(id+"", mts);
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? methodname : beforemethodexp + "." + methodname), mtsone.getReturntype(), false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+				mts.put(id+"", mtsone);
 			}
 		}
 		return result;
 	}
 	
-	public static List<FlowLineNode<CSFlowLineData>> HandleClassInvokeCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler, referedExpression rexp, String between)
+	public static List<FlowLineNode<CSFlowLineData>> HandleClassInvokeCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler, referedExpression rexp, String between, String methodname, Map<String, MethodTypeSignature> mts)
 			throws CodeSynthesisException {
-		CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
-		CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
-		String mcode = realhandler.getMethodname();
+		// CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
+		// CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
+		// String mcode = realhandler.getMethodname();
 		String rexpcode = null;
+		String mcode = methodname;
 		if (rexp != null)
 		{
-			List<FlowLineNode<CSFlowLineData>> ls = rexp.HandleCodeSynthesis(squeue, realhandler);
+			List<FlowLineNode<CSFlowLineData>> ls = rexp.HandleCodeSynthesis(squeue, smthandler);
 			rexpcode = ls.get(0).getData().getData();
 			mcode = rexpcode + "." + ((between == null || between.equals("")) ? "" : between) + mcode;
 		}
-		return CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, realhandler, mcode, rexpcode);
+		return CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, smthandler, mcode, rexpcode, mts);
 	}
 	
 	/*public static boolean HandleMethodSpecificationInfer(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
@@ -269,37 +267,40 @@ public class CodeSynthesisHelper {
 		}
 	}
 	
-	public static List<FlowLineNode<CSFlowLineData>> HandleMethodInvocation(CSFlowLineQueue squeue, CSStatementHandler smthandler, argumentList arglist, String methodnamepara, OneCode id) throws CodeSynthesisException
+	public static List<FlowLineNode<CSFlowLineData>> HandleMethodInvocation(CSFlowLineQueue squeue, CSStatementHandler smthandler, argumentList arglist, String methodnamepara, OneCode methodnameoc) throws CodeSynthesisException
 	{
-		CSFlowLineData tlast = squeue.getLast().getData();
+		/*CSFlowLineData tlast = squeue.getLast().getData();
 		boolean hasem = false;
 		if ((tlast instanceof CSPsData) || (tlast instanceof CSPrData))
 		{
 			hasem = true;
-		}
+		}*/
 		String methodname = null;
-		CSMethodSignalHandleResult csmshr = squeue.BackSearchForMethodRelatedSignal();
-		if (id != null)
+		if (methodnameoc != null)
 		{
-			List<FlowLineNode<CSFlowLineData>> nls = id.HandleCodeSynthesis(squeue, smthandler);
+			List<FlowLineNode<CSFlowLineData>> nls = methodnameoc.HandleCodeSynthesis(squeue, smthandler);
 			methodname = nls.get(0).getData().getData();
 		}
 		else
 		{
 			methodname = methodnamepara;
 		}
-		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(methodname, smthandler);
+		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(smthandler);
 		csmsh.setNextstart(squeue.getLast());
-		List<FlowLineNode<CSFlowLineData>> alls = arglist.HandleCodeSynthesis(squeue, csmsh);
-		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		Iterator<FlowLineNode<CSFlowLineData>> itr = alls.iterator();
-		while (itr.hasNext())
-		{
-			FlowLineNode<CSFlowLineData> fln = itr.next();
-			CSMethodInvocationData dt = new CSMethodInvocationData(csmshr.getFarem(), csmshr.getFaremused(), hasem, fln.getData());
-			result.add(new FlowLineNode<CSFlowLineData>(dt, fln.getProbability()));
-		}
-		return result;
+		// List<FlowLineNode<CSFlowLineData>> alls = arglist.HandleCodeSynthesis(squeue, csmsh);
+		List<FlowLineNode<CSFlowLineData>> alls = arglist.HandleMethodIntegrationCodeSynthesis(squeue, csmsh, methodname);
+		/*
+		 * CSMethodSignalHandleResult csmshr = squeue.BackSearchForMethodRelatedSignal();
+		 * List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		 * Iterator<FlowLineNode<CSFlowLineData>> itr = alls.iterator();
+		 * while (itr.hasNext())
+		 * {
+		 * 	FlowLineNode<CSFlowLineData> fln = itr.next();
+		 * 	CSMethodInvocationData dt = new CSMethodInvocationData(csmshr.getFarem(), csmshr.getFaremused(), hasem, fln.getData());
+		 * 	result.add(new FlowLineNode<CSFlowLineData>(dt, fln.getProbability()));
+		 * }
+		 * return result;*/
+		return alls;
 	}
 	
 	public static List<FlowLineNode<CSFlowLineData>> HandleInferredContent(CSFlowLineQueue squeue, CSStatementHandler smthandler, List<FlowLineNode<CSFlowLineData>> infermain, List<FlowLineNode<CSFlowLineData>> expectedinfer, String inferoperator) throws CodeSynthesisException

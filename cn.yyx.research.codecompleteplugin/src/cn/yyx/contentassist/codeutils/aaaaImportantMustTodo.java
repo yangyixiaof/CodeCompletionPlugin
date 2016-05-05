@@ -34,6 +34,8 @@ public class aaaaImportantMustTodo {
 	
 	// TODO all refered_ expression should handle different statement.
 	
+	// TODO very important!!!!!! pre-exist. to set mostfar and nextstart are in choas. some mostfar in some situation doesn't set. nextstart start from Ps Pr or real data? what if there is some error I mean just directly to the head.
+	
 	// Solved. the handle of @HO can only be in the very end. remember to handle @HO at very end. No need to do that, array start and array end signal has solved the problem.
 	// be sure this happens: A@$C0?0=@HO IxE@1+@HO. Not this: A@$C0?0=@HO IxE@1+2 IxE@@pre+2.
 	// Such as : A@$C0?0=@HO m() ma(@pre).

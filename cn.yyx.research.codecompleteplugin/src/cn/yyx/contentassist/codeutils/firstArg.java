@@ -14,7 +14,5 @@ public abstract class firstArg implements OneCode {
 	
 	public abstract List<FlowLineNode<CSFlowLineData>> HandleClassOrMethodInvoke(CSFlowLineQueue squeue, CSStatementHandler smthandler, String methodname, Map<String, MethodTypeSignature> mts)
 			throws CodeSynthesisException;
-
-	public abstract FlowLineNode<CSFlowLineData> MostReachedFar() throws CodeSynthesisException;
 	
 }

@@ -111,6 +111,7 @@ public class CSFlowLineQueue {
 	}
 
 	public CSMethodSignalHandleResult BackSearchForMethodRelatedSignal() throws CodeSynthesisException {
+		// TODO the right of this function should be verified carefully.
 		Stack<Integer> signals = new Stack<Integer>();
 		FlowLineNode<CSFlowLineData> tmp = last;
 		int faremused = 0;

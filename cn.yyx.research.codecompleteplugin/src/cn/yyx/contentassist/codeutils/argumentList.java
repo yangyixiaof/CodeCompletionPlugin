@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -13,10 +14,13 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.ErrorCheck;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
+import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.commonutils.ListDynamicHeper;
 import cn.yyx.contentassist.commonutils.ListHelper;
 import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
@@ -142,9 +146,8 @@ public class argumentList implements OneCode {
 
 	public List<FlowLineNode<CSFlowLineData>> HandleMethodIntegrationCodeSynthesis(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String methodname) throws CodeSynthesisException {
-		// CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
-		// CSMethodStatementHandler realhandler = (CSMethodStatementHandler)
-		// smthandler;
+		CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
+		CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
 		// realhandler.setArgsize(el.size() - 1);
 		// change to reverse order list.
 		List<referedExpression> reverseel = new ListDynamicHeper<referedExpression>().ReverseList(el);
@@ -160,7 +163,6 @@ public class argumentList implements OneCode {
 		}
 		// handle invoker.
 		List<FlowLineNode<CSFlowLineData>> invokers = fa.HandleClassOrMethodInvoke(squeue, smthandler, methodname, mts);
-		FlowLineNode<CSFlowLineData> mf = fa.MostReachedFar();
 		Iterator<FlowLineNode<CSFlowLineData>> itr = invokers.iterator();
 		while (itr.hasNext()) {
 			FlowLineNode<CSFlowLineData> fln = itr.next();
@@ -206,8 +208,11 @@ public class argumentList implements OneCode {
 				}
 			}
 			sb.append(")");
-
 			data.setData(sb.toString());
+			
+			Stack<Integer> signals = new Stack<Integer>();
+			signals.add(DataStructureSignalMetaInfo.MethodInvocation);
+			FlowLineNode<CSFlowLineData> mf = realhandler.getMostfar();
 			// realhandler.getMostfar();
 			if (mf != null) {
 				data.getSynthesisCodeManager().setBlockstart(mf);
