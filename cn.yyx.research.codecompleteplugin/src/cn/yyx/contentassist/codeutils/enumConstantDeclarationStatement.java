@@ -67,9 +67,9 @@ public class enumConstantDeclarationStatement extends statement{
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> nls = id.HandleCodeSynthesis(squeue, smthandler);
 		String methodname = nls.get(0).getData().getData();
-		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(methodname, smthandler);
+		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(smthandler);
 		csmsh.setNextstart(squeue.getLast());
-		return arglist.HandleCodeSynthesis(squeue, csmsh);
+		return arglist.HandleMethodIntegrationCodeSynthesis(squeue, smthandler, methodname);
 	}
 
 	@Override

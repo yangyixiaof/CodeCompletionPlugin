@@ -6,9 +6,9 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
+import cn.yyx.contentassist.codesynthesis.ErrorCheck;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodReferenceStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class commonMethodReferenceExpression extends methodReferenceExpression{
@@ -25,18 +25,14 @@ public class commonMethodReferenceExpression extends methodReferenceExpression{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
-		CSMethodReferenceStatementHandler csmrsh = new CSMethodReferenceStatementHandler(idls.get(0).getData().getData(), smthandler);
-		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, csmrsh);
-		if (!(csmrsh.isFieldused()))
+		// CSMethodReferenceStatementHandler csmrsh = new CSMethodReferenceStatementHandler(idls.get(0).getData().getData(), smthandler);
+		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+		List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleFieldSpecificationInfer(rels, idls, squeue, smthandler, "::");
+		if (ls.size() == 0)
 		{
-			List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleFieldSpecificationInfer(rels, idls, squeue, smthandler, "::");
-			if (ls.size() == 0)
-			{
-				return CSFlowLineHelper.ForwardMerge(null, rels, "::", idls, null, squeue, smthandler, null, null);
-			}
-			return ls;
+			return CSFlowLineHelper.ForwardMerge(null, rels, "::", idls, null, squeue, smthandler, null, null);
 		}
-		return rels;
+		return ls;
 	}
 
 	@Override
@@ -58,6 +54,21 @@ public class commonMethodReferenceExpression extends methodReferenceExpression{
 			return 0.2+0.4*(id.Similarity(((commonMethodReferenceExpression) t).id))+0.4*(rexp.Similarity(((commonMethodReferenceExpression) t).rexp));
 		}
 		return 0;
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue, CSStatementHandler smthandler,
+			String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
+		ErrorCheck.NoGenerationCheck("commonMethodReferenceExpression should handle inferring field.");
+		return null;
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
+			CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
+			throws CodeSynthesisException {
+		ErrorCheck.NoGenerationCheck("commonMethodReferenceExpression should handle inferring MethodReference.");
+		return null;
 	}
 	
 }

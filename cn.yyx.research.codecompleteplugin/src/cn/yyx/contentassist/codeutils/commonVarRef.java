@@ -45,5 +45,20 @@ public class commonVarRef extends referedExpression{
 		Map<String, String> po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(scope, off);
 		return CodeSynthesisHelper.HandleVarRefCodeSynthesis(po, squeue, smthandler);
 	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue, CSStatementHandler smthandler,
+			String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
+		Map<String, String> po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(scope, off);
+		return CodeSynthesisHelper.HandleVarRefInferredField(po, squeue, smthandler, reservedword, expectedinfer);
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
+			CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
+			throws CodeSynthesisException {
+		Map<String, String> po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(scope, off);
+		return CodeSynthesisHelper.HandleVarRefInferredMethodReference(po, squeue, smthandler, reservedword, expectedinfer);
+	}
 	
 }

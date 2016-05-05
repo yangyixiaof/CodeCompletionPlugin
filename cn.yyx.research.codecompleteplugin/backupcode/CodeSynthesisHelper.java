@@ -5,11 +5,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codepredict.PredictMetaInfo;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSPrData;
+import cn.yyx.contentassist.codesynthesis.data.CSPsData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
@@ -63,41 +64,45 @@ public class CodeSynthesisHelper {
 		return result;
 	}
 	
-	public static List<FlowLineNode<CSFlowLineData>> HandleVarRefInferredMethodReference(Map<String, String> po, CSFlowLineQueue squeue, CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
-	{
-		return HandleVarRefInferredContent(po, squeue, smthandler, reservedword, expectedinfer, "::", true);
-	}
-	
 	public static List<FlowLineNode<CSFlowLineData>> HandleVarRefInferredField(Map<String, String> po, CSFlowLineQueue squeue, CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
 	{
-		return HandleVarRefInferredContent(po, squeue, smthandler, reservedword, expectedinfer, ".", false);
-	}
-	
-	private static List<FlowLineNode<CSFlowLineData>> HandleVarRefInferredContent(Map<String, String> po, CSFlowLineQueue squeue, CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer, String concator, boolean ismethod)
-	{
 		// this function doesn't need to handle CSMethodStatementHandler, CSMethodStatementHandler has been handled in method invocation.
-		if (reservedword != null && !reservedword.equals(""))
-		{
-			Map<String, String> npo = new TreeMap<String, String>();
-			Set<String> pokeys = po.keySet();
-			Iterator<String> citr = pokeys.iterator();
-			while (citr.hasNext())
-			{
-				String code = citr.next();
-				String type = po.get(code);
-				code += "." + reservedword;
-				npo.put(code, type);
-			}
-			po = npo;
-		}
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		RefAndModifiedMember ramm = SpecificationHelper.GetMostLikelyRef(squeue.GetLastHandler().getContextHandler(), po, expectedinfer.get(0).getData().getData(), ismethod, concator);
-		String ref = ramm.getRef();
-		String member = ramm.getMember();
-		String membertype = ramm.getMembertype();
-		Class<?> c = TypeResolver.ResolveType(membertype, squeue.GetLastHandler().getContextHandler().getJavacontext());
-		FlowLineNode<CSFlowLineData> sqdata = new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ref + concator + member, c, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb());
-		result.add(sqdata);
+		// if ((smthandler instanceof CSFieldAccessStatementHandler) || (smthandler instanceof CSMethodStatementHandler) || (smthandler instanceof CSMethodReferenceStatementHandler))
+		// {
+			boolean ismethod = false;
+			String hint = null;
+			String concator = null;
+			if (smthandler instanceof CSFieldAccessStatementHandler)
+			{
+				hint = ((CSFieldAccessStatementHandler) smthandler).getField();
+			}
+			if (smthandler instanceof CSMethodStatementHandler)
+			{
+				hint = ((CSMethodStatementHandler)smthandler).getMethodname();
+				ismethod = true;
+				concator = ".";
+			}
+			if (smthandler instanceof CSMethodReferenceStatementHandler)
+			{
+				hint = ((CSMethodReferenceStatementHandler)smthandler).getField();
+				ismethod = true;
+				concator = "::";
+			}
+			RefAndModifiedMember ramm = SpecificationHelper.GetMostLikelyRef(squeue.GetLastHandler().getContextHandler(), po, hint, ismethod, concator);
+			String ref = ramm.getRef();
+			String member = ramm.getMember();
+			String membertype = ramm.getMembertype();
+			Class<?> c = TypeResolver.ResolveType(membertype, squeue.GetLastHandler().getContextHandler().getJavacontext());
+			FlowLineNode<CSFlowLineData> sqdata = new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ref + "." + member, c, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb());
+			if (smthandler instanceof CSMethodStatementHandler)
+			{
+				MethodMember mm = ramm.getMaxMm();
+				MethodTypeSignature mts = MethodTypeSignature.GenerateMethodTypeSignature(mm, squeue.GetLastHandler().getContextHandler().getJavacontext());
+				((CSMethodStatementHandler)smthandler).AddMethodTypeSigById(sqdata.getData().getId(), mts);
+			}
+			result.add(sqdata);
+		// }
 		return result;
 	}
 	

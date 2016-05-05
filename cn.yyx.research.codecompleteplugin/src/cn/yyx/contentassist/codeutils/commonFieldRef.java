@@ -49,16 +49,16 @@ public class commonFieldRef extends fieldAccess{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue, CSStatementHandler smthandler,
 			String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, String> po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(scope, off);
+		return CodeSynthesisHelper.HandleVarRefInferredField(po, squeue, smthandler, reservedword, expectedinfer);
 	}
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, String> po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(scope, off);
+		return CodeSynthesisHelper.HandleVarRefInferredMethodReference(po, squeue, smthandler, reservedword, expectedinfer);
 	}
 	
 }

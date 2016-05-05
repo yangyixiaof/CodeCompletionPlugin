@@ -50,5 +50,20 @@ public class nullLiteral extends literal{
 	public void HandleNegativeOperator() {
 		ErrorCheck.NoGenerationCheck("null literal should handle negative operator?");
 	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue, CSStatementHandler smthandler,
+			String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
+		ErrorCheck.NoGenerationCheck("commonMethodReferenceExpression should handle inferring field.");
+		return null;
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
+			CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
+			throws CodeSynthesisException {
+		ErrorCheck.NoGenerationCheck("commonMethodReferenceExpression should handle inferring field.");
+		return null;
+	}
 	
 }
