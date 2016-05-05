@@ -1,9 +1,5 @@
 package cn.yyx.contentassist.commonutils;
 
-import cn.yyx.contentassist.codesynthesis.statementhandler.CSArgTypeStatementHandler;
-import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
-import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
-
 public class CheckUtil {
 	
 	public static void CheckNotNull(Object ref, String info)
@@ -15,14 +11,14 @@ public class CheckUtil {
 		}
 	}
 	
-	public static void CheckStatementHandlerIsMethodStatementHandler(CSStatementHandler smthandler)
+	/*public static void CheckStatementHandlerIsMethodStatementHandler(CSStatementHandler smthandler)
 	{
 		if (!(smthandler instanceof CSMethodStatementHandler))
 		{
 			System.err.println("Input handler is not the expected CSMethodStatementHandler, what the fuck?");
 			System.exit(1);
 		}
-	}
+	}*/
 	
 	public static void ErrorAndStop(String errorinfo)
 	{
@@ -48,13 +44,13 @@ public class CheckUtil {
 		System.exit(1);
 	}
 
-	public static void CheckStatementHandlerIsArgTypeStatementHandler(CSStatementHandler smthandler) {
+	/*public static void CheckStatementHandlerIsArgTypeStatementHandler(CSStatementHandler smthandler) {
 		if (!(smthandler instanceof CSArgTypeStatementHandler))
 		{
 			System.err.println("Input handler is not the expected CSMethodStatementHandler, what the fuck?");
 			System.exit(1);
 		}
-	}
+	}*/
 	
 	/*public static void CheckStartNodeMustNotHaveAnyHoles(FlowLineNode<CSFlowLineData> startnode)
 	{

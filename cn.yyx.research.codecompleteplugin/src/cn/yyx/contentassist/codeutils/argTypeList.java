@@ -9,7 +9,6 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.codesynthesis.statementhandler.CSArgTypeStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class argTypeList implements OneCode {
@@ -45,15 +44,14 @@ public class argTypeList implements OneCode {
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		CSArgTypeStatementHandler csats = new CSArgTypeStatementHandler('A', smthandler);
 		Iterator<type> itr = tps.iterator();
 		type tp = itr.next();
-		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, csats);
+		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleArgumentType(squeue, smthandler, 'A');
 		while (itr.hasNext())
 		{
 			type ntp = itr.next();
-			List<FlowLineNode<CSFlowLineData>> ntpls = ntp.HandleCodeSynthesis(squeue, csats);
-			tpls = CSFlowLineHelper.ForwardMerge(null, tpls, ",", ntpls, null, squeue, csats, null, null);
+			List<FlowLineNode<CSFlowLineData>> ntpls = ntp.HandleCodeSynthesis(squeue, smthandler);
+			tpls = CSFlowLineHelper.ForwardMerge(null, tpls, ",", ntpls, null, squeue, smthandler, null, null);
 		}
 		return tpls;
 	}
