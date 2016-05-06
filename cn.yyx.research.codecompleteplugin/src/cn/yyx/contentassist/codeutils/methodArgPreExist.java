@@ -37,7 +37,7 @@ public class methodArgPreExist extends referedExpression {
 		{
 			// TODO the signal handle of Ps Pr data is wrong.
 			CSFlowLineData tmpdata = tmp.getData();
-			if (tmpdata instanceof CSEnterParamInfoData || tmpdata instanceof CSPsData || tmpdata instanceof CSPrData)
+			if (tmpdata instanceof CSEnterParamInfoData || tmpdata instanceof CSPsData || tmpdata instanceof CSPrData || tmpdata instanceof CSMethodInvocationData)
 			{
 				mstop = tmp;
 				if (tmpdata instanceof CSPsData || tmpdata instanceof CSPrData)
