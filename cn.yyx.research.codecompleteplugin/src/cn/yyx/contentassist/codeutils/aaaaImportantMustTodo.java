@@ -2,27 +2,27 @@ package cn.yyx.contentassist.codeutils;
 
 public class aaaaImportantMustTodo {
 	
-	// TODO some rule adds more conditions, must be handled. such superFieldAccess not exists in previous version.
+	// Solved. some rule adds more conditions, must be handled. such superFieldAccess not exists in previous version.
 	
 	// Solved. needs to handle java varargs: Object... as Object[].
 	
-	// TODO DH@then and DH@else are not handled.
+	// Solved. DH@then and DH@else are not handled.
 	
-	// TODO finallyStatement : 'DH@finally' are not handled.
+	// Solved. finallyStatement : 'DH@finally' are not handled.
 	
-	// TODO tryStatement : 'DH@try' are not handled.
+	// Solved. tryStatement : 'DH@try' are not handled.
 	
-	// TODO chainFieldAccess | commonFieldRef | directThisFieldAccess | referedFieldAccess are not handled.
+	// Solved. chainFieldAccess | commonFieldRef | thisFieldAccess | referedFieldAccess are not handled.
 	
 	// Solved. addPrefixExpression | subPrefixExpression changed two places.
 	
-	// TODO normalLiteralStatement | negativeLiteralStatement | positiveLiteralStatement are not handled.
+	// Solved. normalLiteralStatement | negativeLiteralStatement | positiveLiteralStatement are not handled.
 	
-	// TODO lambdaExpressionStatement has changed to two situations.
+	// Solved. lambdaExpressionStatement has changed to two situations.
 	
 	// Solved.	methodInvocationStatement add three new sub instance.
 	
-	// TODO methodReferenceStatement add a new sub instance.
+	// Solved. methodReferenceStatement add a new sub instance.
 	
 	// Solved. argTypeList adds lastArgType, due to only last of method declaration is handled, the modifications of ScopeOffsetHandler do not need to be considered.
 	
@@ -32,9 +32,9 @@ public class aaaaImportantMustTodo {
 	//		}
 	// Such type infer must be handled as svd should be SingleVariableDeclaration.
 	
-	// TODO all refered_ expression should handle different statement.
+	// Solved. all refered_ expression should handle different statement.
 	
-	// TODO very important!!!!!! pre-exist. to set mostfar and nextstart are in choas. some mostfar in some situation doesn't set. nextstart start from Ps Pr or real data? what if there is some error I mean just directly to the head.
+	// Solved. very important!!!!!! pre-exist. to set mostfar and nextstart are in choas. some mostfar in some situation doesn't set. nextstart start from Ps Pr or real data? what if there is some error I mean just directly to the head.
 	
 	// TODO MethodReference A::b. what is the exactly infer form, this needs to be checked.
 	

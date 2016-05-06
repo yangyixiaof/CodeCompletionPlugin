@@ -20,7 +20,7 @@ public class CodeNGramAnalyzer {
 
 	@SuppressWarnings("unchecked")
 	public static List<String> PossibleCodes(JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor) {
-		// TODO Auto-generated method stub
+		// TODO This whole mechanism needs to be fully tested.
 		System.err.println("HaHa Test!!!!!!!!!!!!!!");
 		ArrayList<String> list = new ArrayList<String>();
 		try {

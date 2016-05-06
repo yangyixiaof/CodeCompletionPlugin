@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codepredict.PredictMetaInfo;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
@@ -25,7 +26,10 @@ public class lambdaExpressionStatement extends statement{
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof lambdaExpressionStatement)
 		{
-			return true;
+			if (Similarity(t) > PredictMetaInfo.SequenceSimilarThreshold)
+			{
+				return true;
+			}
 		}
 		return false;
 	}
@@ -34,7 +38,19 @@ public class lambdaExpressionStatement extends statement{
 	public double Similarity(OneCode t) {
 		if (t instanceof lambdaExpressionStatement)
 		{
-			return 0.4 + 0.6*(typelist.Similarity(((lambdaExpressionStatement) t).typelist));
+			int count = 0;
+			if (typelist != null)
+			{
+				count = typelist.Size();
+			}
+			int tcount = 0;
+			if (((lambdaExpressionStatement) t).typelist != null)
+			{
+				tcount = ((lambdaExpressionStatement) t).typelist.Size();
+			}
+			int div = Math.max(count+1, tcount+1);
+			int dvi = Math.min(count+1, tcount+1);
+			return (dvi*1.0)/(div*1.0);
 		}
 		return 0;
 	}
@@ -66,14 +82,31 @@ public class lambdaExpressionStatement extends statement{
 			throws CodeSynthesisException {
 		if (typelist == null)
 		{
-			List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "()->{\n\n}", null, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
-			return result;
+			if (rexp != null)
+			{
+				List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+				return CSFlowLineHelper.ConcateOneFlowLineList("()->", rels, null);
+			}
+			else
+			{
+				List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "()->{\n\n}", null, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+				return result;
+			}
 		}
 		else
 		{
-			List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
-			return CSFlowLineHelper.ConcateOneFlowLineList("(", tpls, ")->{\n\n}");
+			if (rexp != null)
+			{
+				List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
+				List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+				return CSFlowLineHelper.ForwardMerge("(", tpls, ")->", rels, null, squeue, smthandler, null, null);
+			}
+			else
+			{
+				List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
+				return CSFlowLineHelper.ConcateOneFlowLineList("(", tpls, ")->{\n\n}");
+			}
 		}
 	}
 

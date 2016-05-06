@@ -27,6 +27,17 @@ public class argTypeList implements OneCode {
 		tps.add(0, re);
 	}
 	
+	public int Size()
+	{
+		int allsize = 0;
+		if (lat != null)
+		{
+			allsize++;
+		}
+		allsize += tps.size();
+		return allsize;
+	}
+	
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof argTypeList)
