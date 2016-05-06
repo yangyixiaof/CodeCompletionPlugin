@@ -6,8 +6,23 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.Sentence;
+import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationData;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 
 public class ListHelper {
+	
+	public static List<FlowLineNode<CSFlowLineData>> TranslateToMethodDataNode(List<FlowLineNode<CSFlowLineData>> alls, boolean hasem)
+	{
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		Iterator<FlowLineNode<CSFlowLineData>> itr = alls.iterator();
+		while (itr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> fln = itr.next();
+			result.add(new FlowLineNode<CSFlowLineData>(new CSMethodInvocationData(hasem, fln.getData()), fln.getProbability()));
+		}
+		return result;
+	}
 	
 	public static List<Boolean> InitialBooleanArray(int size)
 	{

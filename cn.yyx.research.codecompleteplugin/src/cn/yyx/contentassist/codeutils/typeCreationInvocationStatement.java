@@ -9,6 +9,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.commonutils.SignalHelper;
 
 public class typeCreationInvocationStatement extends methodInvocationStatement{
 	
@@ -23,7 +24,7 @@ public class typeCreationInvocationStatement extends methodInvocationStatement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		return CodeSynthesisHelper.HandleMethodInvocation(squeue, smthandler, arglist, null, tp);
+		return CodeSynthesisHelper.HandleMethodInvocation(squeue, smthandler, arglist, null, tp, SignalHelper.HasEmBeforeMethod(squeue));
 	}
 
 	@Override

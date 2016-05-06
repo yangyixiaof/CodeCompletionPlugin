@@ -268,7 +268,7 @@ public class CodeSynthesisHelper {
 		}
 	}
 	
-	public static List<FlowLineNode<CSFlowLineData>> HandleMethodInvocation(CSFlowLineQueue squeue, CSStatementHandler smthandler, argumentList arglist, String methodnamepara, OneCode methodnameoc) throws CodeSynthesisException
+	public static List<FlowLineNode<CSFlowLineData>> HandleMethodInvocation(CSFlowLineQueue squeue, CSStatementHandler smthandler, argumentList arglist, String methodnamepara, OneCode methodnameoc, boolean hasem) throws CodeSynthesisException
 	{
 		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(smthandler, SignalHelper.HasEmBeforeMethod(squeue));
 		csmsh.setNextstart(squeue.getLast());

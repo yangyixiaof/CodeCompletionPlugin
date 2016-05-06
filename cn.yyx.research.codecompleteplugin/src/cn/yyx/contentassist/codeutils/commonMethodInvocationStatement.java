@@ -9,6 +9,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.commonutils.SignalHelper;
 
 public class commonMethodInvocationStatement extends methodInvocationStatement{
 	
@@ -62,7 +63,7 @@ public class commonMethodInvocationStatement extends methodInvocationStatement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		return CodeSynthesisHelper.HandleMethodInvocation(squeue, smthandler, arglist, null, id);
+		return CodeSynthesisHelper.HandleMethodInvocation(squeue, smthandler, arglist, null, id, SignalHelper.HasEmBeforeMethod(squeue));
 		/*CSFlowLineData tlast = squeue.getLast().getData();
 		boolean hasem = false;
 		if ((tlast instanceof CSPsData) || (tlast instanceof CSPrData))
