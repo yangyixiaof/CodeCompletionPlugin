@@ -144,16 +144,26 @@ public class CodeSynthesisHelper {
 		// CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
 		// CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
 		// String mcode = realhandler.getMethodname();
-		String rexpcode = null;
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		String mcode = ((between == null || between.equals("")) ? "" : between) + methodname;
 		if (rexp != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> ls = rexp.HandleCodeSynthesis(squeue, smthandler);
-			// TODO here should not just get the first element. such as commonFieldRef, they can not distinguish their priority.
-			rexpcode = ls.get(0).getData().getData();
-			mcode = rexpcode + "." + mcode;
+			// Solved. here should not just get the first element. such as commonFieldRef, they can not distinguish their priority.
+			Iterator<FlowLineNode<CSFlowLineData>> itr = ls.iterator();
+			while (itr.hasNext())
+			{
+				FlowLineNode<CSFlowLineData> fln = itr.next();
+				String rexpcode = fln.getData().getData();
+				mcode = rexpcode + "." + mcode;
+				result.addAll(CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, smthandler, mcode, rexpcode, mts));
+			}
+			return result;
 		}
-		return CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, smthandler, mcode, rexpcode, mts);
+		else
+		{
+			return CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, smthandler, mcode, null, mts);
+		}
 	}
 	
 	/*public static boolean HandleMethodSpecificationInfer(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
