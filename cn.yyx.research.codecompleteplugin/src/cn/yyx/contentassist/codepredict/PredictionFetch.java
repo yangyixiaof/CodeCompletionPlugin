@@ -23,8 +23,8 @@ import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.contentassist.commonutils.ContextHandler;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
-import cn.yyx.research.AeroSpikeHandle.PredictProbPair;
+import cn.yyx.research.aerospikehandle.AeroLifeCycle;
+import cn.yyx.research.aerospikehandle.PredictProbPair;
 import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVisitor;
 import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 

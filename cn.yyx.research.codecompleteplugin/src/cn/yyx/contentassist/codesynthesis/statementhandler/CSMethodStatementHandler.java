@@ -1,6 +1,9 @@
 package cn.yyx.contentassist.codesynthesis.statementhandler;
 
+import java.util.Stack;
+
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 
 public class CSMethodStatementHandler extends CSStatementHandler{
@@ -15,8 +18,15 @@ public class CSMethodStatementHandler extends CSStatementHandler{
 	// this points to where the @Em is.
 	private FlowLineNode<CSFlowLineData> mostfar = null;
 	
-	public CSMethodStatementHandler(CSStatementHandler csh) {
+	// signals.
+	private Stack<Integer> signals = new Stack<Integer>();
+	
+	public CSMethodStatementHandler(CSStatementHandler csh, boolean hasem) {
 		super(csh.getSete(), csh.getProb(), csh.getAoi());
+		if (hasem)
+		{
+			signals.push(DataStructureSignalMetaInfo.MethodInvocation);
+		}
 	}
 	
 	/*public int getArgsize() {

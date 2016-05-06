@@ -23,6 +23,7 @@ import cn.yyx.contentassist.codeutils.identifier;
 import cn.yyx.contentassist.codeutils.type;
 import cn.yyx.contentassist.commonutils.NameConvention;
 import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
+import cn.yyx.contentassist.commonutils.SignalHelper;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.StringUtil;
 import cn.yyx.contentassist.specification.FieldMember;
@@ -269,12 +270,8 @@ public class CodeSynthesisHelper {
 	
 	public static List<FlowLineNode<CSFlowLineData>> HandleMethodInvocation(CSFlowLineQueue squeue, CSStatementHandler smthandler, argumentList arglist, String methodnamepara, OneCode methodnameoc) throws CodeSynthesisException
 	{
-		/*CSFlowLineData tlast = squeue.getLast().getData();
-		boolean hasem = false;
-		if ((tlast instanceof CSPsData) || (tlast instanceof CSPrData))
-		{
-			hasem = true;
-		}*/
+		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(smthandler, SignalHelper.HasEmBeforeMethod(squeue));
+		csmsh.setNextstart(squeue.getLast());
 		String methodname = null;
 		if (methodnameoc != null)
 		{
@@ -285,8 +282,6 @@ public class CodeSynthesisHelper {
 		{
 			methodname = methodnamepara;
 		}
-		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(smthandler);
-		csmsh.setNextstart(squeue.getLast());
 		// List<FlowLineNode<CSFlowLineData>> alls = arglist.HandleCodeSynthesis(squeue, csmsh);
 		List<FlowLineNode<CSFlowLineData>> alls = arglist.HandleMethodIntegrationCodeSynthesis(squeue, csmsh, methodname);
 		/*

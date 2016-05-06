@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.commonutils.ListHelper;
-import cn.yyx.research.AeroSpikeHandle.AeroLifeCycle;
-import cn.yyx.research.AeroSpikeHandle.PredictProbPair;
+import cn.yyx.research.aerospikehandle.AeroLifeCycle;
+import cn.yyx.research.aerospikehandle.PredictProbPair;
 
 public class PredictHelper {
 	

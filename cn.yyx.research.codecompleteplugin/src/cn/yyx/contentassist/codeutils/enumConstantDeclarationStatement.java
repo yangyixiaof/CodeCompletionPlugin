@@ -9,6 +9,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.commonutils.SignalHelper;
 
 public class enumConstantDeclarationStatement extends statement{
 	
@@ -67,7 +68,7 @@ public class enumConstantDeclarationStatement extends statement{
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> nls = id.HandleCodeSynthesis(squeue, smthandler);
 		String methodname = nls.get(0).getData().getData();
-		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(smthandler);
+		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(smthandler, SignalHelper.HasEmBeforeMethod(squeue));
 		csmsh.setNextstart(squeue.getLast());
 		return arglist.HandleMethodIntegrationCodeSynthesis(squeue, smthandler, methodname);
 	}
