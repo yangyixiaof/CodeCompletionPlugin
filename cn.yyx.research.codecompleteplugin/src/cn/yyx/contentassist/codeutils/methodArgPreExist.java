@@ -47,7 +47,7 @@ public class methodArgPreExist extends referedExpression {
 				{
 					continue;
 				}
-				if (signals.size() == 1)
+				if ((!(tmpdata instanceof CSMethodInvocationData)) && signals.size() == 1)
 				{
 					mstop = tmp.getNext();
 					realhandler.setNextstart(tmp);
@@ -57,6 +57,7 @@ public class methodArgPreExist extends referedExpression {
 						realhandler.setNextstart(null);
 						realhandler.setMostfar(mstop);
 					}
+					break;
 				}
 			}
 			tmp = tmp.getPrev();
@@ -67,8 +68,9 @@ public class methodArgPreExist extends referedExpression {
 		}
 		mstart.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
 		mstop.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
-		// int argsize = realhandler.getArgsize();
-		return CSFlowLineBackTraceGenerationHelper.GenerateSynthesisCode(squeue, realhandler, mstart, mstop);
+		List<FlowLineNode<CSFlowLineData>> result = CSFlowLineBackTraceGenerationHelper.GenerateSynthesisCode(squeue, realhandler, mstart, mstop);
+		tmpcache = result;
+		return result;
 	}
 	
 	@Override
