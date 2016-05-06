@@ -36,6 +36,11 @@ public class CSEnterParamInfoData extends CSFlowLineData{
 		int tttimes = times;
 		while (!signals.isEmpty() && tttimes > 0)
 		{
+			Integer top = signals.peek();
+			if (top == null || top != DataStructureSignalMetaInfo.MethodPs || top != DataStructureSignalMetaInfo.MethodPr || top != DataStructureSignalMetaInfo.MethodEnterParam)
+			{
+				throw new CodeSynthesisException("When handling ps, the top of stack is not MethodPs or MethodPr.");
+			}
 			tttimes--;
 			signals.pop();
 		}

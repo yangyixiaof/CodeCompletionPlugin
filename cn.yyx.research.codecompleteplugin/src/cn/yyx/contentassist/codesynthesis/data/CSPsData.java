@@ -20,7 +20,12 @@ public class CSPsData extends CSFlowLineData{
 		{
 			throw new CodeSynthesisException("When handling ps, the top of stack is not MethodInvocation.");
 		}
-		
+		if (top != DataStructureSignalMetaInfo.MethodPs)
+		{
+			throw new CodeSynthesisException("When handling ps, the top of stack is not MethodPs.");
+		}
+		signals.pop();
+		signals.push(DataStructureSignalMetaInfo.MethodPs);
 	}
 	
 }

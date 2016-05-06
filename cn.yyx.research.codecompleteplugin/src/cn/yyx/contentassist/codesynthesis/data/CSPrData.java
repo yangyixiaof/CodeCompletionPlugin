@@ -21,6 +21,12 @@ public class CSPrData extends CSFlowLineData{
 		{
 			throw new CodeSynthesisException("When handling pr, the top of stack is not MethodInvocation.");
 		}
+		if (top != DataStructureSignalMetaInfo.MethodPs)
+		{
+			throw new CodeSynthesisException("When handling pr, the top of stack is not MethodPs.");
+		}
+		signals.pop();
+		signals.push(DataStructureSignalMetaInfo.MethodPr);
 	}
 	
 }
