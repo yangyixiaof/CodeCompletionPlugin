@@ -31,58 +31,48 @@ public class methodArgPreExist extends referedExpression {
 		}
 		FlowLineNode<CSFlowLineData> ns = realhandler.getNextstart();
 		FlowLineNode<CSFlowLineData> tmp = ns;
-		FlowLineNode<CSFlowLineData> mstart = null;
+		FlowLineNode<CSFlowLineData> mstart = ns;
 		FlowLineNode<CSFlowLineData> mstop = null;
-		boolean flag = false;
 		while (tmp != null)
 		{
+			// TODO the signal handle of Ps Pr data is wrong.
 			CSFlowLineData tmpdata = tmp.getData();
-			if (flag)
+			if (tmpdata instanceof CSEnterParamInfoData || tmpdata instanceof CSPsData || tmpdata instanceof CSPrData)
 			{
-				if (tmpdata instanceof CSEnterParamInfoData || tmpdata instanceof CSPsData || tmpdata instanceof CSPrData)
+				mstop = tmp;
+				if (tmpdata instanceof CSPsData || tmpdata instanceof CSPrData)
 				{
-					mstop = tmp;
-					if (tmpdata instanceof CSPsData || tmpdata instanceof CSPrData)
+					realhandler.setNextstart(mstop);
+					realhandler.setMostfar(mstop.getNext());
+				}
+				else
+				{
+					realhandler.setNextstart(mstop.getPrev());
+					realhandler.setMostfar(mstop);
+				}
+				break;
+			}
+			if (tmpdata instanceof CSMethodInvocationData)
+			{
+				CSMethodInvocationData csmedt = (CSMethodInvocationData)tmpdata;
+				FlowLineNode<CSFlowLineData> mfem = csmedt.getMostfarem();
+				if (mfem != null)
+				{
+					int alltimes = ((CSEnterParamInfoData)mfem.getData()).getTimes();
+					int left = alltimes - csmedt.getMostfarused();
+					if (left > 0)
 					{
-						realhandler.setNextstart(mstop);
-						realhandler.setMostfar(mstop.getNext());
+						mstop = mfem;
+						realhandler.setNextstart(null);
+						// mstop.getPrev()
+						realhandler.setMostfar(mstop);
+						break;
 					}
 					else
 					{
-						realhandler.setNextstart(mstop.getPrev());
-						realhandler.setMostfar(mstop);
-					}
-					break;
-				}
-				if (tmpdata instanceof CSMethodInvocationData)
-				{
-					CSMethodInvocationData csmedt = (CSMethodInvocationData)tmpdata;
-					FlowLineNode<CSFlowLineData> mfem = csmedt.getMostfarem();
-					if (mfem != null)
-					{
-						int alltimes = ((CSEnterParamInfoData)mfem.getData()).getTimes();
-						int left = alltimes - csmedt.getMostfarused();
-						if (left > 0)
-						{
-							mstop = mfem;
-							realhandler.setNextstart(null);
-							// mstop.getPrev()
-							realhandler.setMostfar(mstop);
-							break;
-						}
-						else
-						{
-							tmp = mfem;
-						}
+						tmp = mfem;
 					}
 				}
-			}
-			if (tmpdata instanceof CSPsData)
-			{
-				TODO
-				// TODO the signal handle of Ps Pr data is wrong.
-				mstart = tmp;
-				flag = true;
 			}
 			tmp = tmp.getPrev();
 		}

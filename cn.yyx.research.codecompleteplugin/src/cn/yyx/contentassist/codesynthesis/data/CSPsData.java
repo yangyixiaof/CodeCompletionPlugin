@@ -16,13 +16,9 @@ public class CSPsData extends CSFlowLineData{
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
 		Integer top = signals.peek();
-		if (top == null || top != DataStructureSignalMetaInfo.MethodInvocation)
+		if (top == null || top != DataStructureSignalMetaInfo.MethodInvocation || top != DataStructureSignalMetaInfo.MethodPs)
 		{
-			throw new CodeSynthesisException("When handling ps, the top of stack is not MethodInvocation.");
-		}
-		if (top != DataStructureSignalMetaInfo.MethodPs)
-		{
-			throw new CodeSynthesisException("When handling ps, the top of stack is not MethodPs.");
+			throw new CodeSynthesisException("When handling ps, the top of stack is not MethodInvocation or MethodPs.");
 		}
 		signals.pop();
 		signals.push(DataStructureSignalMetaInfo.MethodPs);
