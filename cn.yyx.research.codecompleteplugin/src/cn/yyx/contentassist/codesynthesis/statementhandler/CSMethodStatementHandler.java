@@ -25,7 +25,7 @@ public class CSMethodStatementHandler extends CSStatementHandler{
 		super(csh.getSete(), csh.getProb(), csh.getAoi());
 		if (hasem)
 		{
-			signals.push(DataStructureSignalMetaInfo.MethodInvocation);
+			getSignals().push(DataStructureSignalMetaInfo.MethodInvocation);
 		}
 	}
 	
@@ -51,6 +51,14 @@ public class CSMethodStatementHandler extends CSStatementHandler{
 
 	public void setMostfar(FlowLineNode<CSFlowLineData> mostfar) {
 		this.mostfar = mostfar;
+	}
+
+	public Stack<Integer> getSignals() {
+		return signals;
+	}
+
+	public void setSignals(Stack<Integer> signals) {
+		this.signals = signals;
 	}
 	
 }

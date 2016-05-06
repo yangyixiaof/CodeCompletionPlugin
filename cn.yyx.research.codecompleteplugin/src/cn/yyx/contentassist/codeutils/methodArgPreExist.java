@@ -5,6 +5,7 @@ import java.util.List;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSEnterParamInfoData;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationData;
@@ -24,6 +25,10 @@ public class methodArgPreExist extends referedExpression {
 			throws CodeSynthesisException {
 		CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
 		CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
+		if (realhandler.getSignals().isEmpty())
+		{
+			throw new CodeSynthesisException("method arg handle signal run into error.");
+		}
 		FlowLineNode<CSFlowLineData> ns = realhandler.getNextstart();
 		FlowLineNode<CSFlowLineData> tmp = ns;
 		FlowLineNode<CSFlowLineData> mstart = null;
@@ -74,24 +79,10 @@ public class methodArgPreExist extends referedExpression {
 			}
 			if (tmpdata instanceof CSPsData)
 			{
+				// TODO the signal handle of Ps Pr data is wrong.
 				mstart = tmp;
 				flag = true;
 			}
-			/*if (tmpdata instanceof CSEnterParamInfoData || tmpdata instanceof CSPsData)
-			{
-				realhandler.setNextstart(tmp);
-				realhandler.setMostfar(tmp);
-				mstop = tmppre;
-				if (tmpdata instanceof CSEnterParamInfoData)
-				{
-					CSEnterParamInfoData ce = (CSEnterParamInfoData) tmpdata;
-					if (ce.getUsedtimes() <= 0)
-					{
-						throw new CodeSynthesisException("CSEnterParamInfoData times < 0, conflict happens.");
-					}
-					ce.decreaseUsedtimes(1);
-				}
-			}*/
 			tmp = tmp.getPrev();
 		}
 		if (mstart == null || mstop == null)
@@ -120,6 +111,27 @@ public class methodArgPreExist extends referedExpression {
 			return 1;
 		}
 		return 0;
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue, CSStatementHandler smthandler,
+			String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
+		if (tmpcache == null)
+		{
+			tmpcache = HandleCodeSynthesis(squeue, smthandler);
+		}
+		return CodeSynthesisHelper.HandleInferredField(tmpcache, squeue, smthandler, reservedword, expectedinfer);
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
+			CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
+			throws CodeSynthesisException {
+		if (tmpcache == null)
+		{
+			tmpcache = HandleCodeSynthesis(squeue, smthandler);
+		}
+		return CodeSynthesisHelper.HandleInferredMethodReference(tmpcache, squeue, smthandler, reservedword, expectedinfer);
 	}
 	
 }
