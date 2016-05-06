@@ -1,6 +1,9 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.TreeMap;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
@@ -58,7 +61,31 @@ public class enhancedForStatement extends statement{
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ForwardMerge("for (", tpls, " et: ", rels, "){\n\n}", squeue, smthandler, null, null);
+		boolean classhandled = false;
+		String handledclass = null;
+		Iterator<FlowLineNode<CSFlowLineData>> itr = rels.iterator();
+		while (itr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> fln = itr.next();
+			Class<?> cls = fln.getData().getDcls();
+			if (cls != null)
+			{
+				if (cls.isAssignableFrom(Collection.class) || cls.isArray())
+				{
+					classhandled = true;
+					cls.getComponentType(); // for array specially
+					cls.getTypeParameters();
+				}
+			}
+		}
+		if (classhandled)
+		{
+			return CSFlowLineHelper.ConcateOneFlowLineList("for (" + handledclass + " et:", rels, "){\n\n}");
+		}
+		else
+		{
+			return CSFlowLineHelper.ForwardMerge("for (", tpls, " et: ", rels, "){\n\n}", squeue, smthandler, null, null);
+		}
 	}
 
 	@Override
