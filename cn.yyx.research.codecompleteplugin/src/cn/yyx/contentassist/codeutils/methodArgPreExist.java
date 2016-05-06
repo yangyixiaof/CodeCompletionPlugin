@@ -1,6 +1,7 @@
 package cn.yyx.contentassist.codeutils;
 
 import java.util.List;
+import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
@@ -11,6 +12,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationData;
 import cn.yyx.contentassist.codesynthesis.data.CSPrData;
 import cn.yyx.contentassist.codesynthesis.data.CSPsData;
+import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
@@ -25,52 +27,35 @@ public class methodArgPreExist extends referedExpression {
 			throws CodeSynthesisException {
 		CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
 		CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
-		if (realhandler.getSignals().isEmpty())
+		if (realhandler.getSignals().size() != 1)
 		{
 			throw new CodeSynthesisException("method arg handle signal run into error.");
 		}
+		Stack<Integer> signals = realhandler.getSignals();
 		FlowLineNode<CSFlowLineData> ns = realhandler.getNextstart();
 		FlowLineNode<CSFlowLineData> tmp = ns;
 		FlowLineNode<CSFlowLineData> mstart = ns;
 		FlowLineNode<CSFlowLineData> mstop = null;
 		while (tmp != null)
 		{
-			// TODO the signal handle of Ps Pr data is wrong.
 			CSFlowLineData tmpdata = tmp.getData();
 			if (tmpdata instanceof CSEnterParamInfoData || tmpdata instanceof CSPsData || tmpdata instanceof CSPrData || tmpdata instanceof CSMethodInvocationData)
 			{
-				mstop = tmp;
-				if (tmpdata instanceof CSPsData || tmpdata instanceof CSPrData)
+				Integer preps = signals.peek();
+				tmpdata.HandleStackSignal(signals);
+				if (preps == DataStructureSignalMetaInfo.MethodInvocation)
 				{
-					realhandler.setNextstart(mstop);
-					realhandler.setMostfar(mstop.getNext());
+					continue;
 				}
-				else
+				if (signals.size() == 1)
 				{
-					realhandler.setNextstart(mstop.getPrev());
-					realhandler.setMostfar(mstop);
-				}
-				break;
-			}
-			if (tmpdata instanceof CSMethodInvocationData)
-			{
-				CSMethodInvocationData csmedt = (CSMethodInvocationData)tmpdata;
-				FlowLineNode<CSFlowLineData> mfem = csmedt.getMostfarem();
-				if (mfem != null)
-				{
-					int alltimes = ((CSEnterParamInfoData)mfem.getData()).getTimes();
-					int left = alltimes - csmedt.getMostfarused();
-					if (left > 0)
+					mstop = tmp.getNext();
+					realhandler.setNextstart(tmp);
+					if (tmpdata instanceof CSEnterParamInfoData)
 					{
-						mstop = mfem;
+						mstop = tmp;
 						realhandler.setNextstart(null);
-						// mstop.getPrev()
 						realhandler.setMostfar(mstop);
-						break;
-					}
-					else
-					{
-						tmp = mfem;
 					}
 				}
 			}
