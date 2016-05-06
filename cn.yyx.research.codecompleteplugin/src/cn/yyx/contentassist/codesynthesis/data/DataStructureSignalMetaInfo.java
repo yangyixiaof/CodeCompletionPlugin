@@ -7,8 +7,8 @@ public class DataStructureSignalMetaInfo {
 	public static final int ParentheseBlock = 3;
 	
 	public static final int MethodEnterParam = 4;
-	public static final int MethodPs = 5;
-	public static final int MethodPr = 6;
+	public static final int MethodPr = 5;
+	public static final int MethodPs = 6;
 	public static final int MethodInvocation = 7;
 	
 	// predict over waiting.
