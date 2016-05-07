@@ -37,5 +37,20 @@ public class ComplexParser {
 		Sentence set = new Sentence(str, evalVisitor.getSmt());
 		return set;
 	}
+	
+	public static Sentence GetSentenceWithNoExit(String str) {
+		OneSentenceVisitor evalVisitor = new OneSentenceVisitor();
+		try {
+			ParseRoot.ParseOneSentence(str, evalVisitor, false);
+		} catch (Exception e) {
+			System.err.println("Parse One Sentence error! serious error, the system will exit. The error parsed setence is :" + str + ".");
+			return null;
+		} catch (Error e) {
+			System.err.println("Parse One Sentence error! serious error, the system will exit. The error parsed setence is :" + str + ".");
+			return null;
+		}
+		Sentence set = new Sentence(str, evalVisitor.getSmt());
+		return set;
+	}
 
 }
