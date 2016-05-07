@@ -16,7 +16,7 @@ public class TypeCheckHelper {
 		return CanBeMutualCast(onetype, twotype);
 	}*/
 	
-	public static boolean CanBeMutualCast(Class<?> onetype, Class<?> twotype)
+	public static boolean CanBeMutualCast(CCType onetype, CCType twotype)
 	{
 		if (onetype == null || twotype == null)
 		{

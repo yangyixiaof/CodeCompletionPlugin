@@ -13,6 +13,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeResolver;
@@ -45,7 +46,9 @@ public class CodeSynthesisHelper {
 			List<FlowLineNode<CSFlowLineData>> ls = id.HandleCodeSynthesis(squeue, smthandler);
 			fin.append(" " + ls.get(0).getData().getData());
 		}
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), fin.toString(), void.class, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+		CCType cct = new CCType();
+		cct.AddPossibleClass(void.class, "void");
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), fin.toString(), cct, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
 	}
 	
@@ -58,8 +61,8 @@ public class CodeSynthesisHelper {
 		{
 			String code = citr.next();
 			String type = po.get(code);
-			Class<?> c = TypeResolver.ResolveType(type, squeue.GetLastHandler().getContextHandler().getJavacontext());
-			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), code, c, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+			CCType cls = TypeResolver.ResolveType(type, squeue.GetLastHandler().getContextHandler().getJavacontext());
+			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), code, cls, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		}
 		return result;
 	}
@@ -96,8 +99,8 @@ public class CodeSynthesisHelper {
 		String ref = ramm.getRef();
 		String member = ramm.getMember();
 		String membertype = ramm.getMembertype();
-		Class<?> c = TypeResolver.ResolveType(membertype, squeue.GetLastHandler().getContextHandler().getJavacontext());
-		FlowLineNode<CSFlowLineData> sqdata = new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ref + concator + member, c, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb());
+		CCType cls = TypeResolver.ResolveType(membertype, squeue.GetLastHandler().getContextHandler().getJavacontext());
+		FlowLineNode<CSFlowLineData> sqdata = new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ref + concator + member, cls, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb());
 		result.add(sqdata);
 		return result;
 	}
@@ -257,7 +260,7 @@ public class CodeSynthesisHelper {
 				TypeMember tp = tpitr.next();
 				if (SimilarityHelper.ComputeTwoStringSimilarity(rawtype, tp.getType()) > PredictMetaInfo.TwoStringSimilarThreshold)
 				{
-					result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), tp.getType(), tp.getClass(), false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+					result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), tp.getType(), new CCType(tp), false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 				}
 			}
 		}

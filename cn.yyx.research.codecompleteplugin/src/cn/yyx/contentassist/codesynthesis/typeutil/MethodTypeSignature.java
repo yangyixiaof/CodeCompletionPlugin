@@ -8,38 +8,41 @@ import cn.yyx.contentassist.specification.MethodMember;
 
 public class MethodTypeSignature {
 	
-	private Class<?> returntype = null;
-	private List<Class<?>> argtypes = null;
+	private CCType returntype = null;
+	private List<CCType> argtypes = null;
+	
+	// private Class<?> returntype = null;
+	// private List<Class<?>> argtypes = null;
 	
 	public static MethodTypeSignature GenerateMethodTypeSignature(MethodMember mm, JavaContentAssistInvocationContext javacontext)
 	{
 		if (mm != null)
 		{
-			Class<?> rt = TypeResolver.ResolveType(mm.getReturntype(), javacontext);
-			List<Class<?>> arts = TypeResolver.ResolveType(mm.getArgtypelist(), javacontext);
+			CCType rt = TypeResolver.ResolveType(mm.getReturntype(), javacontext);
+			List<CCType> arts = TypeResolver.ResolveType(mm.getArgtypelist(), javacontext);
 			return new MethodTypeSignature(rt, arts);
 		}
 		return null;
 	}
 	
-	public MethodTypeSignature(Class<?> returntype, List<Class<?>> argtypes) {
+	public MethodTypeSignature(CCType returntype, List<CCType> argtypes) {
 		this.setReturntype(returntype);
 		this.setArgtypes(argtypes);
 	}
 
-	public Class<?> getReturntype() {
+	public CCType getReturntype() {
 		return returntype;
 	}
 
-	public void setReturntype(Class<?> returntype) {
+	public void setReturntype(CCType returntype) {
 		this.returntype = returntype;
 	}
 
-	public List<Class<?>> getArgtypes() {
+	public List<CCType> getArgtypes() {
 		return argtypes;
 	}
 
-	public void setArgtypes(List<Class<?>> argtypes) {
+	public void setArgtypes(List<CCType> argtypes) {
 		this.argtypes = argtypes;
 	}
 	

@@ -9,14 +9,14 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 
 public class CSFlowLineTypeCheckHelper {
 	
-	public static List<FlowLineNode<CSFlowLineData>> RetainTheFallThroughFlowLineNodes(List<FlowLineNode<CSFlowLineData>> ls, Class<?> checkclass)
+	public static List<FlowLineNode<CSFlowLineData>> RetainTheFallThroughFlowLineNodes(List<FlowLineNode<CSFlowLineData>> ls, CCType checkclass)
 	{
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		Iterator<FlowLineNode<CSFlowLineData>> itr = ls.iterator();
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
-			Class<?> c = fln.getData().getDcls();
+			CCType c = fln.getData().getDcls();
 			if (TypeCheckHelper.CanBeMutualCast(checkclass, c))
 			{
 				result.add(fln);

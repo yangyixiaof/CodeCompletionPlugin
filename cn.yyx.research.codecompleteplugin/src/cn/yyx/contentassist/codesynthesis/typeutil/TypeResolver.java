@@ -14,27 +14,29 @@ public class TypeResolver {
 	
 	public static final int MaxTryTimes = 3;
 	
-	public static YJCache<Class<?>> classcache = new YJCache<Class<?>>();
+	public static YJCache<CCType> classcache = new YJCache<CCType>();
 	
-	public static Class<?> ResolveType(String type, JavaContentAssistInvocationContext javacontext)
+	// Class<?>
+	public static CCType ResolveType(String type, JavaContentAssistInvocationContext javacontext)
 	{
-		Class<?> cls = classcache.GetCachedContent(type);
+		CCType cls = classcache.GetCachedContent(type);
 		if (cls != null)
 		{
 			return cls;
 		}
 		List<TypeMember> tmlist = SearchSpecificationOfAReference.SearchTypeSpecificationByPrefix(type, javacontext, null);
-		// int trysize = Math.min(MaxTryTimes, tmlist.size());
 		if (tmlist == null || tmlist.size() == 0)
 		{
-			return Object.class;
+			CCType cct = new CCType();
+			cct.AddPossibleClass(Object.class, "Object");
+			return cct;
 		}
-		return tmlist.get(0).getTypeclass();
+		return new CCType(tmlist);
 	}
 	
-	public static List<Class<?>> ResolveType(List<String> types, JavaContentAssistInvocationContext javacontext)
+	public static List<CCType> ResolveType(List<String> types, JavaContentAssistInvocationContext javacontext)
 	{
-		List<Class<?>> result = new LinkedList<Class<?>>();
+		List<CCType> result = new LinkedList<CCType>();
 		Iterator<String> itr = types.iterator();
 		while (itr.hasNext())
 		{

@@ -7,6 +7,7 @@ import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.flowline.SynthesisCodeManager;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputer;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
@@ -17,7 +18,8 @@ public class CSFlowLineData implements CSDataStructure{
 	private Sentence sete = null;
 	private String data = null;
 	// private Integer structsignal = null;
-	private Class<?> dcls = null;
+	// private Class<?> dcls = null;
+	private CCType dcls = null;
 	private SynthesisHandler handler = null;
 	private SynthesisCodeManager scm = new SynthesisCodeManager();
 	
@@ -33,7 +35,7 @@ public class CSFlowLineData implements CSDataStructure{
 	// this boolean field should be set at some specific kind of statement.
 	private boolean isonestatementend = false;
 	
-	public CSFlowLineData(Integer id, Sentence sete, String data, Class<?> dcls, boolean haspre, boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
+	public CSFlowLineData(Integer id, Sentence sete, String data, CCType dcls, boolean haspre, boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
 		this.setId(id + "");
 		this.setSete(sete);
 		this.setData(data);
@@ -48,7 +50,7 @@ public class CSFlowLineData implements CSDataStructure{
 		this.setHandler(handler);
 	}
 	
-	public CSFlowLineData(String id, Sentence sete, String data, Class<?> dcls, boolean haspre, boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
+	public CSFlowLineData(String id, Sentence sete, String data, CCType dcls, boolean haspre, boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
 		this.setId(id + "");
 		this.setSete(sete);
 		this.setData(data);
@@ -70,15 +72,7 @@ public class CSFlowLineData implements CSDataStructure{
 	public void setData(String data) {
 		this.data = data;
 	}
-
-	public Class<?> getDcls() {
-		return dcls;
-	}
-
-	public void setDcls(Class<?> dcls) {
-		this.dcls = dcls;
-	}
-
+	
 	public boolean isHashole() {
 		return hashole;
 	}
@@ -192,7 +186,7 @@ public class CSFlowLineData implements CSDataStructure{
 			beforetwo = TypeComputationKind.NoOptr;
 		}
 		TypeComputationKind tck = TypeComputer.ChooseOne(oneafter, beforetwo);
-		Class<?> clz = null;
+		CCType clz = null; // Class<?> 
 		clz = TypeComputer.ComputeType(getDcls(), d2.getDcls(), tck);
 		String str1 = getData();
 		String str2 = d2.getData();
@@ -208,6 +202,14 @@ public class CSFlowLineData implements CSDataStructure{
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException{
 		// do nothing.
+	}
+
+	public CCType getDcls() {
+		return dcls;
+	}
+
+	public void setDcls(CCType dcls) {
+		this.dcls = dcls;
 	}
 	
 }
