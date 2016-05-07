@@ -46,8 +46,7 @@ public class CodeSynthesisHelper {
 			List<FlowLineNode<CSFlowLineData>> ls = id.HandleCodeSynthesis(squeue, smthandler);
 			fin.append(" " + ls.get(0).getData().getData());
 		}
-		CCType cct = new CCType();
-		cct.AddPossibleClass(void.class, "void");
+		CCType cct = new CCType(void.class, "void");
 		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), fin.toString(), cct, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
 	}

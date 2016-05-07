@@ -14,29 +14,30 @@ public class TypeResolver {
 	
 	public static final int MaxTryTimes = 3;
 	
-	public static YJCache<CCType> classcache = new YJCache<CCType>();
+	public static YJCache<LinkedList<CCType>> classcache = new YJCache<LinkedList<CCType>>();
 	
 	// Class<?>
-	public static CCType ResolveType(String type, JavaContentAssistInvocationContext javacontext)
+	public static LinkedList<CCType> ResolveType(String type, JavaContentAssistInvocationContext javacontext)
 	{
-		CCType cls = classcache.GetCachedContent(type);
-		if (cls != null)
+		LinkedList<CCType> clss = classcache.GetCachedContent(type);
+		if (clss != null)
 		{
-			return cls;
+			return clss;
 		}
 		List<TypeMember> tmlist = SearchSpecificationOfAReference.SearchTypeSpecificationByPrefix(type, javacontext, null);
 		if (tmlist == null || tmlist.size() == 0)
 		{
-			CCType cct = new CCType();
-			cct.AddPossibleClass(Object.class, "Object");
-			return cct;
+			LinkedList<CCType> res = new LinkedList<CCType>();
+			CCType cct = new CCType(Object.class, "Object");
+			res.add(cct);
+			return res;
 		}
-		return new CCType(tmlist);
+		return CCType.CCTypeList(tmlist);
 	}
 	
-	public static List<CCType> ResolveType(List<String> types, JavaContentAssistInvocationContext javacontext)
+	public static List<LinkedList<CCType>> ResolveType(List<String> types, JavaContentAssistInvocationContext javacontext)
 	{
-		List<CCType> result = new LinkedList<CCType>();
+		List<LinkedList<CCType>> result = new LinkedList<LinkedList<CCType>>();
 		Iterator<String> itr = types.iterator();
 		while (itr.hasNext())
 		{

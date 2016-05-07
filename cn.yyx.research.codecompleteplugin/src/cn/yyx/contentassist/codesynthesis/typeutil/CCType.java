@@ -3,42 +3,63 @@ package cn.yyx.contentassist.codesynthesis.typeutil;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import cn.yyx.contentassist.specification.TypeMember;
 
 public class CCType {
 	
-	private List<Class<?>> clss = new LinkedList<Class<?>>();
-	private List<String> clsstr = new LinkedList<String>();
-	private Set<Integer> valididx = new TreeSet<Integer>();
+	private Class<?> cls = null;
+	private String clstr = null;
+	// private List<Class<?>> clss = new LinkedList<Class<?>>();
+	// private List<String> clsstr = new LinkedList<String>();
+	// private Set<Integer> valididx = new TreeSet<Integer>();
 	
-	public CCType() {
+	public CCType(Class<?> cls, String clstr) {
+		setCls(cls);
+		setClstr(clstr);
 	}
 	
 	public CCType(TypeMember tm) {
-		clss.add(tm.getTypeclass());
-		clsstr.add(tm.getType());
+		setCls(tm.getTypeclass());
+		setClstr(tm.getType());
 	}
 	
-	public CCType(List<TypeMember> tmlist) {
+	public static LinkedList<CCType> CCTypeList(List<TypeMember> tmlist) {
+		LinkedList<CCType> result = new LinkedList<CCType>();
 		Iterator<TypeMember> itr = tmlist.iterator();
 		while (itr.hasNext())
 		{
 			TypeMember tm = itr.next();
-			clss.add(tm.getTypeclass());
-			clsstr.add(tm.getType());
+			result.add(new CCType(tm));
+			// clss.add(tm.getTypeclass());
+			// clsstr.add(tm.getType());
 		}
+		return result;
 	}
 
-	public void AddPossibleClass(Class<?> cls, String clstr)
+	/*public void AddPossibleClass(Class<?> cls, String clstr)
 	{
 		getClss().add(cls);
 		getClsstr().add(clstr);
+	}*/
+
+	public Class<?> getCls() {
+		return cls;
+	}
+
+	public void setCls(Class<?> cls) {
+		this.cls = cls;
+	}
+
+	public String getClstr() {
+		return clstr;
+	}
+
+	public void setClstr(String clstr) {
+		this.clstr = clstr;
 	}
 	
-	public List<Class<?>> getClss() {
+	/*public List<Class<?>> getClss() {
 		return clss;
 	}
 
@@ -60,6 +81,6 @@ public class CCType {
 
 	public void setValididx(Set<Integer> valididx) {
 		this.valididx = valididx;
-	}
+	}*/
 	
 }

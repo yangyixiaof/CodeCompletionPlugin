@@ -9,6 +9,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.CSFlowLineTypeCheckHelper;
 
 public class ifStatement extends statement{
@@ -69,7 +70,7 @@ public class ifStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineTypeCheckHelper.RetainTheFallThroughFlowLineNodes(CSFlowLineHelper.ConcateOneFlowLineList("if (", rels, ") {\n}"), Boolean.class);
+		return CSFlowLineTypeCheckHelper.RetainTheFallThroughFlowLineNodes(CSFlowLineHelper.ConcateOneFlowLineList("if (", rels, ") {\n}"), new CCType(Boolean.class, "Boolean"));
 	}
 
 	@Override

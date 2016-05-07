@@ -1,5 +1,6 @@
 package cn.yyx.contentassist.codesynthesis.typeutil;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
@@ -8,8 +9,8 @@ import cn.yyx.contentassist.specification.MethodMember;
 
 public class MethodTypeSignature {
 	
-	private CCType returntype = null;
-	private List<CCType> argtypes = null;
+	private List<CCType> returntype = null;
+	private List<LinkedList<CCType>> argtypes = null;
 	
 	// private Class<?> returntype = null;
 	// private List<Class<?>> argtypes = null;
@@ -18,31 +19,31 @@ public class MethodTypeSignature {
 	{
 		if (mm != null)
 		{
-			CCType rt = TypeResolver.ResolveType(mm.getReturntype(), javacontext);
-			List<CCType> arts = TypeResolver.ResolveType(mm.getArgtypelist(), javacontext);
+			LinkedList<CCType> rt = TypeResolver.ResolveType(mm.getReturntype(), javacontext);
+			List<LinkedList<CCType>> arts = TypeResolver.ResolveType(mm.getArgtypelist(), javacontext);
 			return new MethodTypeSignature(rt, arts);
 		}
 		return null;
 	}
 	
-	public MethodTypeSignature(CCType returntype, List<CCType> argtypes) {
+	public MethodTypeSignature(List<CCType> returntype, List<LinkedList<CCType>> argtypes) {
 		this.setReturntype(returntype);
 		this.setArgtypes(argtypes);
 	}
 
-	public CCType getReturntype() {
+	public List<CCType> getReturntype() {
 		return returntype;
 	}
 
-	public void setReturntype(CCType returntype) {
+	public void setReturntype(List<CCType> returntype) {
 		this.returntype = returntype;
 	}
 
-	public List<CCType> getArgtypes() {
+	public List<LinkedList<CCType>> getArgtypes() {
 		return argtypes;
 	}
 
-	public void setArgtypes(List<CCType> argtypes) {
+	public void setArgtypes(List<LinkedList<CCType>> argtypes) {
 		this.argtypes = argtypes;
 	}
 	
