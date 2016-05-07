@@ -3,10 +3,6 @@ package cn.yyx.contentassist.codesynthesis.typeutil;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
-
-import cn.yyx.contentassist.specification.MethodMember;
-
 public class TypeCheckHelper {
 	
 	/*public static boolean CanBeMutualCast(TypeCheck one, TypeCheck two)
@@ -16,15 +12,28 @@ public class TypeCheckHelper {
 		return CanBeMutualCast(onetype, twotype);
 	}*/
 	
+	public static boolean CanBeMutualCast(LinkedList<CCType> cs, CCType rtclass) {
+		Iterator<CCType> itr = cs.iterator();
+		while (itr.hasNext())
+		{
+			CCType cct = itr.next();
+			if (CanBeMutualCast(cct, rtclass))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public static boolean CanBeMutualCast(CCType onetype, CCType twotype)
 	{
 		if (onetype == null || twotype == null)
 		{
 			return true;
 		}
-		onetype = NormalizeClass(onetype);
-		twotype = NormalizeClass(twotype);
-		if (onetype.isAssignableFrom(twotype) || twotype.isAssignableFrom(onetype))
+		Class<?> ot = NormalizeClass(onetype.getCls());
+		Class<?> tt = NormalizeClass(twotype.getCls());
+		if (ot.isAssignableFrom(tt) || tt.isAssignableFrom(ot))
 		{
 			return true;
 		}
@@ -54,27 +63,6 @@ public class TypeCheckHelper {
 			onetype = Character.class;
 		}
 		return onetype;
-	}
-	
-	public static MethodTypeSignature TranslateMethodMember(MethodMember mm, JavaContentAssistInvocationContext javacontext)
-	{
-		String rttype = mm.getReturntype();
-		// tc.setExpreturntype(rttype);
-		Class<?> c = TypeResolver.ResolveType(rttype, javacontext);
-		// tc.setExpreturntypeclass(c);
-		LinkedList<String> tplist = mm.getArgtypelist();
-		// tc.setExpargstypes(tplist);
-		LinkedList<Class<?>> tpclist = new LinkedList<Class<?>>();
-		Iterator<String> itr = tplist.iterator();
-		while (itr.hasNext())
-		{
-			String tp = itr.next();
-			Class<?> tpc = TypeResolver.ResolveType(tp, javacontext);
-			tpclist.add(tpc);
-		}
-		// tc.setExpargstypesclasses(tpclist);
-		MethodTypeSignature tc = new MethodTypeSignature(c, tpclist);
-		return tc;
 	}
 	
 }

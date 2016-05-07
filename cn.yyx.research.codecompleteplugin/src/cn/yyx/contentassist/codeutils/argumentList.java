@@ -18,6 +18,7 @@ import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
 import cn.yyx.contentassist.commonutils.CheckUtil;
@@ -113,7 +114,7 @@ public class argumentList implements OneCode {
 	 * result.setDatas(resdatas); expected.pop(); return false; }
 	 */
 
-	private String HandleOneClassParamNodes(Class<?> c, List<List<FlowLineNode<CSFlowLineData>>> paramsnode,
+	private String HandleOneClassParamNodes(LinkedList<CCType> c, List<List<FlowLineNode<CSFlowLineData>>> paramsnode,
 			List<Boolean> usedparams) {
 		Iterator<List<FlowLineNode<CSFlowLineData>>> pitr = paramsnode.iterator();
 		int usedidx = 0;
@@ -124,7 +125,7 @@ public class argumentList implements OneCode {
 			Iterator<FlowLineNode<CSFlowLineData>> codeitr = pcn.iterator();
 			while (codeitr.hasNext()) {
 				FlowLineNode<CSFlowLineData> code = codeitr.next();
-				Class<?> rtclass = code.getData().getDcls();
+				CCType rtclass = code.getData().getDcls();
 				if (TypeCheckHelper.CanBeMutualCast(c, rtclass)) {
 					select = code.getData().getData();
 					break;
@@ -196,11 +197,11 @@ public class argumentList implements OneCode {
 			// msig != null.
 			// check and add argument.
 			List<Boolean> usedparams = ListHelper.InitialBooleanArray(positiveargs.size());
-			List<Class<?>> tps = msig.getArgtypes();
-			Iterator<Class<?>> tpitr = tps.iterator();
+			List<LinkedList<CCType>> tps = msig.getArgtypes();
+			Iterator<LinkedList<CCType>> tpitr = tps.iterator();
 			sb.append("(");
 			while (tpitr.hasNext()) {
-				Class<?> c = tpitr.next();
+				LinkedList<CCType> c = tpitr.next();
 				String ct = HandleOneClassParamNodes(c, positiveargs, usedparams);
 				sb.append(ct);
 				if (tpitr.hasNext()) {

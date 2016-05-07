@@ -132,7 +132,7 @@ public class CodeSynthesisHelper {
 			double sim = SimilarityHelper.ComputeTwoStringSimilarity(cmp, methodname);
 			if (sim > PredictMetaInfo.MethodSimilarityThreshold)
 			{
-				MethodTypeSignature mtsone = TypeCheckHelper.TranslateMethodMember(mm, squeue.GetLastHandler().getContextHandler().getJavacontext());
+				MethodTypeSignature mtsone = MethodTypeSignature.TranslateMethodMember(mm, squeue.GetLastHandler().getContextHandler().getJavacontext());
 				int id = squeue.GenerateNewNodeId();
 				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? methodname : beforemethodexp + "." + methodname), mtsone.getReturntype(), false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 				mts.put(id+"", mtsone);

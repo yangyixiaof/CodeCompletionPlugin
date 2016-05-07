@@ -1,5 +1,6 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeResolver;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 
@@ -49,9 +51,14 @@ public class classRef extends type {
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		String tp = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleTypeRef(off);
-		Class<?> c = TypeResolver.ResolveType(tp, squeue.GetLastHandler().getContextHandler().getJavacontext());
+		LinkedList<CCType> clss = TypeResolver.ResolveType(tp, squeue.GetLastHandler().getContextHandler().getJavacontext());
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), tp, c, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+		Iterator<CCType> itr = clss.iterator();
+		while (itr.hasNext())
+		{
+			CCType cct = itr.next();
+			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), cct.getClstr(), cct, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+		}
 		return result;
 	}
 	

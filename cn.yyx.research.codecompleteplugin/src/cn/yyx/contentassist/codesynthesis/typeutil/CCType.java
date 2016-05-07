@@ -58,6 +58,10 @@ public class CCType {
 	public void setClstr(String clstr) {
 		this.clstr = clstr;
 	}
+
+	public boolean isAssignableFrom(CCType clspara) {
+		return cls.isAssignableFrom(clspara.getCls());
+	}
 	
 	/*public List<Class<?>> getClss() {
 		return clss;

@@ -42,7 +42,7 @@ public class TypeComputer {
 					}
 				}
 			}
-			return Boolean.class;
+			return new CCType(Boolean.class, "Boolean");
 		case ArithOptr:
 			if (c1 == null)
 			{
@@ -58,37 +58,37 @@ public class TypeComputer {
 				{
 					if (c2.equals(String.class) || c1.equals(String.class))
 					{
-						return String.class;
+						return new CCType(String.class, "String");
 					}
 					else
 					{
 						if (c2.equals(Double.class) || c1.equals(Double.class))
 						{
-							return Double.class;
+							return new CCType(Double.class, "Double");
 						}
 						if (c2.equals(Float.class) || c1.equals(Float.class))
 						{
-							return Float.class;
+							return new CCType(Float.class, "Float");
 						}
 						if (c2.equals(Long.class) || c1.equals(Long.class))
 						{
-							return Long.class;
+							return new CCType(Long.class, "Long");
 						}
 						if (c2.equals(Integer.class) || c1.equals(Integer.class))
 						{
-							return Integer.class;
+							return new CCType(Integer.class, "Integer");
 						}
 						if (c2.equals(Short.class) || c1.equals(Short.class))
 						{
-							return Short.class;
+							return new CCType(Short.class, "Short");
 						}
 						if (c2.equals(Byte.class) || c1.equals(Byte.class))
 						{
-							return Byte.class;
+							return new CCType(Byte.class, "Byte");
 						}
 						if (c2.equals(Boolean.class) || c1.equals(Boolean.class))
 						{
-							return Boolean.class;
+							return new CCType(Boolean.class, "Boolean");
 						}
 						return c1;
 					}
