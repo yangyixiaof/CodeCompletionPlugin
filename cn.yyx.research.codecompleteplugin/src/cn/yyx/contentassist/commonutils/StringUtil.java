@@ -30,4 +30,18 @@ public class StringUtil {
 		return allcount;
 	}
 	
+	public static String ExtractParameterizedFromRawType(String rawtype)
+	{
+		int lidx = rawtype.indexOf('<');
+		if (lidx < 0)
+		{
+			return "Object";
+		}
+		else
+		{
+			int ridx = rawtype.lastIndexOf('>');
+			return rawtype.substring(lidx+1, ridx);
+		}
+	}
+	
 }

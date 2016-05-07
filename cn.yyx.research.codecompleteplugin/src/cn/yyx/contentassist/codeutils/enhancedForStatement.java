@@ -3,7 +3,6 @@ package cn.yyx.contentassist.codeutils;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.TreeMap;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
@@ -12,6 +11,8 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
+import cn.yyx.contentassist.commonutils.StringUtil;
 
 public class enhancedForStatement extends statement{
 	
@@ -67,15 +68,22 @@ public class enhancedForStatement extends statement{
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
-			Class<?> cls = fln.getData().getDcls();
+			CCType cls = fln.getData().getDcls();
 			if (cls != null)
 			{
-				if (cls.isAssignableFrom(Collection.class) || cls.isArray())
+				if (cls.getCls().isAssignableFrom(Collection.class))
 				{
 					classhandled = true;
-					cls.getComponentType(); // for array specially
-					cls.getTypeParameters();
-					TODO
+					handledclass = StringUtil.ExtractParameterizedFromRawType(cls.getClstr());
+					// cls.getComponentType(); // for array specially
+					// cls.getTypeParameters();
+					break;
+				}
+				if (cls.getCls().isArray())
+				{
+					classhandled = true;
+					handledclass = cls.getCls().getComponentType().getSimpleName();
+					break;
 				}
 			}
 		}
