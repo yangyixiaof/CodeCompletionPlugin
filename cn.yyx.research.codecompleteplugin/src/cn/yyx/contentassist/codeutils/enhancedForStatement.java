@@ -75,6 +75,7 @@ public class enhancedForStatement extends statement{
 					classhandled = true;
 					cls.getComponentType(); // for array specially
 					cls.getTypeParameters();
+					TODO
 				}
 			}
 		}
