@@ -4,7 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="aerospike-client-3.1.9.jar"/>
-	<classpathentry exported="true" kind="lib" path="program-processor.jar"/>
+	<classpathentry exported="true" kind="lib" path="program-processor.jar" sourcepath="/programprocessor"/>
 	<classpathentry exported="true" kind="lib" path="special-parse.jar" sourcepath="/specialparse"/>
 	<classpathentry exported="true" kind="lib" path="antlr-4.5.2-complete.jar" sourcepath="/specialparse/ExternalLibrarySource/antlr-4.5.3-complete.jar"/>
 	<classpathentry exported="true" kind="lib" path="commons-lang3-3.4.jar"/>

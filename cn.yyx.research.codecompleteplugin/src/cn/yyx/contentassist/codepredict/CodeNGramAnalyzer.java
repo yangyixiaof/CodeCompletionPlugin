@@ -13,6 +13,7 @@ import org.eclipse.jface.text.IDocument;
 
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.contentassist.commonutils.ASTTreeReducer;
+import cn.yyx.contentassist.commonutils.PrintUtil;
 import cn.yyx.research.language.JDTHelper.ASTTraversal;
 import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVisitor;
 
@@ -46,6 +47,10 @@ public class CodeNGramAnalyzer {
 			SimplifiedCodeGenerateASTVisitor fmastv = new SimplifiedCodeGenerateASTVisitor();
 			atype.accept(fmastv);
 			ArrayList<String> analist = fmastv.GetMainAnalyseList(aoi.isInAnonymousClass());
+			TrimRightBrace(analist);
+			
+			// debugging.
+			PrintUtil.PrintList(analist, "analysis list");
 			
 			PredictionFetch pf = new PredictionFetch();
 			return pf.FetchPredictionInSerial(javacontext, monitor, fmastv, analist, list, aoi);
@@ -54,6 +59,23 @@ public class CodeNGramAnalyzer {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	private static void TrimRightBrace(ArrayList<String> analist)
+	{
+		int len = analist.size();
+		for (int i=len-1;i>=0;i--)
+		{
+			String str = analist.get(i);
+			if (str.startsWith("DH@}"))
+			{
+				analist.remove(i);
+			}
+			else
+			{
+				break;
+			}
+		}
 	}
 	
 }

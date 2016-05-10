@@ -8,12 +8,14 @@ public class AeroLifeCycle {
 
 	public static final int codengram = 2;
 	
+	public static final String serverip = "192.168.1.100";
+	
 	boolean hasInitialized = false;
 
 	public void Initialize() {
-		Parameters param = new Parameters("127.0.0.1", 3000, null, null, "yyx", "code1sim");
+		Parameters param = new Parameters(serverip, 3000, null, null, "yyx", "code1sim");
 		AeroHelper.ANewClient(code1sim, param);
-		Parameters param2 = new Parameters("127.0.0.1", 3000, null, null, "yyx", "codengram");
+		Parameters param2 = new Parameters(serverip, 3000, null, null, "yyx", "codengram");
 		AeroHelper.ANewClient(codengram, param2);
 		hasInitialized = true;
 	}
