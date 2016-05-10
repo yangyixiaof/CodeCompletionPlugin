@@ -259,14 +259,14 @@ public class PredictionFetch {
 		while (itr.hasNext())
 		{
 			Sentence ons = itr.next();
-			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, 3*needsize);
+			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, 2*needsize);
 		}
 		int size = fls.GetOveredSize();
 		int turn = 0;
 		while (size < needsize && turn < PredictMetaInfo.PreTryMaxStep)
 		{
 			turn++;
-			DoOnePreTrySequencePredict(alc, fls, null, smtlist, 5*(needsize-size));
+			DoOnePreTrySequencePredict(alc, fls, null, smtlist, 2*(needsize-size));
 			size = fls.GetOveredSize();
 		}
 		if (size > needsize)
