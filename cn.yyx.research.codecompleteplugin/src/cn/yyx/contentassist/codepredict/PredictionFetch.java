@@ -294,13 +294,13 @@ public class PredictionFetch {
 			List<FlowLineNode<Sentence>> tails = fls.getTails();
 			final int existSize = tails.size();
 			Iterator<FlowLineNode<Sentence>> itr = tails.iterator();
-			int averagePredict = PredictMetaInfo.PredictMaxSequence / existSize;
+			int averagePredict = 1;
 			int isize = existSize;
 			boolean exactmatchhandled = false;
 			while (itr.hasNext())
 			{
 				boolean exactmatch = false;
-				final int neededsize = averagePredict + (int)(5*(isize*1.0/(existSize*1.0)));
+				final int neededsize = averagePredict + (int)(3*(isize*1.0/(existSize*1.0)));
 				int remainsize = neededsize;
 				isize--;
 				PriorityQueue<PredictProbPair> pppqueue = new PriorityQueue<PredictProbPair>();
