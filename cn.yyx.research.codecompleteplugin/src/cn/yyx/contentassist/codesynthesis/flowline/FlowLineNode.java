@@ -1,6 +1,6 @@
 package cn.yyx.contentassist.codesynthesis.flowline;
 
-public class FlowLineNode<T> {
+public class FlowLineNode<T> implements Comparable<FlowLineNode<T>>{
 	
 	private T data = null;
 	private double probability = 0;// probability of the data T. Used in all the execution flow of the framework. So put it in here not in data T.
@@ -89,6 +89,11 @@ public class FlowLineNode<T> {
 
 	public void setLength(int length) {
 		this.length = length;
+	}
+
+	@Override
+	public int compareTo(FlowLineNode<T> o) {
+		return ((Double)(-probability)).compareTo((Double)(-o.probability));
 	}
 	
 }

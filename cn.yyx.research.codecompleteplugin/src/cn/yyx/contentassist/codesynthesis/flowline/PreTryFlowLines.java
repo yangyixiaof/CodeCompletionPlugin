@@ -1,7 +1,10 @@
 package cn.yyx.contentassist.codesynthesis.flowline;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class PreTryFlowLines<T> extends FlowLines<T> {
 	
@@ -63,6 +66,23 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 
 	public int GetOveredSize() {
 		return overtails.size();
+	}
+
+	public void TrimTails(int needsize) {
+		List<FlowLineNode<T>> finalovertails = new LinkedList<FlowLineNode<T>>();
+		Queue<FlowLineNode<T>> priorityqueue = new PriorityQueue<FlowLineNode<T>>();
+		Iterator<FlowLineNode<T>> itr = overtails.iterator();
+		while (itr.hasNext())
+		{
+			FlowLineNode<T> fln = itr.next();
+			priorityqueue.add(fln);
+		}
+		int msize = Math.min(needsize, overtails.size());
+		for (int i=0;i<msize;i++)
+		{
+			finalovertails.add(priorityqueue.poll());
+		}
+		overtails = finalovertails;
 	}
 	
 }

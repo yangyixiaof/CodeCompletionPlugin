@@ -259,19 +259,23 @@ public class PredictionFetch {
 		while (itr.hasNext())
 		{
 			Sentence ons = itr.next();
-			DoOnePreTrySequencePredict(alc, fls, ons, smtlist);
+			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, 3*needsize);
 		}
 		int size = fls.GetOveredSize();
 		int turn = 0;
 		while (size < needsize && turn < PredictMetaInfo.PreTryMaxStep)
 		{
 			turn++;
-			DoOnePreTrySequencePredict(alc, fls, null, smtlist);
+			DoOnePreTrySequencePredict(alc, fls, null, smtlist, 5*(needsize-size));
 			size = fls.GetOveredSize();
 		}
+		if (size > needsize)
+		{
+			fls.TrimTails(needsize);
+		}
 	}
-
-	private void DoOnePreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons, final List<statement> oraclelist)
+	
+	private void DoOnePreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons, final List<statement> oraclelist, int maxparsize)
 	{
 		// final int orclesize = oraclelist.size();
 		if (fls.IsEmpty())
@@ -283,10 +287,10 @@ public class PredictionFetch {
 			fls.BeginOperation();
 			
 			List<statement> exactcmp = oraclelist;
-			if (ons != null)
+			/*if (ons != null)
 			{
 				FlowLineHelper.LastToFirstStatementQueueWithAddedStatement(fls.getExactmatchtail(), ons.getSmt());
-			}
+			}*/
 			List<FlowLineNode<Sentence>> tails = fls.getTails();
 			final int existSize = tails.size();
 			Iterator<FlowLineNode<Sentence>> itr = tails.iterator();
