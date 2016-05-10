@@ -34,7 +34,18 @@ public class AeroClientManager {
 		params.policy = policy.readPolicyDefault;
 		params.writePolicy = policy.writePolicyDefault;
 		
-		AerospikeClient client = new AerospikeClient(policy, params.host, params.port);
+		AerospikeClient client = null;
+		try {
+			client = new AerospikeClient(policy, params.host, params.port);
+		} catch (Exception e) {
+			System.err.println("new AerospikeClient run into exception.");
+			e.printStackTrace();
+			System.exit(1);
+		} catch (Error e) {
+			System.err.println("new AerospikeClient run into error.");
+			e.printStackTrace();
+			System.exit(1);
+		}
 		
 		clientManager.put(id, client);
 		paramManager.put(id, params);
