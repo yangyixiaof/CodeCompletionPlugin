@@ -30,7 +30,7 @@ public class IntelliJavaProposalComputer implements IJavaCompletionProposalCompu
 	public List<ICompletionProposal> computeCompletionProposals(ContentAssistInvocationContext context,
 			IProgressMonitor monitor) {
 		ArrayList<ICompletionProposal> proposal = null;
-		proposal = cpt.PredictCodes(context, monitor);
+		proposal = cpu.PredictCodes(context, monitor);
 		// proposal = cpu.PredictCodes(context, monitor);
 		return proposal;
 	}
@@ -43,7 +43,7 @@ public class IntelliJavaProposalComputer implements IJavaCompletionProposalCompu
 
 	@Override
 	public String getErrorMessage() {
-		return "Java Intell My Code Proposal generate some strange errors, but may not influence the use.";
+		return null;// "Java Intell My Code Proposal generate some strange errors, but may not influence the use.";
 	}
 
 	@Override
