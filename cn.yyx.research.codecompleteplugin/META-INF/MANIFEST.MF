@@ -18,8 +18,8 @@ Import-Package: org.eclipse.core.resources,
  org.eclipse.jdt.internal.compiler.env,
  org.eclipse.jdt.internal.core
 Bundle-ClassPath: .,
- aerospike-client-3.1.9.jar,
  program-processor.jar,
  special-parse.jar,
  antlr-4.5.2-complete.jar,
- commons-lang3-3.4.jar
+ commons-lang3-3.4.jar,
+ aerospike-client-3.2.2.jar
