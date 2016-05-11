@@ -41,7 +41,11 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 	
 	@Override
 	public void InitialSeed(T t) {
-		super.InitialSeed(t);
+		assert IsEmpty();
+		FlowLineNode<T> fln = new PreTryFlowLineNode<T>(t, 0, 0, null);
+		setHeads(fln);
+		setTails(new LinkedList<FlowLineNode<T>>());
+		getTails().add(fln);
 		exactmatchtail = getHeads();
 	}
 

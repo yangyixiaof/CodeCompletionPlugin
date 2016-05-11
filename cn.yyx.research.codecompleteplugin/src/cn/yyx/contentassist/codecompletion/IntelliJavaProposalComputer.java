@@ -18,6 +18,8 @@ public class IntelliJavaProposalComputer implements IJavaCompletionProposalCompu
 	public final static String OnlyJavaSupport = "<Advanced Completion: Only support java code completion, other formats are not supported yet.>";
 	public final static String OnlyExpressionSupport = "<Advanced Completion: Only support expressions completions, other formats are not supported yet.>";
 	
+	public static final String ServerIp = "192.168.1.101";
+	
 	// this is unchanged once created.
 	CodePredict cpt = new CodePredictTest();
 	// this is formal CodePredict utility class.

@@ -44,11 +44,12 @@ public class AeroHelper {
 		List<PredictProbPair> result = new ArrayList<PredictProbPair>();
 		Iterator<Double> itr = receivedProbList.iterator();
 		Iterator<String> itr2 = receivedPredList.iterator();
-		while (itr.hasNext())
+		while (itr.hasNext() && strictedSize > 0)
 		{
 			Double prob = itr.next();
 			String pred = itr2.next();
 			result.add(new PredictProbPair(ComplexParser.GetSentence(pred), prob));
+			strictedSize--;
 		}
 		return result;
 	}
