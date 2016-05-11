@@ -201,6 +201,8 @@ public class PredictionFetch {
 		}
 	}
 	
+	// split line, below are pre try predict.
+	
 	private void DoPreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, List<Sentence> setelist,
 			List<statement> smtlist, int needsize, final char lastchar) {
 		Iterator<Sentence> itr = setelist.iterator();
