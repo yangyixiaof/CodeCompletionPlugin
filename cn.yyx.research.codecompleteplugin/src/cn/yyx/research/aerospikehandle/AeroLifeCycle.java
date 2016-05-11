@@ -8,7 +8,7 @@ public class AeroLifeCycle {
 
 	public static final int codengram = 2;
 	
-	public static final String serverip = "192.168.1.100";
+	public static final String serverip = "192.168.1.101";
 	
 	boolean hasInitialized = false;
 

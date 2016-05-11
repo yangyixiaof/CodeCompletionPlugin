@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.TreeMap;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
@@ -22,6 +24,7 @@ import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.contentassist.commonutils.ContextHandler;
+import cn.yyx.contentassist.commonutils.ListHelper;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.research.aerospikehandle.AeroLifeCycle;
 import cn.yyx.research.aerospikehandle.PredictProbPair;
@@ -66,7 +69,7 @@ public class PredictionFetch {
 		return list;
 	}*/
 	
-	public List<String> FetchPredictionInSerial(JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor, SimplifiedCodeGenerateASTVisitor fmastv, List<String> analist, ArrayList<String> result, ASTOffsetInfo aoi)
+	public List<String> FetchPredictionInSerial(JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor, SimplifiedCodeGenerateASTVisitor fmastv, List<String> analist, ArrayList<String> result, ASTOffsetInfo aoi, char lastchar)
 	{
 		AeroLifeCycle alc = new AeroLifeCycle();
 		alc.Initialize();
@@ -80,7 +83,7 @@ public class PredictionFetch {
 		List<Sentence> setelist = SentenceHelper.TranslateStringsToSentences(analist);
 		List<statement> smtlist = SentenceHelper.TranslateSentencesToStatements(setelist);
 		PreTryFlowLines<Sentence> fls = new PreTryFlowLines<Sentence>();
-		DoPreTrySequencePredict(alc, fls, setelist, smtlist, PredictMetaInfo.PreTryNeedSize);
+		DoPreTrySequencePredict(alc, fls, setelist, smtlist, PredictMetaInfo.PreTryNeedSize, lastchar);
 		
 		ScopeOffsetRefHandler handler = fmastv.GenerateScopeOffsetRefHandler();
 		ContextHandler ch = new ContextHandler(javacontext, monitor);
@@ -254,28 +257,121 @@ public class PredictionFetch {
 	}*/
 	
 	private void DoPreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, List<Sentence> setelist,
-			List<statement> smtlist, int needsize) {
+			List<statement> smtlist, int needsize, char lastchar) {
 		Iterator<Sentence> itr = setelist.iterator();
 		while (itr.hasNext())
 		{
 			Sentence ons = itr.next();
-			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, 2*needsize);
+			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, (int)(1.5*needsize), 3*needsize);
 		}
 		int size = fls.GetOveredSize();
 		int turn = 0;
 		while (size < needsize && turn < PredictMetaInfo.PreTryMaxStep)
 		{
 			turn++;
-			DoOnePreTrySequencePredict(alc, fls, null, smtlist, 2*(needsize-size));
+			DoOnePreTrySequencePredict(alc, fls, null, smtlist, (int)(1.5*(needsize-size)), 3*(needsize-size));
 			size = fls.GetOveredSize();
 		}
 		if (size > needsize)
 		{
-			fls.TrimTails(needsize);
+			fls.TrimOverTails(needsize);
 		}
 	}
 	
-	private void DoOnePreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons, final List<statement> oraclelist, int maxparsize)
+	private void DoOnePreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons, final List<statement> oraclelist, int neededsize, int maxparsize)
+	{
+		if (fls.IsEmpty())
+		{
+			if (ons == null)
+			{
+				System.err.println("fls isEmpty and ons == null? What the fuck, the system will exit.");
+				System.exit(1);
+			}
+			fls.InitialSeed(ons);
+		}
+		else {
+			fls.BeginOperation();
+			Map<String, Boolean> handledkey = new TreeMap<String, Boolean>();
+			
+			List<FlowLineNode<Sentence>> tails = fls.getTails();
+			Iterator<FlowLineNode<Sentence>> itr = tails.iterator();
+			while (itr.hasNext())
+			{
+				FlowLineNode<Sentence> fln = itr.next();
+				if (ons == null)
+				{
+					// does not need to handle exact match.
+					HandleOneInOneTurnPreTrySequencePredict(alc, fls, fln, oraclelist, handledkey, neededsize);
+				}else
+				{
+					// needs to handle exact match.
+					
+				}
+			}
+			
+			fls.EndOperation();
+		}
+	}
+	
+	private void HandleOneInOneTurnPreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, FlowLineNode<Sentence> fln, final List<statement> oraclelist, Map<String, Boolean> handledkey, int neededsize)
+	{
+		PriorityQueue<PredictProbPair> pppqueue = new PriorityQueue<PredictProbPair>();
+		int remainsize = neededsize;
+		int notsimilar = 0;
+		
+		int ngramsize = PredictMetaInfo.NgramMaxSize;
+		while ((remainsize > 0) && (ngramsize > 1) && (notsimilar < 2*remainsize))
+		{
+			ngramsize--;
+			List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(fln, ngramsize);
+			// List<PredictProbPair> pps = PredictHelper.PredictSentences(alc, ls, neededsize);
+			
+			String key = ListHelper.ConcatJoin(ls);
+			// record handled key.
+			if (handledkey.containsKey(key))
+			{
+				break;
+			}
+			else
+			{
+				handledkey.put(key, true);
+			}
+			
+			// not handled key.
+			List<PredictProbPair> pps = alc.AeroModelPredict(key, remainsize);
+			Iterator<PredictProbPair> ppsitr = pps.iterator();
+			List<statement> triedcmp = FlowLineHelper.LastToFirstStatementQueue(fln);
+			while (ppsitr.hasNext())
+			{
+				PredictProbPair ppp = ppsitr.next();
+				Sentence pred = ppp.getPred();
+				triedcmp.add(pred.getSmt());
+				double sim = LCSComparison.LCSSimilarity(oraclelist, triedcmp);
+				if (sim > PredictMetaInfo.SequenceSimilarThreshold)
+				{
+					FlowLineNode<Sentence> nf = new FlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability());
+					fls.AddToNextLevel(nf, fln);
+					remainsize--;
+				}
+				else
+				{
+					pppqueue.add(ppp);
+					notsimilar++;
+				}
+				((LinkedList<statement>)triedcmp).removeLast();
+			}
+		}
+		while (remainsize > 0 && (!pppqueue.isEmpty()))
+		{
+			PredictProbPair ppp = pppqueue.poll();
+			Sentence pred = ppp.getPred();
+			FlowLineNode<Sentence> nf = new FlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability());
+			fls.AddToNextLevel(nf, fln);
+			remainsize--;
+		}
+	}
+	
+	private void DoOnePreTrySequencePredict2(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons, final List<statement> oraclelist, int maxparsize)
 	{
 		// final int orclesize = oraclelist.size();
 		if (fls.IsEmpty())
@@ -396,6 +492,22 @@ public class PredictionFetch {
 					sm.Merge(ptsm);
 				}
 			}*/
+		}
+	}
+	
+
+	public void CompareAndSetTempExactMatchInfo(FlowLineNode<T> tempexactmatchtail)
+	{
+		if (this.tempexactmatchtail == null)
+		{
+			this.tempexactmatchtail = tempexactmatchtail;
+		}
+		else
+		{
+			if (this.tempexactmatchtail.getProbability() < tempexactmatchtail.getProbability())
+			{
+				this.tempexactmatchtail = tempexactmatchtail;
+			}
 		}
 	}
 	

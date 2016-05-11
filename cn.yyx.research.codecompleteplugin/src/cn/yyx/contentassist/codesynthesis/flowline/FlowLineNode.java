@@ -2,17 +2,17 @@ package cn.yyx.contentassist.codesynthesis.flowline;
 
 public class FlowLineNode<T> implements Comparable<FlowLineNode<T>>{
 	
-	private T data = null;
-	private double probability = 0;// probability of the data T. Used in all the execution flow of the framework. So put it in here not in data T.
-	private FlowLineNode<T> prev = null;
-	private FlowLineNode<T> next = null;
-	private FlowLineNode<T> silbprev = null;
-	private FlowLineNode<T> silbnext = null;
+	protected T data = null;
+	protected double probability = 0;// probability of the data T. Used in all the execution flow of the framework. So put it in here not in data T.
+	protected FlowLineNode<T> prev = null;
+	protected FlowLineNode<T> next = null;
+	protected FlowLineNode<T> silbprev = null;
+	protected FlowLineNode<T> silbnext = null;
 	
 	// this integer variable is set by framework. represents the length to the head including the head and itself.
-	private int length = 0;
+	protected int length = 0;
 	// this boolean variable could only be used by the framework.
-	private boolean couldextend = true;
+	protected boolean couldextend = true;
 	
 	public FlowLineNode(T t, double prob) {
 		this.data = t;

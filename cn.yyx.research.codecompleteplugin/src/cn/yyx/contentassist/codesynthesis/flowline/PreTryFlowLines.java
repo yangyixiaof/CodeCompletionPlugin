@@ -9,7 +9,7 @@ import java.util.Queue;
 public class PreTryFlowLines<T> extends FlowLines<T> {
 	
 	private FlowLineNode<T> exactmatchtail = null;
-	private FlowLineNode<T> tempexactmatchtail = null;
+	// private FlowLineNode<T> tempexactmatchtail = null;
 	
 	private List<FlowLineNode<T>> overtails = new LinkedList<FlowLineNode<T>>();
 	
@@ -27,32 +27,17 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 		this.exactmatchtail = exactmatchtail;
 	}
 	
-	public void CompareAndSetTempExactMatchInfo(FlowLineNode<T> tempexactmatchtail)
-	{
-		if (this.tempexactmatchtail == null)
-		{
-			this.tempexactmatchtail = tempexactmatchtail;
-		}
-		else
-		{
-			if (this.tempexactmatchtail.getProbability() < tempexactmatchtail.getProbability())
-			{
-				this.tempexactmatchtail = tempexactmatchtail;
-			}
-		}
-	}
-	
 	public void ClearExactMatch()
 	{
 		this.exactmatchtail = null;
 	}
 	
-	@Override
+	/*@Override
 	public void EndOperation()
 	{
 		super.EndOperation();
 		exactmatchtail = tempexactmatchtail;
-	}
+	}*/
 	
 	@Override
 	public void InitialSeed(T t) {
@@ -68,7 +53,7 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 		return overtails.size();
 	}
 
-	public void TrimTails(int needsize) {
+	public void TrimOverTails(int needsize) {
 		List<FlowLineNode<T>> finalovertails = new LinkedList<FlowLineNode<T>>();
 		Queue<FlowLineNode<T>> priorityqueue = new PriorityQueue<FlowLineNode<T>>();
 		Iterator<FlowLineNode<T>> itr = overtails.iterator();

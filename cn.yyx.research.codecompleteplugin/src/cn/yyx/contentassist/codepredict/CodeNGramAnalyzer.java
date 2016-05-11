@@ -20,7 +20,7 @@ import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVi
 public class CodeNGramAnalyzer {
 
 	@SuppressWarnings("unchecked")
-	public static List<String> PossibleCodes(JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor) {
+	public static List<String> PossibleCodes(JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor, char lastchar) {
 		// TODO This whole mechanism needs to be fully tested.
 		System.err.println("HaHa Test!!!!!!!!!!!!!!");
 		ArrayList<String> list = new ArrayList<String>();
@@ -53,7 +53,7 @@ public class CodeNGramAnalyzer {
 			PrintUtil.PrintList(analist, "analysis list");
 			
 			PredictionFetch pf = new PredictionFetch();
-			return pf.FetchPredictionInSerial(javacontext, monitor, fmastv, analist, list, aoi);
+			return pf.FetchPredictionInSerial(javacontext, monitor, fmastv, analist, list, aoi, lastchar);
 			
 		} catch (JavaModelException e) {
 			e.printStackTrace();

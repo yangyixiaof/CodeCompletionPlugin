@@ -30,10 +30,10 @@ public class CodePredictUtil implements CodePredict {
 			IDocument doc = javacontext.getDocument();
 			int offset = javacontext.getInvocationOffset();
 			char lastchar = DocumentContentHelper.GetOffsetLastChar(doc, offset);
-			if (lastchar == ';' || lastchar == '}' || lastchar == '{') {
+			if (TerminationHelper.isTerminatedChar(lastchar)) {
 				// detailed completion will be realized later. this is difficult in technique.
 				//  || lastchar == ',' || lastchar == '(' || lastchar == ')'
-				List<String> proposalcnt = CodeNGramAnalyzer.PossibleCodes(javacontext, monitor);
+				List<String> proposalcnt = CodeNGramAnalyzer.PossibleCodes(javacontext, monitor, lastchar);
 				ProposalHelper.ProposalContentToFormalFormat(javacontext, proposalcnt, proposals);
 			} else {
 				proposals.add(new CompletionProposal(IntelliJavaProposalComputer.OnlyExpressionSupport,

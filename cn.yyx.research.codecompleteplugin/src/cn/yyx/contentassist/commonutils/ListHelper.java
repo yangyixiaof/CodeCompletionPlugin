@@ -66,4 +66,18 @@ public class ListHelper {
 		return sb.toString().trim();
 	}
 	
+	public static String ConcatJoin(List<Sentence> analysislist) {
+		StringBuffer sb = new StringBuffer("");
+		Iterator<Sentence> itr = analysislist.iterator();
+		while (itr.hasNext()) {
+			Sentence sete = itr.next();
+			String split = " ";
+			if (!itr.hasNext()) {
+				split = "";
+			}
+			sb.append(sete.getSentence() + split);
+		}
+		return sb.toString().trim();
+	}
+	
 }

@@ -15,6 +15,15 @@ public class SimilarityHelper {
 		int min = Math.min(a, b);
 		return (min * 1.0) / (max * 1.0);
 	}
+	
+	public static boolean CouldThoughtTwoDoubleSame(double d1, double d2)
+	{
+		if (Math.abs(d1-d2) < 0.05)
+		{
+			return true;
+		}
+		return false;
+	}
 
 	public static boolean CouldThoughtScopeOffsetSame(int scope1, int scope2, int off1, int off2) {
 		if ((Math.abs(scope1 - scope2) <= 1) && (Math.abs(off1 - off2) <= 1)) {
