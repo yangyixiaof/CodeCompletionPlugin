@@ -267,7 +267,10 @@ public class PredictionFetch {
 					List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(fln, ngramsize);
 					// List<PredictProbPair> pps = PredictHelper.PredictSentences(alc, ls, neededsize);
 					
+					
 					String key = ListHelper.ConcatJoin(ls);
+					// update n-gram size.
+					ngramsize = ls.size();
 					// record handled key.
 					if (handledkey.containsKey(key))
 					{
@@ -333,12 +336,11 @@ public class PredictionFetch {
 					ndsize--;
 				}
 				
-				
-				
 				// judge if exact match is handled.
 				if (ons.getSentence().equals(nf.getData().getSentence()))
 				{
 					exactmatchhandled = true;
+					fls.setExactmatchtail(nf);
 				}
 			}
 			
@@ -346,8 +348,9 @@ public class PredictionFetch {
 			{
 				double enhancedenergy = ProbabilityComputer.ComputeProbability(maxexactmatchsimilarity);
 				FlowLineNode<Sentence> fln = fls.getExactmatchtail();
-				PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(ons, tempexactmatchprob + enhancedenergy + fln.getProbability(), maxexactmatchsequencesimilarity, fln);
+				PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(ons, tempexactmatchprob + enhancedenergy + fln.getProbability(), ProbabilityComputer.ComputeProbability(maxexactmatchsequencesimilarity), fln);
 				fls.AddToNextLevel(nf, nf.getParent());
+				fls.setExactmatchtail(nf);
 			}
 			
 			fls.EndOperation();
@@ -359,6 +362,10 @@ public class PredictionFetch {
 		List<Integer> infersize = new LinkedList<Integer>();
 		int allsize = tails.size();
 		int halfallsize = allsize/2;
+		if (halfallsize == 0)
+		{
+			halfallsize = 1;
+		}
 		int avgsize = maxparsize/allsize;
 		if (avgsize == 0)
 		{
