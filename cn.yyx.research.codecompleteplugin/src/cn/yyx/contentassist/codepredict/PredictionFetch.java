@@ -202,19 +202,19 @@ public class PredictionFetch {
 	}
 	
 	private void DoPreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, List<Sentence> setelist,
-			List<statement> smtlist, int needsize, char lastchar) {
+			List<statement> smtlist, int needsize, final char lastchar) {
 		Iterator<Sentence> itr = setelist.iterator();
 		while (itr.hasNext())
 		{
 			Sentence ons = itr.next();
-			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, (int)(1.5*needsize), 3*needsize);
+			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, (int)(1.5*needsize), 3*needsize, lastchar);
 		}
 		int size = fls.GetOveredSize();
 		int turn = 0;
 		while (size < needsize && turn < PredictMetaInfo.PreTryMaxStep)
 		{
 			turn++;
-			DoOnePreTrySequencePredict(alc, fls, null, smtlist, (int)(1.5*(needsize-size)), 3*(needsize-size));
+			DoOnePreTrySequencePredict(alc, fls, null, smtlist, (int)(1.5*(needsize-size)), 3*(needsize-size), lastchar);
 			size = fls.GetOveredSize();
 		}
 		if (size > needsize)
@@ -223,7 +223,7 @@ public class PredictionFetch {
 		}
 	}
 	
-	private void DoOnePreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons, final List<statement> oraclelist, int neededsize, int maxparsize)
+	private void DoOnePreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons, final List<statement> oraclelist, int neededsize, int maxparsize, final char lastchar)
 	{
 		if (fls.IsEmpty())
 		{
@@ -320,8 +320,20 @@ public class PredictionFetch {
 			while (ndsize > 0 && (!pppqueue.isEmpty()))
 			{
 				PreTryFlowLineNode<Sentence> nf = pppqueue.poll();
-				fls.AddToNextLevel(nf, nf.getParent());
+				
+				if (TerminationHelper.couldTerminate(nf.getData(), lastchar))
+				{
+					fls.AddOverFlowLineNode(nf, nf.getParent());
+				}
+				else
+				{
+					fls.AddToNextLevel(nf, nf.getParent());
+				}
 				ndsize--;
+				
+				
+				
+				// judge if exact match is handled.
 				if (ons.getSentence().equals(nf.getData().getSentence()))
 				{
 					exactmatchhandled = true;
