@@ -211,7 +211,7 @@ public class PredictionFetch {
 		}
 		int size = fls.GetOveredSize();
 		int turn = 0;
-		while (size < needsize && turn < PredictMetaInfo.PreTryMaxStep)
+		while (size < ((int)(1.5*needsize)) && turn < PredictMetaInfo.PreTryMaxStep)
 		{
 			turn++;
 			DoOnePreTrySequencePredict(alc, fls, null, smtlist, (int)(1.5*(needsize-size)), 3*(needsize-size), lastchar);
@@ -328,8 +328,8 @@ public class PredictionFetch {
 				else
 				{
 					fls.AddToNextLevel(nf, nf.getParent());
+					ndsize--;
 				}
-				ndsize--;
 				
 				
 				
