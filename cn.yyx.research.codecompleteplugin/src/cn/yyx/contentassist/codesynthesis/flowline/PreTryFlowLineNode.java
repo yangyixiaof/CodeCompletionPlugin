@@ -18,7 +18,7 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 	public int compareTo(FlowLineNode<T> o) {
 		if (o instanceof PreTryFlowLineNode)
 		{
-			if (SimilarityHelper.CouldThoughtTwoDoubleSame(seqencesimilarity, ((PreTryFlowLineNode) o).seqencesimilarity))
+			if (!SimilarityHelper.CouldThoughtTwoDoubleSame(seqencesimilarity, ((PreTryFlowLineNode) o).seqencesimilarity))
 			{
 				return ((Double)(-seqencesimilarity)).compareTo((Double)(-((PreTryFlowLineNode) o).seqencesimilarity));
 			}
