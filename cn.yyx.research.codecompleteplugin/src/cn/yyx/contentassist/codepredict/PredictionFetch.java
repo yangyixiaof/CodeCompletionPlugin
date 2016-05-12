@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.TreeMap;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -240,13 +241,11 @@ public class PredictionFetch {
 			fls.BeginOperation();
 			
 			Map<String, Boolean> handledkey = new TreeMap<String, Boolean>();
-			PriorityQueue<PreTryFlowLineNode<Sentence>> pppqueue = new PriorityQueue<PreTryFlowLineNode<Sentence>>();
+			Queue<PreTryFlowLineNode<Sentence>> pppqueue = new PriorityQueue<PreTryFlowLineNode<Sentence>>();
 			
 			// exact match.
-			double maxexactmatchsequencesimilarity = -100000;
 			double maxexactmatchsimilarity = -100000;
 			boolean exactmatchhandled = false;
-			// Sentence tempexactmatch = null;
 			double tempexactmatchprob = 0;
 			
 			List<FlowLineNode<Sentence>> tails = fls.getTails();
@@ -256,21 +255,20 @@ public class PredictionFetch {
 			while (itr.hasNext())
 			{
 				FlowLineNode<Sentence> fln = itr.next();
-				int ngramsize = PredictMetaInfo.NgramMaxSize;
+				int ngramtrim1size = PredictMetaInfo.NgramMaxSize-1;
 				int remainsize = sizeitr.next();
 				
 				
 				// HandleOneInOneTurnPreTrySequencePredict
-				while ((remainsize > 0) && (ngramsize > 1))
+				while ((remainsize > 0) && (ngramtrim1size >= 1))
 				{
-					ngramsize--;
-					List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(fln, ngramsize);
+					List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(fln, ngramtrim1size);
 					// List<PredictProbPair> pps = PredictHelper.PredictSentences(alc, ls, neededsize);
 					
 					
 					String key = ListHelper.ConcatJoin(ls);
 					// update n-gram size.
-					ngramsize = ls.size();
+					ngramtrim1size = ls.size();
 					// record handled key.
 					if (handledkey.containsKey(key))
 					{
@@ -291,36 +289,34 @@ public class PredictionFetch {
 						Sentence pred = ppp.getPred();
 						triedcmp.add(pred.getSmt());
 						double sim = LCSComparison.LCSSimilarity(oraclelist, triedcmp);
+						PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability(), sim, fln);
+						// fls.AddToNextLevel(nf, fln);
+						pppqueue.add(nf);
+						remainsize--;
+						((LinkedList<statement>)triedcmp).removeLast();
 						
 						
-						
-						// handle ons and exactmatch.
+						// record information which ons and exact match need.
 						if (ons != null)
 						{
 							double similarity = ons.getSmt().Similarity(pred.getSmt());
 							if (maxexactmatchsimilarity < similarity)
 							{
 								maxexactmatchsimilarity = similarity;
-								// tempexactmatch = pred;
-								maxexactmatchsequencesimilarity = sim;
 								tempexactmatchprob = ppp.getProb();
 							}
 						}
 						
 						
-						
-						PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability(), sim, fln);
-						// fls.AddToNextLevel(nf, fln);
-						pppqueue.add(nf);
-						remainsize--;
-						((LinkedList<statement>)triedcmp).removeLast();
 					}
 				}
 				
+				ngramtrim1size--;
 				// HandleOneInOneTurnPreTrySequencePredict(alc, fls, fln, oraclelist, handledkey, neededsize);
 			}
 			
 			
+			// sort and put the all one turn infers, exact match handled here.
 			int ndsize = neededsize;
 			while (ndsize > 0 && (!pppqueue.isEmpty()))
 			{
@@ -348,7 +344,7 @@ public class PredictionFetch {
 			{
 				double enhancedenergy = ProbabilityComputer.ComputeProbability(maxexactmatchsimilarity);
 				FlowLineNode<Sentence> fln = fls.getExactmatchtail();
-				PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(ons, tempexactmatchprob + enhancedenergy + fln.getProbability(), ProbabilityComputer.ComputeProbability(maxexactmatchsequencesimilarity), fln);
+				PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(ons, tempexactmatchprob + enhancedenergy + fln.getProbability(), ((fln.getLength()+1)*1.0)/(oraclelist.size()*1.0), fln);
 				fls.AddToNextLevel(nf, nf.getParent());
 				fls.setExactmatchtail(nf);
 			}
@@ -361,12 +357,12 @@ public class PredictionFetch {
 	{
 		List<Integer> infersize = new LinkedList<Integer>();
 		int allsize = tails.size();
-		int halfallsize = allsize/2;
+		int halfallsize = (int)((allsize*1.0)/2);
 		if (halfallsize == 0)
 		{
 			halfallsize = 1;
 		}
-		int avgsize = maxparsize/allsize;
+		int avgsize = (int)((maxparsize*1.0)/(allsize*1.0));
 		if (avgsize == 0)
 		{
 			avgsize = 1;
