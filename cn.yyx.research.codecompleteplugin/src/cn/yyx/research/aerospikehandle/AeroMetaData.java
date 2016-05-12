@@ -2,6 +2,10 @@ package cn.yyx.research.aerospikehandle;
 
 public class AeroMetaData {
 	
+	public static final int code1sim = 1;
+
+	public static final int codengram = 2;
+	
 	// if -1, infinite.
 	public static final int MaxPutAllLineNum = -1;
 	// must > 0
