@@ -5,18 +5,14 @@ import java.util.List;
 import cn.yyx.contentassist.codecompletion.IntelliJavaProposalComputer;
 
 public class AeroLifeCycle {
-
-	public static final int code1sim = 1;
-
-	public static final int codengram = 2;
 	
 	boolean hasInitialized = false;
 
 	public void Initialize() {
 		Parameters param = new Parameters(IntelliJavaProposalComputer.ServerIp, 3000, null, null, "yyx", "code1sim");
-		AeroHelper.ANewClient(code1sim, param);
+		AeroHelper.ANewClient(AeroMetaData.code1sim, param);
 		Parameters param2 = new Parameters(IntelliJavaProposalComputer.ServerIp, 3000, null, null, "yyx", "codengram");
-		AeroHelper.ANewClient(codengram, param2);
+		AeroHelper.ANewClient(AeroMetaData.codengram, param2);
 		hasInitialized = true;
 	}
 
@@ -29,7 +25,7 @@ public class AeroLifeCycle {
 	// must invoke in the environment of AeroLifeCycle.
 	public List<PredictProbPair> AeroModelPredict(String key, int neededSize) {
 		CheckInitialized();
-		List<PredictProbPair> result = AeroHelper.GetNGramInAero(AeroLifeCycle.codengram, key, neededSize, null);
+		List<PredictProbPair> result = AeroHelper.GetNGramInAero(AeroMetaData.codengram, key, neededSize, null);
 		// result.sort(new ProbPredictComparator());
 		// int realsize = result.size();
 		// if (realsize > neededSize)
