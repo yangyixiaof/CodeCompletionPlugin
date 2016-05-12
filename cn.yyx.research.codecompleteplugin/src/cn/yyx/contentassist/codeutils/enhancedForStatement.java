@@ -19,7 +19,8 @@ public class enhancedForStatement extends statement{
 	type tp = null;
 	referedExpression rexp = null;
 	
-	public enhancedForStatement(type rt, referedExpression rexp) {
+	public enhancedForStatement(String smtcode, type rt, referedExpression rexp) {
+		super(smtcode);
 		this.tp = rt;
 		this.rexp = rexp;
 	}

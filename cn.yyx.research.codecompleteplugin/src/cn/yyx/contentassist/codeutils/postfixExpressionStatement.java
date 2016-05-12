@@ -15,7 +15,8 @@ public class postfixExpressionStatement extends expressionStatement{
 	referedExpression rexp = null;
 	String optr = null;
 	
-	public postfixExpressionStatement(referedExpression rexp, String optr) {
+	public postfixExpressionStatement(String smtcode, referedExpression rexp, String optr) {
+		super(smtcode);
 		this.rexp = rexp;
 		this.optr = optr;
 	}

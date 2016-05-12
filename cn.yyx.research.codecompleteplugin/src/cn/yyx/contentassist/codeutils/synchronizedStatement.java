@@ -14,7 +14,8 @@ public class synchronizedStatement extends statement{
 	
 	referedExpression rexp = null;
 	
-	public synchronizedStatement(referedExpression rexp) {
+	public synchronizedStatement(String smtcode, referedExpression rexp) {
+		super(smtcode);
 		this.rexp = rexp;
 	}
 	

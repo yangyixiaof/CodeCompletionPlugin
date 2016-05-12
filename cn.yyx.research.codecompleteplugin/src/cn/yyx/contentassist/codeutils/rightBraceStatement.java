@@ -13,7 +13,8 @@ public class rightBraceStatement extends statement{
 	
 	int count = 0;
 	
-	public rightBraceStatement(int count) {
+	public rightBraceStatement(String smtcode, int count) {
+		super(smtcode);
 		this.count = count;
 	}
 	

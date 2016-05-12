@@ -14,7 +14,8 @@ public class catchClauseStatement extends statement{
 	
 	type tp = null;
 	
-	public catchClauseStatement(type rt) {
+	public catchClauseStatement(String smtcode, type rt) {
+		super(smtcode);
 		this.tp = rt;
 	}
 	

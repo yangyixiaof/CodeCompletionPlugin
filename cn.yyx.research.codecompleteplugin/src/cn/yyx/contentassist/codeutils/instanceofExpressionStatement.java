@@ -15,7 +15,8 @@ public class instanceofExpressionStatement extends expressionStatement{
 	referedExpression rexp = null;
 	type type = null;
 	
-	public instanceofExpressionStatement(referedExpression rexp, type type) {
+	public instanceofExpressionStatement(String smtcode, referedExpression rexp, type type) {
+		super(smtcode);
 		this.rexp = rexp;
 		this.type = type;
 	}

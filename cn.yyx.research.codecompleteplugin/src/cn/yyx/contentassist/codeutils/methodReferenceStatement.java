@@ -13,7 +13,8 @@ public class methodReferenceStatement extends expressionStatement{
 	
 	methodReferenceExpression mre = null;
 	
-	public methodReferenceStatement(methodReferenceExpression mre) {
+	public methodReferenceStatement(String smtcode, methodReferenceExpression mre) {
+		super(smtcode);
 		this.mre = mre;
 	}
 

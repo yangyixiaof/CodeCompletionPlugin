@@ -14,7 +14,8 @@ public class anonymousClassPreStatement extends statement{
 	
 	identifier id = null;
 	
-	public anonymousClassPreStatement(identifier id) {
+	public anonymousClassPreStatement(String smtcode, identifier id) {
+		super(smtcode);
 		this.id = id;
 	}
 

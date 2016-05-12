@@ -15,7 +15,8 @@ public class constructionDeclarationStatement extends statement {
 	argTypeList typelist = null; // warning: typelist could be null.
 	identifier id = null;
 	
-	public constructionDeclarationStatement(argTypeList typelist, identifier name) {
+	public constructionDeclarationStatement(String smtcode, argTypeList typelist, identifier name) {
+		super(smtcode);
 		this.typelist = typelist;
 		this.id = name;
 	}

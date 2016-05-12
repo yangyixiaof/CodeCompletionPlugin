@@ -15,7 +15,8 @@ public class prefixExpressionStatement extends expressionStatement{
 	String optr = null;
 	referedExpression rexp = null;
 	
-	public prefixExpressionStatement(String optr, referedExpression rexp) {
+	public prefixExpressionStatement(String smtcode, String optr, referedExpression rexp) {
+		super(smtcode);
 		this.optr = optr;
 		this.rexp = rexp;
 	}

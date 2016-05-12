@@ -13,6 +13,10 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class forStatement extends statement{
 
+	public forStatement(String smtcode) {
+		super(smtcode);
+	}
+
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof forStatement)

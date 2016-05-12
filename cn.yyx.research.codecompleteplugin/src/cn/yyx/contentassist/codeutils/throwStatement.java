@@ -14,7 +14,8 @@ public class throwStatement extends statement{
 	
 	referedExpression rexp = null;
 	
-	public throwStatement(referedExpression rexp) {
+	public throwStatement(String smtcode, referedExpression rexp) {
+		super(smtcode);
 		this.rexp = rexp;
 	}
 	

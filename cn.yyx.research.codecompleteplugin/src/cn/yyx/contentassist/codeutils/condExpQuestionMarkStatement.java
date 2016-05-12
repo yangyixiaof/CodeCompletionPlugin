@@ -14,6 +14,10 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class condExpQuestionMarkStatement extends statement{
 
+	public condExpQuestionMarkStatement(String smtcode) {
+		super(smtcode);
+	}
+
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof condExpQuestionMarkStatement)

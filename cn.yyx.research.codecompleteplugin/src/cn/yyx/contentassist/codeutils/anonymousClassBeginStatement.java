@@ -12,7 +12,8 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class anonymousClassBeginStatement extends statement{
 	
-	public anonymousClassBeginStatement() {
+	public anonymousClassBeginStatement(String smtcode) {
+		super(smtcode);
 	}
 
 	@Override

@@ -16,7 +16,8 @@ public class variableDeclarationStatement extends statement{
 	
 	type tp = null;
 	
-	public variableDeclarationStatement(type tp) {
+	public variableDeclarationStatement(String smtcode, type tp) {
+		super(smtcode);
 		this.tp = tp;
 	}
 	

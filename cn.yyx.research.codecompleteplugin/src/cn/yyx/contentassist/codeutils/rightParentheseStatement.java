@@ -19,7 +19,8 @@ public class rightParentheseStatement extends statement{
 	
 	int times = 0;
 	
-	public rightParentheseStatement(int count) {
+	public rightParentheseStatement(String smtcode, int count) {
+		super(smtcode);
 		this.times = count;
 	}
 	

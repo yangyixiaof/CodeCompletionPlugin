@@ -14,7 +14,8 @@ public class switchCaseStatement extends statement{
 	
 	referedExpression rexp = null;
 	
-	public switchCaseStatement(referedExpression rexp) {
+	public switchCaseStatement(String smtcode, referedExpression rexp) {
+		super(smtcode);
 		this.rexp = rexp;
 	}
 	

@@ -16,7 +16,8 @@ public class castExpressionStatement extends expressionStatement{
 	type tp = null;
 	referedExpression rexp = null;
 	
-	public castExpressionStatement(type tp, referedExpression rexp) {
+	public castExpressionStatement(String smtcode, type tp, referedExpression rexp) {
+		super(smtcode);
 		this.tp = tp;
 		this.rexp = rexp;
 	}

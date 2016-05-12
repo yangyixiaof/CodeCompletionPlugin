@@ -16,7 +16,8 @@ public class commonMethodInvocationStatement extends methodInvocationStatement{
 	identifier id = null;
 	argumentList arglist = null;
 	
-	public commonMethodInvocationStatement(identifier name, argumentList argList) {
+	public commonMethodInvocationStatement(String smtcode, identifier name, argumentList argList) {
+		super(smtcode);
 		this.id = name;
 		this.arglist = argList;
 	}

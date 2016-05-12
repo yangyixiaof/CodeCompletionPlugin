@@ -14,7 +14,8 @@ public class atInterfaceStatement extends statement{
 	
 	identifier id = null;
 	
-	public atInterfaceStatement(identifier id) {
+	public atInterfaceStatement(String smtcode, identifier id) {
+		super(smtcode);
 		this.id = id;
 	}
 	

@@ -13,7 +13,8 @@ public class literalStatement extends expressionStatement{
 	
 	literal lt = null;
 	
-	public literalStatement(literal lt) {
+	public literalStatement(String smtcode, literal lt) {
+		super(smtcode);
 		this.lt = lt;
 	}
 	

@@ -23,6 +23,10 @@ public class arrayInitializerEndStatement extends statement{
 		return false;
 	}*/
 
+	public arrayInitializerEndStatement(String smtcode) {
+		super(smtcode);
+	}
+
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof arrayInitializerEndStatement)

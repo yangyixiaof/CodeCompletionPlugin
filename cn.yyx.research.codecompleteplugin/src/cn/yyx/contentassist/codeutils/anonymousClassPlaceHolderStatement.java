@@ -11,7 +11,11 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class anonymousClassPlaceHolderStatement extends statement{
-
+	
+	public anonymousClassPlaceHolderStatement(String smtcode) {
+		super(smtcode);
+	}
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {

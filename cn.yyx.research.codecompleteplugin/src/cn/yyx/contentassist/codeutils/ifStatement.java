@@ -16,7 +16,8 @@ public class ifStatement extends statement{
 	
 	referedExpression rexp = null;
 	
-	public ifStatement(referedExpression rexp) {
+	public ifStatement(String smtcode, referedExpression rexp) {
+		super(smtcode);
 		this.rexp = rexp;
 	}
 

@@ -16,7 +16,8 @@ public class enumConstantDeclarationStatement extends statement{
 	identifier id = null;
 	argumentList arglist = null;
 	
-	public enumConstantDeclarationStatement(identifier name, argumentList arglist) {
+	public enumConstantDeclarationStatement(String smtcode, identifier name, argumentList arglist) {
+		super(smtcode);
 		this.id = name;
 		this.arglist = arglist;
 	}

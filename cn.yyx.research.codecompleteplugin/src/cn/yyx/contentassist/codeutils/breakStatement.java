@@ -14,7 +14,8 @@ public class breakStatement extends statement{
 	
 	identifier id = null; // warning: id could be null.
 	
-	public breakStatement(identifier name) {
+	public breakStatement(String smtcode, identifier name) {
+		super(smtcode);
 		this.id = name;
 	}
 	

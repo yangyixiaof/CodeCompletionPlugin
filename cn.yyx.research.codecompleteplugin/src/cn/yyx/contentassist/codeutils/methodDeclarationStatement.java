@@ -16,7 +16,8 @@ public class methodDeclarationStatement extends statement{
 	identifier id = null;
 	type rt = null;
 	
-	public methodDeclarationStatement(argTypeList typelist, identifier name, type rt) {
+	public methodDeclarationStatement(String smtcode, argTypeList typelist, identifier name, type rt) {
+		super(smtcode);
 		this.typelist = typelist;
 		this.id = name;
 		this.rt = rt;

@@ -13,7 +13,8 @@ public class varRefNameStatement extends nameStatement{
 	
 	commonVarRef cvr = null;
 	
-	public varRefNameStatement(commonVarRef cvr) {
+	public varRefNameStatement(String smtcode, commonVarRef cvr) {
+		super(smtcode);
 		this.cvr = cvr;
 	}
 	

@@ -14,7 +14,8 @@ public class classDeclarationStatement extends statement{
 	
 	identifier id = null;
 	
-	public classDeclarationStatement(identifier name) {
+	public classDeclarationStatement(String smtcode, identifier name) {
+		super(smtcode);
 		this.id = name;
 	}
 	

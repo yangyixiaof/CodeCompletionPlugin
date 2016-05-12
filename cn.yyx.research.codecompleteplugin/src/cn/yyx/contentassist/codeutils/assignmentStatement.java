@@ -17,7 +17,8 @@ public class assignmentStatement extends expressionStatement{
 	String optr = null;
 	referedExpression right = null;
 	
-	public assignmentStatement(referedExpression left, String optr, referedExpression right) {
+	public assignmentStatement(String smtcode, referedExpression left, String optr, referedExpression right) {
+		super(smtcode);
 		this.left = left;
 		this.optr = optr;
 		this.right = right;

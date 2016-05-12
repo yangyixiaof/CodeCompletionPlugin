@@ -19,7 +19,8 @@ public class arrayAccessStatement extends expressionStatement {
 	referedExpression rexp = null;
 	boolean accessEnd = false;
 	
-	public arrayAccessStatement(referedExpression rarr, referedExpression rexp, boolean accessEnd) {
+	public arrayAccessStatement(String smtcode, referedExpression rarr, referedExpression rexp, boolean accessEnd) {
+		super(smtcode);
 		this.rarr = rarr;
 		this.rexp = rexp;
 		this.accessEnd = accessEnd;

@@ -14,7 +14,8 @@ public class arrayCreationStatement extends statement{
 	
 	type tp = null;
 	
-	public arrayCreationStatement(type rt) {
+	public arrayCreationStatement(String smtcode, type rt) {
+		super(smtcode);
 		this.tp = rt;
 	}
 

@@ -17,7 +17,8 @@ public class variableDeclarationHolderStatement extends statement{
 	
 	referedExpression rexp = null; // warning: rexp could be null.
 	
-	public variableDeclarationHolderStatement(referedExpression rexp) {
+	public variableDeclarationHolderStatement(String smtcode, referedExpression rexp) {
+		super(smtcode);
 		this.rexp = rexp;
 	}
 	

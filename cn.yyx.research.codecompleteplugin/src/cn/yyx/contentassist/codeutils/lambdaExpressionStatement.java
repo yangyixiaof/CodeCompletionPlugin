@@ -17,7 +17,8 @@ public class lambdaExpressionStatement extends statement{
 	argTypeList typelist = null; //warning: typelist could be null.
 	referedExpression rexp = null; //warning: rexp could be null.
 	
-	public lambdaExpressionStatement(argTypeList tlist, referedExpression rexp) {
+	public lambdaExpressionStatement(String smtcode, argTypeList tlist, referedExpression rexp) {
+		super(smtcode);
 		this.typelist = tlist;
 		this.rexp = rexp;
 	}

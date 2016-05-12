@@ -13,7 +13,8 @@ public class commonNameStatement extends nameStatement{
 	
 	identifier id = null;
 	
-	public commonNameStatement(identifier name) {
+	public commonNameStatement(String smtcode, identifier name) {
+		super(smtcode);
 		this.id = name;
 	}
 

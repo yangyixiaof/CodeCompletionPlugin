@@ -12,6 +12,10 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class enumConstantDeclarationSplitCommaStatement extends statement{
 
+	public enumConstantDeclarationSplitCommaStatement(String smtcode) {
+		super(smtcode);
+	}
+
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {

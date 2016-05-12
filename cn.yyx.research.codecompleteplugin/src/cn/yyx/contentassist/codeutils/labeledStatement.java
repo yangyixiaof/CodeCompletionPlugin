@@ -14,7 +14,8 @@ public class labeledStatement extends statement{
 	
 	identifier id = null;
 	
-	public labeledStatement(identifier name) {
+	public labeledStatement(String smtcode, identifier name) {
+		super(smtcode);
 		this.id = name;
 	}
 	

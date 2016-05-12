@@ -14,7 +14,8 @@ public class leftBraceStatement extends statement{
 	
 	int times = 0;
 	
-	public leftBraceStatement(int count) {
+	public leftBraceStatement(String smtcode, int count) {
+		super(smtcode);
 		this.times = count;
 	}
 

@@ -15,7 +15,8 @@ public class superConstructionInvocationStatement extends methodInvocationStatem
 	
 	argumentList arglist = null;
 	
-	public superConstructionInvocationStatement(argumentList arglist) {
+	public superConstructionInvocationStatement(String smtcode, argumentList arglist) {
+		super(smtcode);
 		this.arglist = arglist;
 	}
 	

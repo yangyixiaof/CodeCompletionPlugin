@@ -16,7 +16,8 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 	identifier id = null;
 	referedExpression drexp = null; // warning: drexp could be null.
 	
-	public annotationTypeMemberDeclarationStatement(type type, identifier id, referedExpression drexp) {
+	public annotationTypeMemberDeclarationStatement(String smtcode, type type, identifier id, referedExpression drexp) {
+		super(smtcode);
 		this.type = type;
 		this.id = id;
 		this.drexp = drexp;

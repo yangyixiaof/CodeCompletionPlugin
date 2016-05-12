@@ -18,7 +18,8 @@ public class infixExpressionStatement extends expressionStatement{
 	referedExpression right = null;
 	String optr = null;
 	
-	public infixExpressionStatement(referedExpression lexp, String optr, referedExpression rexp) {
+	public infixExpressionStatement(String smtcode, referedExpression lexp, String optr, referedExpression rexp) {
+		super(smtcode);
 		this.left = lexp;
 		this.right = rexp;
 		this.optr = optr;

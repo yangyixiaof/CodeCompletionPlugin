@@ -15,7 +15,8 @@ public class enterMethodParamStatement extends statement{
 	
 	int times = -1;
 	
-	public enterMethodParamStatement(int times) {
+	public enterMethodParamStatement(String smtcode, int times) {
+		super(smtcode);
 		this.times = times;
 	}
 	

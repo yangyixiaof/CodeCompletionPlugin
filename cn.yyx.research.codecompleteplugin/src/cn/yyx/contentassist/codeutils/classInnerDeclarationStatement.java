@@ -14,7 +14,8 @@ public class classInnerDeclarationStatement extends statement{
 	
 	identifier id = null;
 	
-	public classInnerDeclarationStatement(identifier name) {
+	public classInnerDeclarationStatement(String smtcode, identifier name) {
+		super(smtcode);
 		this.id = name;
 	}
 	

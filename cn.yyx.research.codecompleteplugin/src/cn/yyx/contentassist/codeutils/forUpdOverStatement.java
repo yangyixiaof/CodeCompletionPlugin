@@ -14,6 +14,10 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class forUpdOverStatement extends statement {
 
+	public forUpdOverStatement(String smtcode) {
+		super(smtcode);
+	}
+
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof forUpdOverStatement) {

@@ -14,7 +14,8 @@ public class continueStatement extends statement{
 	
 	identifier id = null; // warning: id could be null.
 	
-	public continueStatement(identifier name) {
+	public continueStatement(String smtcode, identifier name) {
+		super(smtcode);
 		this.id = name;
 	}
 	

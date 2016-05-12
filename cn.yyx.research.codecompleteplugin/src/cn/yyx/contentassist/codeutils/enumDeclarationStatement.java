@@ -14,7 +14,8 @@ public class enumDeclarationStatement extends statement{
 	
 	identifier id = null;
 	
-	public enumDeclarationStatement(identifier name) {
+	public enumDeclarationStatement(String smtcode, identifier name) {
+		super(smtcode);
 		this.id = name;
 	}
 

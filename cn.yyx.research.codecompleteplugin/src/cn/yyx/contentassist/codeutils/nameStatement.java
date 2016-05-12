@@ -1,6 +1,10 @@
 package cn.yyx.contentassist.codeutils;
 
 public abstract class nameStatement extends expressionStatement{
+
+	public nameStatement(String smtcode) {
+		super(smtcode);
+	}
 	
 	/*identifier id = null;
 	

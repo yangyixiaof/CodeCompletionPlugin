@@ -19,7 +19,8 @@ public class partialEndArrayAccessStatement extends statement{
 	expressionStatement es = null;
 	int endrtimes = -1;
 	
-	public partialEndArrayAccessStatement(expressionStatement es, int endrtimes) {
+	public partialEndArrayAccessStatement(String smtcode, expressionStatement es, int endrtimes) {
+		super(smtcode);
 		this.es = es;
 		this.endrtimes = endrtimes;
 	}

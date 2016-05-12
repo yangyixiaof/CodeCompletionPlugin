@@ -13,7 +13,8 @@ public class fieldRefNameStatement extends nameStatement {
 	
 	commonFieldRef cfr = null;
 	
-	public fieldRefNameStatement(commonFieldRef cfr) {
+	public fieldRefNameStatement(String smtcode, commonFieldRef cfr) {
+		super(smtcode);
 		this.cfr = cfr;
 	}
 	

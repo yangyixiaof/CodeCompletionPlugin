@@ -13,6 +13,10 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class arrayInitializerStartStatement extends statement{
 
+	public arrayInitializerStartStatement(String smtcode) {
+		super(smtcode);
+	}
+
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof arrayInitializerStartStatement)

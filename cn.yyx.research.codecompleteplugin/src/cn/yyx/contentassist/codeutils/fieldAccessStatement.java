@@ -13,7 +13,8 @@ public class fieldAccessStatement extends expressionStatement{
 	
 	fieldAccess fa = null;
 	
-	public fieldAccessStatement(fieldAccess fa) {
+	public fieldAccessStatement(String smtcode, fieldAccess fa) {
+		super(smtcode);
 		this.fa = fa;
 	}
 

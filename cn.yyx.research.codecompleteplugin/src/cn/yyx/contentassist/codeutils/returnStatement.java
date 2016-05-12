@@ -15,7 +15,8 @@ public class returnStatement extends statement{
 	
 	referedExpression rexp = null; // warning: rexp could be null.
 	
-	public returnStatement(referedExpression rexp) {
+	public returnStatement(String smtcode, referedExpression rexp) {
+		super(smtcode);
 		this.rexp = rexp;
 	}
 

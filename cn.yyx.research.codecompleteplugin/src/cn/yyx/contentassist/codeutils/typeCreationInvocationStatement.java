@@ -16,7 +16,8 @@ public class typeCreationInvocationStatement extends methodInvocationStatement{
 	type tp = null;
 	argumentList arglist = null;
 	
-	public typeCreationInvocationStatement(type tp, argumentList argList) {
+	public typeCreationInvocationStatement(String smtcode, type tp, argumentList argList) {
+		super(smtcode);
 		this.tp = tp;
 		this.arglist = argList;
 	}

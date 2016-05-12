@@ -14,7 +14,8 @@ public class whileStatement extends statement{
 	
 	referedExpression rexp = null;
 	
-	public whileStatement(referedExpression rexp) {
+	public whileStatement(String smtcode, referedExpression rexp) {
+		super(smtcode);
 		this.rexp = rexp;
 	}
 

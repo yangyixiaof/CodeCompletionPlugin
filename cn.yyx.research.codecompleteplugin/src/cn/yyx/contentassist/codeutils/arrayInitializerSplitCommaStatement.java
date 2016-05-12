@@ -21,6 +21,10 @@ public class arrayInitializerSplitCommaStatement extends statement{
 		return false;
 	}*/
 
+	public arrayInitializerSplitCommaStatement(String smtcode) {
+		super(smtcode);
+	}
+
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof arrayInitializerSplitCommaStatement)
