@@ -44,6 +44,7 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 		assert IsEmpty();
 		FlowLineNode<T> fln = new PreTryFlowLineNode<T>(t, 0, 0, null);
 		setHeads(fln);
+		fln.setLength(1);
 		setTails(new LinkedList<FlowLineNode<T>>());
 		getTails().add(fln);
 		exactmatchtail = getHeads();

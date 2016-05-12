@@ -258,13 +258,11 @@ public class PredictionFetch {
 				int ngramtrim1size = PredictMetaInfo.NgramMaxSize-1;
 				int remainsize = sizeitr.next();
 				
-				
 				// HandleOneInOneTurnPreTrySequencePredict
 				while ((remainsize > 0) && (ngramtrim1size >= 1))
 				{
 					List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(fln, ngramtrim1size);
 					// List<PredictProbPair> pps = PredictHelper.PredictSentences(alc, ls, neededsize);
-					
 					
 					String key = ListHelper.ConcatJoin(ls);
 					// update n-gram size.
@@ -280,6 +278,12 @@ public class PredictionFetch {
 					}
 					
 					// not handled key.
+					
+					if (key.equals("DH@{"))
+					{
+						System.err.println("Strange Error Here.");
+					}
+					
 					List<PredictProbPair> pps = alc.AeroModelPredict(key, remainsize);
 					Iterator<PredictProbPair> ppsitr = pps.iterator();
 					List<statement> triedcmp = FlowLineHelper.LastToFirstStatementQueue(fln);
@@ -295,7 +299,6 @@ public class PredictionFetch {
 						remainsize--;
 						((LinkedList<statement>)triedcmp).removeLast();
 						
-						
 						// record information which ons and exact match need.
 						if (ons != null)
 						{
@@ -307,11 +310,9 @@ public class PredictionFetch {
 							}
 						}
 						
-						
 					}
+					ngramtrim1size--;
 				}
-				
-				ngramtrim1size--;
 				// HandleOneInOneTurnPreTrySequencePredict(alc, fls, fln, oraclelist, handledkey, neededsize);
 			}
 			
