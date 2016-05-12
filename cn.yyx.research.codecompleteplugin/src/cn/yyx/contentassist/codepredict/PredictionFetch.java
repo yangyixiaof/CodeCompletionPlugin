@@ -249,7 +249,7 @@ public class PredictionFetch {
 			double tempexactmatchprob = 0;
 			
 			List<FlowLineNode<Sentence>> tails = fls.getTails();
-			List<Integer> sizes = ComputeInferSizes(tails, maxparsize);
+			List<Integer> sizes = ComputeInferSizes(tails, neededsize, maxparsize);
 			Iterator<FlowLineNode<Sentence>> itr = tails.iterator();
 			Iterator<Integer> sizeitr = sizes.iterator();
 			while (itr.hasNext())
@@ -352,7 +352,7 @@ public class PredictionFetch {
 		}
 	}
 	
-	private List<Integer> ComputeInferSizes(List<FlowLineNode<Sentence>> tails, int maxparsize)
+	private List<Integer> ComputeInferSizes(List<FlowLineNode<Sentence>> tails, int neededsize, int maxparsize)
 	{
 		List<Integer> infersize = new LinkedList<Integer>();
 		int allsize = tails.size();
@@ -383,6 +383,10 @@ public class PredictionFetch {
 				if (size < minsize)
 				{
 					size = minsize;
+				}
+				if (size > neededsize)
+				{
+					size = neededsize;
 				}
 				infersize.add(size);
 			}
