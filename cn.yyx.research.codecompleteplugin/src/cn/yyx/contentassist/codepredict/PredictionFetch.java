@@ -277,13 +277,11 @@ public class PredictionFetch {
 						handledkey.put(key, true);
 					}
 					
-					// not handled key.
-					
-					if (key.equals("DH@{"))
+					/*if (key.equals("DH@{"))
 					{
 						System.err.println("Strange Error Here.");
-					}
-					
+					}*/
+					// not handled key.
 					List<PredictProbPair> pps = alc.AeroModelPredict(key, remainsize);
 					Iterator<PredictProbPair> ppsitr = pps.iterator();
 					List<statement> triedcmp = FlowLineHelper.LastToFirstStatementQueue(fln);
