@@ -6,15 +6,22 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import cn.yyx.contentassist.codepredict.PredictMetaInfo;
+
 public class PreTryFlowLines<T> extends FlowLines<T> {
 	
 	private FlowLineNode<T> exactmatchtail = null;
 	// private FlowLineNode<T> tempexactmatchtail = null;
 	
 	private List<FlowLineNode<T>> overtails = new LinkedList<FlowLineNode<T>>();
+	int validovers = 0;
 	
-	public void AddOverFlowLineNode(FlowLineNode<T> otail, FlowLineNode<T> prenode)
+	public void AddOverFlowLineNode(PreTryFlowLineNode<T> otail, FlowLineNode<T> prenode)
 	{
+		if (otail.seqencesimilarity > PredictMetaInfo.SequenceSimilarThreshold)
+		{
+			validovers++;
+		}
 		getOvertails().add(otail);
 		otail.setPrev(prenode);
 	}
@@ -54,7 +61,11 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 		return overtails;
 	}
 
-	public int GetOveredSize() {
+	public int GetValidOveredSize() {
+		return validovers;
+	}
+	
+	public int GetAllOveredSize() {
 		return overtails.size();
 	}
 
