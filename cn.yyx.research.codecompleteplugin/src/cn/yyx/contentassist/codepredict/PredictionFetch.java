@@ -101,6 +101,9 @@ public class PredictionFetch {
 	}
 
 	private void DoRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi) {
+		
+		// TODO every item from fls must be considered separately, I am sure this implementation could not do this.
+		
 		DoFirstRealCodePredictAndSynthesis(sh, alc, fls, csfl, aoi);
 		// normal extend.
 		int extendtimes = 1;
