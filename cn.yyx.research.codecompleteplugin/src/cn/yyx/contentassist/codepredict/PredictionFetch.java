@@ -332,15 +332,20 @@ public class PredictionFetch {
 				}
 				
 				// judge if exact match is handled.
-				if (ons.getSentence().equals(nf.getData().getSentence()))
+				if (ons != null && ons.getSentence().equals(nf.getData().getSentence()))
 				{
 					exactmatchhandled = true;
 					fls.setExactmatchtail(nf);
 				}
 			}
 			
-			if (!exactmatchhandled)
+			if (ons != null && !exactmatchhandled)
 			{
+				if (ndsize == 0)
+				{
+					// delete the least probability node.
+					fls.DeleteLastAddedNode();
+				}
 				double enhancedenergy = ProbabilityComputer.ComputeProbability(maxexactmatchsimilarity);
 				FlowLineNode<Sentence> fln = fls.getExactmatchtail();
 				PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(ons, tempexactmatchprob + enhancedenergy + fln.getProbability(), ((fln.getLength()+1)*1.0)/(oraclelist.size()*1.0), fln);

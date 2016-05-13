@@ -45,7 +45,7 @@ public class LCSComparison {
 				}
 			}
 		}
-		return c[m][n]/(Math.min(m, n)*1.0);
+		return 0.65*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.35*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
 	public static double LCSSimilarity(List<statement> x, List<statement> y) {
@@ -83,7 +83,7 @@ public class LCSComparison {
 				}
 			}
 		}
-		return c[m][n]/(Math.min(m, n)*1.0);
+		return 0.65*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.35*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
 	public static double LCSSimilarityArgType(List<argType> x, List<argType> y) {
@@ -121,7 +121,7 @@ public class LCSComparison {
 				}
 			}
 		}
-		return c[m][n]/(Math.min(m, n)*1.0);
+		return 0.65*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.35*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
 	public static double LCSSimilarityTypeArgument(List<typeArgument> x, List<typeArgument> y) {
@@ -159,7 +159,7 @@ public class LCSComparison {
 				}
 			}
 		}
-		return c[m][n]/(Math.min(m, n)*1.0);
+		return 0.65*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.35*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
 }

@@ -14,6 +14,15 @@ public class CheckUtil {
 		}
 	}
 	
+	public static void CheckMustNull(Object ref, String info)
+	{
+		if (ref != null)
+		{
+			System.err.println(info);
+			System.exit(1);	
+		}
+	}
+	
 	public static void CheckStatementHandlerIsMethodStatementHandler(CSStatementHandler smthandler)
 	{
 		if (!(smthandler instanceof CSMethodStatementHandler))

@@ -3,6 +3,8 @@ package cn.yyx.contentassist.codesynthesis.flowline;
 import java.util.LinkedList;
 import java.util.List;
 
+import cn.yyx.contentassist.commonutils.CheckUtil;
+
 public class FlowLines<T> {
 	
 	private FlowLineNode<T> heads = null;
@@ -33,6 +35,22 @@ public class FlowLines<T> {
 		{
 			System.err.println("Flow Line Operation not permitted.");
 			System.exit(1);
+		}
+	}
+	
+	public void DeleteLastAddedNode() {
+		FlowLineNode<T> fln = ((LinkedList<FlowLineNode<T>>)temptails).removeLast();
+		CheckUtil.CheckMustNull(fln.getNext(), "the last node has next child?");
+		CheckUtil.CheckMustNull(fln.getSilbnext(), "the last node has silb next child?");
+		FlowLineNode<T> spv = fln.getSilbprev();
+		if (spv != null)
+		{
+			spv.setSilbnext(null);
+		}
+		FlowLineNode<T> prv = fln.getPrev();
+		if (prv != null)
+		{
+			prv.setNext(null);
 		}
 	}
 	

@@ -25,7 +25,7 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 		getOvertails().add(otail);
 		otail.setPrev(prenode);
 	}
-
+	
 	public FlowLineNode<T> getExactmatchtail() {
 		return exactmatchtail;
 	}
