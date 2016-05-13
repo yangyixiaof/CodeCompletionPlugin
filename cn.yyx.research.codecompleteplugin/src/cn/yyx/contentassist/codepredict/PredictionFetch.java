@@ -276,31 +276,33 @@ public class PredictionFetch {
 					ngramtrim1size--;
 					// if key or trim1key return no records, just continue.
 					TKey tkey = ListHelper.ConcatJoin(ls);
-					if (tkey.getTrim1key() != null)
+					String key = tkey.getKey();
+					String trim1key = tkey.getTrim1key();
+					if (trim1key != null)
 					{
-						if (keynull.containsKey(tkey.getTrim1key()) || keynull.containsKey(tkey.getKey()))
+						if (keynull.containsKey(trim1key) || keynull.containsKey(key))
 						{
 							continue;
 						}
 					}
 					
 					// record handled key.
-					if (handledkey.containsKey(tkey.getKey()))
+					if (handledkey.containsKey(key))
 					{
 						break;
 					}
 					else
 					{
-						handledkey.put(tkey.getKey(), true);
+						handledkey.put(key, true);
 					}
 					
 					// not handled key.
-					List<PredictProbPair> pps = alc.AeroModelPredict(tkey.getKey(), remainsize);
+					List<PredictProbPair> pps = alc.AeroModelPredict(key, remainsize);
 					
 					// set the key-null optimized map to speed up.
 					if (pps.isEmpty())
 					{
-						keynull.put(tkey.getKey(), true);
+						keynull.put(key, true);
 					}
 					
 					Iterator<PredictProbPair> ppsitr = pps.iterator();
