@@ -29,6 +29,7 @@ import cn.yyx.contentassist.commonutils.ContextHandler;
 import cn.yyx.contentassist.commonutils.ListHelper;
 import cn.yyx.contentassist.commonutils.ProbabilityComputer;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.TKey;
 import cn.yyx.research.aerospikehandle.AeroLifeCycle;
 import cn.yyx.research.aerospikehandle.PredictProbPair;
 import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVisitor;
@@ -209,27 +210,31 @@ public class PredictionFetch {
 	
 	private void DoPreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, List<Sentence> setelist,
 			List<statement> smtlist, int needsize, final char lastchar) {
+		Map<String, Boolean> keynull = new TreeMap<String, Boolean>();
+		
 		Iterator<Sentence> itr = setelist.iterator();
 		while (itr.hasNext())
 		{
 			Sentence ons = itr.next();
-			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, (int)(needsize), 2*needsize, lastchar);
+			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, (int)(needsize), 2*needsize, lastchar, keynull);
 		}
 		int size = fls.GetValidOveredSize();
 		int turn = 0;
 		while (size < ((int)(needsize)) && turn < PredictMetaInfo.PreTryMaxStep)
 		{
 			turn++;
-			DoOnePreTrySequencePredict(alc, fls, null, smtlist, (int)((needsize-size)), 2*(needsize-size), lastchar);
+			DoOnePreTrySequencePredict(alc, fls, null, smtlist, (int)((needsize-size)), 2*(needsize-size), lastchar, keynull);
 			size = fls.GetValidOveredSize();
 		}
 		if (size >= needsize || fls.GetAllOveredSize() > needsize)
 		{
 			fls.TrimOverTails(needsize);
 		}
+		
+		keynull.clear();
 	}
 	
-	private void DoOnePreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons, final List<statement> oraclelist, int neededsize, int maxparsize, final char lastchar)
+	private void DoOnePreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons, final List<statement> oraclelist, int neededsize, int maxparsize, final char lastchar, Map<String, Boolean> keynull)
 	{
 		if (fls.IsEmpty())
 		{
@@ -265,27 +270,39 @@ public class PredictionFetch {
 				while ((remainsize > 0) && (ngramtrim1size >= 1))
 				{
 					List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(fln, ngramtrim1size);
-					// List<PredictProbPair> pps = PredictHelper.PredictSentences(alc, ls, neededsize);
 					
-					String key = ListHelper.ConcatJoin(ls);
 					// update n-gram size.
 					ngramtrim1size = ls.size();
+					ngramtrim1size--;
+					// if key or trim1key return no records, just continue.
+					TKey tkey = ListHelper.ConcatJoin(ls);
+					if (tkey.getTrim1key() != null)
+					{
+						if (keynull.containsKey(tkey.getTrim1key()) || keynull.containsKey(tkey.getKey()))
+						{
+							continue;
+						}
+					}
+					
 					// record handled key.
-					if (handledkey.containsKey(key))
+					if (handledkey.containsKey(tkey.getKey()))
 					{
 						break;
 					}
 					else
 					{
-						handledkey.put(key, true);
+						handledkey.put(tkey.getKey(), true);
 					}
 					
-					/*if (key.equals("DH@{"))
-					{
-						System.err.println("Strange Error Here.");
-					}*/
 					// not handled key.
-					List<PredictProbPair> pps = alc.AeroModelPredict(key, remainsize);
+					List<PredictProbPair> pps = alc.AeroModelPredict(tkey.getKey(), remainsize);
+					
+					// set the key-null optimized map to speed up.
+					if (pps.isEmpty())
+					{
+						keynull.put(tkey.getKey(), true);
+					}
+					
 					Iterator<PredictProbPair> ppsitr = pps.iterator();
 					List<statement> triedcmp = FlowLineHelper.LastToFirstStatementQueue(fln);
 					while (ppsitr.hasNext())
@@ -312,7 +329,6 @@ public class PredictionFetch {
 						}
 						
 					}
-					ngramtrim1size--;
 				}
 				// HandleOneInOneTurnPreTrySequencePredict(alc, fls, fln, oraclelist, handledkey, neededsize);
 			}

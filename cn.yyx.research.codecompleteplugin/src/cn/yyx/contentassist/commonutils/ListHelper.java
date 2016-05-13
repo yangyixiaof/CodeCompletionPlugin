@@ -66,18 +66,24 @@ public class ListHelper {
 		return sb.toString().trim();
 	}
 	
-	public static String ConcatJoin(List<Sentence> analysislist) {
+	public static TKey ConcatJoin(List<Sentence> analysislist) {
+		String trim1key = null;
+		String key = null;
 		StringBuffer sb = new StringBuffer("");
 		Iterator<Sentence> itr = analysislist.iterator();
+		Sentence sete = itr.next();
+		sb.append(sete.getSentence());
 		while (itr.hasNext()) {
-			Sentence sete = itr.next();
+			sete = itr.next();
 			String split = " ";
-			if (!itr.hasNext()) {
-				split = "";
+			if (!itr.hasNext())
+			{
+				trim1key = sb.toString();
 			}
-			sb.append(sete.getSentence() + split);
+			sb.append(split + sete.getSentence());
 		}
-		return sb.toString().trim();
+		key = sb.toString();
+		return new TKey(key, trim1key);
 	}
 	
 }
