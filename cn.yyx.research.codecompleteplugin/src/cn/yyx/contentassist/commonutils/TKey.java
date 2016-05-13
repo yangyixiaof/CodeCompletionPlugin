@@ -26,4 +26,9 @@ public class TKey {
 		this.trim1key = trim1key;
 	}
 	
+	@Override
+	public String toString() {
+		return "key:" + key + "\n" + "trim1key:" + trim1key;
+	}
+	
 }

@@ -360,7 +360,7 @@ public class PredictionFetch {
 			
 			if (ons != null && !exactmatchhandled)
 			{
-				if (ndsize == 0)
+				if (ndsize == 0 && neededsize > 0)
 				{
 					// delete the least probability node.
 					fls.DeleteLastAddedNode();
