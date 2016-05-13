@@ -96,4 +96,9 @@ public class FlowLineNode<T> implements Comparable<FlowLineNode<T>>{
 		return ((Double)(-probability)).compareTo((Double)(-o.probability));
 	}
 	
+	@Override
+	public String toString() {
+		return "data:" + data.toString() + ";prob:" + probability;
+	}
+	
 }

@@ -33,5 +33,10 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 	public void setParent(FlowLineNode<T> parent) {
 		this.parent = parent;
 	}
+
+	@Override
+	public String toString() {
+		return "data:" + data.toString() + ";prob:" + probability + ";seqsim:" + seqencesimilarity;
+	}
 	
 }

@@ -46,6 +46,7 @@ public class FlowLines<T> {
 		if (spn != null)
 		{
 			FlowLineNode<T> spv = fln.getSilbprev();
+			// this is right, because this deletes the last added node, so delete the first element which has silb next will never happen.
 			CheckUtil.CheckNotNull(spv, "silb prev must not null but this is null.");
 			spn.setSilbprev(spv);
 			spv.setSilbnext(spn);
