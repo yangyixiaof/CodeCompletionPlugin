@@ -210,17 +210,17 @@ public class PredictionFetch {
 		while (itr.hasNext())
 		{
 			Sentence ons = itr.next();
-			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, (int)(1.5*needsize), 3*needsize, lastchar);
+			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, (int)(needsize), 2*needsize, lastchar);
 		}
 		int size = fls.GetValidOveredSize();
 		int turn = 0;
 		while (size < ((int)(needsize)) && turn < PredictMetaInfo.PreTryMaxStep)
 		{
 			turn++;
-			DoOnePreTrySequencePredict(alc, fls, null, smtlist, (int)(1.5*(needsize-size)), 3*(needsize-size), lastchar);
+			DoOnePreTrySequencePredict(alc, fls, null, smtlist, (int)((needsize-size)), 2*(needsize-size), lastchar);
 			size = fls.GetValidOveredSize();
 		}
-		if (size > needsize)
+		if (size >= needsize || fls.GetAllOveredSize() > needsize)
 		{
 			fls.TrimOverTails(needsize);
 		}
