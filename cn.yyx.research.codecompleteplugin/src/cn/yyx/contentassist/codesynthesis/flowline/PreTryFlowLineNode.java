@@ -5,9 +5,9 @@ import cn.yyx.contentassist.commonutils.SimilarityHelper;
 public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 	
 	double seqencesimilarity = -1;
-	private FlowLineNode<T> parent = null;
+	private PreTryFlowLineNode<T> parent = null;
 	
-	public PreTryFlowLineNode(T t, double prob, double seqsimilarity, FlowLineNode<T> parent) {
+	public PreTryFlowLineNode(T t, double prob, double seqsimilarity, PreTryFlowLineNode<T> parent) {
 		super(t, prob);
 		this.seqencesimilarity = seqsimilarity;
 		this.setParent(parent);
@@ -26,11 +26,11 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 		return ((Double)(-probability)).compareTo((Double)(-o.probability));
 	}
 
-	public FlowLineNode<T> getParent() {
+	public PreTryFlowLineNode<T> getParent() {
 		return parent;
 	}
 
-	public void setParent(FlowLineNode<T> parent) {
+	public void setParent(PreTryFlowLineNode<T> parent) {
 		this.parent = parent;
 	}
 

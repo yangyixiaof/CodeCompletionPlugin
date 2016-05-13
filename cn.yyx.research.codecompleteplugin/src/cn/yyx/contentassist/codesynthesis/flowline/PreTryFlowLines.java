@@ -10,13 +10,13 @@ import cn.yyx.contentassist.codepredict.PredictMetaInfo;
 
 public class PreTryFlowLines<T> extends FlowLines<T> {
 	
-	private FlowLineNode<T> exactmatchtail = null;
+	private PreTryFlowLineNode<T> exactmatchtail = null;
 	// private FlowLineNode<T> tempexactmatchtail = null;
 	
-	private List<FlowLineNode<T>> overtails = new LinkedList<FlowLineNode<T>>();
+	private List<PreTryFlowLineNode<T>> overtails = new LinkedList<PreTryFlowLineNode<T>>();
 	int validovers = 0;
 	
-	public void AddOverFlowLineNode(PreTryFlowLineNode<T> otail, FlowLineNode<T> prenode)
+	public void AddOverFlowLineNode(PreTryFlowLineNode<T> otail, PreTryFlowLineNode<T> prenode)
 	{
 		if (otail.seqencesimilarity > PredictMetaInfo.SequenceSimilarThreshold)
 		{
@@ -26,11 +26,11 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 		otail.setPrev(prenode);
 	}
 	
-	public FlowLineNode<T> getExactmatchtail() {
+	public PreTryFlowLineNode<T> getExactmatchtail() {
 		return exactmatchtail;
 	}
 
-	public void setExactmatchtail(FlowLineNode<T> exactmatchtail) {
+	public void setExactmatchtail(PreTryFlowLineNode<T> exactmatchtail) {
 		this.exactmatchtail = exactmatchtail;
 	}
 	
@@ -54,10 +54,10 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 		fln.setLength(1);
 		setTails(new LinkedList<FlowLineNode<T>>());
 		getTails().add(fln);
-		exactmatchtail = getHeads();
+		exactmatchtail = (PreTryFlowLineNode<T>)getHeads();
 	}
 
-	public List<FlowLineNode<T>> getOvertails() {
+	public List<PreTryFlowLineNode<T>> getOvertails() {
 		return overtails;
 	}
 
@@ -70,12 +70,12 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 	}
 
 	public void TrimOverTails(int needsize) {
-		List<FlowLineNode<T>> finalovertails = new LinkedList<FlowLineNode<T>>();
-		Queue<FlowLineNode<T>> priorityqueue = new PriorityQueue<FlowLineNode<T>>();
-		Iterator<FlowLineNode<T>> itr = overtails.iterator();
+		List<PreTryFlowLineNode<T>> finalovertails = new LinkedList<PreTryFlowLineNode<T>>();
+		Queue<PreTryFlowLineNode<T>> priorityqueue = new PriorityQueue<PreTryFlowLineNode<T>>();
+		Iterator<PreTryFlowLineNode<T>> itr = overtails.iterator();
 		while (itr.hasNext())
 		{
-			FlowLineNode<T> fln = itr.next();
+			PreTryFlowLineNode<T> fln = itr.next();
 			priorityqueue.add(fln);
 		}
 		int msize = Math.min(needsize, overtails.size());

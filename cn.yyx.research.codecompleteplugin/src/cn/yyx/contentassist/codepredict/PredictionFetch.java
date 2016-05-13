@@ -119,8 +119,8 @@ public class PredictionFetch {
 		csfl.BeginOperation();
 		
 		VirtualCSFlowLineQueue vcsdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(-1, null, null, null, false, false, TypeComputationKind.NoOptr, TypeComputationKind.NoOptr, sh), 0));
-		List<FlowLineNode<Sentence>> ots = fls.getOvertails();
-		Iterator<FlowLineNode<Sentence>> itr = ots.iterator();
+		List<PreTryFlowLineNode<Sentence>> ots = fls.getOvertails();
+		Iterator<PreTryFlowLineNode<Sentence>> itr = ots.iterator();
 		while (itr.hasNext())
 		{
 			FlowLineNode<Sentence> fln = itr.next();
@@ -262,7 +262,7 @@ public class PredictionFetch {
 			Iterator<Integer> sizeitr = sizes.iterator();
 			while (itr.hasNext())
 			{
-				FlowLineNode<Sentence> fln = itr.next();
+				PreTryFlowLineNode<Sentence> fln = (PreTryFlowLineNode<Sentence>) itr.next();
 				int ngramtrim1size = PredictMetaInfo.NgramMaxSize-1;
 				int remainsize = sizeitr.next();
 				
@@ -368,7 +368,7 @@ public class PredictionFetch {
 					fls.DeleteLastAddedNode();
 				}
 				double enhancedenergy = ProbabilityComputer.ComputeProbability(maxexactmatchsimilarity);
-				FlowLineNode<Sentence> fln = fls.getExactmatchtail();
+				PreTryFlowLineNode<Sentence> fln = fls.getExactmatchtail();
 				PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(ons, tempexactmatchprob + enhancedenergy + fln.getProbability(), ((fln.getLength()+1)*1.0)/(oraclelist.size()*1.0), fln);
 				fls.AddToNextLevel(nf, nf.getParent());
 				fls.setExactmatchtail(nf);
