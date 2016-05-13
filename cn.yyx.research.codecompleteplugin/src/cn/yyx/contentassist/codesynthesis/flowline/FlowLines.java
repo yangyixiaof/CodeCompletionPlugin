@@ -41,16 +41,27 @@ public class FlowLines<T> {
 	public void DeleteLastAddedNode() {
 		FlowLineNode<T> fln = ((LinkedList<FlowLineNode<T>>)temptails).removeLast();
 		CheckUtil.CheckMustNull(fln.getNext(), "the last node has next child?");
-		CheckUtil.CheckMustNull(fln.getSilbnext(), "the last node has silb next child?");
-		FlowLineNode<T> spv = fln.getSilbprev();
-		if (spv != null)
+		// CheckUtil.CheckMustNull(fln.getSilbnext(), "the last node has silb next child?");
+		FlowLineNode<T> spn = fln.getSilbnext();
+		if (spn != null)
 		{
-			spv.setSilbnext(null);
+			FlowLineNode<T> spv = fln.getSilbprev();
+			CheckUtil.CheckNotNull(spv, "silb prev must not null but this is null.");
+			spn.setSilbprev(spv);
+			spv.setSilbnext(spn);
 		}
-		FlowLineNode<T> prv = fln.getPrev();
-		if (prv != null)
+		else
 		{
-			prv.setNext(null);
+			FlowLineNode<T> spv = fln.getSilbprev();
+			if (spv == null)
+			{
+				CheckUtil.CheckRefSame(fln.getPrev().getNext(), fln, "silb next and silb prev are all null and this is not the first one?");
+				fln.getPrev().setNext(null);
+			}
+			else
+			{
+				spv.setSilbnext(null);
+			}
 		}
 	}
 	
@@ -98,6 +109,7 @@ public class FlowLines<T> {
 		{
 			nnt.setSilbprev(insert);
 			insert.setSilbnext(nnt);
+			insert.setSilbprev(afterwhich);
 			afterwhich.setSilbnext(insert);
 		}
 	}

@@ -5,6 +5,15 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class CheckUtil {
 	
+	public static void CheckRefSame(Object ref1, Object ref2, String info)
+	{
+		if (ref1 != ref2)
+		{
+			System.out.println(info);
+			System.exit(1);
+		}
+	}
+	
 	public static void CheckNotNull(Object ref, String info)
 	{
 		if (ref == null)

@@ -34,6 +34,7 @@ public class methodArgPreExist extends referedExpression {
 		Stack<Integer> signals = realhandler.getSignals();
 		FlowLineNode<CSFlowLineData> ns = realhandler.getNextstart();
 		FlowLineNode<CSFlowLineData> tmp = ns;
+		FlowLineNode<CSFlowLineData> tmpnext = null;
 		FlowLineNode<CSFlowLineData> mstart = ns;
 		FlowLineNode<CSFlowLineData> mstop = null;
 		while (tmp != null)
@@ -49,7 +50,7 @@ public class methodArgPreExist extends referedExpression {
 				}
 				if ((!(tmpdata instanceof CSMethodInvocationData)) && signals.size() == 1)
 				{
-					mstop = tmp.getNext();
+					mstop = tmpnext;
 					realhandler.setNextstart(tmp);
 					if (tmpdata instanceof CSEnterParamInfoData)
 					{
@@ -60,6 +61,7 @@ public class methodArgPreExist extends referedExpression {
 					break;
 				}
 			}
+			tmpnext = tmp;
 			tmp = tmp.getPrev();
 		}
 		if (mstart == null || mstop == null)
