@@ -231,6 +231,7 @@ public class PredictionFetch {
 				int ngramtrim1size = PredictMetaInfo.NgramMaxSize-1;
 				int remainsize = sizeitr.next();
 				
+				Map<String, Boolean> happenedinfer = new TreeMap<String, Boolean>();
 				// HandleOneInOneTurnPreTrySequencePredict
 				while ((remainsize > 0) && (ngramtrim1size >= 1))
 				{
@@ -277,6 +278,16 @@ public class PredictionFetch {
 					{
 						PredictProbPair ppp = ppsitr.next();
 						Sentence pred = ppp.getPred();
+						
+						// check whether this prediction has happened.
+						if (happenedinfer.containsKey(pred.getSentence()))
+						{
+							continue;
+						}
+						else {
+							happenedinfer.put(pred.getSentence(), true);
+						}
+						
 						triedcmp.add(pred.getSmt());
 						double sim = LCSComparison.LCSSimilarity(oraclelist, triedcmp);
 						PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability(), sim, fln);
@@ -298,6 +309,7 @@ public class PredictionFetch {
 						
 					}
 				}
+				happenedinfer.clear();
 				// HandleOneInOneTurnPreTrySequencePredict(alc, fls, fln, oraclelist, handledkey, neededsize);
 			}
 			
