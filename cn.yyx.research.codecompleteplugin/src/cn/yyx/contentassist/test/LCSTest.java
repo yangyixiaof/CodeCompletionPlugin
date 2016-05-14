@@ -21,7 +21,7 @@ public class LCSTest {
 			smts.add(ossete.getSmt());
 		}
 		statement mi = smts.get(len-2);
-		System.err.println("mi self similarity:" + mi.Similarity(mi));
+		System.err.println("mi type:" + mi.getClass() + ";mi self similarity:" + mi.Similarity(mi));
 		double sim1 = LCSComparison.LCSSimilarity(smts, smts.subList(0, len-1));
 		System.err.println("sim1:" + sim1);
 		double sim2 = LCSComparison.LCSSimilarity(smts, smts.subList(0, len-2));
