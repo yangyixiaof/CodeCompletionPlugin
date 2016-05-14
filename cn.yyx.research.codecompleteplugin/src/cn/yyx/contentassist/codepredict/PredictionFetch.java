@@ -245,8 +245,9 @@ public class PredictionFetch {
 					String trim1key = tkey.getTrim1key();
 					if (trim1key != null)
 					{
-						if (keynull.containsKey(trim1key) || keynull.containsKey(key))
+						if (keynull.containsKey(trim1key)) //  || keynull.containsKey(key)
 						{
+							keynull.put(key, true);
 							continue;
 						}
 					}
