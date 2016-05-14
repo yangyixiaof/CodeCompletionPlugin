@@ -1,4 +1,4 @@
-package cn.yyx.research.aerospikehandle;
+package cn.yyx.contentassist.aerospikehandle;
 
 import java.util.Map;
 import java.util.TreeMap;

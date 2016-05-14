@@ -3,9 +3,9 @@ package cn.yyx.contentassist.codepredict;
 import java.util.LinkedList;
 import java.util.List;
 
+import cn.yyx.contentassist.aerospikehandle.AeroLifeCycle;
+import cn.yyx.contentassist.aerospikehandle.PredictProbPair;
 import cn.yyx.contentassist.commonutils.ListHelper;
-import cn.yyx.research.aerospikehandle.AeroLifeCycle;
-import cn.yyx.research.aerospikehandle.PredictProbPair;
 
 public class PredictHelper {
 	

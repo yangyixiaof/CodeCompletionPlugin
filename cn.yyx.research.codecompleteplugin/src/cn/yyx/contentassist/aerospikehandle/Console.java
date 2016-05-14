@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package cn.yyx.research.aerospikehandle;
+package cn.yyx.contentassist.aerospikehandle;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

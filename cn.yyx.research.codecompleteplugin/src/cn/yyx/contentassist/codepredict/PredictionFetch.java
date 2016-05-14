@@ -12,6 +12,8 @@ import java.util.TreeMap;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 
+import cn.yyx.contentassist.aerospikehandle.AeroLifeCycle;
+import cn.yyx.contentassist.aerospikehandle.PredictProbPair;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.VirtualCSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
@@ -31,8 +33,6 @@ import cn.yyx.contentassist.commonutils.ProbabilityComputer;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TKey;
-import cn.yyx.research.aerospikehandle.AeroLifeCycle;
-import cn.yyx.research.aerospikehandle.PredictProbPair;
 import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVisitor;
 import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
