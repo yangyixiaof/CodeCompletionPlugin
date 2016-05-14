@@ -4,12 +4,12 @@ import cn.yyx.contentassist.commonutils.SimilarityHelper;
 
 public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 	
-	double seqencesimilarity = -1;
+	private double seqencesimilarity = -1;
 	private PreTryFlowLineNode<T> parent = null;
 	
 	public PreTryFlowLineNode(T t, double prob, double seqsimilarity, PreTryFlowLineNode<T> parent) {
 		super(t, prob);
-		this.seqencesimilarity = seqsimilarity;
+		this.setSeqencesimilarity(seqsimilarity);
 		this.setParent(parent);
 	}
 	
@@ -18,9 +18,9 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 	public int compareTo(FlowLineNode<T> o) {
 		if (o instanceof PreTryFlowLineNode)
 		{
-			if (!SimilarityHelper.CouldThoughtTwoDoubleSame(seqencesimilarity, ((PreTryFlowLineNode) o).seqencesimilarity))
+			if (!SimilarityHelper.CouldThoughtTwoDoubleSame(getSeqencesimilarity(), ((PreTryFlowLineNode) o).getSeqencesimilarity()))
 			{
-				return ((Double)(-seqencesimilarity)).compareTo((Double)(-((PreTryFlowLineNode) o).seqencesimilarity));
+				return ((Double)(-getSeqencesimilarity())).compareTo((Double)(-((PreTryFlowLineNode) o).getSeqencesimilarity()));
 			}
 		}
 		return ((Double)(-probability)).compareTo((Double)(-o.probability));
@@ -36,7 +36,15 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 
 	@Override
 	public String toString() {
-		return "data:" + data.toString() + ";prob:" + probability + ";seqsim:" + seqencesimilarity;
+		return "data:" + data.toString() + ";prob:" + probability + ";seqsim:" + getSeqencesimilarity();
+	}
+
+	public double getSeqencesimilarity() {
+		return seqencesimilarity;
+	}
+
+	public void setSeqencesimilarity(double seqencesimilarity) {
+		this.seqencesimilarity = seqencesimilarity;
 	}
 	
 }

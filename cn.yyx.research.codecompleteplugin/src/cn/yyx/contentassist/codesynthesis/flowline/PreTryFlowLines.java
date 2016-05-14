@@ -18,7 +18,7 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 	
 	public void AddOverFlowLineNode(PreTryFlowLineNode<T> otail, PreTryFlowLineNode<T> prenode)
 	{
-		if (otail.seqencesimilarity > PredictMetaInfo.SequenceSimilarThreshold)
+		if (otail.getSeqencesimilarity() > PredictMetaInfo.SequenceSimilarThreshold)
 		{
 			validovers++;
 		}
@@ -84,6 +84,10 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 			finalovertails.add(priorityqueue.poll());
 		}
 		overtails = finalovertails;
+	}
+
+	public void MoveTempTailLastToFirst() {
+		super.MoveTempTailLastToFirst();
 	}
 	
 }

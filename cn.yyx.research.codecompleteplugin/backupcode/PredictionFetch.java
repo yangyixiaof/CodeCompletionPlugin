@@ -430,6 +430,51 @@ public class PredictionFetch {
 			}
 		}
 		return infersize;
+		
+		
+		
+		
+		
+		
+		// another implementation.
+		List<Integer> infersize = new LinkedList<Integer>();
+		int allsize = tails.size();
+		int halfallsize = (int)((allsize*1.0)/2);
+		if (halfallsize == 0)
+		{
+			halfallsize = 1;
+		}
+		int avgsize = (int)((maxparsize*1.0)/(allsize*1.0));
+		if (avgsize == 0)
+		{
+			avgsize = 1;
+		}
+		int minsize = 2;
+		Iterator<FlowLineNode<Sentence>> itr = tails.iterator();
+		int idx = 0;
+		while (itr.hasNext())
+		{
+			idx++;
+			itr.next();
+			if (avgsize <= minsize)
+			{
+				infersize.add(avgsize + (int)(((idx*1.0)/(allsize*1.0))*3));
+			}
+			else
+			{
+				int size = avgsize + (int)((((idx-halfallsize)*1.0)/(halfallsize*1.0))*3);
+				if (size < minsize)
+				{
+					size = minsize;
+				}
+				if (size > neededsize)
+				{
+					size = neededsize;
+				}
+				infersize.add(size);
+			}
+		}
+		return infersize;
 	}
 	
 	private void HandleOneInOneTurnPreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, FlowLineNode<Sentence> fln, final List<statement> oraclelist, Map<String, Boolean> handledkey, int neededsize)

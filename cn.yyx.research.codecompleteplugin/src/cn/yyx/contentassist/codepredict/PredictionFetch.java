@@ -28,6 +28,7 @@ import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.contentassist.commonutils.ContextHandler;
 import cn.yyx.contentassist.commonutils.ListHelper;
 import cn.yyx.contentassist.commonutils.ProbabilityComputer;
+import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.TKey;
 import cn.yyx.research.aerospikehandle.AeroLifeCycle;
@@ -36,42 +37,6 @@ import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVi
 import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class PredictionFetch {
-	
-	// public static final int ParallelSize = 10;
-	
-	/*public List<String> FetchPrediction(JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor, SimplifiedCodeGenerateASTVisitor fmastv, List<String> analist, ArrayList<String> result) {
-		
-		AeroLifeCycle alc = new AeroLifeCycle();
-		alc.Initialize();
-		
-		int size = analist.size();
-		if (size > PredictMetaInfo.PrePredictWindow) {
-			analist = analist.subList(size - PredictMetaInfo.PrePredictWindow, size);
-			size = PredictMetaInfo.PrePredictWindow;
-		}
-		
-		PreTrySequenceManager manager = new PreTrySequenceManager();
-		Iterator<String> itr = analist.iterator();
-		while (itr.hasNext())
-		{
-			String str = itr.next();
-			Sentence ons = ComplexParser.GetSentence(str);
-			manager = DoPreTrySequencePredict(alc, manager, ons);
-		}
-		ScopeOffsetRefHandler handler = fmastv.GenerateScopeOffsetRefHandler();
-		ContextHandler ch = new ContextHandler(javacontext, monitor);
-		SynthesisHandler sh = new SynthesisHandler(handler, ch);
-		PredictSequenceManager pm = DoSequencesPredictAndRealCodeSynthesis(sh, alc, manager);
-		// List<String> list = DoRealCodeSynthesis(fmastv, pm);
-		// AeroHelper.testListStrings(2);
-		// System.out.println("ArrayListType:" + analist.getClass());
-		// System.out.println("ArrayListRealSize:" + analist.size() + ";OSize;" + size + ";They should be the same.");
-		
-		alc.Destroy();
-		alc = null;
-		List<String> list = pm.GetAllSynthesisdCodes();
-		return list;
-	}*/
 	
 	public List<String> FetchPredictionInSerial(JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor, SimplifiedCodeGenerateASTVisitor fmastv, List<String> analist, ArrayList<String> result, ASTOffsetInfo aoi, char lastchar)
 	{
@@ -372,6 +337,7 @@ public class PredictionFetch {
 				PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(ons, tempexactmatchprob + enhancedenergy + fln.getProbability(), ((fln.getLength()+1)*1.0)/(oraclelist.size()*1.0), fln);
 				fls.AddToNextLevel(nf, nf.getParent());
 				fls.setExactmatchtail(nf);
+				fls.MoveTempTailLastToFirst();
 			}
 			
 			fls.EndOperation();
@@ -380,44 +346,87 @@ public class PredictionFetch {
 	
 	private List<Integer> ComputeInferSizes(List<FlowLineNode<Sentence>> tails, int neededsize, int maxparsize)
 	{
-		List<Integer> infersize = new LinkedList<Integer>();
-		int allsize = tails.size();
-		int halfallsize = (int)((allsize*1.0)/2);
-		if (halfallsize == 0)
-		{
-			halfallsize = 1;
-		}
-		int avgsize = (int)((maxparsize*1.0)/(allsize*1.0));
-		if (avgsize == 0)
-		{
-			avgsize = 1;
-		}
-		int minsize = 2;
+		ArrayList<Integer> diffs = new ArrayList<Integer>();
 		Iterator<FlowLineNode<Sentence>> itr = tails.iterator();
-		int idx = 0;
+		ComputeDiffs(itr, null, diffs, 0);
+		ArrayList<Integer> sizes = ComputeSizes(diffs, neededsize, maxparsize);
+		return sizes;
+	}
+	
+	private ArrayList<Integer> ComputeSizes(ArrayList<Integer> diffs, int neededsize, int maxparsize) {
+		ArrayList<Integer> sizes = new ArrayList<Integer>();
+		int all = SumIntegerList(diffs);
+		Iterator<Integer> itr = diffs.iterator();
 		while (itr.hasNext())
 		{
-			idx++;
-			itr.next();
-			if (avgsize <= minsize)
+			int df = itr.next();
+			int sz = (int)((df*1.0)/(all*1.0)*(maxparsize*1.0));
+			if (sz == 0)
 			{
-				infersize.add(avgsize + (int)(((idx*1.0)/(allsize*1.0))*3));
+				sz = 1;
 			}
-			else
+			if (sz > neededsize)
 			{
-				int size = avgsize + (int)((((idx-halfallsize)*1.0)/(halfallsize*1.0))*3);
-				if (size < minsize)
+				sz = neededsize;
+			}
+			sizes.add(sz);
+		}
+		int szall = SumIntegerList(sizes);
+		if (szall > maxparsize)
+		{
+			int pregap = 0;
+			int gap = szall - maxparsize;
+			while (gap > 0 && pregap != gap)
+			{
+				int sslen = sizes.size();
+				for (int i=0;i<sslen-1 && gap > 0;i++)
 				{
-					size = minsize;
+					if (sizes.get(i) > sizes.get(i+1))
+					{
+						sizes.set(i, sizes.get(i)-1);
+						gap--;
+					}
 				}
-				if (size > neededsize)
-				{
-					size = neededsize;
-				}
-				infersize.add(size);
+				pregap = gap;
 			}
 		}
-		return infersize;
+		return sizes;
+	}
+	
+	private int SumIntegerList(List<Integer> ils)
+	{
+		int total = 0;
+		Iterator<Integer> itr = ils.iterator();
+		while (itr.hasNext())
+		{
+			total += itr.next();
+		}
+		return total;
+	}
+	
+	private int ComputeDiffs(Iterator<FlowLineNode<Sentence>> itr, PreTryFlowLineNode<Sentence> flnpre, ArrayList<Integer> diffs, int idx)
+	{
+		int onediff = 0;
+		PreTryFlowLineNode<Sentence> fln = null;
+		if (itr.hasNext())
+		{
+			fln = (PreTryFlowLineNode<Sentence>) itr.next();
+			diffs.add(1);
+			onediff = ComputeDiffs(itr, fln, diffs, idx+1);
+			diffs.set(idx, 1+onediff);
+		}
+		else {
+			return 0;
+		}
+		int rtdiff = onediff;
+		if (flnpre != null)
+		{
+			if (!SimilarityHelper.CouldThoughtTwoDoubleSame(flnpre.getSeqencesimilarity(), fln.getSeqencesimilarity()))
+			{
+				rtdiff++;
+			}
+		}
+		return rtdiff;
 	}
 	
 }

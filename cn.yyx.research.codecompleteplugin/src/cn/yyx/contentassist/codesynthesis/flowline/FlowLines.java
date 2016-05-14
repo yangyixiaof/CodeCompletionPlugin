@@ -66,6 +66,11 @@ public class FlowLines<T> {
 		}
 	}
 	
+	public void MoveTempTailLastToFirst() {
+		FlowLineNode<T> fln = ((LinkedList<FlowLineNode<T>>)temptails).removeLast();
+		temptails.add(0, fln);
+	}
+	
 	public void AddToNextLevel(FlowLineNode<T> addnode, FlowLineNode<T> prenode)
 	{
 		CheckOperationPermit();
