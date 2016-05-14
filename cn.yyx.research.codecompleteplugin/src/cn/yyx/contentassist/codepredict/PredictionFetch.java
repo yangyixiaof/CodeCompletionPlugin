@@ -406,9 +406,13 @@ public class PredictionFetch {
 				int sslen = sizes.size();
 				for (int i=0;i<sslen-1 && gap > 0;i++)
 				{
-					sizes.set(i, sizes.get(i)+1);
-					gap--;
+					if (sizes.get(i) < neededsize)
+					{
+						sizes.set(i, sizes.get(i)+1);
+						gap--;
+					}
 				}
+				pregap = gap;
 			}
 		}
 		return sizes;
