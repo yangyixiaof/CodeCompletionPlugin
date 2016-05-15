@@ -33,9 +33,9 @@ public class variableDeclarationHolderStatement extends statement{
 	
 	@Override
 	public double Similarity(OneCode t) {
-		double prob = 0;
 		if (t instanceof variableDeclarationHolderStatement)
 		{
+			double prob = 0;
 			if (rexp == null && ((variableDeclarationHolderStatement)t).rexp == null)
 			{
 				prob = 1;
