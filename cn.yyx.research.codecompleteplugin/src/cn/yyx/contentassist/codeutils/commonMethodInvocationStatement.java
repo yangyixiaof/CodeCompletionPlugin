@@ -40,7 +40,7 @@ public class commonMethodInvocationStatement extends methodInvocationStatement{
 		{
 			double idsim = id.Similarity(((commonMethodInvocationStatement) t).id);
 			double argsim = arglist.Similarity(((commonMethodInvocationStatement) t).arglist);
-			return 0.3 + 0.7*(0.5*idsim) + 0.5*(argsim);
+			return 0.3 + 0.7*((0.5*idsim) + 0.5*(argsim));
 		}
 		return 0;
 	}
