@@ -5,6 +5,7 @@ import java.util.List;
 
 import cn.yyx.contentassist.codepredict.LCSComparison;
 import cn.yyx.contentassist.codepredict.Sentence;
+import cn.yyx.contentassist.codeutils.commonMethodInvocationStatement;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.parsehelper.ComplexParser;
 
@@ -20,8 +21,10 @@ public class LCSTest {
 			Sentence ossete = ComplexParser.GetSentence(os);
 			smts.add(ossete.getSmt());
 		}
-		statement mi = smts.get(len-2);
-		System.err.println("mi type:" + mi.getClass() + ";mi self similarity:" + mi.Similarity(mi));
+		commonMethodInvocationStatement mi = (commonMethodInvocationStatement) smts.get(len-2);
+		Class<?> micls = mi.getClass();
+		double misim = mi.Similarity(mi);
+		System.err.println("mi type:" + micls + ";mi self similarity:" + misim);
 		double sim1 = LCSComparison.LCSSimilarity(smts, smts.subList(0, len-1));
 		System.err.println("sim1:" + sim1);
 		double sim2 = LCSComparison.LCSSimilarity(smts, smts.subList(0, len-2));
