@@ -1,11 +1,11 @@
 package cn.yyx.contentassist.commonutils;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
 import cn.yyx.contentassist.codepredict.LCSComparison;
+import cn.yyx.contentassist.codepredict.PredictMetaInfo;
 import cn.yyx.contentassist.codeutils.type;
 
 public class SimilarityHelper {
@@ -46,19 +46,10 @@ public class SimilarityHelper {
 	
 	public static boolean CouldThoughtListsOfTypeSame(List<type> tps1, List<type> tps2)
 	{
-		Iterator<type> itr1 = tps1.iterator();
-		Iterator<type> itr2 = tps2.iterator();
-		while (itr1.hasNext())
+		double tpsim = ComputeListsOfTypeSimilarity(tps1, tps2);
+		if (tpsim > PredictMetaInfo.SequenceSimilarThreshold)
 		{
-			type t1 = itr1.next();
-			while (itr2.hasNext())
-			{
-				type t2 = itr2.next();
-				if (t1.CouldThoughtSame(t2))
-				{
-					return true;
-				}
-			}
+			return true;
 		}
 		return false;
 	}
