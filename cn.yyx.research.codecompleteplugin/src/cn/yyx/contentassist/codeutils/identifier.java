@@ -58,14 +58,14 @@ public class identifier extends referedExpression{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue, CSStatementHandler smthandler,
 			String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
-		return CSFlowLineHelper.ConcateOneFlowLineList(value+".", expectedinfer, null);
+		return CSFlowLineHelper.ConcateOneFlowLineList(null, expectedinfer, "." + value);
 	}
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
 			throws CodeSynthesisException {
-		return CSFlowLineHelper.ConcateOneFlowLineList(value+"::", expectedinfer, null);
+		return CSFlowLineHelper.ConcateOneFlowLineList(null, expectedinfer, "::" + value);
 	}
 	
 }
