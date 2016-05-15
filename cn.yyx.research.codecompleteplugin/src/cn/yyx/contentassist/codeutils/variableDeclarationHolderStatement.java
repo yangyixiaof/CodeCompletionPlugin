@@ -44,7 +44,7 @@ public class variableDeclarationHolderStatement extends statement{
 			{
 				if ((rexp != null && ((variableDeclarationHolderStatement)t).rexp == null) || (rexp == null && ((variableDeclarationHolderStatement)t).rexp != null))
 				{
-					prob = 0.5;
+					prob = 0.4;
 				}
 				else
 				{
