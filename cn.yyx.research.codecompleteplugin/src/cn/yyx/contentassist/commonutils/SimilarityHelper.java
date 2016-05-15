@@ -60,9 +60,19 @@ public class SimilarityHelper {
 	}
 	
 	public static double ComputeTwoStringSimilarity(String one, String two) {
-		String[] ones = StringUtils.splitByCharacterTypeCamelCase(one);
-		String[] twos = StringUtils.splitByCharacterTypeCamelCase(two);
+		String[] ones = AllToLowerCase(StringUtils.splitByCharacterTypeCamelCase(one));
+		String[] twos = AllToLowerCase(StringUtils.splitByCharacterTypeCamelCase(two));
 		return LCSComparison.LCSSimilarityString(ones, twos);
+	}
+	
+	private static String[] AllToLowerCase(String[] strs)
+	{
+		int len = strs.length;
+		for (int i=0;i<len;i++)
+		{
+			strs[i] = strs[i].toLowerCase();
+		}
+		return strs;
 	}
 	
 }
