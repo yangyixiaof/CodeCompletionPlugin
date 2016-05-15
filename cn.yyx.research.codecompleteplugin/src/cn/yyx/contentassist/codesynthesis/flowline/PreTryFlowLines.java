@@ -79,9 +79,15 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 			priorityqueue.add(fln);
 		}
 		int msize = Math.min(needsize, overtails.size());
+		validovers = 0;
 		for (int i=0;i<msize;i++)
 		{
-			finalovertails.add(priorityqueue.poll());
+			PreTryFlowLineNode<T> pop = priorityqueue.poll();
+			if (pop.getSeqencesimilarity() > PredictMetaInfo.SequenceSimilarThreshold)
+			{
+				validovers++;
+			}
+			finalovertails.add(pop);
 		}
 		overtails = finalovertails;
 	}
