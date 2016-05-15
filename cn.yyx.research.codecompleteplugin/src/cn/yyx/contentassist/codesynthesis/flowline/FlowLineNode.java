@@ -98,7 +98,11 @@ public class FlowLineNode<T> implements Comparable<FlowLineNode<T>>{
 	
 	@Override
 	public String toString() {
-		return "prev " + getPrev() + "#data:" + data.toString() + ";prob:" + probability;
+		return "prev " + rawString() + "#data:" + data.toString() + ";prob:" + probability;
+	}
+	
+	public String rawString() {
+		return "data:" + data.toString() + ";prob:" + probability;
 	}
 	
 }

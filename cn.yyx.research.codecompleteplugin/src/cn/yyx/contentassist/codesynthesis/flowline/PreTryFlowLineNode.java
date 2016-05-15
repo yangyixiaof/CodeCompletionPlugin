@@ -36,7 +36,11 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 
 	@Override
 	public String toString() {
-		return "prev " + getPrev() + "#data:" + data.toString() + ";prob:" + probability + ";seqsim:" + getSeqencesimilarity();
+		return "prev " + rawString() + "#data:" + data.toString() + ";prob:" + probability + ";seqsim:" + getSeqencesimilarity();
+	}
+	
+	public String rawString() {
+		return "data:" + data.toString() + ";prob:" + probability + ";seqsim:" + getSeqencesimilarity();
 	}
 
 	public double getSeqencesimilarity() {
