@@ -2,16 +2,16 @@ package cn.yyx.contentassist.aerospikehandle;
 
 import java.util.List;
 
-import cn.yyx.contentassist.codecompletion.IntelliJavaProposalComputer;
+import cn.yyx.contentassist.codecompletion.CodeCompletionMetaInfo;
 
 public class AeroLifeCycle {
 	
 	boolean hasInitialized = false;
 
 	public void Initialize() {
-		Parameters param = new Parameters(IntelliJavaProposalComputer.ServerIp, 3000, null, null, "yyx", "code1sim");
+		Parameters param = new Parameters(CodeCompletionMetaInfo.ServerIp, 3000, null, null, "yyx", "code1sim");
 		AeroHelper.ANewClient(AeroMetaData.code1sim, param);
-		Parameters param2 = new Parameters(IntelliJavaProposalComputer.ServerIp, 3000, null, null, "yyx", "codengram");
+		Parameters param2 = new Parameters(CodeCompletionMetaInfo.ServerIp, 3000, null, null, "yyx", "codengram");
 		AeroHelper.ANewClient(AeroMetaData.codengram, param2);
 		hasInitialized = true;
 	}
