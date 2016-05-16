@@ -6,10 +6,11 @@ import java.util.List;
 import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codeutils.statement;
+import cn.yyx.contentassist.commonutils.CheckUtil;
 
 public class FlowLineHelper {
 	
-	public static List<Sentence> LastNeededSentenceQueue(int needsize, FlowLineNode<Sentence> fln, PreTryFlowLineNode<Sentence> pretrylast) {
+	public static List<Sentence> LastNeededSentenceQueue(int needsize, FlowLineNode<?> fln, PreTryFlowLineNode<Sentence> pretrylast) {
 		List<Sentence> result = new LinkedList<Sentence>();
 		int size = LastNeededSentenceQueueWithResultNeeded(needsize, fln, result);
 		if (size > 0 && pretrylast != null)
@@ -19,12 +20,25 @@ public class FlowLineHelper {
 		return result;
 	}
 	
-	public static int LastNeededSentenceQueueWithResultNeeded(int needsize, FlowLineNode<Sentence> fln, List<Sentence> result)
+	public static int LastNeededSentenceQueueWithResultNeeded(int needsize, FlowLineNode<?> fln, List<Sentence> result)
 	{
-		FlowLineNode<Sentence> tempfln = fln;
+		FlowLineNode<?> tempfln = fln;
 		while (tempfln != null && needsize > 0) {
 			needsize--;
-			result.add(0, tempfln.getData());
+			Sentence sete = null;
+			Object obj = tempfln.getData();
+			if (obj instanceof Sentence)
+			{
+				sete = (Sentence) obj;
+			} else {
+				if (obj instanceof CSFlowLineData)
+				{
+					sete = ((CSFlowLineData) obj).getSete();
+				} else {
+					CheckUtil.ErrorAndStop("What the fuck? the element of FlowLineNode is not Sentence or CSFlowLineData?");
+				}
+			}
+			result.add(0, sete);
 			tempfln = tempfln.getPrev();
 		}
 		return needsize;

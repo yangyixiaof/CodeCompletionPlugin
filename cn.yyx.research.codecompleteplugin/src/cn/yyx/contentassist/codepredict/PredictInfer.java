@@ -26,7 +26,7 @@ public class PredictInfer {
 		// do nothing. Just a uniform API.
 	}
 	
-	public List<PredictProbPair> InferNextGeneration(AeroLifeCycle alc, int neededsize, FlowLineNode<Sentence> fln, PreTryFlowLineNode<Sentence> pretrylast)
+	public List<PredictProbPair> InferNextGeneration(AeroLifeCycle alc, int neededsize, FlowLineNode<?> fln, PreTryFlowLineNode<Sentence> pretrylast)
 	{
 		List<PredictProbPair> result = new LinkedList<PredictProbPair>();
 		

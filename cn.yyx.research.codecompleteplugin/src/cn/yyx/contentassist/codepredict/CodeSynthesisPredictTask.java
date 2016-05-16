@@ -8,7 +8,6 @@ import cn.yyx.contentassist.aerospikehandle.PredictProbPair;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.CodeSynthesisFlowLines;
-import cn.yyx.contentassist.codesynthesis.flowline.FlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLineNode;
@@ -71,8 +70,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 			{
 				continue;
 			}
-			List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(tail, csfl, PredictMetaInfo.NgramMaxSize-1);
-			List<PredictProbPair> pps = PredictHelper.PredictSentences(alc, ls, PredictMetaInfo.ExtendFinalMaxSequence);
+			List<PredictProbPair> pps = pi.InferNextGeneration(alc, PredictMetaInfo.ExtendFinalMaxSequence, tail, null);
 			CSFlowLineQueue csdflq = new CSFlowLineQueue(tail);
 			HandleExtendOneCodeSynthesis(pps, csdflq, tail, csfl, aoi);
 		}
