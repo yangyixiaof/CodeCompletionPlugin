@@ -6,12 +6,14 @@ import java.util.List;
 import cn.yyx.contentassist.aerospikehandle.AeroLifeCycle;
 import cn.yyx.contentassist.aerospikehandle.PredictProbPair;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.VirtualCSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.CodeSynthesisFlowLines;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
@@ -44,10 +46,11 @@ public class CodeSynthesisPredictTask implements Runnable {
 		// first level initial the CodeSynthesisFlowLine.
 		csfl.BeginOperation();
 		
-		// VirtualCSFlowLineQueue vcsdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(-1, null, null, null, false, false, TypeComputationKind.NoOptr, TypeComputationKind.NoOptr, sh), 0));
+		VirtualCSFlowLineQueue vcsdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(-1, null, "", null, false, false, TypeComputationKind.NoOptr, TypeComputationKind.NoOptr, sh), 0));
+		
 		FlowLineNode<Sentence> fln = pretrylast;
 		List<PredictProbPair> pps = pi.InferNextGeneration(alc, PredictMetaInfo.ExtendFinalMaxSequence, fln, null);
-		HandleExtendOneCodeSynthesis(pps, null, fln, csfl, aoi);
+		HandleExtendOneCodeSynthesis(pps, vcsdflq, fln, csfl, aoi);
 		
 		csfl.EndOperation();
 	}
@@ -81,7 +84,6 @@ public class CodeSynthesisPredictTask implements Runnable {
 	@SuppressWarnings("unchecked")
 	private void HandleExtendOneCodeSynthesis(List<PredictProbPair> pps, CSFlowLineQueue csdflq, FlowLineNode<?> fln, CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi)
 	{
-		// TODO does VirtualCSFlowLineQueue handled? csdflq could be null, if so, this is the first generation.
 		Iterator<PredictProbPair> pitr = pps.iterator();
 		while (pitr.hasNext())
 		{
@@ -107,8 +109,9 @@ public class CodeSynthesisPredictTask implements Runnable {
 							e.printStackTrace();
 							continue;
 						}
-						if (fln != null)
+						if (csdflq instanceof VirtualCSFlowLineQueue)
 						{
+							// means first infer level.
 							csfl.AddToFirstLevel(addnode, (FlowLineNode<Sentence>) fln);
 						}
 						else
