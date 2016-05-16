@@ -14,17 +14,11 @@ import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 
 import cn.yyx.contentassist.aerospikehandle.AeroLifeCycle;
 import cn.yyx.contentassist.aerospikehandle.PredictProbPair;
-import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.VirtualCSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.CodeSynthesisFlowLines;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLines;
-import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.contentassist.commonutils.ContextHandler;
@@ -57,118 +51,55 @@ public class PredictionFetch {
 		ScopeOffsetRefHandler handler = fmastv.GenerateScopeOffsetRefHandler();
 		ContextHandler ch = new ContextHandler(javacontext, monitor);
 		SynthesisHandler sh = new SynthesisHandler(handler, ch);
-		CodeSynthesisFlowLines csfl = new CodeSynthesisFlowLines();
-		DoRealCodePredictAndSynthesis(sh, alc, fls, csfl, aoi);
+		List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesis(sh, alc, fls, aoi);
 		
 		alc.Destroy();
 		alc = null;
-		List<String> list = csfl.GetSynthesisedCode();
+		
+		List<String> list = new LinkedList<String>();
+		Iterator<CodeSynthesisFlowLines> itr = csfll.iterator();
+		while (itr.hasNext())
+		{
+			CodeSynthesisFlowLines csfl = itr.next();
+			list.addAll(0, csfl.GetSynthesisedCode());
+		}
 		return list;
 	}
 
-	private void DoRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi) {
+	private List<CodeSynthesisFlowLines> DoRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, ASTOffsetInfo aoi) {
 		
 		// TODO every item from fls must be considered separately, I am sure this implementation could not do this.
-		
-		DoFirstRealCodePredictAndSynthesis(sh, alc, fls, csfl, aoi);
-		// normal extend.
-		int extendtimes = 1;
-		while (extendtimes < PredictMetaInfo.MaxExtendLength)
-		{
-			DoOneRealCodePredictAndSynthesis(alc, csfl, aoi);
-		}
-	}
-	
-	private void DoFirstRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi) {
-		// first level initial the CodeSynthesisFlowLine.
-		csfl.BeginOperation();
-		
-		VirtualCSFlowLineQueue vcsdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(-1, null, null, null, false, false, TypeComputationKind.NoOptr, TypeComputationKind.NoOptr, sh), 0));
+		List<CodeSynthesisFlowLines> csfll = new LinkedList<CodeSynthesisFlowLines>();
+		List<CodeSynthesisPredictTask> csptl = new LinkedList<CodeSynthesisPredictTask>();
 		List<PreTryFlowLineNode<Sentence>> ots = fls.getOvertails();
-		Iterator<PreTryFlowLineNode<Sentence>> itr = ots.iterator();
-		while (itr.hasNext())
+		Iterator<PreTryFlowLineNode<Sentence>> otsitr = ots.iterator();
+		while (otsitr.hasNext())
 		{
-			FlowLineNode<Sentence> fln = itr.next();
-			List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(fln, PredictMetaInfo.NgramMaxSize-1);
-			List<PredictProbPair> pps = PredictHelper.PredictSentences(alc, ls, PredictMetaInfo.ExtendFinalMaxSequence);
-			HandleExtendOneCodeSynthesis(pps, vcsdflq, fln, csfl, aoi);
+			PreTryFlowLineNode<Sentence> fln = otsitr.next();
+			CodeSynthesisFlowLines csfl = new CodeSynthesisFlowLines();
+			csptl.add(new CodeSynthesisPredictTask(fln, sh, alc, csfl, aoi));
+			csfll.add(csfl);
 		}
-		
-		csfl.EndOperation();
-	}
-	
-	/**
-	 * for second and beyond turns.
-	 * @param alc
-	 * @param fls
-	 * @param csfl
-	 */
-	private void DoOneRealCodePredictAndSynthesis(AeroLifeCycle alc, CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi) {
-		csfl.BeginOperation();
-		
-		List<FlowLineNode<CSFlowLineData>> tails = csfl.getTails();
-		Iterator<FlowLineNode<CSFlowLineData>> itr = tails.iterator();
-		while (itr.hasNext())
+		List<Thread> tl = new LinkedList<Thread>();
+		Iterator<CodeSynthesisPredictTask> csptlitr = csptl.iterator();
+		while (csptlitr.hasNext())
 		{
-			FlowLineNode<CSFlowLineData> tail = itr.next();
-			if (!tail.isCouldextend())
-			{
-				continue;
-			}
-			List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(tail, csfl, PredictMetaInfo.NgramMaxSize-1);
-			List<PredictProbPair> pps = PredictHelper.PredictSentences(alc, ls, PredictMetaInfo.ExtendFinalMaxSequence);
-			CSFlowLineQueue csdflq = new CSFlowLineQueue(tail);
-			HandleExtendOneCodeSynthesis(pps, csdflq, tail, csfl, aoi);
+			CodeSynthesisPredictTask cspt = csptlitr.next();
+			Thread t = new Thread(cspt);
+			tl.add(t);
+			t.start();
 		}
-		
-		csfl.EndOperation();
-	}
-	
-	@SuppressWarnings("unchecked")
-	private void HandleExtendOneCodeSynthesis(List<PredictProbPair> pps, CSFlowLineQueue csdflq, FlowLineNode<?> fln, CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi)
-	{
-		Iterator<PredictProbPair> pitr = pps.iterator();
-		while (pitr.hasNext())
+		Iterator<Thread> tlitr = tl.iterator();
+		while (tlitr.hasNext())
 		{
-			PredictProbPair ppp = pitr.next();
-			Sentence pred = ppp.getPred();
-			CSStatementHandler csh = new CSStatementHandler(pred, ppp.getProb(), aoi);
-			statement predsmt = pred.getSmt();
+			Thread t = tlitr.next();
 			try {
-				List<FlowLineNode<CSFlowLineData>> addnodes = predsmt.HandleCodeSynthesis(csdflq, csh);
-				if (addnodes != null && addnodes.size() > 0)
-				{
-					Iterator<FlowLineNode<CSFlowLineData>> aitr = addnodes.iterator();
-					while (aitr.hasNext())
-					{
-						FlowLineNode<CSFlowLineData> addnode = aitr.next();
-						try
-						{
-							boolean over = predsmt.HandleOverSignal(new FlowLineStack(addnode));
-							addnode.setCouldextend(!over);
-						}  catch (CodeSynthesisException e) {
-							// testing
-							System.err.println("Error occurs when doing code synthesis, this predict and the following will be ignored.");
-							e.printStackTrace();
-							continue;
-						}
-						if (fln != null)
-						{
-							csfl.AddToFirstLevel(addnode, (FlowLineNode<Sentence>) fln);
-						}
-						else
-						{
-							csfl.AddToNextLevel(addnode, (FlowLineNode<CSFlowLineData>) fln);
-						}
-					}
-				}
-			} catch (CodeSynthesisException e) {
-				// testing
-				System.err.println("Error occurs when doing code synthesis, this predict and the following will be ignored.");
+				t.join();
+			} catch (InterruptedException e) {
 				e.printStackTrace();
-				continue;
 			}
 		}
+		return csfll;
 	}
 	
 	// split line, below are pre try predict.
