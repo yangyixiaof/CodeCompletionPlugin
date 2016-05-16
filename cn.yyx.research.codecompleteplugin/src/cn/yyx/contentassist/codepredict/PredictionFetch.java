@@ -191,10 +191,7 @@ public class PredictionFetch {
 			DoOnePreTrySequencePredict(alc, fls, null, smtlist, (int)((needsize-size)), 2*(needsize-size), lastchar, keynull);
 			size = fls.GetValidOveredSize();
 		}
-		if (size >= needsize || fls.GetAllOveredSize() > needsize)
-		{
-			fls.TrimOverTails(needsize);
-		}
+		fls.TrimOverTails(needsize);
 		
 		keynull.clear();
 	}
