@@ -30,7 +30,7 @@ import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class PredictionFetch {
 	
-	public List<String> FetchPredictionInSerial(JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor, SimplifiedCodeGenerateASTVisitor fmastv, List<String> analist, ArrayList<String> result, ASTOffsetInfo aoi, char lastchar)
+	public List<String> FetchPrediction(JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor, SimplifiedCodeGenerateASTVisitor fmastv, List<String> analist, ArrayList<String> result, ASTOffsetInfo aoi, char lastchar)
 	{
 		AeroLifeCycle alc = new AeroLifeCycle();
 		alc.Initialize();
@@ -49,7 +49,8 @@ public class PredictionFetch {
 		ScopeOffsetRefHandler handler = fmastv.GenerateScopeOffsetRefHandler();
 		ContextHandler ch = new ContextHandler(javacontext, monitor);
 		SynthesisHandler sh = new SynthesisHandler(handler, ch);
-		List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesis(sh, alc, fls, aoi);
+		// List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesis(sh, alc, fls, aoi);
+		List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesisInSerial(sh, alc, fls, aoi);
 		
 		alc.Destroy();
 		alc = null;
@@ -64,9 +65,8 @@ public class PredictionFetch {
 		return list;
 	}
 
+	@SuppressWarnings("unused")
 	private List<CodeSynthesisFlowLines> DoRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, ASTOffsetInfo aoi) {
-		
-		// TODO every item from fls must be considered separately, I am sure this implementation could not do this.
 		List<CodeSynthesisFlowLines> csfll = new LinkedList<CodeSynthesisFlowLines>();
 		List<CodeSynthesisPredictTask> csptl = new LinkedList<CodeSynthesisPredictTask>();
 		List<PreTryFlowLineNode<Sentence>> ots = fls.getOvertails();
@@ -96,6 +96,27 @@ public class PredictionFetch {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+		return csfll;
+	}
+	
+	private List<CodeSynthesisFlowLines> DoRealCodePredictAndSynthesisInSerial(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, ASTOffsetInfo aoi) {
+		List<CodeSynthesisFlowLines> csfll = new LinkedList<CodeSynthesisFlowLines>();
+		List<CodeSynthesisPredictTask> csptl = new LinkedList<CodeSynthesisPredictTask>();
+		List<PreTryFlowLineNode<Sentence>> ots = fls.getOvertails();
+		Iterator<PreTryFlowLineNode<Sentence>> otsitr = ots.iterator();
+		while (otsitr.hasNext())
+		{
+			PreTryFlowLineNode<Sentence> fln = otsitr.next();
+			CodeSynthesisFlowLines csfl = new CodeSynthesisFlowLines();
+			csptl.add(new CodeSynthesisPredictTask(fln, sh, alc, csfl, aoi));
+			csfll.add(csfl);
+		}
+		Iterator<CodeSynthesisPredictTask> csptlitr = csptl.iterator();
+		while (csptlitr.hasNext())
+		{
+			CodeSynthesisPredictTask cspt = csptlitr.next();
+			cspt.run();
 		}
 		return csfll;
 	}
