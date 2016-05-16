@@ -9,15 +9,25 @@ import cn.yyx.contentassist.codeutils.statement;
 
 public class FlowLineHelper {
 	
-	public static List<Sentence> LastNeededSentenceQueue(FlowLineNode<Sentence> fln, int needsize) {
+	public static List<Sentence> LastNeededSentenceQueue(int needsize, FlowLineNode<Sentence> fln, PreTryFlowLineNode<Sentence> pretrylast) {
 		List<Sentence> result = new LinkedList<Sentence>();
+		int size = LastNeededSentenceQueueWithResultNeeded(needsize, fln, result);
+		if (size > 0 && pretrylast != null)
+		{
+			LastNeededSentenceQueueWithResultNeeded(size, pretrylast, result);
+		}
+		return result;
+	}
+	
+	public static int LastNeededSentenceQueueWithResultNeeded(int needsize, FlowLineNode<Sentence> fln, List<Sentence> result)
+	{
 		FlowLineNode<Sentence> tempfln = fln;
 		while (tempfln != null && needsize > 0) {
 			needsize--;
 			result.add(0, tempfln.getData());
 			tempfln = tempfln.getPrev();
 		}
-		return result;
+		return needsize;
 	}
 	
 	public static List<statement> LastToFirstStatementQueue(FlowLineNode<Sentence> fln) {
@@ -60,7 +70,7 @@ public class FlowLineHelper {
 		{
 			String id = tmp.getData().getId();
 			FlowLineNode<Sentence> cnct = csfl.GetConnect(id);
-			List<Sentence> tmpres = LastNeededSentenceQueue(cnct, needsize);
+			List<Sentence> tmpres = LastNeededSentenceQueue(needsize, cnct, null);
 			result.addAll(0, tmpres);
 		}
 		return result;

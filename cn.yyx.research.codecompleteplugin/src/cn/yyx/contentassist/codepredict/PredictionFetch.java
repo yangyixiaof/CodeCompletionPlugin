@@ -22,11 +22,9 @@ import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLines;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.contentassist.commonutils.ContextHandler;
-import cn.yyx.contentassist.commonutils.ListHelper;
 import cn.yyx.contentassist.commonutils.ProbabilityComputer;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.commonutils.TKey;
 import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVisitor;
 import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
@@ -106,28 +104,31 @@ public class PredictionFetch {
 	
 	private void DoPreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, List<Sentence> setelist,
 			List<statement> smtlist, int needsize, final char lastchar) {
-		Map<String, Boolean> keynull = new TreeMap<String, Boolean>();
+		PredictInfer pi = new PredictInfer();
+		// Map<String, Boolean> keynull = new TreeMap<String, Boolean>();
 		
 		Iterator<Sentence> itr = setelist.iterator();
 		while (itr.hasNext())
 		{
 			Sentence ons = itr.next();
-			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, (int)(needsize), 2*needsize, lastchar, keynull);
+			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, (int)(needsize), 2*needsize, lastchar, pi);
 		}
 		int size = fls.GetValidOveredSize();
 		int turn = 0;
 		while (size < ((int)(needsize)) && turn < PredictMetaInfo.PreTryMaxStep)
 		{
 			turn++;
-			DoOnePreTrySequencePredict(alc, fls, null, smtlist, (int)((needsize-size)), 2*(needsize-size), lastchar, keynull);
+			DoOnePreTrySequencePredict(alc, fls, null, smtlist, (int)((needsize-size)), 2*(needsize-size), lastchar, pi);
 			size = fls.GetValidOveredSize();
 		}
 		fls.TrimOverTails(needsize);
 		
-		keynull.clear();
+		// keynull.clear();
+		pi.Clear();
+		pi = null;
 	}
 	
-	private void DoOnePreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons, final List<statement> oraclelist, int neededsize, int maxparsize, final char lastchar, Map<String, Boolean> keynull)
+	private void DoOnePreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons, final List<statement> oraclelist, int neededsize, int maxparsize, final char lastchar, PredictInfer pi)
 	{
 		if (fls.IsEmpty())
 		{
@@ -140,8 +141,8 @@ public class PredictionFetch {
 		}
 		else {
 			fls.BeginOperation();
+			pi.BeginOperation();
 			
-			Map<String, Boolean> handledkey = new TreeMap<String, Boolean>();
 			Queue<PreTryFlowLineNode<Sentence>> pppqueue = new PriorityQueue<PreTryFlowLineNode<Sentence>>();
 			
 			// exact match.
@@ -156,86 +157,42 @@ public class PredictionFetch {
 			while (itr.hasNext())
 			{
 				PreTryFlowLineNode<Sentence> fln = (PreTryFlowLineNode<Sentence>) itr.next();
-				int ngramtrim1size = PredictMetaInfo.NgramMaxSize-1;
-				int remainsize = sizeitr.next();
-				
 				Map<String, Boolean> happenedinfer = new TreeMap<String, Boolean>();
-				// HandleOneInOneTurnPreTrySequencePredict
-				while ((remainsize > 0) && (ngramtrim1size >= 1))
+				List<PredictProbPair> pps = pi.InferNextGeneration(alc, sizeitr.next(), fln, null);
+				Iterator<PredictProbPair> ppsitr = pps.iterator();
+				List<statement> triedcmp = FlowLineHelper.LastToFirstStatementQueue(fln);
+				while (ppsitr.hasNext())
 				{
-					List<Sentence> ls = FlowLineHelper.LastNeededSentenceQueue(fln, ngramtrim1size);
+					PredictProbPair ppp = ppsitr.next();
+					Sentence pred = ppp.getPred();
 					
-					// update n-gram size.
-					ngramtrim1size = ls.size();
-					ngramtrim1size--;
-					// if key or trim1key return no records, just continue.
-					TKey tkey = ListHelper.ConcatJoin(ls);
-					String key = tkey.getKey();
-					String trim1key = tkey.getTrim1key();
-					if (trim1key != null)
+					// check whether this prediction has happened.
+					if (happenedinfer.containsKey(pred.getSentence()))
 					{
-						if (keynull.containsKey(trim1key)) //  || keynull.containsKey(key)
+						continue;
+					}
+					else {
+						happenedinfer.put(pred.getSentence(), true);
+					}
+					
+					triedcmp.add(pred.getSmt());
+					double sim = LCSComparison.LCSSimilarity(oraclelist, triedcmp);
+					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability(), sim, fln);
+					// fls.AddToNextLevel(nf, fln);
+					pppqueue.add(nf);
+					((LinkedList<statement>)triedcmp).removeLast();
+					
+					// record information which ons and exact match need.
+					if (ons != null)
+					{
+						double similarity = ons.getSmt().Similarity(pred.getSmt());
+						if (maxexactmatchsimilarity < similarity)
 						{
-							keynull.put(key, true);
-							continue;
+							maxexactmatchsimilarity = similarity;
+							tempexactmatchprob = ppp.getProb();
 						}
 					}
 					
-					// record handled key.
-					if (handledkey.containsKey(key))
-					{
-						break;
-					}
-					else
-					{
-						handledkey.put(key, true);
-					}
-					
-					// not handled key.
-					List<PredictProbPair> pps = alc.AeroModelPredict(key, remainsize);
-					
-					// set the key-null optimized map to speed up.
-					if (pps.isEmpty())
-					{
-						keynull.put(key, true);
-					}
-					
-					Iterator<PredictProbPair> ppsitr = pps.iterator();
-					List<statement> triedcmp = FlowLineHelper.LastToFirstStatementQueue(fln);
-					while (ppsitr.hasNext())
-					{
-						PredictProbPair ppp = ppsitr.next();
-						Sentence pred = ppp.getPred();
-						
-						// check whether this prediction has happened.
-						if (happenedinfer.containsKey(pred.getSentence()))
-						{
-							continue;
-						}
-						else {
-							happenedinfer.put(pred.getSentence(), true);
-						}
-						
-						triedcmp.add(pred.getSmt());
-						double sim = LCSComparison.LCSSimilarity(oraclelist, triedcmp);
-						PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability(), sim, fln);
-						// fls.AddToNextLevel(nf, fln);
-						pppqueue.add(nf);
-						remainsize--;
-						((LinkedList<statement>)triedcmp).removeLast();
-						
-						// record information which ons and exact match need.
-						if (ons != null)
-						{
-							double similarity = ons.getSmt().Similarity(pred.getSmt());
-							if (maxexactmatchsimilarity < similarity)
-							{
-								maxexactmatchsimilarity = similarity;
-								tempexactmatchprob = ppp.getProb();
-							}
-						}
-						
-					}
 				}
 				happenedinfer.clear();
 				// HandleOneInOneTurnPreTrySequencePredict(alc, fls, fln, oraclelist, handledkey, neededsize);
@@ -282,6 +239,7 @@ public class PredictionFetch {
 			}
 			
 			fls.EndOperation();
+			pi.EndOperation();
 		}
 	}
 	
