@@ -86,8 +86,8 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 			if (pop.getSeqencesimilarity() > PredictMetaInfo.SequenceSimilarThreshold)
 			{
 				validovers++;
+				finalovertails.add(pop);
 			}
-			finalovertails.add(pop);
 		}
 		overtails = finalovertails;
 	}
