@@ -35,4 +35,9 @@ public class PredictProbPair implements Comparable<PredictProbPair>{
 		return ((Double)(-prob)).compareTo((-o.prob));
 	}
 	
+	@Override
+	public String toString() {
+		return "predict sentence:" + pred + ";prob:" + prob;
+	}
+	
 }
