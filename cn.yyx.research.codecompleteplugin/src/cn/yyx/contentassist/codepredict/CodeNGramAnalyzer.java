@@ -11,6 +11,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.IDocument;
 
+import cn.yyx.contentassist.codecompletion.CodeCompletionMetaInfo;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.contentassist.commonutils.ASTTreeReducer;
 import cn.yyx.contentassist.commonutils.PrintUtil;
@@ -43,7 +44,6 @@ public class CodeNGramAnalyzer {
 			String indent = GetIndent(doc.get(), offset);
 			aoi.setIndent(indent);
 			
-			System.err.println("indent:"+indent);
 			// System.err.println("Document:" + doc.get());
 			// System.err.println("========================== ==========================");
 			// System.err.println("RetainedDocument:" + atype.toString());
@@ -101,7 +101,20 @@ public class CodeNGramAnalyzer {
 				}
 				if (j > start)
 				{
-					return document.substring(start, j);
+					String indent = document.substring(start, j);
+					if (CodeCompletionMetaInfo.DebugMode)
+					{
+						System.err.println("indent:"+indent);
+						System.err.println("before:" + document.substring(0, start));
+						System.err.println("after:" + document.substring(j));
+						char[] cs = indent.toCharArray();
+						int klen = cs.length;
+						for (int k=0;k<klen;k++)
+						{
+							System.err.println("one char:" + cs[k]);
+						}
+					}
+					return indent;
 				}
 			}
 			i--;
