@@ -3,6 +3,8 @@ package cn.yyx.contentassist.codehelper;
 import org.eclipse.jdt.internal.compiler.env.ICompilationUnit;
 import org.eclipse.jface.text.IDocument;
 
+import cn.yyx.contentassist.codecompletion.CodeCompletionMetaInfo;
+
 @SuppressWarnings("restriction")
 public class MyCompilationUnit implements ICompilationUnit {
 
@@ -17,14 +19,16 @@ public class MyCompilationUnit implements ICompilationUnit {
 			String rawaddedtext = prefix;
 			content = precontentraw + rawaddedtext + postcontentraw;
 			
-			
-			int afteroffet = offset + prefix.length();
-			System.out.println("prefix: " + prefix);
-			System.out.println("context : " + content);
-			// System.out.println("content type at offset: " + afteroffet + " : " + doc.getContentType(afteroffet));
-			System.out.println("offset: " + afteroffet);
-			System.out.println("content before offset: " + content.substring(0, afteroffet) + "#end#");
-			System.out.println("content after offset: " + content.substring(afteroffet, content.length()) + "#end#");
+			if (CodeCompletionMetaInfo.DebugMode)
+			{
+				int afteroffet = offset + prefix.length();
+				System.out.println("prefix: " + prefix);
+				System.out.println("context : " + content);
+				// System.out.println("content type at offset: " + afteroffet + " : " + doc.getContentType(afteroffet));
+				System.out.println("offset: " + afteroffet);
+				System.out.println("content before offset: " + content.substring(0, afteroffet) + "#end#");
+				System.out.println("content after offset: " + content.substring(afteroffet, content.length()) + "#end#");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
