@@ -70,6 +70,11 @@ public class CodeSynthesisPredictTask implements Runnable {
 		
 		List<FlowLineNode<CSFlowLineData>> tails = csfl.getTails();
 		Iterator<FlowLineNode<CSFlowLineData>> itr = tails.iterator();
+		List<PredictProbPair> pps = null;
+		Sentence presete = null;
+		int sparesize = 0;
+		int remain = PredictMetaInfo.OneLevelExtendMaxSequence;
+		int currsize = tails.size();
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> tail = itr.next();
@@ -77,9 +82,22 @@ public class CodeSynthesisPredictTask implements Runnable {
 			{
 				continue;
 			}
-			List<PredictProbPair> pps = pi.InferNextGeneration(alc, PredictMetaInfo.OneExtendMaxSequence, tail, null);
+			Sentence nowsete = tail.getData().getSete();
+			if (nowsete != presete)
+			{
+				int expectsize = Math.min(remain/currsize, PredictMetaInfo.OneExtendMaxSequence);
+				expectsize += sparesize;
+				sparesize = 0;
+				pps = pi.InferNextGeneration(alc, expectsize, tail, null);
+				int realsize = pps.size();
+				sparesize = expectsize - realsize;
+				remain -= realsize;
+				// sparesize += (PredictMetaInfo.OneExtendMaxSequence - realsize);
+				currsize--;
+			}
 			CSFlowLineQueue csdflq = new CSFlowLineQueue(tail);
 			HandleExtendOneCodeSynthesis(pps, csdflq, tail, csfl, aoi);
+			presete = nowsete;
 		}
 		
 		csfl.EndOperation();
