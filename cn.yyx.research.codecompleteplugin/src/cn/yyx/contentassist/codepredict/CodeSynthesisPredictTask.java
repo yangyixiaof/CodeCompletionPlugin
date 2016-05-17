@@ -29,6 +29,10 @@ public class CodeSynthesisPredictTask implements Runnable {
 	
 	public CodeSynthesisPredictTask(PreTryFlowLineNode<Sentence> pretrylastpara, SynthesisHandler sh, AeroLifeCycle alc, CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi) {
 		this.pretrylast = pretrylastpara;
+		this.sh = sh;
+		this.alc = alc;
+		this.csfl = csfl;
+		this.aoi = aoi;
 	}
 	
 	@Override
