@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.TreeMap;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
@@ -185,7 +183,6 @@ public class PredictionFetch {
 			while (itr.hasNext())
 			{
 				PreTryFlowLineNode<Sentence> fln = (PreTryFlowLineNode<Sentence>) itr.next();
-				Map<String, Boolean> happenedinfer = new TreeMap<String, Boolean>();
 				List<PredictProbPair> pps = pi.InferNextGeneration(alc, sizeitr.next(), fln, null);
 				Iterator<PredictProbPair> ppsitr = pps.iterator();
 				List<statement> triedcmp = FlowLineHelper.LastToFirstStatementQueue(fln);
@@ -193,16 +190,6 @@ public class PredictionFetch {
 				{
 					PredictProbPair ppp = ppsitr.next();
 					Sentence pred = ppp.getPred();
-					
-					// check whether this prediction has happened.
-					if (happenedinfer.containsKey(pred.getSentence()))
-					{
-						continue;
-					}
-					else {
-						happenedinfer.put(pred.getSentence(), true);
-					}
-					
 					triedcmp.add(pred.getSmt());
 					double sim = LCSComparison.LCSSimilarity(oraclelist, triedcmp);
 					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability(), sim, fln);
@@ -222,7 +209,6 @@ public class PredictionFetch {
 					}
 					
 				}
-				happenedinfer.clear();
 				// HandleOneInOneTurnPreTrySequencePredict(alc, fls, fln, oraclelist, handledkey, neededsize);
 			}
 			

@@ -1,5 +1,6 @@
 package cn.yyx.contentassist.codepredict;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,8 @@ public class PredictInfer {
 		
 		int ngramtrim1size = PredictMetaInfo.NgramMaxSize-1;
 		int remainsize = neededsize;
+		
+		Map<String, Boolean> happenedinfer = new TreeMap<String, Boolean>();
 		
 		// HandleOneInOneTurnPreTrySequencePredict
 		while ((remainsize > 0) && (ngramtrim1size >= 1))
@@ -66,8 +69,23 @@ public class PredictInfer {
 			
 			// not handled key.
 			List<PredictProbPair> pps = alc.AeroModelPredict(key, remainsize);
-			remainsize -= pps.size();
-			result.addAll(pps);
+			Iterator<PredictProbPair> ppsitr = pps.iterator();
+			while (ppsitr.hasNext())
+			{
+				PredictProbPair ppp = ppsitr.next();
+
+				// check whether this prediction has happened.
+				if (happenedinfer.containsKey(ppp.getPred().getSentence()))
+				{
+					continue;
+				}
+				else {
+					happenedinfer.put(ppp.getPred().getSentence(), true);
+				}
+				
+				remainsize--;
+				result.add(ppp);
+			}
 			
 			// set the key-null optimized map to speed up.
 			if (pps.isEmpty())
@@ -75,6 +93,9 @@ public class PredictInfer {
 				keynull.put(key, true);
 			}
 		}
+		
+		happenedinfer.clear();
+		
 		return result;
 	}
 	
