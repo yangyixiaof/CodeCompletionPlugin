@@ -92,7 +92,6 @@ public class CodeSynthesisPredictTask implements Runnable {
 				int realsize = pps.size();
 				sparesize = expectsize - realsize;
 				remain -= realsize;
-				// sparesize += (PredictMetaInfo.OneExtendMaxSequence - realsize);
 				currsize--;
 			}
 			CSFlowLineQueue csdflq = new CSFlowLineQueue(tail);
