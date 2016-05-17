@@ -40,6 +40,10 @@ public class CodeNGramAnalyzer {
 				return list;
 			}
 			
+			String indent = GetIndent(doc.get(), offset);
+			aoi.setIndent(indent);
+			
+			System.err.println("indent:"+indent);
 			// System.err.println("Document:" + doc.get());
 			// System.err.println("========================== ==========================");
 			// System.err.println("RetainedDocument:" + atype.toString());
@@ -76,6 +80,33 @@ public class CodeNGramAnalyzer {
 				break;
 			}
 		}
+	}
+	
+	private static String GetIndent(String document, int invokeoffset)
+	{
+		char[] doccs = document.toCharArray();
+		int i = invokeoffset;
+		while (i >= 0)
+		{
+			char c = doccs[i];
+			if (c == '\n')
+			{
+				int start = i+1;
+				int j = start;
+				char jc = doccs[j];
+				while (jc == '\t' || jc == ' ' || jc == '\u000C')
+				{
+					j++;
+					jc = doccs[j];
+				}
+				if (j > start)
+				{
+					return document.substring(start, j);
+				}
+			}
+			i--;
+		}
+		return "";
 	}
 	
 }

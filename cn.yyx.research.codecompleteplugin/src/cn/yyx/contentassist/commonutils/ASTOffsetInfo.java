@@ -4,6 +4,7 @@ public class ASTOffsetInfo {
 	
 	private boolean isInAnonymousClass = false;
 	private boolean isInFieldLevel = false;
+	private String indent = null;
 	
 	public ASTOffsetInfo() {
 	}
@@ -22,6 +23,14 @@ public class ASTOffsetInfo {
 
 	public void setInFieldLevel(boolean isInFieldLevel) {
 		this.isInFieldLevel = isInFieldLevel;
+	}
+
+	public String getIndent() {
+		return indent;
+	}
+
+	public void setIndent(String indent) {
+		this.indent = indent;
 	}
 	
 }
