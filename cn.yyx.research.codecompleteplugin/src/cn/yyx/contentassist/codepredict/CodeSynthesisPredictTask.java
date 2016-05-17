@@ -53,7 +53,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 		VirtualCSFlowLineQueue vcsdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(-1, null, "", null, false, false, TypeComputationKind.NoOptr, TypeComputationKind.NoOptr, sh), 0));
 		
 		FlowLineNode<Sentence> fln = pretrylast;
-		List<PredictProbPair> pps = pi.InferNextGeneration(alc, PredictMetaInfo.ExtendFinalMaxSequence, fln, null);
+		List<PredictProbPair> pps = pi.InferNextGeneration(alc, PredictMetaInfo.OneExtendMaxSequence, fln, null);
 		HandleExtendOneCodeSynthesis(pps, vcsdflq, fln, csfl, aoi);
 		
 		csfl.EndOperation();
@@ -77,7 +77,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 			{
 				continue;
 			}
-			List<PredictProbPair> pps = pi.InferNextGeneration(alc, PredictMetaInfo.ExtendFinalMaxSequence, tail, null);
+			List<PredictProbPair> pps = pi.InferNextGeneration(alc, PredictMetaInfo.OneExtendMaxSequence, tail, null);
 			CSFlowLineQueue csdflq = new CSFlowLineQueue(tail);
 			HandleExtendOneCodeSynthesis(pps, csdflq, tail, csfl, aoi);
 		}
