@@ -64,9 +64,8 @@ public class PredictionFetch {
 		}
 		return list;
 	}
-
-	@SuppressWarnings("unused")
-	private List<CodeSynthesisFlowLines> DoRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, ASTOffsetInfo aoi) {
+	
+	protected List<CodeSynthesisFlowLines> DoRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, ASTOffsetInfo aoi) {
 		List<CodeSynthesisFlowLines> csfll = new LinkedList<CodeSynthesisFlowLines>();
 		List<CodeSynthesisPredictTask> csptl = new LinkedList<CodeSynthesisPredictTask>();
 		List<PreTryFlowLineNode<Sentence>> ots = fls.getOvertails();
@@ -100,7 +99,15 @@ public class PredictionFetch {
 		return csfll;
 	}
 	
-	private List<CodeSynthesisFlowLines> DoRealCodePredictAndSynthesisInSerial(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, ASTOffsetInfo aoi) {
+	/**
+	 * just for test use.
+	 * @param sh
+	 * @param alc
+	 * @param fls
+	 * @param aoi
+	 * @return
+	 */
+	protected List<CodeSynthesisFlowLines> DoRealCodePredictAndSynthesisInSerial(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, ASTOffsetInfo aoi) {
 		List<CodeSynthesisFlowLines> csfll = new LinkedList<CodeSynthesisFlowLines>();
 		List<CodeSynthesisPredictTask> csptl = new LinkedList<CodeSynthesisPredictTask>();
 		List<PreTryFlowLineNode<Sentence>> ots = fls.getOvertails();
