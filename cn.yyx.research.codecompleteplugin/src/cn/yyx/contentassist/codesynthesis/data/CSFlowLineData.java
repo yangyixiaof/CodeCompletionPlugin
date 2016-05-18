@@ -212,4 +212,9 @@ public class CSFlowLineData implements CSDataStructure{
 		this.dcls = dcls;
 	}
 	
+	@Override
+	public String toString() {
+		return "id:" + id + ";data:" + data +";dcls str:" + dcls.getClstr() + ";dcls rt:" + (dcls.getClass() != null ? dcls.getClass().getSimpleName() : "null");
+	}
+	
 }
