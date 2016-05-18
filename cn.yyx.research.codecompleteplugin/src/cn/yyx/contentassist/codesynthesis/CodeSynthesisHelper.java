@@ -268,12 +268,18 @@ public class CodeSynthesisHelper {
 			String rawtype = fln.getData().getData();
 			List<TypeMember> tps = SearchSpecificationOfAReference.SearchTypeSpecificationByPrefix(rawtype, squeue.GetLastHandler().getContextHandler().getJavacontext(), null);
 			Iterator<TypeMember> tpitr = tps.iterator();
+			int tpspesize = 0;
 			while (tpitr.hasNext())
 			{
 				TypeMember tp = tpitr.next();
-				if (SimilarityHelper.ComputeTwoStringSimilarity(rawtype, tp.getType()) > PredictMetaInfo.TwoStringSimilarThreshold)
+				if (SimilarityHelper.ComputeTwoStringSimilarity(rawtype, tp.getTypeclass().getSimpleName()) > PredictMetaInfo.TwoStringSimilarThreshold)
 				{
 					result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), tp.getType(), new CCType(tp), false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+				}
+				tpspesize++;
+				if (tpspesize >= PredictMetaInfo.MaxTypeSpecificationSize)
+				{
+					break;
 				}
 			}
 		}
