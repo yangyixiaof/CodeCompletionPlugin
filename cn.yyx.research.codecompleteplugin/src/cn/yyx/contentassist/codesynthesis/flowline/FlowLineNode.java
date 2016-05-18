@@ -102,7 +102,8 @@ public class FlowLineNode<T> implements Comparable<FlowLineNode<T>>{
 	}
 	
 	public String rawString() {
-		return "data:" + data.toString() + ";prob:" + probability;
+		return "data:" + data.toString() + ";couldextend:" + couldextend + ";length:" + length + ";prob:" + probability;
+		
 	}
 	
 }
