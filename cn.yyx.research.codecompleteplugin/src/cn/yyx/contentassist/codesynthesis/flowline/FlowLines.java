@@ -8,7 +8,7 @@ import cn.yyx.contentassist.commonutils.CheckUtil;
 public class FlowLines<T> {
 	
 	private FlowLineNode<T> heads = null;
-	private List<FlowLineNode<T>> tails = null;
+	private List<FlowLineNode<T>> tails = new LinkedList<FlowLineNode<T>>();
 	private List<FlowLineNode<T>> temptails = new LinkedList<FlowLineNode<T>>();
 	
 	private boolean opflag = false;
@@ -25,7 +25,6 @@ public class FlowLines<T> {
 		assert IsEmpty();
 		FlowLineNode<T> fln = new FlowLineNode<T>(t, 0);
 		setHeads(fln);
-		setTails(new LinkedList<FlowLineNode<T>>());
 		getTails().add(fln);
 	}
 	
