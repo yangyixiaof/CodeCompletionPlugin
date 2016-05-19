@@ -95,7 +95,8 @@ public class primitiveType extends type{
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		try {
-			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), text, new CCType(Class.forName(text), text), false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+			CCType cct = new CCType(Class.forName(text), text);
+			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), text, cct, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		} catch (ClassNotFoundException e) {
 			throw new CodeSynthesisException("Primitive type can not be resolved:" + text);
 		}
