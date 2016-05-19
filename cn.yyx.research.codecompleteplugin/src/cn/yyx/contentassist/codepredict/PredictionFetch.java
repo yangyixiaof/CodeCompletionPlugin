@@ -58,7 +58,7 @@ public class PredictionFetch {
 		while (itr.hasNext())
 		{
 			CodeSynthesisFlowLines csfl = itr.next();
-			list.addAll(0, csfl.GetSynthesisedCode());
+			list.addAll(0, csfl.GetSynthesisOverCode());
 		}
 		return list;
 	}

@@ -19,55 +19,59 @@ import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class CodeSynthesisPredictTask implements Runnable {
-	
+
 	PreTryFlowLineNode<Sentence> pretrylast = null;
 	SynthesisHandler sh = null;
 	AeroLifeCycle alc = null;
 	CodeSynthesisFlowLines csfl = null;
 	ASTOffsetInfo aoi = null;
 	PredictInfer pi = new PredictInfer();
-	
-	public CodeSynthesisPredictTask(PreTryFlowLineNode<Sentence> pretrylastpara, SynthesisHandler sh, AeroLifeCycle alc, CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi) {
+
+	public CodeSynthesisPredictTask(PreTryFlowLineNode<Sentence> pretrylastpara, SynthesisHandler sh, AeroLifeCycle alc,
+			CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi) {
 		this.pretrylast = pretrylastpara;
 		this.sh = sh;
 		this.alc = alc;
 		this.csfl = csfl;
 		this.aoi = aoi;
 	}
-	
+
 	@Override
 	public void run() {
 		DoFirstRealCodePredictAndSynthesis(sh, alc, csfl, aoi);
 		// normal extend.
 		int extendtimes = 1;
-		while (extendtimes < PredictMetaInfo.MaxExtendLength)
-		{
+		while ((csfl.getValidovers() < PredictMetaInfo.OneCodeSynthesisTaskValidFinalSize)
+				&& (extendtimes < PredictMetaInfo.MaxExtendLength)) {
 			DoOneRealCodePredictAndSynthesis(alc, csfl, aoi);
 		}
 	}
-	
-	private void DoFirstRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi) {
+
+	private void DoFirstRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, CodeSynthesisFlowLines csfl,
+			ASTOffsetInfo aoi) {
 		// first level initial the CodeSynthesisFlowLine.
 		csfl.BeginOperation();
-		
-		VirtualCSFlowLineQueue vcsdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(-1, null, "", null, false, false, TypeComputationKind.NoOptr, TypeComputationKind.NoOptr, sh), 0));
-		
+
+		VirtualCSFlowLineQueue vcsdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(
+				-1, null, "", null, false, false, TypeComputationKind.NoOptr, TypeComputationKind.NoOptr, sh), 0));
+
 		FlowLineNode<Sentence> fln = pretrylast;
 		List<PredictProbPair> pps = pi.InferNextGeneration(alc, PredictMetaInfo.OneExtendMaxSequence, fln, null);
 		HandleExtendOneCodeSynthesis(pps, vcsdflq, fln, csfl, aoi);
-		
+
 		csfl.EndOperation();
 	}
-	
+
 	/**
 	 * for second and beyond turns.
+	 * 
 	 * @param alc
 	 * @param fls
 	 * @param csfl
 	 */
 	private void DoOneRealCodePredictAndSynthesis(AeroLifeCycle alc, CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi) {
 		csfl.BeginOperation();
-		
+
 		List<FlowLineNode<CSFlowLineData>> tails = csfl.getTails();
 		Iterator<FlowLineNode<CSFlowLineData>> itr = tails.iterator();
 		List<PredictProbPair> pps = null;
@@ -75,17 +79,14 @@ public class CodeSynthesisPredictTask implements Runnable {
 		int sparesize = 0;
 		int remain = PredictMetaInfo.OneLevelExtendMaxSequence;
 		int currsize = tails.size();
-		while (itr.hasNext())
-		{
+		while (itr.hasNext()) {
 			FlowLineNode<CSFlowLineData> tail = itr.next();
-			if (!tail.isCouldextend())
-			{
+			if (!tail.isCouldextend()) {
 				continue;
 			}
 			Sentence nowsete = tail.getData().getSete();
-			if (nowsete != presete)
-			{
-				int expectsize = Math.min(remain/currsize, PredictMetaInfo.OneExtendMaxSequence);
+			if (nowsete != presete) {
+				int expectsize = Math.min(remain / currsize, PredictMetaInfo.OneExtendMaxSequence);
 				expectsize += sparesize;
 				sparesize = 0;
 				pps = pi.InferNextGeneration(alc, expectsize, tail, null);
@@ -98,56 +99,56 @@ public class CodeSynthesisPredictTask implements Runnable {
 			HandleExtendOneCodeSynthesis(pps, csdflq, tail, csfl, aoi);
 			presete = nowsete;
 		}
-		
+
 		csfl.EndOperation();
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	private void HandleExtendOneCodeSynthesis(List<PredictProbPair> pps, CSFlowLineQueue csdflq, FlowLineNode<?> fln, CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi)
-	{
+	private void HandleExtendOneCodeSynthesis(List<PredictProbPair> pps, CSFlowLineQueue csdflq, FlowLineNode<?> fln,
+			CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi) {
 		Iterator<PredictProbPair> pitr = pps.iterator();
-		while (pitr.hasNext())
-		{
+		while (pitr.hasNext()) {
 			PredictProbPair ppp = pitr.next();
 			Sentence pred = ppp.getPred();
 			CSStatementHandler csh = new CSStatementHandler(pred, ppp.getProb(), aoi);
 			statement predsmt = pred.getSmt();
 			try {
 				List<FlowLineNode<CSFlowLineData>> addnodes = predsmt.HandleCodeSynthesis(csdflq, csh);
-				if (addnodes != null && addnodes.size() > 0)
-				{
+				if (addnodes != null && addnodes.size() > 0) {
 					Iterator<FlowLineNode<CSFlowLineData>> aitr = addnodes.iterator();
-					while (aitr.hasNext())
-					{
+					while (aitr.hasNext()) {
 						FlowLineNode<CSFlowLineData> addnode = aitr.next();
-						try
-						{
-							boolean over = predsmt.HandleOverSignal(new FlowLineStack(addnode));
+						boolean over = false;
+						try {
+							over = predsmt.HandleOverSignal(new FlowLineStack(addnode));
 							addnode.setCouldextend(!over);
-						}  catch (CodeSynthesisException e) {
+						} catch (CodeSynthesisException e) {
 							// testing
-							System.err.println("Error occurs when doing code synthesis, this predict and the following will be ignored.");
+							System.err.println(
+									"Error occurs when doing code synthesis, this predict and the following will be ignored.");
 							e.printStackTrace();
 							continue;
 						}
-						if (csdflq instanceof VirtualCSFlowLineQueue)
-						{
-							// means first infer level.
-							csfl.AddToFirstLevel(addnode, (FlowLineNode<Sentence>) fln);
-						}
-						else
-						{
-							csfl.AddToNextLevel(addnode, (FlowLineNode<CSFlowLineData>) fln);
+						if (over) {
+							csfl.AddCodeSynthesisOver(addnode, pred);
+						} else {
+							if (csdflq instanceof VirtualCSFlowLineQueue) {
+								// means first infer level.
+								csfl.AddToFirstLevel(addnode, (FlowLineNode<Sentence>) fln);
+							} else {
+								csfl.AddToNextLevel(addnode, (FlowLineNode<CSFlowLineData>) fln);
+							}
 						}
 					}
 				}
 			} catch (CodeSynthesisException e) {
 				// testing
-				System.err.println("Error occurs when doing code synthesis, this predict and the following will be ignored.");
+				System.err.println(
+						"Error occurs when doing code synthesis, this predict and the following will be ignored.");
 				e.printStackTrace();
 				continue;
 			}
 		}
 	}
-	
+
 }
