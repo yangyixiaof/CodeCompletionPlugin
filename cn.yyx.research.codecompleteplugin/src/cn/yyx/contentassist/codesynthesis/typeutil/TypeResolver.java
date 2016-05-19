@@ -17,6 +17,7 @@ public class TypeResolver {
 	public static YJCache<LinkedList<CCType>> classcache = new YJCache<LinkedList<CCType>>();
 	
 	// Class<?>
+	// TODO the type string must be parsed to type, then use interface HandleCodeSynthesis such that.
 	public static LinkedList<CCType> ResolveType(String type, JavaContentAssistInvocationContext javacontext)
 	{
 		LinkedList<CCType> clss = classcache.GetCachedContent(type);

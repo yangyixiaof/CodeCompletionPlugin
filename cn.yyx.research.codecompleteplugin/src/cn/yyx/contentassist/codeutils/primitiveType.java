@@ -95,12 +95,50 @@ public class primitiveType extends type{
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		try {
-			CCType cct = new CCType(Class.forName(text), text);
+			CCType cct = new CCType(ParsePrimitiveType(text), text);
 			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), text, cct, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
-		} catch (ClassNotFoundException e) {
+		} catch (CodeSynthesisException e) {
 			throw new CodeSynthesisException("Primitive type can not be resolved:" + text);
 		}
 		return result;
+	}
+	
+	private Class<?> ParsePrimitiveType(String text) throws CodeSynthesisException
+	{
+		text = text.trim();
+		if (text.equals("int"))
+		{
+			return int.class;
+		}
+		if (text.equals("float"))
+		{
+			return float.class;
+		}
+		if (text.equals("double"))
+		{
+			return double.class;
+		}
+		if (text.equals("boolean"))
+		{
+			return boolean.class;
+		}
+		if (text.equals("byte"))
+		{
+			return byte.class;
+		}
+		if (text.equals("short"))
+		{
+			return short.class;
+		}
+		if (text.equals("long"))
+		{
+			return long.class;
+		}
+		if (text.equals("char"))
+		{
+			return char.class;
+		}
+		throw new CodeSynthesisException("What the fuck? Primitive type can not be parsed.");
 	}
 	
 }
