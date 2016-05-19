@@ -89,7 +89,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 				int expectsize = Math.min(remain / currsize, PredictMetaInfo.OneExtendMaxSequence);
 				expectsize += sparesize;
 				sparesize = 0;
-				pps = pi.InferNextGeneration(alc, expectsize, tail, null);
+				pps = pi.InferNextGeneration(alc, expectsize, tail, pretrylast);
 				int realsize = pps.size();
 				sparesize = expectsize - realsize;
 				remain -= realsize;
