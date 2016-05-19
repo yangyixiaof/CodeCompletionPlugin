@@ -78,7 +78,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 		Sentence presete = null;
 		int sparesize = 0;
 		int remain = PredictMetaInfo.OneLevelExtendMaxSequence;
-		int currsize = tails.size();
+		int currsize = ComputePhysicalNodeSizeFromDataNodes(tails) + 1;
 		while (itr.hasNext()) {
 			FlowLineNode<CSFlowLineData> tail = itr.next();
 			if (!tail.isCouldextend()) {
@@ -86,6 +86,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 			}
 			Sentence nowsete = tail.getData().getSete();
 			if (nowsete != presete) {
+				currsize--;
 				int expectsize = Math.min(remain / currsize, PredictMetaInfo.OneExtendMaxSequence);
 				expectsize += sparesize;
 				sparesize = 0;
@@ -93,7 +94,6 @@ public class CodeSynthesisPredictTask implements Runnable {
 				int realsize = pps.size();
 				sparesize = expectsize - realsize;
 				remain -= realsize;
-				currsize--;
 			}
 			CSFlowLineQueue csdflq = new CSFlowLineQueue(tail);
 			HandleExtendOneCodeSynthesis(pps, csdflq, tail, csfl, aoi);
@@ -101,6 +101,22 @@ public class CodeSynthesisPredictTask implements Runnable {
 		}
 
 		csfl.EndOperation();
+	}
+	
+	private int ComputePhysicalNodeSizeFromDataNodes(List<FlowLineNode<CSFlowLineData>> tails)
+	{
+		int total = 0;
+		Sentence presete = null;
+		Iterator<FlowLineNode<CSFlowLineData>> itr = tails.iterator();
+		while (itr.hasNext()) {
+			FlowLineNode<CSFlowLineData> tail = itr.next();
+			Sentence nowsete = tail.getData().getSete();
+			if (nowsete != presete) {
+				total++;
+			}
+			presete = nowsete;
+		}
+		return total;
 	}
 
 	@SuppressWarnings("unchecked")
