@@ -109,8 +109,7 @@ public class variableDeclarationHolderStatement extends statement{
 		{
 			modified = GetModifiedName(squeue, smthandler, typecode, name);
 			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-			CSFlowLineHelper.ConcateOneFlowLineList(modified + " = ", rels, null);
-			result = rels;
+			result = CSFlowLineHelper.ConcateOneFlowLineList(modified + " = ", rels, null);
 		}
 		else
 		{
