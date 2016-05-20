@@ -51,7 +51,8 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 	}
 	
 	@Override
-	public void PostVisitHandle(ASTNode node) {
+	public void postVisit(ASTNode node) {
+		fotp.PreIsOver(node);
 		if (NeedSpecialTreat(node))
 		{
 			if (GetCouldContinue(node))
@@ -59,6 +60,7 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 				ExitBlock(node);
 			}
 		}
+		super.postVisit(node);
 	}
 	
 	private boolean NeedSpecialTreat(ASTNode node)
