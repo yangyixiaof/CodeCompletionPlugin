@@ -59,7 +59,7 @@ public class CodeNGramAnalyzer {
 			PrintUtil.PrintList(analist, "analysis list");
 
 			PredictionFetch pf = new PredictionFetch();
-			return pf.FetchPrediction(javacontext, monitor, ppv, analist, list, aoi, lastchar);
+			return pf.FetchPrediction(javacontext, monitor, ppv.GenerateScopeOffsetRefHandler(), analist, list, aoi, lastchar);
 
 		} catch (JavaModelException e) {
 			e.printStackTrace();

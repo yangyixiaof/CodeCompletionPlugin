@@ -23,12 +23,11 @@ import cn.yyx.contentassist.commonutils.ContextHandler;
 import cn.yyx.contentassist.commonutils.ProbabilityComputer;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
-import cn.yyx.contentassist.jdtastvisitor.PartialProcessVisitor;
 import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class PredictionFetch {
 	
-	public List<String> FetchPrediction(JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor, PartialProcessVisitor ppv, List<String> analist, ArrayList<String> result, ASTOffsetInfo aoi, char lastchar)
+	public List<String> FetchPrediction(JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor, ScopeOffsetRefHandler handler, List<String> analist, ArrayList<String> result, ASTOffsetInfo aoi, char lastchar)
 	{
 		AeroLifeCycle alc = new AeroLifeCycle();
 		alc.Initialize();
@@ -44,7 +43,6 @@ public class PredictionFetch {
 		PreTryFlowLines<Sentence> fls = new PreTryFlowLines<Sentence>();
 		DoPreTrySequencePredict(alc, fls, setelist, smtlist, PredictMetaInfo.PreTryNeedSize, lastchar);
 		
-		ScopeOffsetRefHandler handler = ppv.GenerateScopeOffsetRefHandler();
 		ContextHandler ch = new ContextHandler(javacontext, monitor);
 		SynthesisHandler sh = new SynthesisHandler(handler, ch);
 		// List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesis(sh, alc, fls, aoi);
