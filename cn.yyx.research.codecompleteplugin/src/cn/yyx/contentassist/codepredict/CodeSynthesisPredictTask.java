@@ -94,7 +94,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 				expectsize -= sparesize;
 				pps = pi.InferNextGeneration(alc, expectsize, tail, pretrylast);
 				int realsize = pps.size();
-				sparesize = expectsize - realsize;
+				sparesize += (expectsize - realsize);
 				remain -= realsize;
 			}
 			CSFlowLineQueue csdflq = new CSFlowLineQueue(tail);
