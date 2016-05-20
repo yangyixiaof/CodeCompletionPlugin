@@ -13,6 +13,8 @@ import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.Initializer;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
+import cn.yyx.contentassist.jdtastvisitor.DetailedASTTreeReducerVisitor;
+
 public class ASTTreeReducer {
 	
 	@SuppressWarnings("unchecked")

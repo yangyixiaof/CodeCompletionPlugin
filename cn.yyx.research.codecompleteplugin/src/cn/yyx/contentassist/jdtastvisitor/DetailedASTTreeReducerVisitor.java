@@ -1,10 +1,12 @@
-package cn.yyx.contentassist.commonutils;
+package cn.yyx.contentassist.jdtastvisitor;
 
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
+
+import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 
 public class DetailedASTTreeReducerVisitor extends ASTVisitor{
 	
