@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableDeclarationData;
@@ -67,7 +68,7 @@ public class variableDeclarationStatement extends statement{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
 			result.add(new FlowLineNode<CSFlowLineData>(new CSVariableDeclarationData(fln.getData()), fln.getProbability()));
 		}
-		return result;
+		return CSFlowLineHelper.ConcateOneFlowLineList(null, result, " ");
 	}
 
 	@Override
