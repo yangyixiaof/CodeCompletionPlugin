@@ -91,6 +91,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 				expectsize += sparesize;
 				int gap = expectsize - PredictMetaInfo.OneExtendMaxSequence;
 				sparesize = gap > 0 ? gap : 0;
+				expectsize -= sparesize;
 				pps = pi.InferNextGeneration(alc, expectsize, tail, pretrylast);
 				int realsize = pps.size();
 				sparesize = expectsize - realsize;
