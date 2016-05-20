@@ -31,6 +31,15 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 	public boolean preVisit2(ASTNode node) {
 		boolean couldcontinue = couldContinue(node);
 		RecordCouldContinue(node, couldcontinue);
+		if (NeedSpecialTreat(node))
+		{
+			if (couldcontinue)
+			{
+				EnterBlock(node);
+			}
+		}
+		
+		// set the field of if in field aoi.
 		if (node instanceof AbstractTypeDeclaration)
 		{
 			if (couldcontinue)
