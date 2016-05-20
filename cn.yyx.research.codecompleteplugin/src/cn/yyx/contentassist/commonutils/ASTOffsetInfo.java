@@ -33,4 +33,9 @@ public class ASTOffsetInfo {
 		this.indent = indent;
 	}
 	
+	@Override
+	public String toString() {
+		return "isInAnonymousClass:" + isInAnonymousClass + ";isInFieldLevel:" + isInFieldLevel + ";indent:" + indent;
+	}
+	
 }
