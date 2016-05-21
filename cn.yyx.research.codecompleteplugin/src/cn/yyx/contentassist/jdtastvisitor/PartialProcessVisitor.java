@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.dom.FieldDeclaration;
 import cn.yyx.contentassist.codecompletion.CodeCompletionMetaInfo;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVisitor;
+import cn.yyx.research.language.simplified.JDTHelper.SimplifiedFieldProcessASTVisitor;
 
 public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 	
@@ -29,6 +30,11 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 	@Override
 	public boolean preVisit2(ASTNode node) {
 		boolean couldcontinue = couldContinue(node);
+		Boolean forbid = runforbid.GetNodeHelp(node.hashCode());
+		if (forbid != null && forbid == true)
+		{
+			couldcontinue = couldcontinue && false;
+		}
 		RecordCouldContinue(node, couldcontinue);
 		if (NeedSpecialTreat(node))
 		{
@@ -47,6 +53,11 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 			}
 		}
 		return couldcontinue;
+	}
+	
+	@Override
+	protected SimplifiedFieldProcessASTVisitor GenerateSimplifiedFieldProcessASTVisitor(ASTNode node) {
+		return new SimplifiedFieldProcessASTVisitor(this, node);
 	}
 	
 	@Override
