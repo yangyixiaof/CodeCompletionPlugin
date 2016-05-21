@@ -499,7 +499,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	{
 		Object rexp = usedobj.pop();
 		Object lexp = usedobj.pop();
-		smt = new infixExpressionStatement(smtcode, (referedExpression) rexp, optr, (referedExpression) lexp);
+		smt = new infixExpressionStatement(smtcode, (referedExpression) lexp, optr, (referedExpression) rexp);
 	}
 	
 	@Override
