@@ -63,6 +63,11 @@ public class CCType {
 		return cls.isAssignableFrom(clspara.getCls());
 	}
 	
+	@Override
+	public String toString() {
+		return "cls:" + cls + ";clstr:" + clstr;
+	}
+	
 	/*public List<Class<?>> getClss() {
 		return clss;
 	}
