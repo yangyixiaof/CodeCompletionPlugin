@@ -26,4 +26,9 @@ public class VariableHT {
 		this.holdername = holdername;
 	}
 	
+	@Override
+	public String toString() {
+		return "holdertype:" + holdertype + ";holdername:" + holdername;
+	}
+	
 }
