@@ -62,15 +62,6 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 		}
 	}
 	
-	private boolean NeedSpecialTreat(ASTNode node)
-	{
-		if ((node instanceof AbstractTypeDeclaration) || (node instanceof AnonymousClassDeclaration) || (node instanceof LambdaExpression))
-		{
-			return true;
-		}
-		return false;
-	}
-	
 	private void RecordCouldContinue(ASTNode node, boolean couldcontinue)
 	{
 		if (NeedSpecialTreat(node))
