@@ -62,7 +62,10 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 		{
 			if (GetCouldContinue(node))
 			{
-				// ExitBlock(node);
+				if (!IsEnclosed(node))
+				{
+					ExitBlock(node);
+				}
 			}
 		}
 	}
@@ -132,7 +135,7 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 		return couldcontinue;
 	}
 	
-	/*private boolean IsEnclosed(ASTNode node)
+	private boolean IsEnclosed(ASTNode node)
 	{
 		int tstart = node.getStartPosition();
 		int tend = tstart + node.getLength();
@@ -141,6 +144,6 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 			return true;
 		}
 		return false;
-	}*/
+	}
 	
 }
