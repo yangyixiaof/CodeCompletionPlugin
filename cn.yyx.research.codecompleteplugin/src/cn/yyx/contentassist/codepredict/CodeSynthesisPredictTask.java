@@ -52,14 +52,15 @@ public class CodeSynthesisPredictTask implements Runnable {
 			ASTOffsetInfo aoi) {
 		// first level initial the CodeSynthesisFlowLine.
 		csfl.BeginOperation();
-
+		
 		VirtualCSFlowLineQueue vcsdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(
 				-1, null, "", null, false, false, TypeComputationKind.NoOptr, TypeComputationKind.NoOptr, sh), 0));
-
+		
 		FlowLineNode<Sentence> fln = pretrylast;
-		List<PredictProbPair> pps = pi.InferNextGeneration(alc, PredictMetaInfo.OneExtendMaxSequence, fln, null);
+		int expectsize = Math.min(PredictMetaInfo.OneLevelExtendMaxSequence, PredictMetaInfo.OneExtendMaxSequence);
+		List<PredictProbPair> pps = pi.InferNextGeneration(alc, expectsize, fln, null);
 		HandleExtendOneCodeSynthesis(pps, vcsdflq, fln, csfl, aoi);
-
+		
 		csfl.EndOperation();
 	}
 
