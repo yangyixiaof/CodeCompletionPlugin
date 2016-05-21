@@ -53,17 +53,23 @@ public class CodeSynthesisHelper {
 	public static List<FlowLineNode<CSFlowLineData>> HandleVarRefCodeSynthesis(Map<String, String> po, CSFlowLineQueue squeue, CSStatementHandler smthandler)
 	{
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		Set<String> codes = po.keySet();
-		Iterator<String> citr = codes.iterator();
-		while (citr.hasNext())
+		Set<String> types = po.keySet();
+		Iterator<String> titr = types.iterator();
+		while (titr.hasNext())
 		{
-			String code = citr.next();
-			String type = po.get(code);
+			String type = titr.next();
+			String code = po.get(type);
 			LinkedList<CCType> cls = TypeResolver.ResolveType(type, squeue.GetLastHandler().getContextHandler().getJavacontext());
 			Iterator<CCType> clsitr = cls.iterator();
+			int total = 0;
 			while (clsitr.hasNext())
 			{
 				CCType cct = clsitr.next();
+				total++;
+				if (total > PredictMetaInfo.MaxTypeSpecificationSize)
+				{
+					break;
+				}
 				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), code, cct, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 			}
 		}
