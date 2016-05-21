@@ -4,16 +4,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 
 public class CSVariableHolderExtraInfo implements CSSelfClosedMergable{
 	
 	private String varname = null;
-	private Class<?> cls = null;
+	private CCType cls = null;
 	
 	private List<String> vars = null;
-	private List<Class<?>> clss = null;
+	private List<CCType> clss = null;
 	
-	public CSVariableHolderExtraInfo(String varname, Class<?> cls) {
+	public CSVariableHolderExtraInfo(String varname, CCType cls) {
 		this.setVarname(varname);
 		this.setCls(cls);
 	}
@@ -26,11 +27,11 @@ public class CSVariableHolderExtraInfo implements CSSelfClosedMergable{
 		this.varname = varname;
 	}
 	
-	public Class<?> getCls() {
+	public CCType getCls() {
 		return cls;
 	}
 
-	private void setCls(Class<?> cls) {
+	private void setCls(CCType cls) {
 		this.cls = cls;
 	}
 
@@ -42,7 +43,7 @@ public class CSVariableHolderExtraInfo implements CSSelfClosedMergable{
 		}
 		
 		CSVariableHolderExtraInfo newone = new CSVariableHolderExtraInfo(varname, cls);
-		LinkedList<Class<?>> cs = new LinkedList<Class<?>>();
+		LinkedList<CCType> cs = new LinkedList<CCType>();
 		cs.add(((CSVariableHolderExtraInfo)tv).cls);
 		AddList(clss, cs);
 		AddList(((CSVariableHolderExtraInfo)tv).clss, cs);
@@ -57,7 +58,7 @@ public class CSVariableHolderExtraInfo implements CSSelfClosedMergable{
 		return newone;
 	}
 	
-	private void AddList(List<Class<?>> ls, LinkedList<Class<?>> dest) {
+	private void AddList(List<CCType> ls, LinkedList<CCType> dest) {
 		if (ls != null)
 		{
 			dest.addAll(ls);
@@ -80,11 +81,11 @@ public class CSVariableHolderExtraInfo implements CSSelfClosedMergable{
 		this.vars = vars;
 	}
 
-	public List<Class<?>> getClss() {
+	public List<CCType> getClss() {
 		return clss;
 	}
 
-	public void setClss(List<Class<?>> clss) {
+	public void setClss(List<CCType> clss) {
 		this.clss = clss;
 	}
 	

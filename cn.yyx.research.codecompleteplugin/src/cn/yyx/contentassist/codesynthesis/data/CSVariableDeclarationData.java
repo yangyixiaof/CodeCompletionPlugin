@@ -39,18 +39,19 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 		List<String> varocs = new LinkedList<String>();
 		varocs.add(cvhei.getVarname());
 		varocs.addAll(cvhei.getVars());
-		List<Class<?>> judge = new LinkedList<Class<?>>();
+		List<CCType> judge = new LinkedList<CCType>();
 		judge.add(cvhei.getCls());
 		judge.addAll(cvhei.getClss());
-		Class<?> oc = null;
-		Iterator<Class<?>> itr = judge.iterator();
+		CCType oc = null;
+		Iterator<CCType> itr = judge.iterator();
 		while (itr.hasNext()) {
-			Class<?> c = itr.next();
+			CCType cct = itr.next();
+			Class<?> c = cct.getCls();
 			if (c != null) {
 				if (oc == null) {
-					oc = c;
+					oc = cct;
 				} else {
-					if (!((oc.isAssignableFrom(c)) || (c.isAssignableFrom(oc)))) {
+					if (!((oc.getCls().isAssignableFrom(c)) || (c.isAssignableFrom(oc.getCls())))) {
 						throw new CodeSynthesisException(
 								"VariableDeclarationData can not handle all these collected result types.");
 					}
@@ -59,7 +60,7 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 		}
 		String detp = getData();
 		if (oc != null) {
-			detp = oc.getName();
+			detp = oc.getClstr();
 		}
 		SynthesisHandler hd = lt.getData().getHandler();
 		ScopeOffsetRefHandler sc = hd.getScopeOffsetRefHandler();

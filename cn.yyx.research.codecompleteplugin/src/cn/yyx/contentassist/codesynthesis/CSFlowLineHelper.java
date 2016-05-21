@@ -51,7 +51,7 @@ public class CSFlowLineHelper {
 		while (itr.hasNext()) {
 			FlowLineNode<CSFlowLineData> fln = itr.next();
 			CSFlowLineData flndata = fln.getData();
-			flndata.getExtraData().AddExtraData(CSDataMetaInfo.VariableHolders, new CSVariableHolderExtraInfo(varname, flndata.getClass()));
+			flndata.getExtraData().AddExtraData(CSDataMetaInfo.VariableHolders, new CSVariableHolderExtraInfo(varname, flndata.getDcls()));
 		}
 	}
 	
