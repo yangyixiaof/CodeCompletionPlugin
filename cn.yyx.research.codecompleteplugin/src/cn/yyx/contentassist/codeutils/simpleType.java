@@ -3,8 +3,8 @@ package cn.yyx.contentassist.codeutils;
 import java.util.LinkedList;
 import java.util.List;
 
+import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
-import cn.yyx.contentassist.codepredict.PredictMetaInfo;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;

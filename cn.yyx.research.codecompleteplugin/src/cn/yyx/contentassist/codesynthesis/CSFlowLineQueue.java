@@ -18,6 +18,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.commonutils.ComplicatedSignal;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
+import cn.yyx.contentassist.commonutils.VariableHT;
 
 public class CSFlowLineQueue {
 	
@@ -150,6 +151,49 @@ public class CSFlowLineQueue {
 		}
 		CSMethodSignalHandleResult csres = new CSMethodSignalHandleResult(tmp, faremused);
 		return csres;
+	}
+	
+	public VariableHT BackSearchForLastIthVariableHolderAndTypeDeclaration(int off) {
+		// TODO
+		String vhtp = null;
+		String vhne = null;
+		FlowLineNode<CSFlowLineData> tmp = last;
+		String recentvhne = null;
+		while (tmp != null)
+		{
+			CSFlowLineData tmpdata = tmp.getData();
+			if (tmpdata instanceof CSVariableHolderData)
+			{
+				if (off >= 0)
+				{
+					recentvhne = ((CSVariableHolderData)tmpdata).getVarname();
+					off--;
+					if (off < 0)
+					{
+						vhne = recentvhne;
+					}
+				}
+			}
+			if (tmpdata instanceof CSVariableDeclarationData)
+			{
+				if (vhne == null)
+				{
+					vhne = recentvhne;
+					if (vhne == null)
+					{
+						return null;
+					}
+					vhtp = ((CSVariableDeclarationData)tmpdata).getData();
+				}
+				break;
+			}
+			tmp = tmp.getPrev();
+		}
+		if (vhtp != null && vhne != null)
+		{
+			return new VariableHT(vhtp, vhne);
+		}
+		return null;
 	}
 	
 	/*public FlowLineNode<CSFlowLineData> BackSearchForStructureSignal(int signal) {

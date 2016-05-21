@@ -5,6 +5,7 @@ import java.util.List;
 
 import cn.yyx.contentassist.aerospikehandle.AeroLifeCycle;
 import cn.yyx.contentassist.aerospikehandle.PredictProbPair;
+import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.commonutils.ListHelper;
 
 public class PredictHelper {

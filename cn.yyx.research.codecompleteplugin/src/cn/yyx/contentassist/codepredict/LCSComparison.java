@@ -3,6 +3,7 @@ package cn.yyx.contentassist.codepredict;
 import java.util.Iterator;
 import java.util.List;
 
+import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codeutils.OneCode;
 import cn.yyx.contentassist.codeutils.argType;
 import cn.yyx.contentassist.codeutils.statement;

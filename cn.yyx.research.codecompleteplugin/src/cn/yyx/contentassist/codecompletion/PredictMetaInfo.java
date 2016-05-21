@@ -1,4 +1,4 @@
-package cn.yyx.contentassist.codepredict;
+package cn.yyx.contentassist.codecompletion;
 
 public class PredictMetaInfo {
 	
@@ -15,7 +15,7 @@ public class PredictMetaInfo {
 	public static final int PreTryNeedSize = 4;
 	
 	public static final int OneExtendMaxSequence = 2;
-	public static final int OneLevelExtendMaxSequence = 8; // must be the power of 2.
+	public static final int OneLevelExtendMaxSequence = 1; // must be the power of 2.
 	
 	public static final int MaxExtendLength = 15;
 	

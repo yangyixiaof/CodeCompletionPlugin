@@ -10,6 +10,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
+import cn.yyx.contentassist.commonutils.VariableHT;
 
 public class commonVarRef extends referedExpression{
 	
@@ -43,9 +44,14 @@ public class commonVarRef extends referedExpression{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		Map<String, String> po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(scope, off);
+		if (scope == 0 && smthandler.getAoi().isInFieldLevel())
+		{
+			VariableHT vht = squeue.BackSearchForLastIthVariableHolderAndTypeDeclaration(off);
+			po.put(vht.getHoldertype(), vht.getHoldername());
+		}
 		return CodeSynthesisHelper.HandleVarRefCodeSynthesis(po, squeue, smthandler);
 	}
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue, CSStatementHandler smthandler,
 			String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {

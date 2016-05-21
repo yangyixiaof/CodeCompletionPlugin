@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import cn.yyx.contentassist.codepredict.PredictMetaInfo;
+import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 
 public class PreTryFlowLines<T> extends FlowLines<T> {
 	
