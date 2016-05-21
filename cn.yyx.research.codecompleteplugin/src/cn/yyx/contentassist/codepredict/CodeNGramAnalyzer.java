@@ -15,6 +15,7 @@ import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.contentassist.commonutils.PrintUtil;
 import cn.yyx.contentassist.jdtastvisitor.PartialProcessVisitor;
 import cn.yyx.research.language.JDTHelper.ASTTraversal;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class CodeNGramAnalyzer {
 	
@@ -57,9 +58,11 @@ public class CodeNGramAnalyzer {
 
 			// debugging.
 			PrintUtil.PrintList(analist, "analysis list");
-
+			
+			ScopeOffsetRefHandler sohandler = ppv.GenerateScopeOffsetRefHandler();
+			
 			PredictionFetch pf = new PredictionFetch();
-			return pf.FetchPrediction(javacontext, monitor, ppv.GenerateScopeOffsetRefHandler(), analist, list, aoi, lastchar);
+			return pf.FetchPrediction(javacontext, monitor, sohandler, analist, list, aoi, lastchar);
 
 		} catch (JavaModelException e) {
 			e.printStackTrace();

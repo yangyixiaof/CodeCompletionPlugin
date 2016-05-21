@@ -30,11 +30,6 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 	@Override
 	public boolean preVisit2(ASTNode node) {
 		boolean couldcontinue = couldContinue(node);
-		Boolean forbid = runforbid.GetNodeHelp(node.hashCode());
-		if (forbid != null && forbid == true)
-		{
-			couldcontinue = couldcontinue && false;
-		}
 		RecordCouldContinue(node, couldcontinue);
 		if (NeedSpecialTreat(node))
 		{
@@ -98,7 +93,12 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 	
 	private boolean couldContinue(ASTNode node)
 	{
-		boolean supres = super.preVisit2(node);
+		boolean supres = true;
+		Boolean forbid = runforbid.GetNodeHelp(node.hashCode());
+		if (forbid != null && forbid == true)
+		{
+			supres = supres && false;
+		}
 		boolean nowres = false;
 		int tstart = node.getStartPosition();
 		int tend = tstart + node.getLength();
