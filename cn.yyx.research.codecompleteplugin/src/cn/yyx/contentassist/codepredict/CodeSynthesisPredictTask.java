@@ -140,7 +140,11 @@ public class CodeSynthesisPredictTask implements Runnable {
 						FlowLineNode<CSFlowLineData> addnode = aitr.next();
 						boolean over = false;
 						try {
-							over = predsmt.HandleOverSignal(new FlowLineStack(addnode));
+							FlowLineNode<CSFlowLineData> lastone = null;
+							if (!(csdflq instanceof VirtualCSFlowLineQueue)) {
+								lastone = (FlowLineNode<CSFlowLineData>) fln;
+							}
+							over = predsmt.HandleOverSignal(new FlowLineStack(lastone));
 							addnode.setCouldextend(!over);
 						} catch (CodeSynthesisException e) {
 							// testing

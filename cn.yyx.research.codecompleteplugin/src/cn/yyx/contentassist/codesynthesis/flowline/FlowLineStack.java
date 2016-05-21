@@ -56,6 +56,7 @@ public class FlowLineStack {
 			{
 				return tmp;
 			}
+			tmp = tmp.getPrev();
 		}
 		return null;
 	}
