@@ -58,9 +58,9 @@ public class CodeNGramAnalyzer {
 			
 			// debugging.
 			PrintUtil.PrintList(analist, "analysis list");
-
+			
 			ScopeOffsetRefHandler sohandler = ppv.GenerateScopeOffsetRefHandler();
-
+			
 			PredictionFetch pf = new PredictionFetch();
 			return pf.FetchPrediction(javacontext, monitor, sohandler, analist, list, aoi, lastchar);
 
