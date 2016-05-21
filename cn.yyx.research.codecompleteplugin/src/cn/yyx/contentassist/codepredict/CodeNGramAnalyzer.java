@@ -62,7 +62,8 @@ public class CodeNGramAnalyzer {
 			ScopeOffsetRefHandler sohandler = ppv.GenerateScopeOffsetRefHandler();
 			
 			PredictionFetch pf = new PredictionFetch();
-			return pf.FetchPrediction(javacontext, monitor, sohandler, analist, list, aoi, lastchar);
+			// monitor this set to null.
+			return pf.FetchPrediction(javacontext, null, sohandler, analist, list, aoi, lastchar);
 
 		} catch (JavaModelException e) {
 			e.printStackTrace();
