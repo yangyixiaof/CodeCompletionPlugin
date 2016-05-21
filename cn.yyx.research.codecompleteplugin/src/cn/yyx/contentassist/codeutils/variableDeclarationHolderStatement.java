@@ -1,5 +1,6 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -103,17 +104,22 @@ public class variableDeclarationHolderStatement extends statement{
 		}
 		String typecode = typenode.getData().getData();
 		String name = NameConvention.GetAbbreviationOfType(typecode);
-		List<FlowLineNode<CSFlowLineData>> result = null;
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		String modified = null;
 		if (rexp != null)
 		{
 			modified = GetModifiedName(squeue, smthandler, typecode, name);
 			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-			result = CSFlowLineHelper.ConcateOneFlowLineList(" " + modified + " = ", rels, null);
+			List<FlowLineNode<CSFlowLineData>> tmpls = CSFlowLineHelper.ConcateOneFlowLineList(" " + modified + " = ", rels, null);
+			Iterator<FlowLineNode<CSFlowLineData>> itr = tmpls.iterator();
+			while (itr.hasNext())
+			{
+				FlowLineNode<CSFlowLineData> fln = itr.next();
+				result.add(new FlowLineNode<CSFlowLineData>(new CSVariableHolderData(modified, fln.getData()), fln.getProbability()));
+			}
 		}
 		else
 		{
-			result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 			modified = GetModifiedName(squeue, smthandler, typecode, name);
 			result.add(new FlowLineNode<CSFlowLineData>(new CSVariableHolderData(modified, squeue.GenerateNewNodeId(), smthandler.getSete(), " "+modified, null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		}
