@@ -62,7 +62,7 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 		{
 			if (GetCouldContinue(node))
 			{
-				ExitBlock(node);
+				// ExitBlock(node);
 			}
 		}
 	}
