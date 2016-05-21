@@ -1019,7 +1019,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 			System.err.println(smt == null ? "smt is null":"smt class:" + smt.getClass());
 			new Exception().printStackTrace();
 			System.err.println(1/0); // cause fatal error.
-			// System.exit(1);
+			System.exit(1);
 		}
 		EndOfArrayDeclarationIndexExpressionContext eae = ctx.endOfArrayDeclarationIndexExpression();
 		String eaetx = eae.getText();

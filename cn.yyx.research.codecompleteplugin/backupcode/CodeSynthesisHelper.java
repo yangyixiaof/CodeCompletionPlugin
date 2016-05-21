@@ -251,7 +251,7 @@ public class CodeSynthesisHelper {
 				TypeMember tp = tpitr.next();
 				if (SimilarityHelper.ComputeTwoStringSimilarity(rawtype, tp.getType()) > PredictMetaInfo.TwoStringSimilarThreshold)
 				{
-					result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), tp.getType(), tp.getClass(), false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+					result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), tp.getType(), tp.getTypeclass(), false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 				}
 			}
 		}
