@@ -44,7 +44,7 @@ public class commonFieldRef extends fieldAccess{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		Map<String, String> po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(scope, off);
-		if (scope == 0 && !(smthandler.getAoi().isInFieldLevel()))
+		if (scope == 0 && smthandler.getAoi().isInFieldLevel())
 		{
 			VariableHT vht = squeue.BackSearchForLastIthVariableHolderAndTypeDeclaration(off);
 			po.put(vht.getHoldertype(), vht.getHoldername());
