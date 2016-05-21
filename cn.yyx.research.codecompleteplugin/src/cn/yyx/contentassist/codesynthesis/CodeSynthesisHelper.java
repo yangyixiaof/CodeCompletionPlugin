@@ -277,15 +277,15 @@ public class CodeSynthesisHelper {
 			int tpspesize = 0;
 			while (tpitr.hasNext())
 			{
+				tpspesize++;
+				if (tpspesize > PredictMetaInfo.MaxTypeSpecificationSize)
+				{
+					break;
+				}
 				TypeMember tp = tpitr.next();
 				if (SimilarityHelper.ComputeTwoStringSimilarity(rawtype, tp.getTypeclass().getSimpleName()) > PredictMetaInfo.TwoStringSimilarThreshold)
 				{
 					result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), tp.getType(), new CCType(tp), false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
-				}
-				tpspesize++;
-				if (tpspesize >= PredictMetaInfo.MaxTypeSpecificationSize)
-				{
-					break;
 				}
 			}
 		}

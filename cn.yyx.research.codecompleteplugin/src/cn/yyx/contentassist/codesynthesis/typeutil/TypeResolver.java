@@ -7,6 +7,7 @@ import java.util.List;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 
 import cn.yyx.contentassist.commonutils.YJCache;
+import cn.yyx.contentassist.parsehelper.ComplexParser;
 import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;
 import cn.yyx.contentassist.specification.TypeMember;
 
@@ -17,9 +18,11 @@ public class TypeResolver {
 	public static YJCache<LinkedList<CCType>> classcache = new YJCache<LinkedList<CCType>>();
 	
 	// Class<?>
+	// TODO all specification must be sorted according to their own feature.
 	// TODO the type string must be parsed to type, then use interface HandleCodeSynthesis such that.
 	public static LinkedList<CCType> ResolveType(String type, JavaContentAssistInvocationContext javacontext)
 	{
+		ComplexParser.GetSentence(type);
 		LinkedList<CCType> clss = classcache.GetCachedContent(type);
 		if (clss != null)
 		{
