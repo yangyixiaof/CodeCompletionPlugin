@@ -47,7 +47,10 @@ public class commonFieldRef extends fieldAccess{
 		if (scope == 0 && smthandler.getAoi().isInFieldLevel())
 		{
 			VariableHT vht = squeue.BackSearchForLastIthVariableHolderAndTypeDeclaration(off);
-			po.put(vht.getHoldertype(), vht.getHoldername());
+			if (vht != null)
+			{
+				po.put(vht.getHoldertype(), vht.getHoldername());
+			}
 		}
 		return CodeSynthesisHelper.HandleVarRefCodeSynthesis(po, squeue, smthandler);
 	}

@@ -182,8 +182,8 @@ public class CSFlowLineQueue {
 					{
 						return null;
 					}
-					vhtp = ((CSVariableDeclarationData)tmpdata).getData();
 				}
+				vhtp = ((CSVariableDeclarationData)tmpdata).getData();
 				break;
 			}
 			tmp = tmp.getPrev();
@@ -191,6 +191,10 @@ public class CSFlowLineQueue {
 		if (vhtp != null && vhne != null)
 		{
 			return new VariableHT(vhtp, vhne);
+		}
+		if ((vhtp == null && vhne != null) || (vhtp != null && vhne == null))
+		{
+			throw new Error("Strange, has declarations but no holders or has holders but no declarations.");
 		}
 		return null;
 	}
