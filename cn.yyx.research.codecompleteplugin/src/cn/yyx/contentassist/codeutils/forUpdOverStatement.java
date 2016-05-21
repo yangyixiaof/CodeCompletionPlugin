@@ -2,12 +2,14 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSForExpOverData;
 import cn.yyx.contentassist.codesynthesis.data.CSForUpdOverData;
+import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
@@ -61,7 +63,9 @@ public class forUpdOverStatement extends statement {
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSForExpOverData.class);
+		Stack<Integer> signals = new Stack<Integer>();
+		signals.push(DataStructureSignalMetaInfo.CommonForUpdWaitingOver);
+		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSForExpOverData.class, signals);
 		if (cnode == null)
 		{
 			throw new CodeSynthesisException("for upd over does not have init over in pre.");

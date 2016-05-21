@@ -46,8 +46,7 @@ public class FlowLineStack {
 		}
 	}
 	
-	public FlowLineNode<CSFlowLineData> BackSearchForFirstSpecialClass(Class<?> cls) throws CodeSynthesisException {
-		Stack<Integer> signals = new Stack<Integer>();
+	public FlowLineNode<CSFlowLineData> BackSearchForFirstSpecialClass(Class<?> cls, Stack<Integer> signals) throws CodeSynthesisException {
 		FlowLineNode<CSFlowLineData> tmp = last;
 		while (tmp != null)
 		{
