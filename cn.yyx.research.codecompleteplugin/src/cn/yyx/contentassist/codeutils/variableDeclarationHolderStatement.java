@@ -109,13 +109,13 @@ public class variableDeclarationHolderStatement extends statement{
 		{
 			modified = GetModifiedName(squeue, smthandler, typecode, name);
 			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-			result = CSFlowLineHelper.ConcateOneFlowLineList(modified + " = ", rels, null);
+			result = CSFlowLineHelper.ConcateOneFlowLineList(" " + modified + " = ", rels, null);
 		}
 		else
 		{
 			result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 			modified = GetModifiedName(squeue, smthandler, typecode, name);
-			result.add(new FlowLineNode<CSFlowLineData>(new CSVariableHolderData(modified, squeue.GenerateNewNodeId(), smthandler.getSete(), modified, null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+			result.add(new FlowLineNode<CSFlowLineData>(new CSVariableHolderData(modified, squeue.GenerateNewNodeId(), smthandler.getSete(), " "+modified, null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		}
 		if (modified == null)
 		{
