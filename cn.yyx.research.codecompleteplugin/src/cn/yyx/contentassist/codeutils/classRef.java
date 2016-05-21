@@ -51,7 +51,7 @@ public class classRef extends type {
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		String tp = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleTypeRef(off);
-		LinkedList<CCType> clss = TypeResolver.ResolveType(tp, squeue.GetLastHandler().getContextHandler().getJavacontext());
+		LinkedList<CCType> clss = TypeResolver.ResolveType(tp, squeue, smthandler);
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		Iterator<CCType> itr = clss.iterator();
 		while (itr.hasNext())

@@ -178,7 +178,7 @@ public class argumentList implements OneCode {
 						squeue.GetLastHandler().getContextHandler(), specs, methodname, true, ".");
 				if (ramm != null) {
 					msig = MethodTypeSignature.GenerateMethodTypeSignature(ramm.getMaxMm(),
-							squeue.GetLastHandler().getContextHandler().getJavacontext());
+							squeue, smthandler);
 				}
 				if (msig == null) {
 					// directly add argument.

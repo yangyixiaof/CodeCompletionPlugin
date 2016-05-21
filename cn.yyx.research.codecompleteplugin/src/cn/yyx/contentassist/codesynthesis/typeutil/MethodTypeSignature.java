@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
-
+import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.specification.MethodMember;
 
 public class MethodTypeSignature {
@@ -16,23 +16,25 @@ public class MethodTypeSignature {
 	// private Class<?> returntype = null;
 	// private List<Class<?>> argtypes = null;
 	
-	public static MethodTypeSignature GenerateMethodTypeSignature(MethodMember mm, JavaContentAssistInvocationContext javacontext)
+	public static MethodTypeSignature GenerateMethodTypeSignature(MethodMember mm, CSFlowLineQueue squeue,
+			CSStatementHandler smthandler)
 	{
 		if (mm != null)
 		{
-			LinkedList<CCType> rt = TypeResolver.ResolveType(mm.getReturntype(), javacontext);
-			List<LinkedList<CCType>> arts = TypeResolver.ResolveType(mm.getArgtypelist(), javacontext);
+			LinkedList<CCType> rt = TypeResolver.ResolveType(mm.getReturntype(), squeue, smthandler);
+			List<LinkedList<CCType>> arts = TypeResolver.ResolveType(mm.getArgtypelist(), squeue, smthandler);
 			return new MethodTypeSignature(rt, arts);
 		}
 		return null;
 	}
 	
 
-	public static MethodTypeSignature TranslateMethodMember(MethodMember mm, JavaContentAssistInvocationContext javacontext)
+	public static MethodTypeSignature TranslateMethodMember(MethodMember mm, CSFlowLineQueue squeue,
+			CSStatementHandler smthandler)
 	{
 		String rttype = mm.getReturntype();
 		// tc.setExpreturntype(rttype);
-		LinkedList<CCType> c = TypeResolver.ResolveType(rttype, javacontext);
+		LinkedList<CCType> c = TypeResolver.ResolveType(rttype, squeue, smthandler);
 		// tc.setExpreturntypeclass(c);
 		LinkedList<String> tplist = mm.getArgtypelist();
 		// tc.setExpargstypes(tplist);
@@ -41,7 +43,7 @@ public class MethodTypeSignature {
 		while (itr.hasNext())
 		{
 			String tp = itr.next();
-			LinkedList<CCType> tpc = TypeResolver.ResolveType(tp, javacontext);
+			LinkedList<CCType> tpc = TypeResolver.ResolveType(tp, squeue, smthandler);
 			tpclist.add(tpc);
 		}
 		// tc.setExpargstypesclasses(tpclist);

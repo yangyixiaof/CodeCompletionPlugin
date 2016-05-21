@@ -59,7 +59,7 @@ public class CodeSynthesisHelper {
 		{
 			String type = titr.next();
 			String code = po.get(type);
-			LinkedList<CCType> cls = TypeResolver.ResolveType(type, squeue.GetLastHandler().getContextHandler().getJavacontext());
+			LinkedList<CCType> cls = TypeResolver.ResolveType(type, squeue, smthandler);
 			Iterator<CCType> clsitr = cls.iterator();
 			int total = 0;
 			while (clsitr.hasNext())
@@ -108,7 +108,7 @@ public class CodeSynthesisHelper {
 		String ref = ramm.getRef();
 		String member = ramm.getMember();
 		String membertype = ramm.getMembertype();
-		LinkedList<CCType> cls = TypeResolver.ResolveType(membertype, squeue.GetLastHandler().getContextHandler().getJavacontext());
+		LinkedList<CCType> cls = TypeResolver.ResolveType(membertype, squeue, smthandler);
 		Iterator<CCType> clsitr = cls.iterator();
 		while (clsitr.hasNext())
 		{
@@ -146,7 +146,7 @@ public class CodeSynthesisHelper {
 			double sim = SimilarityHelper.ComputeTwoStringSimilarity(cmp, methodname);
 			if (sim > PredictMetaInfo.MethodSimilarityThreshold)
 			{
-				MethodTypeSignature mtsone = MethodTypeSignature.TranslateMethodMember(mm, squeue.GetLastHandler().getContextHandler().getJavacontext());
+				MethodTypeSignature mtsone = MethodTypeSignature.TranslateMethodMember(mm, squeue, smthandler);
 				int id = squeue.GenerateNewNodeId();
 				List<CCType> rtclss = mtsone.getReturntype();
 				Iterator<CCType> rcitr = rtclss.iterator();
