@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
-import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
@@ -16,10 +15,10 @@ import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class CSVariableDeclarationData extends CSFlowLineData {
 
-	public CSVariableDeclarationData(Integer id, Sentence sete, String data, CCType dcls, boolean haspre,
-			boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
-		super(id, sete, data, dcls, haspre, hashole, pretck, posttck, handler);
-	}
+	/*public CSVariableDeclarationData(Integer id, Sentence sete, String data, CCType dcls, boolean haspre,
+	 *		boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
+	 *	super(id, sete, data, dcls, haspre, hashole, pretck, posttck, handler);
+	}*/
 
 	public CSVariableDeclarationData(CSFlowLineData cd) {
 		super(cd.getId(), cd.getSete(), cd.getData(), cd.getDcls(), cd.isHaspre(), cd.isHashole(), cd.getPretck(),
