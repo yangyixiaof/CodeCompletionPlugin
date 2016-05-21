@@ -8,7 +8,7 @@ public class TypeMember {
 	private String type = null;
 	private Class<?> typeclass = null;
 	
-	public TypeMember(LazyGenericTypeProposal ltp) {
+	public TypeMember(LazyGenericTypeProposal ltp) throws ClassNotFoundException{
 		String display = ltp.getDisplayString();
 		String[] dps = display.split("-");
 		String rt = dps[0].trim();
@@ -19,7 +19,8 @@ public class TypeMember {
 		} catch (ClassNotFoundException e) {
 			typeclass = Object.class;
 			System.err.println("Unresolved class:"+type);
-			e.printStackTrace();
+			throw e;
+			// e.printStackTrace();
 		}
 	}
 

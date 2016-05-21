@@ -23,6 +23,7 @@ import org.eclipse.jdt.ui.text.java.CompletionProposalCollector;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
+import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codehelper.MyCompilationUnit;
 
 @SuppressWarnings("restriction")
@@ -34,10 +35,21 @@ public class SearchSpecificationOfAReference {
 		CompletionProposalCollector collector = GetTypeMemberProposalCollector(javacontext);
 		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, null);
 		Iterator<ICompletionProposal> itr = proposals.iterator();
+		int total = 0;
 		while (itr.hasNext())
 		{
+			total++;
+			if (total > PredictMetaInfo.MaxTypeSpecificationSize)
+			{
+				break;
+			}
 			ICompletionProposal icp = itr.next();
-			tmlist.add(0, new TypeMember((LazyGenericTypeProposal)icp));
+			try {
+				tmlist.add(0, new TypeMember((LazyGenericTypeProposal)icp));
+			} catch (ClassNotFoundException e) {
+				// e.printStackTrace();
+				continue;
+			}
 		}
 		return tmlist;
 	}
@@ -104,7 +116,11 @@ public class SearchSpecificationOfAReference {
 			}
 			if (icp instanceof LazyGenericTypeProposal)
 			{
-				result.AddTypeMember(new TypeMember((LazyGenericTypeProposal)icp));
+				try {
+					result.AddTypeMember(new TypeMember((LazyGenericTypeProposal)icp));
+				} catch (ClassNotFoundException e) {
+					continue;
+				}
 			}
 			 System.err.println("proposal" + idx + " display : " + icp.getDisplayString());
 			 System.err.println("proposal" + idx + " type : " + icp.getClass());
