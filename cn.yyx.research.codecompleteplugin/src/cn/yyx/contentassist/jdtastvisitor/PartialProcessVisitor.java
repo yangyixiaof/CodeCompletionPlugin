@@ -60,7 +60,6 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 				ExitBlock(node);
 			}
 		}
-		super.postVisit(node);
 	}
 	
 	private boolean NeedSpecialTreat(ASTNode node)
