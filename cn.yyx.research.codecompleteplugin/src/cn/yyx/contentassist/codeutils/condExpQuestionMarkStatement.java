@@ -63,7 +63,7 @@ public class condExpQuestionMarkStatement extends statement{
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		Stack<Integer> signals = new Stack<Integer>();
-		signals.push(DataStructureSignalMetaInfo.CommonForExpWaitingOver);
+		signals.push(DataStructureSignalMetaInfo.ConditionExpressionQuestion);
 		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSCondExpBeginData.class, signals);
 		if (cnode == null)
 		{

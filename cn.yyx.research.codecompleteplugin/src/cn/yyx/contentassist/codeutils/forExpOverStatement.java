@@ -73,7 +73,7 @@ public class forExpOverStatement extends statement{
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		Stack<Integer> signals = new Stack<Integer>();
-		signals.push(DataStructureSignalMetaInfo.ConditionExpressionQuestion);
+		signals.push(DataStructureSignalMetaInfo.CommonForExpWaitingOver);
 		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSForIniOverData.class, signals);
 		if (cnode == null)
 		{

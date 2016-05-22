@@ -100,7 +100,8 @@ public class CSFlowLineHelper {
 							tmp = ConcateTwoFlowLineNode(prefix, fln1, concator, fln2, postfix, squeue, smthandler,
 									 oneafter, beforetwo);
 						} catch (TypeConflictException e) {
-							e.printStackTrace();
+							// e.printStackTrace();
+							System.err.println(e.getMessage());
 							continue;
 						}
 						result.add(tmp);
