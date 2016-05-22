@@ -28,6 +28,7 @@ public class referedFieldAccess extends fieldAccess {
 		if (fils == null || fils.size() == 0)
 		{
 			List<FlowLineNode<CSFlowLineData>> rexpls = rexp.HandleCodeSynthesis(squeue, smthandler);
+			// TODO computation kind needs to be set.
 			return CSFlowLineHelper.ForwardMerge(null, rexpls, ".", idls, null, squeue, smthandler, null, null);
 		}
 		else
