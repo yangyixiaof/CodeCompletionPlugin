@@ -25,7 +25,6 @@ import cn.yyx.contentassist.commonutils.NameConvention;
 import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
 import cn.yyx.contentassist.commonutils.SignalHelper;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
-import cn.yyx.contentassist.commonutils.StringUtil;
 import cn.yyx.contentassist.specification.FieldMember;
 import cn.yyx.contentassist.specification.MethodMember;
 import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;
@@ -136,25 +135,21 @@ public class CodeSynthesisHelper {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<MethodMember> res = SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix(spechint, squeue.GetLastHandler().getContextHandler().getJavacontext(), null);
 		Iterator<MethodMember> itr = res.iterator();
-		String cmp = StringUtil.GetContentBehindFirstWhiteSpace(spechint);
+		// String cmp = StringUtil.GetContentBehindFirstWhiteSpace(spechint);
 		while (itr.hasNext())
 		{
 			MethodMember mm = itr.next();
 			String methodname = mm.getName();
-			double sim = SimilarityHelper.ComputeTwoStringSimilarity(cmp, methodname);
-			if (sim > PredictMetaInfo.MethodSimilarityThreshold)
+			MethodTypeSignature mtsone = MethodTypeSignature.TranslateMethodMember(mm, squeue, smthandler);
+			int id = squeue.GenerateNewNodeId();
+			List<CCType> rtclss = mtsone.getReturntype();
+			Iterator<CCType> rcitr = rtclss.iterator();
+			while (rcitr.hasNext())
 			{
-				MethodTypeSignature mtsone = MethodTypeSignature.TranslateMethodMember(mm, squeue, smthandler);
-				int id = squeue.GenerateNewNodeId();
-				List<CCType> rtclss = mtsone.getReturntype();
-				Iterator<CCType> rcitr = rtclss.iterator();
-				while (rcitr.hasNext())
-				{
-					CCType rc = rcitr.next();
-					result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? methodname : beforemethodexp + "." + methodname), rc, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
-				}
-				mts.put(id+"", mtsone);
+				CCType rc = rcitr.next();
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? methodname : beforemethodexp + "." + methodname), rc, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 			}
+			mts.put(id+"", mtsone);
 		}
 		return result;
 	}

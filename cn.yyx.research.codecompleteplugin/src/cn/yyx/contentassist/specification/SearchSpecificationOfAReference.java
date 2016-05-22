@@ -65,12 +65,12 @@ public class SearchSpecificationOfAReference {
 		int total = 0;
 		while (!(prioriqueue.isEmpty()))
 		{
+			MemberSorter ms = prioriqueue.poll();
 			total++;
-			if (total > PredictMetaInfo.MaxTypeSpecificationSize)
+			if (total > PredictMetaInfo.MaxTypeSpecificationSize || (total > 1 && ms.getSimilarity() <= PredictMetaInfo.TwoTypeStringSimilarThreshold))
 			{
 				break;
 			}
-			MemberSorter ms = prioriqueue.poll();
 			tmlist.add(0, (TypeMember)ms.getMember());
 		}
 		return tmlist;
@@ -104,12 +104,12 @@ public class SearchSpecificationOfAReference {
 		int total = 0;
 		while (!(prioriqueue.isEmpty()))
 		{
+			MemberSorter ms = prioriqueue.poll();
 			total++;
-			if (total > PredictMetaInfo.MaxFieldSpecificationSize)
+			if (total > PredictMetaInfo.MaxFieldSpecificationSize || (total > 1 && ms.getSimilarity() <= PredictMetaInfo.TwoFieldStringSimilarThreshold))
 			{
 				break;
 			}
-			MemberSorter ms = prioriqueue.poll();
 			fmlist.add(0, (FieldMember)ms.getMember());
 		}
 		return fmlist;
@@ -166,12 +166,12 @@ public class SearchSpecificationOfAReference {
 		int total = 0;
 		while (!(prioriqueue.isEmpty()))
 		{
+			MemberSorter ms = prioriqueue.poll();
 			total++;
-			if (total > PredictMetaInfo.MaxMethodSpecificationSize)
+			if (total > PredictMetaInfo.MaxMethodSpecificationSize || (total > 1 && ms.getSimilarity() <= PredictMetaInfo.TwoMethodStringSimilarityThreshold))
 			{
 				break;
 			}
-			MemberSorter ms = prioriqueue.poll();
 			mmlist.add(0, (MethodMember)ms.getMember());
 		}
 		return mmlist;
