@@ -140,6 +140,10 @@ public class TypeComputer {
 		case LeftOptr:
 		case RightOptr:
 			return c1;
+		case DirectUniqueUseFirstTypeOptr:
+			return c1;
+		case DirectUniqueUseSecondTypeOptr:
+			return c2;
 		default:
 			break;
 		}

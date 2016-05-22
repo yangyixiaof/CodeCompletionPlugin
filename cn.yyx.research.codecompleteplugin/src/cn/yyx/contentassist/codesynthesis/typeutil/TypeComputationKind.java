@@ -9,5 +9,7 @@ public enum TypeComputationKind {
 	AssignOptr,
 	LeftOptr, // <<
 	RightOptr,// >>
+	DirectUniqueUseFirstTypeOptr,
+	DirectUniqueUseSecondTypeOptr,
 	Unknown;
 }

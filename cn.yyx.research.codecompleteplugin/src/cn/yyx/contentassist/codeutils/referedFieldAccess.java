@@ -9,6 +9,7 @@ import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class referedFieldAccess extends fieldAccess {
 	
@@ -28,8 +29,7 @@ public class referedFieldAccess extends fieldAccess {
 		if (fils == null || fils.size() == 0)
 		{
 			List<FlowLineNode<CSFlowLineData>> rexpls = rexp.HandleCodeSynthesis(squeue, smthandler);
-			// TODO computation kind needs to be set.
-			return CSFlowLineHelper.ForwardMerge(null, rexpls, ".", idls, null, squeue, smthandler, null, null);
+			return CSFlowLineHelper.ForwardMerge(null, rexpls, ".", idls, null, squeue, smthandler, null, TypeComputationKind.DirectUniqueUseSecondTypeOptr);
 		}
 		else
 		{
