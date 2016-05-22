@@ -47,12 +47,13 @@ public class FlowLineStack {
 	}
 	
 	public FlowLineNode<CSFlowLineData> BackSearchForFirstSpecialClass(Class<?> cls, Stack<Integer> signals) throws CodeSynthesisException {
+		int inisize = signals.size();
 		FlowLineNode<CSFlowLineData> tmp = last;
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();
 			tmpdata.HandleStackSignal(signals);
-			if (tmpdata.getClass().equals(cls) && signals.isEmpty())
+			if (tmpdata.getClass().equals(cls) && signals.size() <= inisize)
 			{
 				return tmp;
 			}
