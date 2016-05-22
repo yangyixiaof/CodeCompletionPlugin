@@ -103,15 +103,18 @@ public class CodeSynthesisHelper {
 		}
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		RefAndModifiedMember ramm = SpecificationHelper.GetMostLikelyRef(squeue.GetLastHandler().getContextHandler(), po, expectedinfer.get(0).getData().getData(), ismethod, concator);
-		String ref = ramm.getRef();
-		String member = ramm.getMember();
-		String membertype = ramm.getMembertype();
-		LinkedList<CCType> cls = TypeResolver.ResolveType(membertype, squeue, smthandler);
-		Iterator<CCType> clsitr = cls.iterator();
-		while (clsitr.hasNext())
+		if (ramm != null)
 		{
-			CCType cct = clsitr.next();
-			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ref + concator + member, cct, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+			String ref = ramm.getRef();
+			String member = ramm.getMember();
+			String membertype = ramm.getMembertype();
+			LinkedList<CCType> cls = TypeResolver.ResolveType(membertype, squeue, smthandler);
+			Iterator<CCType> clsitr = cls.iterator();
+			while (clsitr.hasNext())
+			{
+				CCType cct = clsitr.next();
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ref + concator + member, cct, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+			}
 		}
 		return result;
 	}
