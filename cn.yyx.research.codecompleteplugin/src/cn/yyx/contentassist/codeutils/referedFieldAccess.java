@@ -11,7 +11,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class referedFieldAccess extends fieldAccess {
-
+	
 	identifier id = null;
 	referedExpression rexp = null;
 	
