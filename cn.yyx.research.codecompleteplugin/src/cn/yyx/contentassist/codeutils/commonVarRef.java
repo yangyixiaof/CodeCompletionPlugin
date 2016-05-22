@@ -53,7 +53,7 @@ public class commonVarRef extends referedExpression{
 		Map<String, String> po = CSVarRefHelper.GetAllTypeVariablePair(squeue, smthandler, scope, off);
 		return CodeSynthesisHelper.HandleVarRefInferredField(po, squeue, smthandler, reservedword, expectedinfer);
 	}
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
