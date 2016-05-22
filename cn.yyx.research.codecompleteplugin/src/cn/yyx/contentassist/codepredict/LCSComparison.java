@@ -47,7 +47,7 @@ public class LCSComparison {
 				}
 			}
 		}
-		return 0.55*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.45*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
+		return 0.5*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.5*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
 	public static double LCSSimilarity(List<statement> x, List<statement> y) {
@@ -85,7 +85,7 @@ public class LCSComparison {
 				}
 			}
 		}
-		return 0.55*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.45*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
+		return 0.5*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.5*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
 	public static double LCSSimilarityListType(List<type> x, List<type> y) {
@@ -123,7 +123,7 @@ public class LCSComparison {
 				}
 			}
 		}
-		return 0.55*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.45*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
+		return 0.5*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.5*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
 	public static double LCSSimilarityArgType(List<argType> x, List<argType> y) {
@@ -161,7 +161,7 @@ public class LCSComparison {
 				}
 			}
 		}
-		return 0.55*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.45*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
+		return 0.5*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.5*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
 	public static double LCSSimilarityTypeArgument(List<typeArgument> x, List<typeArgument> y) {
@@ -199,7 +199,7 @@ public class LCSComparison {
 				}
 			}
 		}
-		return 0.55*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.45*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
+		return 0.5*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.5*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
 	public static double LCSSimilarityString(String[] x, String[] y) {
@@ -235,7 +235,7 @@ public class LCSComparison {
 				}
 			}
 		}
-		return 0.55*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.45*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
+		return 0.5*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.5*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
 	private static double ComputeTwoStringDirectSimilarity(String one, String two)
@@ -248,7 +248,7 @@ public class LCSComparison {
 		int distance = compute_distance(a, b, temp);
 		int min = Math.min(len_a, len_b);
 		int max = Math.max(len_a, len_b);
-		double dissimilar = 0.55*(distance*1.0)/(min*1.0) + 0.45*(distance*1.0)/(max*1.0);
+		double dissimilar = 0.5*(distance*1.0)/(min*1.0) + 0.5*(distance*1.0)/(max*1.0);
 		return 1-dissimilar;
 	}
 
