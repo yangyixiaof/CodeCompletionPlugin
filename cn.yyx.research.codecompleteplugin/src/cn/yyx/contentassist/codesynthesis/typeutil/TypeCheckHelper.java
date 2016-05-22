@@ -1,7 +1,7 @@
 package cn.yyx.contentassist.codesynthesis.typeutil;
 
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.List;
 
 public class TypeCheckHelper {
 	
@@ -12,7 +12,7 @@ public class TypeCheckHelper {
 		return CanBeMutualCast(onetype, twotype);
 	}*/
 	
-	public static boolean CanBeMutualCast(LinkedList<CCType> cs, CCType rtclass) {
+	public static boolean CanBeMutualCast(List<CCType> cs, CCType rtclass) {
 		Iterator<CCType> itr = cs.iterator();
 		while (itr.hasNext())
 		{

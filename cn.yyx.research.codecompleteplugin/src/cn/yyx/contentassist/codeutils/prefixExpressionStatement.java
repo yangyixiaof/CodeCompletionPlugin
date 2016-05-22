@@ -9,6 +9,8 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.CSFlowLineTypeCheckRefiner;
+import cn.yyx.contentassist.codesynthesis.typeutil.ConstantTypeHelper;
 
 public class prefixExpressionStatement extends expressionStatement{
 	
@@ -59,6 +61,7 @@ public class prefixExpressionStatement extends expressionStatement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+		rels = CSFlowLineTypeCheckRefiner.RetainTheFallThroughFlowLineNodes(rels, ConstantTypeHelper.getPrefixPossibleTypes());
 		return CSFlowLineHelper.ConcateOneFlowLineList(optr, rels, null);
 	}
 
