@@ -158,11 +158,13 @@ public class CSFlowLineQueue {
 		String vhne = null;
 		FlowLineNode<CSFlowLineData> tmp = last;
 		String recentvhne = null;
+		int totalvh = 0;
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();
 			if (tmpdata instanceof CSVariableHolderData)
 			{
+				totalvh++;
 				if (off >= 0)
 				{
 					recentvhne = ((CSVariableHolderData)tmpdata).getVarname();
@@ -190,7 +192,7 @@ public class CSFlowLineQueue {
 		}
 		if (vhtp != null && vhne != null)
 		{
-			return new VariableHT(vhtp, vhne);
+			return new VariableHT(vhtp, vhne, totalvh);
 		}
 		//if ((vhtp == null && vhne != null) || (vhtp != null && vhne == null))
 		//{

@@ -4,10 +4,15 @@ public class VariableHT {
 	
 	private String holdertype = null;
 	private String holdername = null;
+	private int allvh = 0;
 	
-	public VariableHT(String holdertype, String holdername) {
+	public VariableHT(String holdertype, String holdername, int allvh) {
 		this.setHoldertype(holdertype);
 		this.setHoldername(holdername);
+		this.setAllvh(allvh);
+	}
+
+	public VariableHT() {
 	}
 
 	public String getHoldertype() {
@@ -29,6 +34,14 @@ public class VariableHT {
 	@Override
 	public String toString() {
 		return "holdertype:" + holdertype + ";holdername:" + holdername;
+	}
+
+	public int getAllvh() {
+		return allvh;
+	}
+
+	public void setAllvh(int allvh) {
+		this.allvh = allvh;
 	}
 	
 }

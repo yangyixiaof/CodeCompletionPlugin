@@ -50,7 +50,7 @@ public class classRef extends type {
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		String tp = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleTypeRef(off);
+		String tp = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleTypeRef(null, 0, off);
 		LinkedList<CCType> clss = TypeResolver.ResolveType(tp, squeue, smthandler);
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		Iterator<CCType> itr = clss.iterator();
