@@ -3,13 +3,11 @@ package cn.yyx.contentassist.codeutils;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
-import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 
 public class referedFieldAccess extends fieldAccess {
 	
@@ -26,15 +24,16 @@ public class referedFieldAccess extends fieldAccess {
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
 		List<FlowLineNode<CSFlowLineData>> fils = rexp.HandleInferredField(squeue, smthandler, null, idls);
-		if (fils == null || fils.size() == 0)
-		{
-			List<FlowLineNode<CSFlowLineData>> rexpls = rexp.HandleCodeSynthesis(squeue, smthandler);
-			return CSFlowLineHelper.ForwardMerge(null, rexpls, ".", idls, null, squeue, smthandler, null, TypeComputationKind.DirectUniqueUseSecondTypeOptr);
-		}
-		else
-		{
-			return fils;
-		}
+		// if (fils == null || fils.size() == 0)
+		// {
+		//	List<FlowLineNode<CSFlowLineData>> rexpls = rexp.HandleCodeSynthesis(squeue, smthandler);
+		//	return CSFlowLineHelper.ForwardMerge(null, rexpls, ".", idls, null, squeue, smthandler, null, TypeComputationKind.DirectUniqueUseSecondTypeOptr);
+		// }
+		// else
+		// {
+		//	return fils;
+		// }
+		return fils;
 		// return CodeSynthesisHelper.HandleFieldAccess(squeue, smthandler, rexp, null, null, id);
 	}
 	

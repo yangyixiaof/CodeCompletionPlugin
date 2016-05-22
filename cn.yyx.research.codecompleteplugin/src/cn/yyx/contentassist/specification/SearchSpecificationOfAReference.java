@@ -239,11 +239,11 @@ public class SearchSpecificationOfAReference {
 		ICompletionProposal[] javaProposals= collector.getJavaCompletionProposals();
 
 		List<ICompletionProposal> proposals= new ArrayList<ICompletionProposal>(Arrays.asList(javaProposals));
-		if (proposals.size() == 0) {
-			String error= collector.getErrorMessage();
-			if (error.length() > 0)
-				new Exception().printStackTrace();
-		}
+		//if (proposals.size() == 0) {
+		//	String error= collector.getErrorMessage();
+		//	if (error.length() > 0)
+		//		new Exception().printStackTrace();
+		//}
 		return proposals;
 	}
 	

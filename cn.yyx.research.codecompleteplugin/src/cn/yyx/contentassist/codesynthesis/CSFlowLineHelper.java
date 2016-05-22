@@ -57,34 +57,36 @@ public class CSFlowLineHelper {
 	
 	public static List<FlowLineNode<CSFlowLineData>> ForwardMerge(String prefix, List<FlowLineNode<CSFlowLineData>> one, String concator, List<FlowLineNode<CSFlowLineData>> two, String postfix, CSFlowLineQueue squeue, CSStatementHandler smthandler, TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
 		if (one.size() == 0) {
-			if (two == null || two.size() == 0) {
-				return null;
-			} else {
-				if (prefix != null && !prefix.equals(""))
-				{
+			//if (two == null || two.size() == 0) {
+			//	return null;
+			//} else {
+			//	if (prefix != null && !prefix.equals(""))
+			//	{
 					// testing
-					System.err.println("Warning: concate two list and one is null but prefix is not empty.");
-					return null;
-				}
-				else
-				{
-					CheckConcator(concator);
-					return CSFlowLineHelper.ConcateOneFlowLineList(concator, two, postfix);
-				}
-			}
+			//		System.err.println("Warning: concate two list and one is null but prefix is not empty.");
+			//		return null;
+			//	}
+			//	else
+			//	{
+			//		CheckConcator(concator);
+			//		return CSFlowLineHelper.ConcateOneFlowLineList(concator, two, postfix);
+			//	}
+			//}
+			return null;
 		} else {
 			if (two == null || two.size() == 0) {
-				if (postfix != null && !postfix.equals(""))
-				{
+				//if (postfix != null && !postfix.equals(""))
+				//{
 					// testing
-					System.err.println("Warning: concate two list and one is null but prefix is not empty.");
-					return null;
-				}
-				else
-				{
-					CheckConcator(concator);
-					return CSFlowLineHelper.ConcateOneFlowLineList(prefix, one, concator);
-				}
+				//	System.err.println("Warning: concate two list and one is null but prefix is not empty.");
+				//	return null;
+				//}
+				//else
+				//{
+				//	CheckConcator(concator);
+				//	return CSFlowLineHelper.ConcateOneFlowLineList(prefix, one, concator);
+				//}
+				return null;
 			} else {
 				List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 				Iterator<FlowLineNode<CSFlowLineData>> itr1 = one.iterator();
@@ -112,13 +114,13 @@ public class CSFlowLineHelper {
 		}
 	}
 	
-	private static void CheckConcator(String concator) {
-		if (concator != null && !concator.equals("")) {
-			System.err
-					.println("No another part, but the concator has real values. Serious error, the system will exit.");
-			System.exit(1);
-		}
-	}
+	//private static void CheckConcator(String concator) {
+	//	if (concator != null && !concator.equals("")) {
+	//		System.err
+	//				.println("No another part, but the concator has real values. Serious error, the system will exit.");
+	//		System.exit(1);
+	//	}
+	//}
 	
 	public static FlowLineNode<CSFlowLineData> ConcateTwoFlowLineNode(String prefix, FlowLineNode<CSFlowLineData> one,
 			String concator, FlowLineNode<CSFlowLineData> two, String postfix, 
