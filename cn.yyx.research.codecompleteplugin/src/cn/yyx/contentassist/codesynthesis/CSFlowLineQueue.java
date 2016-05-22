@@ -175,14 +175,14 @@ public class CSFlowLineQueue {
 			}
 			if (tmpdata instanceof CSVariableDeclarationData)
 			{
-				if (vhne == null)
+				/*if (vhne == null)
 				{
 					vhne = recentvhne;
 					if (vhne == null)
 					{
 						return null;
 					}
-				}
+				}*/
 				vhtp = ((CSVariableDeclarationData)tmpdata).getData();
 				break;
 			}
@@ -192,10 +192,10 @@ public class CSFlowLineQueue {
 		{
 			return new VariableHT(vhtp, vhne);
 		}
-		if ((vhtp == null && vhne != null) || (vhtp != null && vhne == null))
-		{
-			throw new Error("Strange, has declarations but no holders or has holders but no declarations.");
-		}
+		//if ((vhtp == null && vhne != null) || (vhtp != null && vhne == null))
+		//{
+		//	throw new Error("Strange, has declarations but no holders or has holders but no declarations.");
+		//}
 		return null;
 	}
 	
