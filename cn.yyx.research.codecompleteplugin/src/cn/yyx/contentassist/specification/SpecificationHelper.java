@@ -1,6 +1,7 @@
 package cn.yyx.contentassist.specification;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,10 +24,11 @@ public class SpecificationHelper {
 		{
 			String type = itr.next();
 			String refname = po.get(type);
-			MembersOfAReference members = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(refname + concator, ch.getJavacontext(), ch.getMonitor());
+			// MembersOfAReference members = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(refname + concator, ch.getJavacontext(), ch.getMonitor());
 			if (hintismethod)
 			{
-				Iterator<MethodMember> mmitr = members.GetMethodMemberIterator();
+				List<MethodMember> mmls = SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix(refname + concator, ch.getJavacontext(), ch.getMonitor());
+				Iterator<MethodMember> mmitr = mmls.iterator();
 				while (mmitr.hasNext())
 				{
 					MethodMember mm = mmitr.next();
@@ -45,7 +47,8 @@ public class SpecificationHelper {
 			}
 			else
 			{
-				Iterator<FieldMember> fmitr = members.GetFieldMemberIterator();
+				List<FieldMember> fmls = SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix(refname + concator, ch.getJavacontext(), ch.getMonitor());
+				Iterator<FieldMember> fmitr = fmls.iterator();
 				while (fmitr.hasNext())
 				{
 					FieldMember fm = fmitr.next();
@@ -76,10 +79,11 @@ public class SpecificationHelper {
 		while (itr.hasNext())
 		{
 			String code = itr.next();
-			MembersOfAReference members = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(code + concator, ch.getJavacontext(), ch.getMonitor());
+			// MembersOfAReference members = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(code + concator, ch.getJavacontext(), ch.getMonitor());
 			if (hintismethod)
 			{
-				Iterator<MethodMember> mmitr = members.GetMethodMemberIterator();
+				List<MethodMember> mmls = SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix(code + concator, ch.getJavacontext(), ch.getMonitor());
+				Iterator<MethodMember> mmitr = mmls.iterator();
 				while (mmitr.hasNext())
 				{
 					MethodMember mm = mmitr.next();
@@ -97,7 +101,8 @@ public class SpecificationHelper {
 			}
 			else
 			{
-				Iterator<FieldMember> fmitr = members.GetFieldMemberIterator();
+				List<FieldMember> fmls = SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix(code + concator, ch.getJavacontext(), ch.getMonitor());
+				Iterator<FieldMember> fmitr = fmls.iterator();
 				while (fmitr.hasNext())
 				{
 					FieldMember fm = fmitr.next();

@@ -1,23 +1,15 @@
 package cn.yyx.contentassist.specification;
 
-import org.eclipse.jdt.internal.ui.text.java.JavaCompletionProposal;
-
-@SuppressWarnings("restriction")
 public class FieldMember {
 	
 	private String name = null;
 	private String type = null;
 	private String whereDeclared = null;
 	
-	public FieldMember(JavaCompletionProposal icp) {
-		String pstr =  icp.getDisplayString().trim();
-		String[] strs = pstr.split(":|-");
-		setName(strs[0].trim());
-		setType(strs[1].trim());
-		if (strs.length == 3)
-		{
-			setWhereDeclared(strs[2].trim());
-		}
+	public FieldMember(String name, String type, String whereDeclared) {
+		this.name = name;
+		this.type = type;
+		this.whereDeclared = whereDeclared;
 	}
 	
 	@Override

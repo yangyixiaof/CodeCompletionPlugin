@@ -19,8 +19,6 @@ public class TypeResolver {
 	
 	public static YJCache<LinkedList<CCType>> classcache = new YJCache<LinkedList<CCType>>();
 	
-	// TODO all specification must be sorted according to their own feature.
-	
 	/**
 	 * this could return an empty list.
 	 * @param type

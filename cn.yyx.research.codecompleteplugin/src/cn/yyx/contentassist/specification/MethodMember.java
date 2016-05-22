@@ -2,45 +2,20 @@ package cn.yyx.contentassist.specification;
 
 import java.util.LinkedList;
 
-import org.eclipse.jdt.internal.ui.text.java.ParameterGuessingProposal;
-import org.eclipse.jface.text.contentassist.ICompletionProposal;
-
-@SuppressWarnings("restriction")
 public class MethodMember {
 	
 	private String name = null;
 	private String returntype = null;
 	private String whereDeclared = null;
-	private LinkedList<String> argtypelist = new LinkedList<String>();
-	private LinkedList<String> argnamelist = new LinkedList<String>();
+	private LinkedList<String> argtypelist = null;
+	private LinkedList<String> argnamelist = null;
 	
-	public MethodMember(ICompletionProposal icp) {
-		initial(icp.getDisplayString());
-	}
-	
-	public MethodMember(ParameterGuessingProposal proposal) {
-		initial(proposal.getDisplayString());
-	}
-	
-	private void initial(String pstr)
-	{
-		String[] strs = pstr.split(":|-");
-		String[] funs = strs[0].trim().split("\\(|\\)|,");
-		setName(funs[0].trim());
-		int flen = funs.length;
-		for (int i=1;i<flen;i++)
-		{
-			String arg = funs[i].trim();
-			// System.out.println("arg:" + arg + ",pstr:"+pstr + ",funs:" + strs[0] + "#");
-			String[] as = arg.split(" ");
-			getArgtypelist().add(as[0]);
-			getArgnamelist().add(as[1]);
-		}
-		setReturntype(strs[1].trim());
-		if (strs.length == 3)
-		{
-			setWhereDeclared(strs[2].trim());
-		}
+	public MethodMember(String name, String returntype, String whereDeclared, LinkedList<String> argnamelist, LinkedList<String> argtypelist) {
+		this.name = name;
+		this.returntype = returntype;
+		this.whereDeclared = whereDeclared;
+		this.argnamelist = argnamelist;
+		this.argtypelist = argtypelist;
 	}
 	
 	@Override

@@ -27,7 +27,6 @@ import cn.yyx.contentassist.commonutils.SignalHelper;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.StringUtil;
 import cn.yyx.contentassist.specification.FieldMember;
-import cn.yyx.contentassist.specification.MembersOfAReference;
 import cn.yyx.contentassist.specification.MethodMember;
 import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;
 import cn.yyx.contentassist.specification.SpecificationHelper;
@@ -135,9 +134,8 @@ public class CodeSynthesisHelper {
 	public static List<FlowLineNode<CSFlowLineData>> HandleMethodSpecificationInfer(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String spechint, String beforemethodexp, Map<String, MethodTypeSignature> mts) {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		MembersOfAReference res = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(spechint, squeue.GetLastHandler().getContextHandler().getJavacontext(), null);
-		List<MethodMember> mms = res.getMmlist();
-		Iterator<MethodMember> itr = mms.iterator();
+		List<MethodMember> res = SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix(spechint, squeue.GetLastHandler().getContextHandler().getJavacontext(), null);
+		Iterator<MethodMember> itr = res.iterator();
 		String cmp = StringUtil.GetContentBehindFirstWhiteSpace(spechint);
 		while (itr.hasNext())
 		{
