@@ -190,7 +190,7 @@ public class CSFlowLineQueue {
 			}
 			tmp = tmp.getPrev();
 		}
-		if (vhtp != null && vhne != null)
+		if (vhtp != null && totalvh > 0)
 		{
 			return new VariableHT(vhtp, vhne, totalvh);
 		}
@@ -198,7 +198,7 @@ public class CSFlowLineQueue {
 		//{
 		//	throw new Error("Strange, has declarations but no holders or has holders but no declarations.");
 		//}
-		return null;
+		return new VariableHT();
 	}
 	
 	/*public FlowLineNode<CSFlowLineData> BackSearchForStructureSignal(int signal) {
