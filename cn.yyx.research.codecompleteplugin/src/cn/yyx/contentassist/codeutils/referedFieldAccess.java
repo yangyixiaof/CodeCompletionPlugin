@@ -24,11 +24,19 @@ public class referedFieldAccess extends fieldAccess {
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
-		List<FlowLineNode<CSFlowLineData>> rexpls = rexp.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ForwardMerge(null, rexpls, ".", idls, null, squeue, smthandler, null, null);
+		List<FlowLineNode<CSFlowLineData>> fils = rexp.HandleInferredField(squeue, smthandler, null, idls);
+		if (fils == null || fils.size() == 0)
+		{
+			List<FlowLineNode<CSFlowLineData>> rexpls = rexp.HandleCodeSynthesis(squeue, smthandler);
+			return CSFlowLineHelper.ForwardMerge(null, rexpls, ".", idls, null, squeue, smthandler, null, null);
+		}
+		else
+		{
+			return fils;
+		}
 		// return CodeSynthesisHelper.HandleFieldAccess(squeue, smthandler, rexp, null, null, id);
 	}
-
+	
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof referedFieldAccess)
@@ -40,7 +48,7 @@ public class referedFieldAccess extends fieldAccess {
 		}
 		return false;
 	}
-
+	
 	@Override
 	public double Similarity(OneCode t) {
 		if (t instanceof chainFieldAccess)
@@ -52,13 +60,13 @@ public class referedFieldAccess extends fieldAccess {
 		}
 		return 0;
 	}
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue, CSStatementHandler smthandler,
 			String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
 		return CodeSynthesisHelper.HandleInferredField(HandleCodeSynthesis(squeue, smthandler), squeue, smthandler, reservedword, expectedinfer);
 	}
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
