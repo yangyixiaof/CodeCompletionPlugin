@@ -67,7 +67,7 @@ public class SearchSpecificationOfAReference {
 		{
 			MemberSorter ms = prioriqueue.poll();
 			total++;
-			if (total > PredictMetaInfo.MaxTypeSpecificationSize || (total > 1 && ms.getSimilarity() <= PredictMetaInfo.TwoTypeStringSimilarThreshold))
+			if (total > PredictMetaInfo.MaxTypeSpecificationSize || (total > 0 && ms.getSimilarity() <= PredictMetaInfo.TwoTypeStringSimilarThreshold))
 			{
 				break;
 			}
@@ -106,7 +106,7 @@ public class SearchSpecificationOfAReference {
 		{
 			MemberSorter ms = prioriqueue.poll();
 			total++;
-			if (total > PredictMetaInfo.MaxFieldSpecificationSize || (total > 1 && ms.getSimilarity() <= PredictMetaInfo.TwoFieldStringSimilarThreshold))
+			if (total > PredictMetaInfo.MaxFieldSpecificationSize || (total > 0 && ms.getSimilarity() <= PredictMetaInfo.TwoFieldStringSimilarThreshold))
 			{
 				break;
 			}
@@ -168,7 +168,7 @@ public class SearchSpecificationOfAReference {
 		{
 			MemberSorter ms = prioriqueue.poll();
 			total++;
-			if (total > PredictMetaInfo.MaxMethodSpecificationSize || (total > 1 && ms.getSimilarity() <= PredictMetaInfo.TwoMethodStringSimilarityThreshold))
+			if (total > PredictMetaInfo.MaxMethodSpecificationSize || (total > 0 && ms.getSimilarity() <= PredictMetaInfo.TwoMethodStringSimilarityThreshold))
 			{
 				break;
 			}

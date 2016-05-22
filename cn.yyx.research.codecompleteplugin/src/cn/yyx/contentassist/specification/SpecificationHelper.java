@@ -17,9 +17,9 @@ public class SpecificationHelper {
 		String maxMember = null;
 		String maxMemberType = null;
 		MethodMember maxMm = null;
+		double maxsimilar = 0;
 		Set<String> keys = po.keySet();
 		Iterator<String> itr = keys.iterator();
-		double maxsimilar = 0;
 		while (itr.hasNext())
 		{
 			String type = itr.next();
@@ -65,6 +65,10 @@ public class SpecificationHelper {
 				}
 			}
 		}
+		if (maxRef == null || maxMember == null || maxMemberType == null)
+		{
+			return null;
+		}
 		RefAndModifiedMember result = new RefAndModifiedMember(maxRef, maxMember, maxMemberType, maxMm);
 		return result;
 	}
@@ -74,6 +78,7 @@ public class SpecificationHelper {
 		String maxRef = null;
 		String maxMember = null;
 		String maxMemberType = null;
+		MethodMember maxMm = null;
 		double maxsimilar = 0;
 		Iterator<String> itr = codes.iterator();
 		while (itr.hasNext())
@@ -96,6 +101,7 @@ public class SpecificationHelper {
 						maxMember = cmp;
 						maxRef = code;
 						maxMemberType = mm.getReturntype();
+						maxMm = mm;
 					}
 				}
 			}
@@ -119,11 +125,11 @@ public class SpecificationHelper {
 				}
 			}
 		}
-		RefAndModifiedMember result = null;
-		if (maxMember == null || maxMemberType == null)
+		if (maxRef == null || maxMember == null || maxMemberType == null)
 		{
-			result = new RefAndModifiedMember(maxRef, maxMember, maxMemberType, null);
+			return null;
 		}
+		RefAndModifiedMember result = new RefAndModifiedMember(maxRef, maxMember, maxMemberType, maxMm);
 		return result;
 	}
 	
