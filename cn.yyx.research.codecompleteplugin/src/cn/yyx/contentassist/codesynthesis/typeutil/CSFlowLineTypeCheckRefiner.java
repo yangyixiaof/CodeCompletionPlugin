@@ -7,7 +7,7 @@ import java.util.List;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 
-public class CSFlowLineTypeCheckHelper {
+public class CSFlowLineTypeCheckRefiner {
 	
 	public static List<FlowLineNode<CSFlowLineData>> RetainTheFallThroughFlowLineNodes(List<FlowLineNode<CSFlowLineData>> ls, CCType checkclass)
 	{
