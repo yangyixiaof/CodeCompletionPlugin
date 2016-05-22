@@ -7,11 +7,11 @@ import cn.yyx.contentassist.commonutils.CheckUtil;
 
 public class FlowLines<T> {
 	
-	private FlowLineNode<T> heads = null;
-	private List<FlowLineNode<T>> tails = new LinkedList<FlowLineNode<T>>();
-	private List<FlowLineNode<T>> temptails = new LinkedList<FlowLineNode<T>>();
+	protected FlowLineNode<T> heads = null;
+	protected List<FlowLineNode<T>> tails = new LinkedList<FlowLineNode<T>>();
+	protected List<FlowLineNode<T>> temptails = new LinkedList<FlowLineNode<T>>();
 	
-	private boolean opflag = false;
+	protected boolean opflag = false;
 	
 	public FlowLines() {
 	}
@@ -28,7 +28,7 @@ public class FlowLines<T> {
 		getTails().add(fln);
 	}
 	
-	private void CheckOperationPermit()
+	protected void CheckOperationPermit()
 	{
 		if (!opflag)
 		{
@@ -100,6 +100,11 @@ public class FlowLines<T> {
 				InsertSilb(nextfst, addnode);
 			}
 		}
+		TempTailOperation(addnode);
+	}
+	
+	protected void TempTailOperation(FlowLineNode<T> addnode)
+	{
 		temptails.add(addnode);
 	}
 	

@@ -27,6 +27,8 @@ public class CodeSynthesisPredictTask implements Runnable {
 	CodeSynthesisFlowLines csfl = null;
 	ASTOffsetInfo aoi = null;
 	PredictInfer pi = new PredictInfer();
+	int totalsuccess = 0;
+	int totalstep = 0;
 
 	public CodeSynthesisPredictTask(PreTryFlowLineNode<Sentence> pretrylastpara, SynthesisHandler sh, AeroLifeCycle alc,
 			CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi) {
@@ -39,104 +41,72 @@ public class CodeSynthesisPredictTask implements Runnable {
 
 	@Override
 	public void run() {
-		DoFirstRealCodePredictAndSynthesis(sh, alc, csfl, aoi);
-		// normal extend.
-		int extendtimes = 1;
-		while ((csfl.getValidovers() < PredictMetaInfo.OneCodeSynthesisTaskValidFinalSize)
-				&& (extendtimes < PredictMetaInfo.MaxExtendLength)) {
-			DoOneRealCodePredictAndSynthesis(alc, csfl, aoi);
-		}
-	}
-
-	private void DoFirstRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, CodeSynthesisFlowLines csfl,
-			ASTOffsetInfo aoi) {
-		// first level initial the CodeSynthesisFlowLine.
-		csfl.BeginOperation();
-		
-		VirtualCSFlowLineQueue vcsdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(
-				-1, null, "", null, false, false, TypeComputationKind.NoOptr, TypeComputationKind.NoOptr, sh), 0));
-		
-		FlowLineNode<Sentence> fln = pretrylast;
-		int expectsize = Math.min(PredictMetaInfo.OneLevelExtendMaxSequence, PredictMetaInfo.OneExtendMaxSequence);
-		List<PredictProbPair> pps = pi.InferNextGeneration(alc, expectsize, fln, null);
-		HandleExtendOneCodeSynthesis(pps, vcsdflq, fln, csfl, aoi);
-		
-		csfl.EndOperation();
-	}
-
-	/**
-	 * for second and beyond turns.
-	 * 
-	 * @param alc
-	 * @param fls
-	 * @param csfl
-	 */
-	private void DoOneRealCodePredictAndSynthesis(AeroLifeCycle alc, CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi) {
-		csfl.BeginOperation();
-
-		List<FlowLineNode<CSFlowLineData>> tails = csfl.getTails();
-		Iterator<FlowLineNode<CSFlowLineData>> itr = tails.iterator();
-		List<PredictProbPair> pps = null;
-		Sentence presete = null;
-		int sparesize = 0;
-		int remain = PredictMetaInfo.OneLevelExtendMaxSequence;
-		int currsize = ComputePhysicalNodeSizeFromDataNodes(tails) + 1;
-		while (itr.hasNext()) {
-			FlowLineNode<CSFlowLineData> tail = itr.next();
-			if (!tail.isCouldextend()) {
-				continue;
-			}
-			Sentence nowsete = tail.getData().getSete();
-			if (nowsete != presete) {
-				currsize--;
-				int expectsize = Math.min(remain / currsize, PredictMetaInfo.OneExtendMaxSequence);
-				expectsize += sparesize;
-				int gap = expectsize - PredictMetaInfo.OneExtendMaxSequence;
-				sparesize = gap > 0 ? gap : 0;
-				expectsize -= sparesize;
-				pps = pi.InferNextGeneration(alc, expectsize, tail, pretrylast);
-				int realsize = pps.size();
-				sparesize += (expectsize - realsize);
-				remain -= realsize;
-			}
-			CSFlowLineQueue csdflq = new CSFlowLineQueue(tail);
-			HandleExtendOneCodeSynthesis(pps, csdflq, tail, csfl, aoi);
-			presete = nowsete;
-		}
-
-		csfl.EndOperation();
+		RecursiveCodePredictAndSynthesis(0, null);
 	}
 	
-	private int ComputePhysicalNodeSizeFromDataNodes(List<FlowLineNode<CSFlowLineData>> tails)
-	{
-		int total = 0;
-		Sentence presete = null;
-		Iterator<FlowLineNode<CSFlowLineData>> itr = tails.iterator();
-		while (itr.hasNext()) {
-			FlowLineNode<CSFlowLineData> tail = itr.next();
-			Sentence nowsete = tail.getData().getSete();
-			if (nowsete != presete) {
-				total++;
-			}
-			presete = nowsete;
-		}
-		return total;
-	}
-
 	@SuppressWarnings("unchecked")
-	private void HandleExtendOneCodeSynthesis(List<PredictProbPair> pps, CSFlowLineQueue csdflq, FlowLineNode<?> fln,
-			CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi) {
+	private void RecursiveCodePredictAndSynthesis(int level, FlowLineNode<CSFlowLineData> start)
+	{
+		if (level >= PredictMetaInfo.MaxExtendLength)
+		{
+			return;
+		}
+		if (TotalStopCondition())
+		{
+			return;
+		}
+		List<PredictProbPair> pps = null;
+		FlowLineNode<?> fln = start;
+		CSFlowLineQueue csdflq = null;
+		if (start == null)
+		{
+			csdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(
+				-1, null, "", null, false, false, TypeComputationKind.NoOptr, TypeComputationKind.NoOptr, sh), 0));
+		}
+		else {
+			csdflq = new CSFlowLineQueue(start);
+		}
+		int expectsize = PredictMetaInfo.OneExtendMaxSequence;
+		if (level == 0)
+		{
+			expectsize = PredictMetaInfo.OneExtendFirstMaxSequence;
+			fln = pretrylast;
+			pps = pi.InferNextGeneration(alc, expectsize, fln, null);
+		}
+		else
+		{
+			pps = pi.InferNextGeneration(alc, expectsize, fln, pretrylast);
+		}
 		Iterator<PredictProbPair> pitr = pps.iterator();
-		while (pitr.hasNext()) {
+		while (pitr.hasNext())
+		{
+			if (level == 0)
+			{
+				totalsuccess = 0;
+				totalstep = 0;
+			}
+			if (TotalStopCondition())
+			{
+				break;
+			}
+			
 			PredictProbPair ppp = pitr.next();
 			Sentence pred = ppp.getPred();
 			CSStatementHandler csh = new CSStatementHandler(pred, ppp.getProb(), aoi);
 			statement predsmt = pred.getSmt();
 			try {
+				
 				List<FlowLineNode<CSFlowLineData>> addnodes = predsmt.HandleCodeSynthesis(csdflq, csh);
+				totalstep++;
+				
 				if (addnodes != null && addnodes.size() > 0) {
 					Iterator<FlowLineNode<CSFlowLineData>> aitr = addnodes.iterator();
 					while (aitr.hasNext()) {
+						if (TotalStopCondition())
+						{
+							break;
+						}
+						
 						FlowLineNode<CSFlowLineData> addnode = aitr.next();
 						boolean over = false;
 						try {
@@ -155,6 +125,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 						}
 						if (over) {
 							csfl.AddCodeSynthesisOver(addnode, pred);
+							totalsuccess++;
 						} else {
 							if (csdflq instanceof VirtualCSFlowLineQueue) {
 								// means first infer level.
@@ -162,6 +133,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 							} else {
 								csfl.AddToNextLevel(addnode, (FlowLineNode<CSFlowLineData>) fln);
 							}
+							RecursiveCodePredictAndSynthesis(level+1, addnode);
 						}
 					}
 				}
@@ -173,6 +145,15 @@ public class CodeSynthesisPredictTask implements Runnable {
 				continue;
 			}
 		}
+	}
+	
+	public boolean TotalStopCondition()
+	{
+		if (totalsuccess >= PredictMetaInfo.OneFirstMaxTotalSuccess || totalstep >= PredictMetaInfo.OneExtendFirstTotalStep)
+		{
+			return true;
+		}
+		return false;
 	}
 
 }

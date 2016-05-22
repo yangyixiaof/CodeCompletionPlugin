@@ -19,6 +19,7 @@ public class CodeSynthesisFlowLines extends FlowLines<CSFlowLineData> {
 	Sentence sete = null;
 	
 	public CodeSynthesisFlowLines() {
+		opflag = true;
 	}
 	
 	public void AddCodeSynthesisOver(FlowLineNode<CSFlowLineData> finalover, Sentence pred)
@@ -57,7 +58,25 @@ public class CodeSynthesisFlowLines extends FlowLines<CSFlowLineData> {
 		return res;
 	}
 	
-	public List<String> GetSynthesisedCode()
+	@Override
+	protected void TempTailOperation(FlowLineNode<CSFlowLineData> addnode) {
+	}
+	
+	@Override
+	protected void CheckOperationPermit() {
+	}
+	
+	@Override
+	public void BeginOperation()
+	{
+	}
+	
+	@Override
+	public void EndOperation()
+	{
+	}
+	
+	/*public List<String> GetSynthesisedCode()
 	{
 		LinkedList<String> res = new LinkedList<String>();
 		FlowLineNode<CSFlowLineData> head = getHeads();
@@ -70,7 +89,7 @@ public class CodeSynthesisFlowLines extends FlowLines<CSFlowLineData> {
 			tmp = head.getSilbnext();
 		}
 		return res;
-	}
+	}*/
 
 	public Map<String, FlowLineNode<Sentence>> getHeadsconnect() {
 		return headsconnect;
