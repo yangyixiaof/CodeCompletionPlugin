@@ -54,6 +54,7 @@ public class forUpdOverStatement extends statement {
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
+		// TODO reference to fullEndStatement, must generate the synthesised code.
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		result.add(new FlowLineNode<CSFlowLineData>(new CSForUpdOverData(squeue.GenerateNewNodeId(), smthandler.getSete(),
 				") {\n}", null, true, true, null, null, squeue.GetLastHandler()),
@@ -70,7 +71,7 @@ public class forUpdOverStatement extends statement {
 		{
 			throw new CodeSynthesisException("for upd over does not have init over in pre.");
 		}
-		return false;
+		return true;
 	}
 
 }
