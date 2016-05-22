@@ -47,7 +47,7 @@ public class LCSComparison {
 				}
 			}
 		}
-		return 0.5*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.5*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
+		return 0.4*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.6*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
 	public static double LCSSimilarity(List<statement> x, List<statement> y) {
@@ -85,7 +85,7 @@ public class LCSComparison {
 				}
 			}
 		}
-		return 0.5*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.5*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
+		return 0.4*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.6*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
 	public static double LCSSimilarityListType(List<type> x, List<type> y) {
@@ -123,7 +123,7 @@ public class LCSComparison {
 				}
 			}
 		}
-		return 0.5*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.5*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
+		return 0.4*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.6*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
 	public static double LCSSimilarityArgType(List<argType> x, List<argType> y) {
@@ -161,7 +161,7 @@ public class LCSComparison {
 				}
 			}
 		}
-		return 0.5*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.5*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
+		return 0.4*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.6*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
 	public static double LCSSimilarityTypeArgument(List<typeArgument> x, List<typeArgument> y) {
@@ -199,7 +199,7 @@ public class LCSComparison {
 				}
 			}
 		}
-		return 0.5*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.5*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
+		return 0.4*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.6*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
 	public static double LCSSimilarityString(String[] x, String[] y) {
@@ -235,7 +235,7 @@ public class LCSComparison {
 				}
 			}
 		}
-		return 0.5*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.5*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
+		return 0.4*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.6*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
 	private static double ComputeTwoStringDirectSimilarity(String one, String two)
