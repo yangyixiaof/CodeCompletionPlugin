@@ -18,11 +18,12 @@ public class TypeComputer {
 			{
 				return c2;
 			}
-			if (c1 == null || c2 == null)
-			{
-				return null;
-			}
-			throw new TypeConflictException("This Noptr but two class all have resolved class.");
+			return c1;
+			//if (c1 == null || c2 == null)
+			//{
+			//	return null;
+			//}
+			//throw new TypeConflictException("This Noptr but two class all have resolved class.");
 		case JudgeOptr:
 			if (c1 != null && c2 != null)
 			{
