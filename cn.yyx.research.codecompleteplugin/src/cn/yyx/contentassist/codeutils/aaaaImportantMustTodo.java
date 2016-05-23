@@ -40,6 +40,8 @@ public class aaaaImportantMustTodo {
 	
 	// TODO Interface of ReferedExpression HandleInferredField and HandleInferredMethodReference are not handled. Mainly MethodReference and FieldAccess.
 	
+	// TODO if while and do-while enhanced-for needs to be like for.
+	
 	// Solved. Complex type should be resolved one level by level. This is resolved by level. Especially, ParameterizedType as List<String> can not be resolved but List can.
 	
 	// Solved. the handle of @HO can only be in the very end. remember to handle @HO at very end. No need to do that, array start and array end signal has solved the problem.
