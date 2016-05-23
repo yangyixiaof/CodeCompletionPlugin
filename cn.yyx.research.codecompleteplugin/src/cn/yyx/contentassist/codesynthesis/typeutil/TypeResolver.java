@@ -38,6 +38,7 @@ public class TypeResolver {
 			tpls = tp.HandleCodeSynthesis(squeue, smthandler);
 		} catch (CodeSynthesisException e) {
 			e.printStackTrace();
+			System.exit(1);
 		}
 		if (tpls != null) {
 			Iterator<FlowLineNode<CSFlowLineData>> itr = tpls.iterator();

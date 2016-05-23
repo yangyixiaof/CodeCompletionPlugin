@@ -143,6 +143,10 @@ public class CodeSynthesisPredictTask implements Runnable {
 						"Error occurs when doing code synthesis, this predict and the following will be ignored.");
 				e.printStackTrace();
 				continue;
+			} catch (Exception e) {
+				e.printStackTrace();
+			} catch (Error e) {
+				e.printStackTrace();
 			}
 		}
 	}
