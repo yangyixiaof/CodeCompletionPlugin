@@ -8,6 +8,7 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSHoleData;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableHolderData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
@@ -115,19 +116,25 @@ public class variableDeclarationHolderStatement extends statement{
 			while (itr.hasNext())
 			{
 				FlowLineNode<CSFlowLineData> fln = itr.next();
-				result.add(new FlowLineNode<CSFlowLineData>(new CSVariableHolderData(modified, fln.getData()), fln.getProbability()));
+				boolean needensuretype = false;
+				CSFlowLineData data = fln.getData();
+				if (data instanceof CSHoleData)
+				{
+					needensuretype = true;
+				}
+				result.add(new FlowLineNode<CSFlowLineData>(new CSVariableHolderData(modified, needensuretype, data), fln.getProbability()));
 			}
 		}
 		else
 		{
 			modified = GetModifiedName(squeue, smthandler, typecode, name);
-			result.add(new FlowLineNode<CSFlowLineData>(new CSVariableHolderData(modified, squeue.GenerateNewNodeId(), smthandler.getSete(), " "+modified, null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+			result.add(new FlowLineNode<CSFlowLineData>(new CSVariableHolderData(modified, false, squeue.GenerateNewNodeId(), smthandler.getSete(), " "+modified, null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		}
 		if (modified == null)
 		{
 			throw new CodeSynthesisException("modified name in variableHolder null, what the fuck?");
 		}
-		CSFlowLineHelper.AddToEveryRexpParNodeExtraVariableHolderInfo(result, modified);
+		// CSFlowLineHelper.AddToEveryRexpParNodeExtraVariableHolderInfo(result, modified);
 		return result;
 	}
 	

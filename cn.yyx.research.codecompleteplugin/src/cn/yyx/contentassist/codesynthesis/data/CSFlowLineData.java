@@ -28,7 +28,7 @@ public class CSFlowLineData implements CSDataStructure{
 	private TypeComputationKind pretck = TypeComputationKind.NoOptr;
 	private TypeComputationKind posttck = TypeComputationKind.NoOptr;
 	
-	private CSExtraData csed = new CSExtraData();
+	protected CSExtraData csed = new CSExtraData();
 	
 	// this boolean field is used to skip some useless node.
 	// private boolean shouldskip = false;

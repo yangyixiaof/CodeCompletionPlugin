@@ -6,9 +6,7 @@ import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codepredict.Sentence;
-import cn.yyx.contentassist.codesynthesis.data.CSDataMetaInfo;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.CSVariableHolderExtraInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
@@ -42,16 +40,6 @@ public class CSFlowLineHelper {
 		while (itr.hasNext()) {
 			FlowLineNode<CSFlowLineData> fln = itr.next();
 			fln.getData().getExtraData().AddExtraData(key, info);
-		}
-	}
-	
-	public static void AddToEveryRexpParNodeExtraVariableHolderInfo(List<FlowLineNode<CSFlowLineData>> one, String varname)
-	{
-		Iterator<FlowLineNode<CSFlowLineData>> itr = one.iterator();
-		while (itr.hasNext()) {
-			FlowLineNode<CSFlowLineData> fln = itr.next();
-			CSFlowLineData flndata = fln.getData();
-			flndata.getExtraData().AddExtraData(CSDataMetaInfo.VariableHolders, new CSVariableHolderExtraInfo(varname, flndata.getDcls()));
 		}
 	}
 	
