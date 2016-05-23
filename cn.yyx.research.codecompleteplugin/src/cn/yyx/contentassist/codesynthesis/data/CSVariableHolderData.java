@@ -34,6 +34,13 @@ public class CSVariableHolderData extends CSFlowLineData {
 		{
 			AddToEveryRexpParNodeExtraVariableHolderInfo(d2.getDcls());
 		}
+		else
+		{
+			if (getDcls() != null)
+			{
+				AddToEveryRexpParNodeExtraVariableHolderInfo(getDcls());
+			}
+		}
 		return super.Merge(prefix, concator, d2, postfix, squeue, smthandler, oneafter, beforetwo);
 	}
 	
