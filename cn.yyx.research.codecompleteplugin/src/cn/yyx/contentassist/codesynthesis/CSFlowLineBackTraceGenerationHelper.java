@@ -90,7 +90,7 @@ public class CSFlowLineBackTraceGenerationHelper {
 		{
 			two = two.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(twoid);
 		}
-		String oneid = GetConcateId(two.getPrev(), one);
+		String oneid = GetConcateId(onestart, one); // two.getPrev()
 		if (one.getData().getSynthesisCodeManager().getBlockstart() != null)
 		{
 			one = one.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(oneid);
@@ -100,8 +100,8 @@ public class CSFlowLineBackTraceGenerationHelper {
 		String tresid = oneid + "." + twoid;
 		one.getData().getSynthesisCodeManager().AddSynthesisCode(tresid, tres);
 		
-		twostart.getData().getSynthesisCodeManager().setBlockstart(one);
 		two.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
+		twostart.getData().getSynthesisCodeManager().setBlockstart(one);
 		onestart.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
 		one.getData().getSynthesisCodeManager().setBlockstart(one);
 		
