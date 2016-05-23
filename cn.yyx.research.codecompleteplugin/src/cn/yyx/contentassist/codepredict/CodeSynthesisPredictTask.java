@@ -145,8 +145,10 @@ public class CodeSynthesisPredictTask implements Runnable {
 				continue;
 			} catch (Exception e) {
 				e.printStackTrace();
+				System.exit(1);
 			} catch (Error e) {
 				e.printStackTrace();
+				System.exit(1);
 			}
 		}
 	}

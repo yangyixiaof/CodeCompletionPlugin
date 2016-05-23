@@ -125,6 +125,13 @@ public class argumentList implements OneCode {
 			Iterator<FlowLineNode<CSFlowLineData>> codeitr = pcn.iterator();
 			while (codeitr.hasNext()) {
 				FlowLineNode<CSFlowLineData> code = codeitr.next();
+				
+				// testing code, do not remove.
+				if (code == null || code.getData() == null)
+				{
+					new Exception().printStackTrace();
+				}
+				
 				CCType rtclass = code.getData().getDcls();
 				if (TypeCheckHelper.CanBeMutualCast(c, rtclass)) {
 					select = code.getData().getData();

@@ -306,6 +306,8 @@ public class CodeSynthesisHelper {
 	{
 		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(smthandler, SignalHelper.HasEmBeforeMethod(squeue));
 		csmsh.setNextstart(squeue.getLast());
+		
+		// set method name.
 		String methodname = null;
 		if (methodnameoc != null)
 		{
