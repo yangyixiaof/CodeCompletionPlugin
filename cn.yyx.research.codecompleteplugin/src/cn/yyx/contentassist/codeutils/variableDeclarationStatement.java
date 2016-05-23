@@ -65,7 +65,7 @@ public class variableDeclarationStatement extends statement{
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
-			result.add(new FlowLineNode<CSFlowLineData>(new CSVariableDeclarationData(fln.getData()), fln.getProbability()));
+			result.add(new FlowLineNode<CSFlowLineData>(new CSVariableDeclarationData(fln.getData().getData().trim(), fln.getData()), fln.getProbability()));
 		}
 		return result;
 	}
