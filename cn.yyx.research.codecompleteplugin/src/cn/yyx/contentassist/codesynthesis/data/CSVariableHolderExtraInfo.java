@@ -89,4 +89,9 @@ public class CSVariableHolderExtraInfo implements CSSelfClosedMergable{
 		this.clss = clss;
 	}
 	
+	@Override
+	public String toString() {
+		return "varname:" + varname + ";cls:" + cls + ";vars:" + vars + ";clss:" + clss;
+	}
+	
 }

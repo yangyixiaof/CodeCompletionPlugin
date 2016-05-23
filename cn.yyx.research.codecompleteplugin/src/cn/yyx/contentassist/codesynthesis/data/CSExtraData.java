@@ -94,4 +94,9 @@ public class CSExtraData implements CSSelfClosedMergable{
 		return result;
 	}
 	
+	@Override
+	public String toString() {
+		return "extras:" + extras.toString();
+	}
+	
 }
