@@ -96,6 +96,18 @@ public class CSFlowLineQueue {
 		return BackSearchForSpecialClass(cls, signals);
 	}
 	
+	public FlowLineNode<CSFlowLineData> BackSearchForHead()
+	{
+		FlowLineNode<CSFlowLineData> tmp = last;
+		FlowLineNode<CSFlowLineData> pretmp = null;
+		while (tmp != null)
+		{
+			pretmp = tmp;
+			tmp = tmp.getPrev();
+		}
+		return pretmp;
+	}
+	
 	public FlowLineNode<CSFlowLineData> BackSearchForSpecialClass(Class<?> cls,
 			Stack<Integer> signals) throws CodeSynthesisException {
 		FlowLineNode<CSFlowLineData> tmp = last;

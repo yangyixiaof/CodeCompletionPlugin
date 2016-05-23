@@ -33,6 +33,14 @@ public class CSFlowLineBackTraceGenerationHelper {
 		// start node must be the descendant of the stop node.
 		// the generated code includes start node and stop node.
 		// the start node itself must be handled before invoke this function.
+		if (stopnode == null)
+		{
+			stopnode = squeue.BackSearchForHead();
+			if (stopnode == null)
+			{
+				stopnode = startnode;
+			}
+		}
 		PreAddExtraLastNodeToStopNode(stopnode);
 		
 		FlowLineNode<CSFlowLineData> mergestart = startnode;
@@ -142,6 +150,14 @@ public class CSFlowLineBackTraceGenerationHelper {
 
 	public static List<FlowLineNode<CSFlowLineData>> GenerateNotYetAddedSynthesisCode(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, FlowLineNode<CSFlowLineData> startnode, FlowLineNode<CSFlowLineData> stopnode) throws CodeSynthesisException {
+		if (stopnode == null)
+		{
+			stopnode = squeue.BackSearchForHead();
+			if (stopnode == null)
+			{
+				stopnode = startnode;
+			}
+		}
 		PreAddExtraLastNodeToStopNode(stopnode);
 		
 		FlowLineNode<CSFlowLineData> queuestartnode = squeue.getLast();
