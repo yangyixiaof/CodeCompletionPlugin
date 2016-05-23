@@ -38,7 +38,7 @@ public class aaaaImportantMustTodo {
 	
 	// TODO MethodReference A::b. what is the exactly infer form, this needs to be checked.
 	
-	// TODO Interface of ReferedExpression HandleInferredField and HandleInferredMethodReference are not handled.
+	// TODO Interface of ReferedExpression HandleInferredField and HandleInferredMethodReference are not handled. Mainly MethodReference and FieldAccess.
 	
 	// Solved. Complex type should be resolved one level by level. This is resolved by level. Especially, ParameterizedType as List<String> can not be resolved but List can.
 	
