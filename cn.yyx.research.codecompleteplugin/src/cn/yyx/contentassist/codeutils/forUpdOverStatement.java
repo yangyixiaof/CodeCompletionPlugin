@@ -15,13 +15,17 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class forUpdOverStatement extends statement {
-
-	public forUpdOverStatement(String smtcode) {
+	
+	statement smt = null;
+	
+	public forUpdOverStatement(statement smt, String smtcode) {
 		super(smtcode);
+		this.smt = smt;
 	}
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
+		// TODO 22222222222222
 		if (t instanceof forUpdOverStatement) {
 			return true;
 		}
@@ -30,6 +34,7 @@ public class forUpdOverStatement extends statement {
 
 	@Override
 	public double Similarity(OneCode t) {
+		// TODO 22222222222222
 		if (t instanceof forUpdOverStatement) {
 			return 1;
 		}
@@ -54,6 +59,7 @@ public class forUpdOverStatement extends statement {
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
+		// TODO 22222222222222
 		FlowLineNode<CSFlowLineData> fln = new FlowLineNode<CSFlowLineData>(new CSForUpdOverData(squeue.GenerateNewNodeId(), smthandler.getSete(),
 				") {\n}", null, true, true, null, null, squeue.GetLastHandler()),
 				smthandler.getProb());

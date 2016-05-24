@@ -15,13 +15,17 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class forIniOverStatement extends statement{
-
-	public forIniOverStatement(String smtcode) {
+	
+	statement smt = null;
+	
+	public forIniOverStatement(statement smt, String smtcode) {
 		super(smtcode);
+		this.smt = smt;
 	}
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
+		// TODO 22222222222222
 		if (t instanceof forIniOverStatement)
 		{
 			return true;
@@ -31,6 +35,7 @@ public class forIniOverStatement extends statement{
 
 	@Override
 	public double Similarity(OneCode t) {
+		// TODO 22222222222222
 		if (t instanceof forIniOverStatement)
 		{
 			return 1;
@@ -65,6 +70,7 @@ public class forIniOverStatement extends statement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
+		// TODO 22222222222222
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		result.add(new FlowLineNode<CSFlowLineData>(new CSForIniOverData(squeue.GenerateNewNodeId(), smthandler.getSete(), ";", null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
@@ -72,6 +78,7 @@ public class forIniOverStatement extends statement{
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
+		// TODO 22222222222222
 		Stack<Integer> signals = new Stack<Integer>();
 		signals.push(DataStructureSignalMetaInfo.CommonForInitWaitingOver);
 		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSForData.class, signals);
