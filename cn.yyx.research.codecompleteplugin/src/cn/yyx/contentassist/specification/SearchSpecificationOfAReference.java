@@ -235,7 +235,7 @@ public class SearchSpecificationOfAReference {
 			JavaProject project = (JavaProject) sourceunit.getJavaProject();
 			SearchableEnvironment environment = project.newSearchableNameEnvironment(owner);
 			// code complete
-			CompletionEngine engine = new CompletionEngine(environment, collector, project.getOptions(true), project, owner, null);
+			CompletionEngine engine = new CompletionEngine(environment, collector, project.getOptions(true), project, owner, monitor);
 			engine.complete(mcu, position, 0, sourceunit);
 		} catch (Exception x) {
 			x.printStackTrace();
