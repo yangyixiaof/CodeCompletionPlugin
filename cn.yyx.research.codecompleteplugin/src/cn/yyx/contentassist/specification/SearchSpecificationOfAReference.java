@@ -29,15 +29,17 @@ import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codehelper.MyCompilationUnit;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.StringUtil;
+import cn.yyx.contentassist.commonutils.TimeOutProgressMonitor;
 
 @SuppressWarnings("restriction")
 public class SearchSpecificationOfAReference {
 	
-	public static List<TypeMember> SearchTypeSpecificationByPrefix(String prefix, JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor)
+	public static List<TypeMember> SearchTypeSpecificationByPrefix(String prefix, JavaContentAssistInvocationContext javacontext)
 	{
 		List<TypeMember> tmlist = new LinkedList<TypeMember>();
 		CompletionProposalCollector collector = GetTypeMemberProposalCollector(javacontext);
-		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, null);
+		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(1000);
+		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, topm);
 		Iterator<ICompletionProposal> itr = proposals.iterator();
 		Queue<MemberSorter> prioriqueue = new PriorityQueue<MemberSorter>();
 		while (itr.hasNext())
@@ -76,10 +78,11 @@ public class SearchSpecificationOfAReference {
 		return tmlist;
 	}
 	
-	public static List<FieldMember> SearchFieldSpecificationByPrefix(String prefix, JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor)
+	public static List<FieldMember> SearchFieldSpecificationByPrefix(String prefix, JavaContentAssistInvocationContext javacontext)
 	{
 		CompletionProposalCollector collector = GetFieldMemberProposalCollector(javacontext);
-		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, null);
+		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(1000);
+		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, topm);
 		Iterator<ICompletionProposal> itr = proposals.iterator();
 		Queue<MemberSorter> prioriqueue = new PriorityQueue<MemberSorter>();
 		while (itr.hasNext())
@@ -115,10 +118,11 @@ public class SearchSpecificationOfAReference {
 		return fmlist;
 	}
 	
-	public static List<MethodMember> SearchMethodSpecificationByPrefix(String prefix, JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor)
+	public static List<MethodMember> SearchMethodSpecificationByPrefix(String prefix, JavaContentAssistInvocationContext javacontext)
 	{
 		CompletionProposalCollector collector = GetMethodMemberProposalCollector(javacontext);
-		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, null);
+		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(1500);
+		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, topm);
 		Iterator<ICompletionProposal> itr = proposals.iterator();
 		String cmp = StringUtil.GetContentBehindFirstWhiteSpace(prefix);
 		Queue<MemberSorter> prioriqueue = new PriorityQueue<MemberSorter>();
@@ -177,12 +181,13 @@ public class SearchSpecificationOfAReference {
 		return mmlist;
 	}
 	
-	public static MembersOfAReference SearchFunctionSpecificationByPrefix(String prefix, JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor)
+	public static MembersOfAReference SearchFunctionSpecificationByPrefix(String prefix, JavaContentAssistInvocationContext javacontext)
 	{
 		// the prefix must be as the following form: <form:System.out.>
 		MembersOfAReference result = new MembersOfAReference();
 		CompletionProposalCollector collector = GetProposalCollector(javacontext);
-		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, null);
+		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(5000);
+		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, topm);
 		// System.out.println("start print proposals. proposals length:" + proposals.size());
 		Iterator<ICompletionProposal> itr = proposals.iterator();
 		 int idx = 0;

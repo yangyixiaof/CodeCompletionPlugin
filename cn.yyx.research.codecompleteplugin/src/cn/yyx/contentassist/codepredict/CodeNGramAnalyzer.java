@@ -3,7 +3,6 @@ package cn.yyx.contentassist.codepredict;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -19,8 +18,7 @@ import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class CodeNGramAnalyzer {
 
-	public static List<String> PossibleCodes(JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor,
-			char lastchar) {
+	public static List<String> PossibleCodes(JavaContentAssistInvocationContext javacontext, char lastchar) {
 		// TODO This whole mechanism needs to be fully tested.
 		System.err.println("HaHa Test!!!!!!!!!!!!!!");
 		ArrayList<String> list = new ArrayList<String>();
@@ -63,7 +61,7 @@ public class CodeNGramAnalyzer {
 			
 			PredictionFetch pf = new PredictionFetch();
 			// monitor this set to null.
-			return pf.FetchPrediction(javacontext, null, sohandler, analist, list, aoi, lastchar);
+			return pf.FetchPrediction(javacontext, sohandler, analist, list, aoi, lastchar);
 
 		} catch (JavaModelException e) {
 			e.printStackTrace();

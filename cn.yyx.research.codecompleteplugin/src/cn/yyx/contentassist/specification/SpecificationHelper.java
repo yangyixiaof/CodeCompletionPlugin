@@ -27,7 +27,7 @@ public class SpecificationHelper {
 			// MembersOfAReference members = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(refname + concator, ch.getJavacontext(), ch.getMonitor());
 			if (hintismethod)
 			{
-				List<MethodMember> mmls = SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix(refname + concator, ch.getJavacontext(), ch.getMonitor());
+				List<MethodMember> mmls = SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix(refname + concator, ch.getJavacontext());
 				Iterator<MethodMember> mmitr = mmls.iterator();
 				while (mmitr.hasNext())
 				{
@@ -47,7 +47,7 @@ public class SpecificationHelper {
 			}
 			else
 			{
-				List<FieldMember> fmls = SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix(refname + concator, ch.getJavacontext(), ch.getMonitor());
+				List<FieldMember> fmls = SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix(refname + concator, ch.getJavacontext());
 				Iterator<FieldMember> fmitr = fmls.iterator();
 				while (fmitr.hasNext())
 				{
@@ -87,7 +87,7 @@ public class SpecificationHelper {
 			// MembersOfAReference members = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(code + concator, ch.getJavacontext(), ch.getMonitor());
 			if (hintismethod)
 			{
-				List<MethodMember> mmls = SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix(code + concator, ch.getJavacontext(), ch.getMonitor());
+				List<MethodMember> mmls = SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix(code + concator, ch.getJavacontext());
 				Iterator<MethodMember> mmitr = mmls.iterator();
 				while (mmitr.hasNext())
 				{
@@ -107,7 +107,7 @@ public class SpecificationHelper {
 			}
 			else
 			{
-				List<FieldMember> fmls = SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix(code + concator, ch.getJavacontext(), ch.getMonitor());
+				List<FieldMember> fmls = SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix(code + concator, ch.getJavacontext());
 				Iterator<FieldMember> fmitr = fmls.iterator();
 				while (fmitr.hasNext())
 				{

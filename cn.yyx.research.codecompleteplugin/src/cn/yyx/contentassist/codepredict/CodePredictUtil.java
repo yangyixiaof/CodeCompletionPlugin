@@ -33,7 +33,7 @@ public class CodePredictUtil implements CodePredict {
 			if (TerminationHelper.isTerminatedChar(lastchar)) {
 				// detailed completion will be realized later. this is difficult in technique.
 				//  || lastchar == ',' || lastchar == '(' || lastchar == ')'
-				List<String> proposalcnt = CodeNGramAnalyzer.PossibleCodes(javacontext, monitor, lastchar);
+				List<String> proposalcnt = CodeNGramAnalyzer.PossibleCodes(javacontext, lastchar);
 				ProposalHelper.ProposalContentToFormalFormat(javacontext, proposalcnt, proposals);
 			} else {
 				proposals.add(new CompletionProposal(IntelliJavaProposalComputer.OnlyExpressionSupport,

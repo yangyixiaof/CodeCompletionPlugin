@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 
 import cn.yyx.contentassist.aerospikehandle.AeroLifeCycle;
@@ -28,7 +27,7 @@ import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class PredictionFetch {
 	
-	public List<String> FetchPrediction(JavaContentAssistInvocationContext javacontext, IProgressMonitor monitor, ScopeOffsetRefHandler handler, List<String> analist, ArrayList<String> result, ASTOffsetInfo aoi, char lastchar)
+	public List<String> FetchPrediction(JavaContentAssistInvocationContext javacontext, ScopeOffsetRefHandler handler, List<String> analist, ArrayList<String> result, ASTOffsetInfo aoi, char lastchar)
 	{
 		AeroLifeCycle alc = new AeroLifeCycle();
 		alc.Initialize();
@@ -44,7 +43,7 @@ public class PredictionFetch {
 		PreTryFlowLines<Sentence> fls = new PreTryFlowLines<Sentence>();
 		DoPreTrySequencePredict(alc, fls, setelist, smtlist, PredictMetaInfo.PreTryNeedSize, lastchar);
 		
-		ContextHandler ch = new ContextHandler(javacontext, monitor);
+		ContextHandler ch = new ContextHandler(javacontext);
 		SynthesisHandler sh = new SynthesisHandler(handler, ch);
 		// List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesis(sh, alc, fls, aoi);
 		List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesisInSerial(sh, alc, fls, aoi);

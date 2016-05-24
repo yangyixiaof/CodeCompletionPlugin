@@ -141,10 +141,10 @@ public class CodeSynthesisHelper {
 		// debugging code.
 		if (CodeCompletionMetaInfo.DebugMode)
 		{
-			SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(spechint, squeue.GetLastHandler().getContextHandler().getJavacontext(), null);
+			SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(spechint, squeue.GetLastHandler().getContextHandler().getJavacontext());
 		}
 		
-		List<MethodMember> res = SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix(spechint, squeue.GetLastHandler().getContextHandler().getJavacontext(), null);
+		List<MethodMember> res = SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix(spechint, squeue.GetLastHandler().getContextHandler().getJavacontext());
 		Iterator<MethodMember> itr = res.iterator();
 		// String cmp = StringUtil.GetContentBehindFirstWhiteSpace(spechint);
 		while (itr.hasNext())
@@ -219,7 +219,7 @@ public class CodeSynthesisHelper {
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
-			List<TypeMember> tmm = SearchSpecificationOfAReference.SearchTypeSpecificationByPrefix(fln.getData().getData() + ".", squeue.GetLastHandler().getContextHandler().getJavacontext(), null);
+			List<TypeMember> tmm = SearchSpecificationOfAReference.SearchTypeSpecificationByPrefix(fln.getData().getData() + ".", squeue.GetLastHandler().getContextHandler().getJavacontext());
 			Iterator<TypeMember> titr = tmm.iterator();
 			while (titr.hasNext())
 			{
@@ -247,7 +247,7 @@ public class CodeSynthesisHelper {
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
-			List<FieldMember> fmm = SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix(fln.getData().getData() + concator, squeue.GetLastHandler().getContextHandler().getJavacontext(), null);
+			List<FieldMember> fmm = SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix(fln.getData().getData() + concator, squeue.GetLastHandler().getContextHandler().getJavacontext());
 			Iterator<FieldMember> fitr = fmm.iterator();
 			while (fitr.hasNext())
 			{
@@ -276,7 +276,7 @@ public class CodeSynthesisHelper {
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
 			String rawtype = fln.getData().getData();
-			List<TypeMember> tps = SearchSpecificationOfAReference.SearchTypeSpecificationByPrefix(rawtype, squeue.GetLastHandler().getContextHandler().getJavacontext(), null);
+			List<TypeMember> tps = SearchSpecificationOfAReference.SearchTypeSpecificationByPrefix(rawtype, squeue.GetLastHandler().getContextHandler().getJavacontext());
 			Iterator<TypeMember> tpitr = tps.iterator();
 			int tpspesize = 0;
 			while (tpitr.hasNext())
