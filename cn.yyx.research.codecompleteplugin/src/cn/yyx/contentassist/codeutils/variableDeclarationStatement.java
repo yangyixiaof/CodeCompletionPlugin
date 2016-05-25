@@ -21,6 +21,7 @@ public class variableDeclarationStatement extends statement{
 		this.tp = tp;
 	}
 	
+
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof variableDeclarationStatement)
@@ -37,25 +38,11 @@ public class variableDeclarationStatement extends statement{
 	public double Similarity(OneCode t) {
 		if (t instanceof variableDeclarationStatement)
 		{
-			return 0.5 + 0.5*(tp.Similarity(((variableDeclarationStatement) t).tp));
+			return 0.4 + 0.6*(tp.Similarity(((variableDeclarationStatement) t).tp));
 		}
 		return 0;
 	}
-	
-	/*@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
-		CSNode tpcs = new CSNode(CSNodeType.VariableDeclaration);
-		boolean conflict = tp.HandleCodeSynthesis(squeue, expected, handler, tpcs, ai);
-		if (conflict)
-		{
-			return true;
-		}
-		handler.setRecenttype(tpcs.GetFirstDataWithoutTypeCheck());
-		squeue.add(tpcs);
-		return false;
-	}*/
-
+		
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {

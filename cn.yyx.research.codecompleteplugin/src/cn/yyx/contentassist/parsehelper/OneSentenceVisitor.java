@@ -1026,7 +1026,18 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		smt = new initializerStatement(ctx.getText());
 		return visitChildren(ctx);
 	}
-
+	
+	@Override
+	public Integer visitVariableDeclarationHolderStatement(Java8Parser.VariableDeclarationHolderStatementContext ctx) {
+		Integer res = visitChildren(ctx);
+		referedExpression rexp = null;
+		if (ctx.referedExpression() != null) {
+			rexp = (referedExpression) usedobj.pop();
+		}
+		smt = new variableDeclarationHolderStatement(ctx.getText(), rexp);
+		return res;
+	}
+	
 	@Override
 	public Integer visitEnhancedForStatement(Java8Parser.EnhancedForStatementContext ctx) {
 		Integer res = visitChildren(ctx);

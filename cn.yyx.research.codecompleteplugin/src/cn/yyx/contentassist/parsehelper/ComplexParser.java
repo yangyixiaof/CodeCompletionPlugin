@@ -81,5 +81,5 @@ public class ComplexParser {
 		Sentence set = new Sentence(str, evalVisitor.getSmt());
 		return set;
 	}
-
+	
 }
