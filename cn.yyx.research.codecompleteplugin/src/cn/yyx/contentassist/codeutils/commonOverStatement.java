@@ -1,8 +1,11 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
@@ -22,9 +25,16 @@ public class commonOverStatement extends statement {
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<FlowLineNode<CSFlowLineData>> smtls = smt.HandleCodeSynthesis(squeue, smthandler);
 		smtls = CSFlowLineHelper.ConcateOneFlowLineList(null, smtls, ";");
-		return smtls;
+		Iterator<FlowLineNode<CSFlowLineData>> ritr = smtls.iterator();
+		while (ritr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> fln = ritr.next();
+			result.addAll(CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, null));
+		}
+		return result;
 	}
 
 	@Override
