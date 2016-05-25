@@ -21,6 +21,7 @@ public class CSArrayAccessEndData extends CSFlowLineData{
 	
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException{
+		super.HandleStackSignal(signals);
 		ComplicatedSignal cs = new ComplicatedSignal(DataStructureSignalMetaInfo.ArrayAccessBlcok, times);
 		signals.push(cs.GetSignal());
 	}

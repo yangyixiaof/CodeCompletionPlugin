@@ -48,6 +48,7 @@ public class CSLeftParenInfoData extends CSFlowLineData{
 	
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException{
+		super.HandleStackSignal(signals);
 		boolean couldstop = false;
 		int usetimes = times;
 		while (!couldstop)

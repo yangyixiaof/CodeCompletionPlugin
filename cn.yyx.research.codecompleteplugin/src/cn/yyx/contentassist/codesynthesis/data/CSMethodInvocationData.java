@@ -44,6 +44,7 @@ public class CSMethodInvocationData extends CSFlowLineData{
 	
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
+		super.HandleStackSignal(signals);
 		signals.push(DataStructureSignalMetaInfo.MethodInvocation);
 	}
 	

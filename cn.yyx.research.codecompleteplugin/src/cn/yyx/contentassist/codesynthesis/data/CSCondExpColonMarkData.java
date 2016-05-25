@@ -17,6 +17,7 @@ public class CSCondExpColonMarkData extends CSFlowLineData{
 	
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
+		super.HandleStackSignal(signals);
 		signals.push(DataStructureSignalMetaInfo.ConditionExpressionColon);
 	}
 	

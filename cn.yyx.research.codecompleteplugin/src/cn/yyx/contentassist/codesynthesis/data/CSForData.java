@@ -17,6 +17,7 @@ public class CSForData extends CSFlowLineData{
 	
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
+		super.HandleStackSignal(signals);
 		Integer sl = signals.peek();
 		if (sl == null || sl != DataStructureSignalMetaInfo.CommonForInitWaitingOver)
 		{

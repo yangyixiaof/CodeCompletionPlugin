@@ -12,5 +12,4 @@ public class CSArrayInitializerStartData extends CSFlowLineData{
 		super(id, sete, data, dcls, haspre, hashole, pretck, posttck, handler);
 	}
 	
-	
 }

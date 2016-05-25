@@ -33,6 +33,7 @@ public class CSEnterParamInfoData extends CSFlowLineData{
 	
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
+		super.HandleStackSignal(signals);
 		int tttimes = times;
 		while (!signals.isEmpty() && tttimes > 0)
 		{
