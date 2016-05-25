@@ -60,7 +60,6 @@ public class forUpdOverStatement extends rawForUpdOverStatement {
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		List<FlowLineNode<CSFlowLineData>> smtres = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<FlowLineNode<CSFlowLineData>> smtls = smt.HandleCodeSynthesis(squeue, smthandler);
 		smtls = CSFlowLineHelper.ConcateOneFlowLineList(null, smtls, ") {\n}");
 		Iterator<FlowLineNode<CSFlowLineData>> smtitr = smtls.iterator();
@@ -70,7 +69,7 @@ public class forUpdOverStatement extends rawForUpdOverStatement {
 			CSFlowLineData smtdata = smtln.getData();
 			smtdata.setCsep(CSForUpdOverProperty.GetInstance());
 		}
-		Iterator<FlowLineNode<CSFlowLineData>> ritr = smtres.iterator();
+		Iterator<FlowLineNode<CSFlowLineData>> ritr = smtls.iterator();
 		while (ritr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = ritr.next();
