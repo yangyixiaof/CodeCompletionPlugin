@@ -115,7 +115,7 @@ public class CSFlowLineQueue {
 		{
 			CSFlowLineData tmpdata = tmp.getData();
 			tmpdata.HandleStackSignal(signals);
-			if (tmpdata.getClass().equals(cls) && signals.isEmpty())
+			if (tmpdata.HasSpecialProperty(cls) && signals.isEmpty())
 			{
 				return tmp;
 			}

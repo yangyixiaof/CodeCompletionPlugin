@@ -53,7 +53,7 @@ public class FlowLineStack {
 		{
 			CSFlowLineData tmpdata = tmp.getData();
 			tmpdata.HandleStackSignal(signals);
-			if (tmpdata.getClass().equals(cls) && signals.size() <= inisize)
+			if (tmpdata.HasSpecialProperty(cls) && signals.size() <= inisize)
 			{
 				return tmp;
 			}
