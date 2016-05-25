@@ -59,43 +59,6 @@ public class variableDeclarationHolderStatement extends statement{
 		return 0;
 	}
 	
-	/*@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
-		String type = handler.getRecenttype();
-		String name = NameConvention.GetAbbreviationOfType(type);
-		ScopeOffsetRefHandler schandler = handler.getScopeOffsetRefHandler();
-		if (rexp != null)
-		{
-			String modifidedname = schandler.GenerateNewDeclaredVariable(name, type);
-			CSNode cs = new CSNode(CSNodeType.HalfFullExpression);
-			boolean conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, cs, ai);
-			if (conflict)
-			{
-				return true;
-			}
-			Map<String, TypeCheck> po = cs.getDatas();
-			if (po.size() >= 1)
-			{
-				TypeCheck tc = cs.GetFirstTypeCheck();
-				if (tc != null && tc.getExpreturntypeclass() != null)
-				{
-					schandler.DeleteRecentlyAddedType(type);
-					modifidedname = schandler.GenerateNewDeclaredVariable(NameConvention.GetAbbreviationOfType(tc.getExpreturntype()), tc.getExpreturntype());
-				}
-			}
-			cs.setPrefix(modifidedname+"=");
-		}
-		else
-		{
-			String modifidedname = schandler.GenerateNewDeclaredVariable(name, type);
-			CSNode cs = new CSNode(CSNodeType.HalfFullExpression);
-			cs.AddOneData(modifidedname, null);
-			squeue.add(cs);
-		}
-		return false;
-	}*/
-	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
