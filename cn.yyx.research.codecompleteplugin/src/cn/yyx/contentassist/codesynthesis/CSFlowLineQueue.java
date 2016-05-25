@@ -9,8 +9,8 @@ import cn.yyx.contentassist.codesynthesis.data.CSEnterParamInfoData;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationData;
 import cn.yyx.contentassist.codesynthesis.data.CSMethodSignalHandleResult;
-import cn.yyx.contentassist.codesynthesis.data.CSPrData;
-import cn.yyx.contentassist.codesynthesis.data.CSPsData;
+import cn.yyx.contentassist.codesynthesis.data.CSPrProperty;
+import cn.yyx.contentassist.codesynthesis.data.CSPsProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableDeclarationData;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableHolderData;
 import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
@@ -131,7 +131,7 @@ public class CSFlowLineQueue {
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();
-			if (!(tmpdata instanceof CSPrData || tmpdata instanceof CSPsData || tmpdata instanceof CSMethodInvocationData || tmpdata instanceof CSEnterParamInfoData))
+			if (!(tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class) || tmpdata instanceof CSMethodInvocationData || tmpdata instanceof CSEnterParamInfoData))
 			{
 				continue;
 			}

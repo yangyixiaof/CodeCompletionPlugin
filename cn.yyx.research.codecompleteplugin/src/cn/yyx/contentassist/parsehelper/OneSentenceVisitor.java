@@ -104,7 +104,22 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	public Integer visitStatement(Java8Parser.StatementContext ctx) {
 		return visitChildren(ctx);
 	}
-
+	
+	@Override
+	public Integer visitMethodArgumentEndStatement(Java8Parser.MethodArgumentEndStatementContext ctx) {
+		Integer res = visitChildren(ctx);
+		smt = new methodArgumentEndStatement(smt, ctx.getText());
+		return res;
+	}
+	
+	@Override
+	public Integer visitMethodPreRerferedExpressionEndStatement(
+			Java8Parser.MethodPreRerferedExpressionEndStatementContext ctx) {
+		Integer res = visitChildren(ctx);
+		smt = new methodPreRerferedExpressionEndStatement(smt, ctx.getText());
+		return res;
+	}
+	
 	@Override
 	public Integer visitCommonOverStatement(CommonOverStatementContext ctx) {
 		Integer res = visitChildren(ctx);
@@ -1184,20 +1199,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		smt = new partialEndStatement(ctx.getText());
 		return visitChildren(ctx);
 	}
-
-	@Override
-	public Integer visitPartialMethodArgumentEndStatement(Java8Parser.PartialMethodArgumentEndStatementContext ctx) {
-		smt = new partialMethodArgumentEndStatement(ctx.getText());
-		return visitChildren(ctx);
-	}
-
-	@Override
-	public Integer visitPartialMethodPreRerferedExpressionEndStatement(
-			Java8Parser.PartialMethodPreRerferedExpressionEndStatementContext ctx) {
-		smt = new partialMethodArgumentEndStatement(ctx.getText());
-		return visitChildren(ctx);
-	}
-
+	
 	@Override
 	public Integer visitFirstArgPreExist(FirstArgPreExistContext ctx) {
 		usedobj.push(new firstArgPreExist());

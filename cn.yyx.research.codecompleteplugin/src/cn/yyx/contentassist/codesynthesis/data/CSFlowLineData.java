@@ -30,6 +30,19 @@ public class CSFlowLineData implements CSDataStructure{
 	
 	private CSExtraProperty csep = null;
 	
+	public boolean HasSpecialProperty(Class<?> cls)
+	{
+		if (getClass().equals(cls))
+		{
+			return true;
+		} else {
+			if (csep != null && csep.getClass().equals(cls)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	protected CSExtraData csed = new CSExtraData();
 	
 	// this boolean field is used to skip some useless node.

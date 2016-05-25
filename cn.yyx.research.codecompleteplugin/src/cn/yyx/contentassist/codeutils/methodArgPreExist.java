@@ -10,8 +10,8 @@ import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSEnterParamInfoData;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationData;
-import cn.yyx.contentassist.codesynthesis.data.CSPrData;
-import cn.yyx.contentassist.codesynthesis.data.CSPsData;
+import cn.yyx.contentassist.codesynthesis.data.CSPrProperty;
+import cn.yyx.contentassist.codesynthesis.data.CSPsProperty;
 import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
@@ -40,7 +40,7 @@ public class methodArgPreExist extends referedExpression {
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();
-			if (tmpdata instanceof CSEnterParamInfoData || tmpdata instanceof CSPsData || tmpdata instanceof CSPrData || tmpdata instanceof CSMethodInvocationData)
+			if (tmpdata instanceof CSEnterParamInfoData || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class) || tmpdata instanceof CSMethodInvocationData)
 			{
 				Integer preps = signals.peek();
 				tmpdata.HandleStackSignal(signals);

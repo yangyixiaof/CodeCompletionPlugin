@@ -2,8 +2,8 @@ package cn.yyx.contentassist.commonutils;
 
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.CSPrData;
-import cn.yyx.contentassist.codesynthesis.data.CSPsData;
+import cn.yyx.contentassist.codesynthesis.data.CSPrProperty;
+import cn.yyx.contentassist.codesynthesis.data.CSPsProperty;
 
 public class SignalHelper {
 	
@@ -16,7 +16,7 @@ public class SignalHelper {
 	{
 		CSFlowLineData tlast = squeue.getLast().getData();
 		boolean hasem = false;
-		if ((tlast instanceof CSPsData) || (tlast instanceof CSPrData))
+		if ((tlast.HasSpecialProperty(CSPsProperty.class)) || (tlast.HasSpecialProperty(CSPrProperty.class)))
 		{
 			hasem = true;
 		}
