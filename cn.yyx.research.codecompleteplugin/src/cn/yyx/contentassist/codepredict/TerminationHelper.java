@@ -13,10 +13,16 @@ public class TerminationHelper {
 		return false;
 	}
 	
-	public static boolean couldTerminate(Sentence sete, char lastchar)
+	public static boolean couldTerminate(Sentence sete, char lastchar, int currlen, int totallen, boolean isexactmatch)
 	{
+		int level = (int)(totallen*0.75);
 		statement smt = sete.getSmt();
-		if (lastchar == ';' && (smt instanceof commonOverStatement))
+		boolean minilevel = currlen > level;
+		if (isexactmatch)
+		{
+			minilevel = currlen >= totallen;
+		}
+		if (lastchar == ';' && (smt instanceof commonOverStatement) && minilevel)
 		{
 			return true;
 		}

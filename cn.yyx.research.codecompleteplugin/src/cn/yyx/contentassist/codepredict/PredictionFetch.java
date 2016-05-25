@@ -210,14 +210,23 @@ public class PredictionFetch {
 				// HandleOneInOneTurnPreTrySequencePredict(alc, fls, fln, oraclelist, handledkey, neededsize);
 			}
 			
-			
 			// sort and put the all one turn infers, exact match handled here.
 			int ndsize = neededsize;
 			while (ndsize > 0 && (!pppqueue.isEmpty()))
 			{
 				PreTryFlowLineNode<Sentence> nf = pppqueue.poll();
 				
-				if (TerminationHelper.couldTerminate(nf.getData(), lastchar))
+				boolean inexactmatchseq = tails.get(0) == nf.getParent();
+				boolean isexactmatch = false;
+				// judge if exact match is handled.
+				if (inexactmatchseq && ons != null && ons.getSentence().equals(nf.getData().getSentence()))
+				{
+					isexactmatch = true;
+					exactmatchhandled = true;
+					fls.setExactmatchtail(nf);
+				}
+				
+				if (TerminationHelper.couldTerminate(nf.getData(), lastchar, nf.getParent().getLength()+1, oraclelist.size(), isexactmatch))
 				{
 					fls.AddOverFlowLineNode(nf, nf.getParent());
 				}
@@ -227,12 +236,6 @@ public class PredictionFetch {
 					ndsize--;
 				}
 				
-				// judge if exact match is handled.
-				if (ons != null && ons.getSentence().equals(nf.getData().getSentence()))
-				{
-					exactmatchhandled = true;
-					fls.setExactmatchtail(nf);
-				}
 			}
 			
 			if (ons != null && !exactmatchhandled)
