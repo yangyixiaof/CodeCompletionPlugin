@@ -1,20 +1,18 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSForExpOverData;
-import cn.yyx.contentassist.codesynthesis.data.CSForIniOverData;
-import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class forExpOverStatement extends statement{
+public class forExpOverStatement extends rawForExpOverStatement{
 	
 	statement smt = null;
 	
@@ -25,20 +23,34 @@ public class forExpOverStatement extends statement{
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO 22222222222222
 		if (t instanceof forExpOverStatement)
 		{
+			return smt.CouldThoughtSame(((forExpOverStatement)t).smt);
+		}
+		if (t instanceof rawForExpOverStatement)
+		{
 			return true;
+		}
+		if (t instanceof statement)
+		{
+			return smt.CouldThoughtSame(t);
 		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO 22222222222222
 		if (t instanceof forExpOverStatement)
 		{
-			return 1;
+			return smt.Similarity(((forExpOverStatement)t).smt);
+		}
+		if (t instanceof rawForExpOverStatement)
+		{
+			return 0.5;
+		}
+		if (t instanceof statement)
+		{
+			return smt.Similarity(t);
 		}
 		return 0;
 	}
@@ -70,23 +82,18 @@ public class forExpOverStatement extends statement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO 22222222222222
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSForExpOverData(squeue.GenerateNewNodeId(), smthandler.getSete(), ";", null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
-		return result;
-	}
-
-	@Override
-	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		// TODO 22222222222222
-		Stack<Integer> signals = new Stack<Integer>();
-		signals.push(DataStructureSignalMetaInfo.CommonForExpWaitingOver);
-		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSForIniOverData.class, signals);
-		if (cnode == null)
+		List<FlowLineNode<CSFlowLineData>> smtls = smt.HandleCodeSynthesis(squeue, smthandler);
+		smtls = CSFlowLineHelper.ConcateOneFlowLineList(null, smtls, ";");
+		Iterator<FlowLineNode<CSFlowLineData>> itr = smtls.iterator();
+		while (itr.hasNext())
 		{
-			throw new CodeSynthesisException("for exp over does not have init over in pre.");
+			FlowLineNode<CSFlowLineData> smtln = itr.next();
+			CSFlowLineData smtdata = smtln.getData();
+			result.add(new FlowLineNode<CSFlowLineData>(new CSForExpOverData(smtdata), smtln.getProbability()));
 		}
-		return false;
+		// result.add(new FlowLineNode<CSFlowLineData>(new CSForExpOverData(squeue.GenerateNewNodeId(), smthandler.getSete(), ";", null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+		return result;
 	}
 	
 }

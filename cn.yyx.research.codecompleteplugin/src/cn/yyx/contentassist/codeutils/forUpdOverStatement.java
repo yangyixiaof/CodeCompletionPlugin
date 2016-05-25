@@ -1,20 +1,19 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.CSForExpOverData;
 import cn.yyx.contentassist.codesynthesis.data.CSForUpdOverData;
-import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
-import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class forUpdOverStatement extends statement {
+public class forUpdOverStatement extends rawForUpdOverStatement {
 	
 	statement smt = null;
 	
@@ -25,18 +24,34 @@ public class forUpdOverStatement extends statement {
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO 22222222222222
-		if (t instanceof forUpdOverStatement) {
+		if (t instanceof forUpdOverStatement)
+		{
+			return smt.CouldThoughtSame(((forUpdOverStatement)t).smt);
+		}
+		if (t instanceof rawForUpdOverStatement)
+		{
 			return true;
+		}
+		if (t instanceof statement)
+		{
+			return smt.CouldThoughtSame(t);
 		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO 22222222222222
-		if (t instanceof forUpdOverStatement) {
-			return 1;
+		if (t instanceof forUpdOverStatement)
+		{
+			return smt.Similarity(((forUpdOverStatement)t).smt);
+		}
+		if (t instanceof rawForUpdOverStatement)
+		{
+			return 0.5;
+		}
+		if (t instanceof statement)
+		{
+			return smt.Similarity(t);
 		}
 		return 0;
 	}
@@ -59,23 +74,24 @@ public class forUpdOverStatement extends statement {
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO 22222222222222
-		FlowLineNode<CSFlowLineData> fln = new FlowLineNode<CSFlowLineData>(new CSForUpdOverData(squeue.GenerateNewNodeId(), smthandler.getSete(),
-				") {\n}", null, true, true, null, null, squeue.GetLastHandler()),
-				smthandler.getProb());
-		return CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, null);
-	}
-
-	@Override
-	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		Stack<Integer> signals = new Stack<Integer>();
-		signals.push(DataStructureSignalMetaInfo.CommonForUpdWaitingOver);
-		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSForExpOverData.class, signals);
-		if (cnode == null)
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		List<FlowLineNode<CSFlowLineData>> smtres = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		List<FlowLineNode<CSFlowLineData>> smtls = smt.HandleCodeSynthesis(squeue, smthandler);
+		smtls = CSFlowLineHelper.ConcateOneFlowLineList(null, smtls, ") {\n}");
+		Iterator<FlowLineNode<CSFlowLineData>> smtitr = smtls.iterator();
+		while (smtitr.hasNext())
 		{
-			throw new CodeSynthesisException("for upd over does not have init over in pre.");
+			FlowLineNode<CSFlowLineData> smtln = smtitr.next();
+			CSFlowLineData smtdata = smtln.getData();
+			smtres.add(new FlowLineNode<CSFlowLineData>(new CSForUpdOverData(smtdata), smtln.getProbability()));
 		}
-		return true;
+		Iterator<FlowLineNode<CSFlowLineData>> ritr = smtres.iterator();
+		while (ritr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> fln = ritr.next();
+			result.addAll(CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, null));
+		}
+		return result;
 	}
-
+	
 }

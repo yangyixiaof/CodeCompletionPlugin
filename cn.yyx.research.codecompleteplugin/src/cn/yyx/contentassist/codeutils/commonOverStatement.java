@@ -3,6 +3,7 @@ package cn.yyx.contentassist.codeutils;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -21,26 +22,41 @@ public class commonOverStatement extends statement {
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return null;
+		List<FlowLineNode<CSFlowLineData>> smtls = smt.HandleCodeSynthesis(squeue, smthandler);
+		smtls = CSFlowLineHelper.ConcateOneFlowLineList(null, smtls, ";");
+		return smtls;
 	}
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof commonOverStatement)
+		{
+			return smt.CouldThoughtSame(((commonOverStatement) t).smt);
+		}
+		if (t instanceof statement)
+		{
+			return smt.CouldThoughtSame(t);
+		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		// TODO Auto-generated method stub
+		if (t instanceof commonOverStatement)
+		{
+			return smt.Similarity(((commonOverStatement) t).smt);
+		}
+		if (t instanceof statement)
+		{
+			return smt.Similarity(t);
+		}
 		return 0;
 	}
 
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		// TODO Auto-generated method stub
-		return false;
+		cstack.EnsureAllSignalNull();
+		return true;
 	}
-
+	
 }
