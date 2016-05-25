@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
@@ -98,6 +99,11 @@ public class variableDeclarationHolderStatement extends statement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
+		FlowLineNode<CSFlowLineData> previousvh = squeue.SearcheForRecentVHolderNode();
+		if (previousvh != null)
+		{
+			CSFlowLineBackTraceGenerationHelper.GenerateSynthesisCode(squeue, smthandler, squeue.getLast(), previousvh);
+		}
 		FlowLineNode<CSFlowLineData> typenode = squeue.SearcheForRecentVariableDeclaredNode();
 		if (typenode == null)
 		{

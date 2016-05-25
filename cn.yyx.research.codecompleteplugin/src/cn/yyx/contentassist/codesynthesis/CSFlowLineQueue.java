@@ -57,6 +57,24 @@ public class CSFlowLineQueue {
 	{
 		last.getData().setHashole(true);
 	}*/
+	
+	public FlowLineNode<CSFlowLineData> SearcheForRecentVHolderNode() {
+		FlowLineNode<CSFlowLineData> tmp = last;
+		while (tmp != null)
+		{
+			CSFlowLineData tmpdata = tmp.getData();
+			if (tmpdata instanceof CSVariableDeclarationData)
+			{
+				break;
+			}
+			if (tmpdata instanceof CSVariableHolderData)
+			{
+				return tmp;
+			}
+			tmp = tmp.getPrev();
+		}
+		return null;
+	}
 
 	public FlowLineNode<CSFlowLineData> SearcheForRecentVariableDeclaredNode() {
 		FlowLineNode<CSFlowLineData> tmp = last;
