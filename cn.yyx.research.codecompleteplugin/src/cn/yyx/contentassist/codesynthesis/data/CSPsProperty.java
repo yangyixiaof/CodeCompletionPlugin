@@ -6,6 +6,8 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 
 public class CSPsProperty extends CSExtraProperty {
 	
+	private static CSExtraProperty cd = new CSPsProperty();
+	
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
 		Integer top = signals.peek();
@@ -15,6 +17,11 @@ public class CSPsProperty extends CSExtraProperty {
 		}
 		signals.pop();
 		signals.push(DataStructureSignalMetaInfo.MethodPs);
+	}
+	
+	public static CSExtraProperty GetInstance()
+	{
+		return cd;
 	}
 	
 }

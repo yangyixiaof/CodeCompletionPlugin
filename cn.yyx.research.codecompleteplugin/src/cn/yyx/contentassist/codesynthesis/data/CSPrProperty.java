@@ -5,7 +5,9 @@ import java.util.Stack;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 
 public class CSPrProperty extends CSExtraProperty {
-
+	
+	private static CSExtraProperty cd = new CSPrProperty();
+	
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
 		Integer top = signals.peek();
@@ -15,6 +17,11 @@ public class CSPrProperty extends CSExtraProperty {
 		}
 		signals.pop();
 		signals.push(DataStructureSignalMetaInfo.MethodPr);
+	}
+	
+	public static CSExtraProperty GetInstance()
+	{
+		return cd;
 	}
 	
 }
