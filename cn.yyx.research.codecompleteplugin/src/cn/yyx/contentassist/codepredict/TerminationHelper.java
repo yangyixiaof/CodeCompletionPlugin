@@ -1,8 +1,6 @@
 package cn.yyx.contentassist.codepredict;
 
-import cn.yyx.contentassist.codeutils.fullEndStatement;
-import cn.yyx.contentassist.codeutils.leftBraceStatement;
-import cn.yyx.contentassist.codeutils.rightBraceStatement;
+import cn.yyx.contentassist.codeutils.commonOverStatement;
 import cn.yyx.contentassist.codeutils.statement;
 
 public class TerminationHelper {
@@ -18,18 +16,18 @@ public class TerminationHelper {
 	public static boolean couldTerminate(Sentence sete, char lastchar)
 	{
 		statement smt = sete.getSmt();
-		if (lastchar == ';' && (smt instanceof fullEndStatement))
+		if (lastchar == ';' && (smt instanceof commonOverStatement))
 		{
 			return true;
 		}
-		if (lastchar == '}' && (smt instanceof rightBraceStatement))
+		/*if (lastchar == '}' && (smt instanceof rightBraceStatement))
 		{
 			return true;
 		}
 		if (lastchar == '{' && (smt instanceof leftBraceStatement))
 		{
 			return true;
-		}
+		}*/
 		return false;
 	}
 	
