@@ -55,22 +55,7 @@ public class forUpdOverStatement extends rawForUpdOverStatement {
 		}
 		return 0;
 	}
-
-	/*
-	 * @Override public boolean HandleOverSignal(Stack<Integer> cstack) { int
-	 * signal = cstack.peek(); if (signal !=
-	 * StructureSignalMetaInfo.CommonForExpWaitingOver) { return true; //
-	 * System.err.println("What the fuck, pre is not for?"); // new
-	 * Exception().printStackTrace(); // System.exit(1); } else { cstack.pop();
-	 * } return false; }
-	 * 
-	 * @Override public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue,
-	 * Stack<TypeCheck> expected, SynthesisHandler handler, CSNode result,
-	 * AdditionalInfo ai) { CSNode cs = new
-	 * CSNode(CSNodeType.HalfFullExpression); cs.AddOneData("", null);
-	 * squeue.add(cs); return false; }
-	 */
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {

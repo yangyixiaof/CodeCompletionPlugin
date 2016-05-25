@@ -1,7 +1,6 @@
 package cn.yyx.contentassist.codeutils;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
@@ -58,7 +57,7 @@ public class forIniOverStatement extends rawForIniOverStatement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		// List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<FlowLineNode<CSFlowLineData>> smtls = smt.HandleCodeSynthesis(squeue, smthandler);
 		smtls = CSFlowLineHelper.ConcateOneFlowLineList(null, smtls, ";");
 		Iterator<FlowLineNode<CSFlowLineData>> itr = smtls.iterator();
@@ -68,7 +67,7 @@ public class forIniOverStatement extends rawForIniOverStatement{
 			CSFlowLineData smtdata = smtln.getData();
 			smtdata.setCsep(CSForIniOverProperty.GetInstance());
 		}
-		return result;
+		return smtls;
 	}
 	
 }
