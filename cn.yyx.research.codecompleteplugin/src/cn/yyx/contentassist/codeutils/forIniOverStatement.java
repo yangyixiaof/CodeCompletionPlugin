@@ -8,7 +8,7 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.CSForIniOverData;
+import cn.yyx.contentassist.codesynthesis.data.CSForIniOverProperty;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
@@ -66,7 +66,7 @@ public class forIniOverStatement extends rawForIniOverStatement{
 		{
 			FlowLineNode<CSFlowLineData> smtln = itr.next();
 			CSFlowLineData smtdata = smtln.getData();
-			result.add(new FlowLineNode<CSFlowLineData>(new CSForIniOverData(smtdata), smtln.getProbability()));
+			smtdata.setCsep(CSForIniOverProperty.GetInstance());
 		}
 		return result;
 	}

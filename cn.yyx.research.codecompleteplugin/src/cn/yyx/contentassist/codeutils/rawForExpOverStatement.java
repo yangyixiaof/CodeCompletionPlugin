@@ -7,8 +7,8 @@ import java.util.Stack;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.CSForExpOverData;
-import cn.yyx.contentassist.codesynthesis.data.CSForIniOverData;
+import cn.yyx.contentassist.codesynthesis.data.CSForExpOverProperty;
+import cn.yyx.contentassist.codesynthesis.data.CSForIniOverProperty;
 import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
@@ -24,7 +24,7 @@ public class rawForExpOverStatement extends statement {
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSForExpOverData(squeue.GenerateNewNodeId(), smthandler.getSete(), ";", null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId() + "", smthandler.getSete(), ";", null, true, true, null, null, squeue.GetLastHandler(), CSForExpOverProperty.GetInstance()), smthandler.getProb()));
 		return result;
 	}
 	
@@ -54,7 +54,7 @@ public class rawForExpOverStatement extends statement {
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		Stack<Integer> signals = new Stack<Integer>();
 		signals.push(DataStructureSignalMetaInfo.CommonForExpWaitingOver);
-		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSForIniOverData.class, signals);
+		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSForIniOverProperty.class, signals);
 		if (cnode == null)
 		{
 			throw new CodeSynthesisException("for exp over does not have init over in pre.");

@@ -8,7 +8,7 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.CSForExpOverData;
+import cn.yyx.contentassist.codesynthesis.data.CSForExpOverProperty;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
@@ -84,13 +84,20 @@ public class forExpOverStatement extends rawForExpOverStatement{
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<FlowLineNode<CSFlowLineData>> smtls = smt.HandleCodeSynthesis(squeue, smthandler);
+		
+		// debugging code, do not remove.
+		if (smtls == null)
+		{
+			System.err.println("smtls is null.");
+		}
+		
 		smtls = CSFlowLineHelper.ConcateOneFlowLineList(null, smtls, ";");
 		Iterator<FlowLineNode<CSFlowLineData>> itr = smtls.iterator();
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> smtln = itr.next();
 			CSFlowLineData smtdata = smtln.getData();
-			result.add(new FlowLineNode<CSFlowLineData>(new CSForExpOverData(smtdata), smtln.getProbability()));
+			smtdata.setCsep(CSForExpOverProperty.GetInstance());
 		}
 		// result.add(new FlowLineNode<CSFlowLineData>(new CSForExpOverData(squeue.GenerateNewNodeId(), smthandler.getSete(), ";", null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;

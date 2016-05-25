@@ -28,6 +28,8 @@ public class CSFlowLineData implements CSDataStructure{
 	private TypeComputationKind pretck = TypeComputationKind.NoOptr;
 	private TypeComputationKind posttck = TypeComputationKind.NoOptr;
 	
+	private CSExtraProperty csep = null;
+	
 	protected CSExtraData csed = new CSExtraData();
 	
 	// this boolean field is used to skip some useless node.
@@ -63,6 +65,22 @@ public class CSFlowLineData implements CSDataStructure{
 		this.setPretck(pretck);
 		this.setPosttck(posttck);
 		this.setHandler(handler);
+	}
+	
+	public CSFlowLineData(String id, Sentence sete, String data, CCType dcls, boolean haspre, boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler, CSExtraProperty cseppara) {
+		this.setId(id + "");
+		this.setSete(sete);
+		this.setData(data);
+		// this.setStructsignal(structsignal);
+		this.setDcls(dcls);
+		this.setHaspre(haspre);
+		this.setHashole(hashole);
+		pretck = (pretck == null ? TypeComputationKind.NoOptr : pretck);
+		posttck = (posttck == null ? TypeComputationKind.NoOptr : posttck);
+		this.setPretck(pretck);
+		this.setPosttck(posttck);
+		this.setHandler(handler);
+		this.setCsep(cseppara);
 	}
 	
 	public String getData() {
@@ -201,7 +219,10 @@ public class CSFlowLineData implements CSDataStructure{
 	
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException{
-		// do nothing.
+		if (getCsep() != null)
+		{
+			getCsep().HandleStackSignal(signals);
+		}
 	}
 
 	public CCType getDcls() {
@@ -215,6 +236,14 @@ public class CSFlowLineData implements CSDataStructure{
 	@Override
 	public String toString() {
 		return "id:" + id + ";data:" + data + (dcls == null ? ";dcls null" : (";dcls str:" + dcls.getClstr() + ";dcls rt:" + dcls.getCls()));
+	}
+
+	public CSExtraProperty getCsep() {
+		return csep;
+	}
+
+	public void setCsep(CSExtraProperty csep) {
+		this.csep = csep;
 	}
 	
 }

@@ -9,7 +9,7 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.CSForUpdOverData;
+import cn.yyx.contentassist.codesynthesis.data.CSForUpdOverProperty;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
@@ -83,7 +83,7 @@ public class forUpdOverStatement extends rawForUpdOverStatement {
 		{
 			FlowLineNode<CSFlowLineData> smtln = smtitr.next();
 			CSFlowLineData smtdata = smtln.getData();
-			smtres.add(new FlowLineNode<CSFlowLineData>(new CSForUpdOverData(smtdata), smtln.getProbability()));
+			smtdata.setCsep(CSForUpdOverProperty.GetInstance());
 		}
 		Iterator<FlowLineNode<CSFlowLineData>> ritr = smtres.iterator();
 		while (ritr.hasNext())

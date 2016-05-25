@@ -7,8 +7,8 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.CSForExpOverData;
-import cn.yyx.contentassist.codesynthesis.data.CSForUpdOverData;
+import cn.yyx.contentassist.codesynthesis.data.CSForExpOverProperty;
+import cn.yyx.contentassist.codesynthesis.data.CSForUpdOverProperty;
 import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
@@ -23,8 +23,8 @@ public class rawForUpdOverStatement extends statement {
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		FlowLineNode<CSFlowLineData> fln = new FlowLineNode<CSFlowLineData>(new CSForUpdOverData(squeue.GenerateNewNodeId(), smthandler.getSete(),
-				") {\n}", null, true, true, null, null, squeue.GetLastHandler()),
+		FlowLineNode<CSFlowLineData> fln = new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId() + "", smthandler.getSete(),
+				") {\n}", null, true, true, null, null, squeue.GetLastHandler(), CSForUpdOverProperty.GetInstance()),
 				smthandler.getProb());
 		return CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, null);
 	}
@@ -55,7 +55,7 @@ public class rawForUpdOverStatement extends statement {
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		Stack<Integer> signals = new Stack<Integer>();
 		signals.push(DataStructureSignalMetaInfo.CommonForUpdWaitingOver);
-		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSForExpOverData.class, signals);
+		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSForExpOverProperty.class, signals);
 		if (cnode == null)
 		{
 			throw new CodeSynthesisException("for upd over does not have init over in pre.");
