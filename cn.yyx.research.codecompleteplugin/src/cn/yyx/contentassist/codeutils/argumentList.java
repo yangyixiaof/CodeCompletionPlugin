@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -14,7 +13,6 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.ErrorCheck;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementFirstArgHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
@@ -170,6 +168,7 @@ public class argumentList implements OneCode {
 			}
 		}
 		// handle invoker.
+		List<FlowLineNode<CSFlowLineData>> results = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<FlowLineNode<CSFlowLineData>> invokers = fa.HandleClassOrMethodInvoke(squeue, new CSMethodStatementFirstArgHandler(realhandler), methodname, mts);
 		Iterator<FlowLineNode<CSFlowLineData>> itr = invokers.iterator();
 		while (itr.hasNext()) {
@@ -223,14 +222,15 @@ public class argumentList implements OneCode {
 						sb.append(",");
 					}
 				}
-			} catch (Exception e) {
+			} catch (CodeSynthesisException e) {
 				continue;
 			}
 			sb.append(")");
 			data.setData(sb.toString());
+			results.add(new FlowLineNode<CSFlowLineData>(data, fln.getProbability()));
 			
-			Stack<Integer> signals = new Stack<Integer>();
-			signals.add(DataStructureSignalMetaInfo.MethodInvocation);
+			// Stack<Integer> signals = new Stack<Integer>();
+			// signals.add(DataStructureSignalMetaInfo.MethodInvocation);
 			FlowLineNode<CSFlowLineData> mf = realhandler.getMostfar();
 			// realhandler.getMostfar();
 			if (mf != null) {
@@ -239,7 +239,7 @@ public class argumentList implements OneCode {
 				mf.getData().getSynthesisCodeManager().AddSynthesisCode(id, fln);
 			}
 		}
-		return invokers;
+		return results;
 	}
 	
 	public String HandleOneParam(LinkedList<CCType> c, List<FlowLineNode<CSFlowLineData>> parg) throws CodeSynthesisException
