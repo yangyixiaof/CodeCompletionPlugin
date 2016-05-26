@@ -10,6 +10,7 @@ import java.util.TreeMap;
 import cn.yyx.contentassist.codecompletion.CodeCompletionMetaInfo;
 import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.data.CSEnterParamInfoData;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
@@ -344,6 +345,12 @@ public class CodeSynthesisHelper {
 		 * 	result.add(new FlowLineNode<CSFlowLineData>(dt, fln.getProbability()));
 		 * }
 		 * return result;*/
+		FlowLineNode<CSFlowLineData> mf = csmsh.getMostfar();
+		if (!(mf.getData() instanceof CSEnterParamInfoData))
+		{
+			System.err.println("Error! EnterParam not the start of the method.");
+			throw new CodeSynthesisException("Error! EnterParam not the start of the method.");
+		}
 		return alls;
 	}
 	

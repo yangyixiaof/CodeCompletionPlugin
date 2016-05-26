@@ -42,19 +42,19 @@ public class CodeSynthesisPredictTask implements Runnable {
 
 	@Override
 	public void run() {
-		RecursiveCodePredictAndSynthesis(0, null, false);
+		RecursiveCodePredictAndSynthesis(0, null, false, null);
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void RecursiveCodePredictAndSynthesis(int level, FlowLineNode<CSFlowLineData> start, boolean hassilb)
+	private List<PredictProbPair> RecursiveCodePredictAndSynthesis(int level, FlowLineNode<CSFlowLineData> start, boolean hassilb, List<PredictProbPair> lastsilbppps)
 	{
 		if (level >= PredictMetaInfo.MaxExtendLength)
 		{
-			return;
+			return null;
 		}
 		if (TotalStopCondition())
 		{
-			return;
+			return null;
 		}
 		List<PredictProbPair> pps = null;
 		FlowLineNode<?> fln = start;
@@ -72,11 +72,21 @@ public class CodeSynthesisPredictTask implements Runnable {
 		{
 			expectsize = PredictMetaInfo.OneExtendFirstMaxSequence;
 			fln = pretrylast;
-			pps = pi.InferNextGeneration(alc, expectsize, fln, null);
+			if (lastsilbppps != null)
+			{
+				pps = lastsilbppps;
+			} else {
+				pps = pi.InferNextGeneration(alc, expectsize, fln, null);
+			}
 		}
 		else
 		{
-			pps = pi.InferNextGeneration(alc, expectsize, fln, pretrylast);
+			if (lastsilbppps != null)
+			{
+				pps = lastsilbppps;
+			} else {
+				pps = pi.InferNextGeneration(alc, expectsize, fln, pretrylast);
+			}
 		}
 		Iterator<PredictProbPair> pitr = pps.iterator();
 		int keylen = 0;
@@ -107,6 +117,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 				totalstep++;
 				
 				if (addnodes != null && addnodes.size() > 0) {
+					List<PredictProbPair> ppps = null;
 					Iterator<FlowLineNode<CSFlowLineData>> aitr = addnodes.iterator();
 					while (aitr.hasNext()) {
 						if (TotalStopCondition())
@@ -140,7 +151,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 							} else {
 								csfl.AddToNextLevel(addnode, (FlowLineNode<CSFlowLineData>) fln);
 							}
-							RecursiveCodePredictAndSynthesis(level+1, addnode, aitr.hasNext());
+							ppps = RecursiveCodePredictAndSynthesis(level+1, addnode, aitr.hasNext(), ppps);
 						}
 					}
 				}
@@ -158,6 +169,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 				System.exit(1);
 			}
 		}
+		return pps;
 	}
 	
 	public boolean TotalStopCondition()
