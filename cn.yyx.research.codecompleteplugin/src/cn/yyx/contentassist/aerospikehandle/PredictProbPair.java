@@ -34,7 +34,11 @@ public class PredictProbPair implements Comparable<PredictProbPair>{
 	// order is : bigger former.
 	@Override
 	public int compareTo(PredictProbPair o) {
-		return ((Double)(-prob)).compareTo((-o.prob));
+		if (keylen == o.keylen)
+		{
+			return ((Double)(-prob)).compareTo((Double)(-o.prob));
+		}
+		return ((Integer)(-keylen)).compareTo((Integer)(-o.keylen));
 	}
 	
 	@Override

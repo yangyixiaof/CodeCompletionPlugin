@@ -42,11 +42,11 @@ public class CodeSynthesisPredictTask implements Runnable {
 
 	@Override
 	public void run() {
-		RecursiveCodePredictAndSynthesis(0, null);
+		RecursiveCodePredictAndSynthesis(0, null, false);
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void RecursiveCodePredictAndSynthesis(int level, FlowLineNode<CSFlowLineData> start)
+	private void RecursiveCodePredictAndSynthesis(int level, FlowLineNode<CSFlowLineData> start, boolean hassilb)
 	{
 		if (level >= PredictMetaInfo.MaxExtendLength)
 		{
@@ -79,6 +79,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 			pps = pi.InferNextGeneration(alc, expectsize, fln, pretrylast);
 		}
 		Iterator<PredictProbPair> pitr = pps.iterator();
+		int keylen = 0;
 		while (pitr.hasNext())
 		{
 			if (level == 0)
@@ -92,6 +93,11 @@ public class CodeSynthesisPredictTask implements Runnable {
 			}
 			
 			PredictProbPair ppp = pitr.next();
+			if (keylen > ppp.getKeylen() && hassilb)
+			{
+				break;
+			}
+			keylen = ppp.getKeylen();
 			Sentence pred = ppp.getPred();
 			CSStatementHandler csh = new CSStatementHandler(pred, ppp.getProb(), aoi);
 			statement predsmt = pred.getSmt();
@@ -134,7 +140,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 							} else {
 								csfl.AddToNextLevel(addnode, (FlowLineNode<CSFlowLineData>) fln);
 							}
-							RecursiveCodePredictAndSynthesis(level+1, addnode);
+							RecursiveCodePredictAndSynthesis(level+1, addnode, aitr.hasNext());
 						}
 					}
 				}
