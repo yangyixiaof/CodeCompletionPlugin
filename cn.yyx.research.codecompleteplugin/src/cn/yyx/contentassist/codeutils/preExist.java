@@ -131,6 +131,7 @@ public class preExist extends referedExpression{
 		FlowLineNode<CSFlowLineData> mstart = ns;
 		FlowLineNode<CSFlowLineData> mstop = null;
 		FlowLineNode<CSFlowLineData> tmpnext = tmp;
+		tmp.getData().HandleStackSignal(signals);
 		tmp = tmp.getPrev();
 		while (tmp != null)
 		{
@@ -147,7 +148,7 @@ public class preExist extends referedExpression{
 			{
 				tmpdata.HandleStackSignal(signals);
 				
-				if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoData.class) && signals.size() == 1)
+				if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoData.class) && signals.size() == 0)
 				{
 					mstop = tmp;
 					realhandler.setNextstart(null);

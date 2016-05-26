@@ -38,7 +38,7 @@ public class CSEnterParamInfoData extends CSFlowLineData{
 		while (!signals.isEmpty() && tttimes > 0)
 		{
 			Integer top = signals.peek();
-			if (top == null || top != DataStructureSignalMetaInfo.MethodPs || top != DataStructureSignalMetaInfo.MethodPr)
+			if (top == null || (top != DataStructureSignalMetaInfo.MethodPs && top != DataStructureSignalMetaInfo.MethodPr))
 			{
 				throw new CodeSynthesisException("When handling ps, the top of stack is not MethodPs or MethodPr.");
 			}
@@ -46,11 +46,11 @@ public class CSEnterParamInfoData extends CSFlowLineData{
 			signals.pop();
 		}
 		// pred check : signals.isEmpty()
-		if (tttimes > 0)
-		{
-			throw new CodeSynthesisException("EnterParam doesn't consumed totally and left can not consume, so it is an error.");
+		//if (tttimes > 0)
+		//{
+		//	throw new CodeSynthesisException("EnterParam doesn't consumed totally and left can not consume, so it is an error.");
 			// signals.push(ComplicatedSignal.GenerateComplicatedSignal(DataStructureSignalMetaInfo.MethodEnterParam, tttimes));
-		}
+		//}
 	}
 	
 }
