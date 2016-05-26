@@ -73,6 +73,7 @@ public class ListHelper {
 		Iterator<Sentence> itr = analysislist.iterator();
 		Sentence sete = itr.next();
 		sb.append(sete.getSentence());
+		int keylen = 0;
 		while (itr.hasNext()) {
 			sete = itr.next();
 			String split = " ";
@@ -81,9 +82,10 @@ public class ListHelper {
 				trim1key = sb.toString();
 			}
 			sb.append(split + sete.getSentence());
+			keylen++;
 		}
 		key = sb.toString();
-		return new TKey(key, trim1key);
+		return new TKey(key, keylen, trim1key);
 	}
 	
 }

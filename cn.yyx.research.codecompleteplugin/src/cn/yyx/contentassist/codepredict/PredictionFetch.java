@@ -17,11 +17,13 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLines;
+import cn.yyx.contentassist.codeutils.methodInvocationStatement;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.contentassist.commonutils.ContextHandler;
 import cn.yyx.contentassist.commonutils.ProbabilityComputer;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
+import cn.yyx.contentassist.commonutils.StatementsMIs;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
@@ -39,9 +41,11 @@ public class PredictionFetch {
 		}
 		
 		List<Sentence> setelist = SentenceHelper.TranslateStringsToSentences(analist);
-		List<statement> smtlist = SentenceHelper.TranslateSentencesToStatements(setelist);
+		StatementsMIs smtmis = SentenceHelper.TranslateSentencesToStatements(setelist);
+		List<statement> smtlist = smtmis.getSmts();
+		List<methodInvocationStatement> smilist = smtmis.getSmis();
 		PreTryFlowLines<Sentence> fls = new PreTryFlowLines<Sentence>();
-		DoPreTrySequencePredict(alc, fls, setelist, smtlist, PredictMetaInfo.PreTryNeedSize, lastchar);
+		DoPreTrySequencePredict(alc, fls, setelist, smtlist, smilist, PredictMetaInfo.PreTryNeedSize, lastchar);
 		
 		ContextHandler ch = new ContextHandler(javacontext);
 		SynthesisHandler sh = new SynthesisHandler(handler, ch);
@@ -127,7 +131,7 @@ public class PredictionFetch {
 	// split line, below are pre try predict.
 	
 	private void DoPreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, List<Sentence> setelist,
-			List<statement> smtlist, int needsize, final char lastchar) {
+			List<statement> smtlist, final List<methodInvocationStatement> smtmilist, int needsize, final char lastchar) {
 		PredictInfer pi = new PredictInfer();
 		// Map<String, Boolean> keynull = new TreeMap<String, Boolean>();
 		
@@ -135,14 +139,14 @@ public class PredictionFetch {
 		while (itr.hasNext())
 		{
 			Sentence ons = itr.next();
-			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, (int)(needsize), 2*needsize, lastchar, pi);
+			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, smtmilist, (int)(needsize), 2*needsize, lastchar, pi);
 		}
 		int size = fls.GetValidOveredSize();
 		int turn = 0;
 		while (size < ((int)(needsize)) && turn < PredictMetaInfo.PreTryMaxStep)
 		{
 			turn++;
-			DoOnePreTrySequencePredict(alc, fls, null, smtlist, (int)((needsize-size)), 2*(needsize-size), lastchar, pi);
+			DoOnePreTrySequencePredict(alc, fls, null, smtlist, smtmilist, (int)((needsize-size)), 2*(needsize-size), lastchar, pi);
 			size = fls.GetValidOveredSize();
 		}
 		fls.TrimOverTails(needsize);
@@ -152,7 +156,7 @@ public class PredictionFetch {
 		pi = null;
 	}
 	
-	private void DoOnePreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons, final List<statement> oraclelist, int neededsize, int maxparsize, final char lastchar, PredictInfer pi)
+	private void DoOnePreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons, final List<statement> oraclelist, final List<methodInvocationStatement> oraclemilist, int neededsize, int maxparsize, final char lastchar, PredictInfer pi)
 	{
 		if (fls.IsEmpty())
 		{
@@ -183,17 +187,28 @@ public class PredictionFetch {
 				PreTryFlowLineNode<Sentence> fln = (PreTryFlowLineNode<Sentence>) itr.next();
 				List<PredictProbPair> pps = pi.InferNextGeneration(alc, sizeitr.next(), fln, null);
 				Iterator<PredictProbPair> ppsitr = pps.iterator();
-				List<statement> triedcmp = FlowLineHelper.LastToFirstStatementQueue(fln);
+				StatementsMIs smtmis = FlowLineHelper.LastToFirstStatementQueueWithMethodInvocationExtracted(fln);
+				List<statement> triedcmp = smtmis.getSmts();
+				List<methodInvocationStatement> triedcmpsmi = smtmis.getSmis();
 				while (ppsitr.hasNext())
 				{
 					PredictProbPair ppp = ppsitr.next();
 					Sentence pred = ppp.getPred();
-					triedcmp.add(pred.getSmt());
-					double sim = LCSComparison.LCSSimilarity(oraclelist, triedcmp);
-					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability(), sim, fln);
+					statement predsmt = pred.getSmt();
+					triedcmp.add(predsmt);
+					if (predsmt instanceof methodInvocationStatement)
+					{
+						triedcmpsmi.add((methodInvocationStatement) predsmt);
+					}
+					double sim = 0.5*LCSComparison.LCSSimilarity(oraclelist, triedcmp) + 0.5*LCSComparison.LCSSimilarityMIs(oraclemilist, triedcmpsmi);
+					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability(), sim, fln, ppp.getKeylen());
 					// fls.AddToNextLevel(nf, fln);
 					pppqueue.add(nf);
 					((LinkedList<statement>)triedcmp).removeLast();
+					if (predsmt instanceof methodInvocationStatement)
+					{
+						((LinkedList<methodInvocationStatement>)triedcmpsmi).removeLast();
+					}
 					
 					// record information which ons and exact match need.
 					if (ons != null)
@@ -247,7 +262,7 @@ public class PredictionFetch {
 				}
 				double enhancedenergy = ProbabilityComputer.ComputeProbability(maxexactmatchsimilarity);
 				PreTryFlowLineNode<Sentence> fln = fls.getExactmatchtail();
-				PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(ons, tempexactmatchprob + enhancedenergy + fln.getProbability(), ((fln.getLength()+1)*1.0)/(oraclelist.size()*1.0), fln);
+				PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(ons, tempexactmatchprob + enhancedenergy + fln.getProbability(), ((fln.getLength()+1)*1.0)/(oraclelist.size()*1.0), fln, 0);
 				fls.AddToNextLevel(nf, nf.getParent());
 				fls.setExactmatchtail(nf);
 				fls.MoveTempTailLastToFirst();

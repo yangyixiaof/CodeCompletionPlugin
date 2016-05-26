@@ -4,10 +4,12 @@ public class TKey {
 	
 	private String key = null;
 	private String trim1key = null;
+	private int keylen = 0;
 	
-	public TKey(String key, String trim1key) {
+	public TKey(String key, int keylen, String trim1key) {
 		this.setKey(key);
 		this.setTrim1key(trim1key);
+		this.setKeylen(keylen);
 	}
 
 	public String getKey() {
@@ -29,6 +31,14 @@ public class TKey {
 	@Override
 	public String toString() {
 		return "key:" + key + "\n" + "trim1key:" + trim1key;
+	}
+
+	public int getKeylen() {
+		return keylen;
+	}
+
+	public void setKeylen(int keylen) {
+		this.keylen = keylen;
 	}
 	
 }

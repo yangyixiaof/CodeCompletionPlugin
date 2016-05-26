@@ -6,11 +6,13 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 	
 	private double seqencesimilarity = -1;
 	private PreTryFlowLineNode<T> parent = null;
+	private int keylen = 0;
 	
-	public PreTryFlowLineNode(T t, double prob, double seqsimilarity, PreTryFlowLineNode<T> parent) {
+	public PreTryFlowLineNode(T t, double prob, double seqsimilarity, PreTryFlowLineNode<T> parent, int keylen) {
 		super(t, prob);
 		this.setSeqencesimilarity(seqsimilarity);
 		this.setParent(parent);
+		this.setKeylen(keylen);
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -49,6 +51,14 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 
 	public void setSeqencesimilarity(double seqencesimilarity) {
 		this.seqencesimilarity = seqencesimilarity;
+	}
+
+	public int getKeylen() {
+		return keylen;
+	}
+
+	public void setKeylen(int keylen) {
+		this.keylen = keylen;
 	}
 	
 }

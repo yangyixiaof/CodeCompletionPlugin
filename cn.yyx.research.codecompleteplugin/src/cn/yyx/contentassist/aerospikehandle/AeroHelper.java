@@ -32,7 +32,7 @@ public class AeroHelper {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<PredictProbPair> GetNGramInAero(Integer id, String key, int strictedSize, ChooseStrategy strategy)
+	public static List<PredictProbPair> GetNGramInAero(Integer id, String key, int strictedSize, ChooseStrategy strategy, int keylen)
 	{
 		AerospikeClient client = acm.GetClient(id);
 		Parameters param = acm.GetParameters(id);
@@ -50,7 +50,7 @@ public class AeroHelper {
 			{
 				Double prob = itr.next();
 				String pred = itr2.next();
-				result.add(new PredictProbPair(ComplexParser.GetSentence(pred), prob));
+				result.add(new PredictProbPair(ComplexParser.GetSentence(pred), prob, keylen));
 				strictedSize--;
 			}
 		}

@@ -12,10 +12,10 @@ public class PredictHelper {
 	
 	public static List<PredictProbPair> PredictSentences(AeroLifeCycle alc, List<Sentence> ls, int neededSize) {
 		List<PredictProbPair> result = new LinkedList<PredictProbPair>();
-		int maxsize = Math.min(ls.size() - 1, PredictMetaInfo.NgramMaxSize-2);
-		for (int i = maxsize; i >= 0; i--) {
+		int maxsize = Math.min(ls.size() - 1, PredictMetaInfo.NgramMaxSize-1);
+		for (int i = maxsize; i > 0; i--) {
 			String key = ListHelper.ConcatJoinLast(i, ls);
-			List<PredictProbPair> predicts = alc.AeroModelPredict(key, neededSize);
+			List<PredictProbPair> predicts = alc.AeroModelPredict(key, neededSize, i);
 			result.addAll(predicts);
 			neededSize -= predicts.size();
 			if (neededSize <= 0)

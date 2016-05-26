@@ -17,7 +17,7 @@ public class TerminationHelper {
 	{
 		int level = (int)(totallen*0.75);
 		statement smt = sete.getSmt();
-		boolean minilevel = currlen > level;
+		boolean minilevel = currlen >= level;
 		if (isexactmatch)
 		{
 			minilevel = currlen >= totallen;

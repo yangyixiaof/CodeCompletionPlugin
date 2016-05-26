@@ -4,7 +4,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import cn.yyx.contentassist.codeutils.methodInvocationStatement;
 import cn.yyx.contentassist.codeutils.statement;
+import cn.yyx.contentassist.commonutils.StatementsMIs;
 import cn.yyx.contentassist.parsehelper.ComplexParser;
 
 public class SentenceHelper {
@@ -22,15 +24,21 @@ public class SentenceHelper {
 		return result;
 	}
 
-	public static List<statement> TranslateSentencesToStatements(List<Sentence> setelist) {
+	public static StatementsMIs TranslateSentencesToStatements(List<Sentence> setelist) {
 		List<statement> smtlist = new LinkedList<statement>();
+		List<methodInvocationStatement> smilist = new LinkedList<methodInvocationStatement>();
 		Iterator<Sentence> itr = setelist.iterator();
 		while (itr.hasNext())
 		{
 			Sentence sete = itr.next();
-			smtlist.add(sete.getSmt());
+			statement smt = sete.getSmt();
+			smtlist.add(smt);
+			if (smt instanceof methodInvocationStatement)
+			{
+				smilist.add((methodInvocationStatement) smt);
+			}
 		}
-		return smtlist;
+		return new StatementsMIs(smilist, smtlist);
 	}
 	
 }

@@ -6,11 +6,13 @@ public class PredictProbPair implements Comparable<PredictProbPair>{
 	
 	private Sentence pred = null;
 	private Double prob = (double) 0;
+	private int keylen = 0;
 	
-	public PredictProbPair(Sentence pred, Double prob)
+	public PredictProbPair(Sentence pred, Double prob, int keylen)
 	{
 		this.setPred(pred);
 		this.setProb(prob);
+		this.setKeylen(keylen);
 	}
 
 	public Sentence getPred() {
@@ -38,6 +40,14 @@ public class PredictProbPair implements Comparable<PredictProbPair>{
 	@Override
 	public String toString() {
 		return "predict sentence:" + pred + ";prob:" + prob;
+	}
+
+	public int getKeylen() {
+		return keylen;
+	}
+
+	public void setKeylen(int keylen) {
+		this.keylen = keylen;
 	}
 	
 }

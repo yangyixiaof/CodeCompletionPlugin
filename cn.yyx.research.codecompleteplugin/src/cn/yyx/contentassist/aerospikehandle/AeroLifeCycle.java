@@ -23,9 +23,9 @@ public class AeroLifeCycle {
 	}
 
 	// must invoke in the environment of AeroLifeCycle.
-	public List<PredictProbPair> AeroModelPredict(String key, int neededSize) {
+	public List<PredictProbPair> AeroModelPredict(String key, int neededSize, int keylen) {
 		CheckInitialized();
-		List<PredictProbPair> result = AeroHelper.GetNGramInAero(AeroMetaData.codengram, key, neededSize, null);
+		List<PredictProbPair> result = AeroHelper.GetNGramInAero(AeroMetaData.codengram, key, neededSize, null, keylen);
 		// result.sort(new ProbPredictComparator());
 		// int realsize = result.size();
 		// if (realsize > neededSize)

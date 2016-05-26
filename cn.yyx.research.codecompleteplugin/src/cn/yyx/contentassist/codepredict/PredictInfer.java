@@ -49,6 +49,7 @@ public class PredictInfer {
 			TKey tkey = ListHelper.ConcatJoin(ls);
 			String key = tkey.getKey();
 			String trim1key = tkey.getTrim1key();
+			int keylen = tkey.getKeylen();
 			if (trim1key != null)
 			{
 				if (keynull.containsKey(trim1key)) //  || keynull.containsKey(key)
@@ -69,7 +70,7 @@ public class PredictInfer {
 			}
 			
 			// not handled key.
-			List<PredictProbPair> pps = alc.AeroModelPredict(key, remainsize);
+			List<PredictProbPair> pps = alc.AeroModelPredict(key, remainsize, keylen);
 			Iterator<PredictProbPair> ppsitr = pps.iterator();
 			while (ppsitr.hasNext())
 			{

@@ -5,8 +5,10 @@ import java.util.List;
 
 import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codeutils.methodInvocationStatement;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.CheckUtil;
+import cn.yyx.contentassist.commonutils.StatementsMIs;
 
 public class FlowLineHelper {
 	
@@ -44,7 +46,7 @@ public class FlowLineHelper {
 		return needsize;
 	}
 	
-	public static List<statement> LastToFirstStatementQueue(FlowLineNode<Sentence> fln) {
+	private static List<statement> LastToFirstStatementQueue(FlowLineNode<Sentence> fln) {
 		List<statement> result = new LinkedList<statement>();
 		FlowLineNode<Sentence> tempfln = fln;
 		while (tempfln != null) {
@@ -52,6 +54,47 @@ public class FlowLineHelper {
 			tempfln = tempfln.getPrev();
 		}
 		return result;
+	}
+	
+	public static StatementsMIs LastToFirstStatementQueueWithMethodInvocationExtracted(PreTryFlowLineNode<Sentence> fln) {
+		List<statement> smts = new LinkedList<statement>();
+		List<methodInvocationStatement> smis = new LinkedList<methodInvocationStatement>();
+		PreTryFlowLineNode<Sentence> tempfln = fln;
+		int keylen = 0;
+		int totalkey = 0;
+		while (tempfln != null) {
+			boolean keylenset = false;
+			if (keylen == 0)
+			{
+				keylen = tempfln.getKeylen();
+				totalkey += keylen;
+				keylenset = true;
+			}
+			if (keylen == 0)
+			{
+				break;
+			}
+			tempfln = (PreTryFlowLineNode<Sentence>) tempfln.getPrev();
+			if (keylenset)
+			{
+				continue;
+			}
+			keylen--;
+		}
+		tempfln = fln;
+		totalkey += 1; // include the fln.
+		int idx = 0;
+		while (tempfln != null) {
+			statement smt = tempfln.getData().getSmt();
+			idx++;
+			if (smt instanceof methodInvocationStatement && idx <= totalkey)
+			{
+				smis.add((methodInvocationStatement) smt);
+			}
+			smts.add(0, smt);
+			tempfln = (PreTryFlowLineNode<Sentence>) tempfln.getPrev();
+		}
+		return new StatementsMIs(smis, smts);
 	}
 	
 	public static List<statement> LastToFirstStatementQueueWithAddedStatement(FlowLineNode<Sentence> fln, statement smt) {
