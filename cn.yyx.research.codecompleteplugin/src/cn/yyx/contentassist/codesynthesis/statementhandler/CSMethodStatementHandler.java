@@ -2,9 +2,11 @@ package cn.yyx.contentassist.codesynthesis.statementhandler;
 
 import java.util.Stack;
 
+import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 
 public class CSMethodStatementHandler extends CSStatementHandler{
 	
@@ -20,6 +22,10 @@ public class CSMethodStatementHandler extends CSStatementHandler{
 	
 	// signals.
 	private Stack<Integer> signals = new Stack<Integer>();
+	
+	public CSMethodStatementHandler(Sentence sete, double prob, ASTOffsetInfo aoi) {
+		super(sete, prob, aoi);
+	}
 	
 	public CSMethodStatementHandler(CSStatementHandler csh, boolean hasem) {
 		super(csh.getSete(), csh.getProb(), csh.getAoi());
