@@ -153,7 +153,7 @@ public class preExist extends referedExpression{
 				if ((!(tmpdata instanceof CSMethodInvocationData)) && signals.size() == 1)
 				{
 					mstop = tmpnext;
-					if (tmpnext == null)
+					if (mstop == null)
 					{
 						// only one. tmpnext is not set yet.
 						mstop = tmp;
