@@ -45,12 +45,12 @@ public class CSEnterParamInfoData extends CSFlowLineData{
 			tttimes--;
 			signals.pop();
 		}
-		// pred check : signals.isEmpty()
-		//if (tttimes > 0)
-		//{
-		//	throw new CodeSynthesisException("EnterParam doesn't consumed totally and left can not consume, so it is an error.");
+		// pred check : tttimes > 0
+		if (!signals.isEmpty())
+		{
+			throw new CodeSynthesisException("EnterParam doesn't consumed totally and left can not consume, so it is an error.");
 			// signals.push(ComplicatedSignal.GenerateComplicatedSignal(DataStructureSignalMetaInfo.MethodEnterParam, tttimes));
-		//}
+		}
 	}
 	
 }
