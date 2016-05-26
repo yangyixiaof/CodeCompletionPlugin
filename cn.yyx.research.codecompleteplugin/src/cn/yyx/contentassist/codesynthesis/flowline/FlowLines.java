@@ -113,6 +113,7 @@ public class FlowLines<T> {
 		FlowLineNode<T> nnt = afterwhich.getSilbnext();
 		if (nnt == null)
 		{
+			insert.setSilbprev(afterwhich);
 			afterwhich.setSilbnext(insert);
 		}
 		else

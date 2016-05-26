@@ -104,7 +104,7 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 
 	public void MoveTempTailSpecificToFirst(PreTryFlowLineNode<T> nf) {
 		Iterator<FlowLineNode<T>> titr = temptails.iterator();
-		int idx = 0;
+		int idx = -1;
 		while (titr.hasNext())
 		{
 			idx++;
