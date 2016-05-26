@@ -59,7 +59,7 @@ public class FlowLineHelper {
 	
 	public static StatementsMIs LastToFirstStatementQueueWithMethodInvocationExtracted(PreTryFlowLineNode<Sentence> fln) {
 		List<statement> smts = new LinkedList<statement>();
-		List<methodInvocationStatement> smis = new LinkedList<methodInvocationStatement>();
+		List<statement> smis = new LinkedList<statement>();
 		PreTryFlowLineNode<Sentence> tempfln = fln;
 		int keylen = 0;
 		int totalkey = 0;

@@ -27,7 +27,7 @@ public class SentenceHelper {
 
 	public static StatementsMIs TranslateSentencesToStatements(List<Sentence> setelist) {
 		List<statement> smtlist = new LinkedList<statement>();
-		List<methodInvocationStatement> smilist = new LinkedList<methodInvocationStatement>();
+		List<statement> smilist = new LinkedList<statement>();
 		Iterator<Sentence> itr = setelist.iterator();
 		while (itr.hasNext())
 		{
@@ -36,7 +36,7 @@ public class SentenceHelper {
 			smtlist.add(smt);
 			if (ClassInstanceOfUtil.ObjectInstanceOf(smt, methodInvocationStatement.class))
 			{
-				smilist.add((methodInvocationStatement) smt);
+				smilist.add(smt);
 			}
 		}
 		return new StatementsMIs(smilist, smtlist);

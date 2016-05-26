@@ -3,24 +3,23 @@ package cn.yyx.contentassist.commonutils;
 import java.util.LinkedList;
 import java.util.List;
 
-import cn.yyx.contentassist.codeutils.methodInvocationStatement;
 import cn.yyx.contentassist.codeutils.statement;
 
 public class StatementsMIs {
 	
-	private List<methodInvocationStatement> smis = new LinkedList<methodInvocationStatement>();
+	private List<statement> smis = new LinkedList<statement>();
 	private List<statement> smts = new LinkedList<statement>();
 	
-	public StatementsMIs(List<methodInvocationStatement> smis, List<statement> smts) {
+	public StatementsMIs(List<statement> smis, List<statement> smts) {
 		this.setSmis(smis);
 		this.setSmts(smts);
 	}
 
-	public List<methodInvocationStatement> getSmis() {
+	public List<statement> getSmis() {
 		return smis;
 	}
 
-	public void setSmis(List<methodInvocationStatement> smis) {
+	public void setSmis(List<statement> smis) {
 		this.smis = smis;
 	}
 
