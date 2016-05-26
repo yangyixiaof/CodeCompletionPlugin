@@ -243,16 +243,17 @@ public class PredictionFetch {
 				
 				boolean inexactmatchseq = tails.get(0) == nf.getParent();
 				boolean isexactmatch = false;
+				
 				// judge if exact match is handled.
 				if (inexactmatchseq && ons != null && ons.getSentence().equals(nf.getData().getSentence()))
 				{
 					isexactmatch = true;
 					exactmatchhandled = true;
 					fls.setExactmatchtail(nf);
-					fls.MoveTempTailSpecificToFirst(nf);
 				}
 				
-				if (TerminationHelper.couldTerminate(nf.getData(), lastchar, nf.getParent().getLength()+1, oraclelist.size(), isexactmatch))
+				boolean couldterminate = TerminationHelper.couldTerminate(nf.getData(), lastchar, nf.getParent().getLength()+1, oraclelist.size(), isexactmatch);
+				if (couldterminate)
 				{
 					fls.AddOverFlowLineNode(nf, nf.getParent());
 				}
@@ -260,6 +261,11 @@ public class PredictionFetch {
 				{
 					fls.AddToNextLevel(nf, nf.getParent());
 					ndsize--;
+				}
+				
+				if (isexactmatch && !couldterminate)
+				{
+					fls.MoveTempTailSpecificToFirst(nf);
 				}
 				
 			}

@@ -60,7 +60,7 @@ public class CCType {
 	}
 
 	public boolean isAssignableFrom(CCType clspara) {
-		return cls.isAssignableFrom(clspara.getCls());
+		return TypeCheckHelper.NormalizeClass(cls).isAssignableFrom(TypeCheckHelper.NormalizeClass(clspara.getCls()));
 	}
 	
 	@Override

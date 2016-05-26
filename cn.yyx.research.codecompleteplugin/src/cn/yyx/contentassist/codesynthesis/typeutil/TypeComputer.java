@@ -57,39 +57,17 @@ public class TypeComputer {
 				}
 				else
 				{
-					if (c2.equals(String.class) || c1.equals(String.class))
+					if (c2.getCls().equals(String.class) || c1.getCls().equals(String.class))
 					{
 						return new CCType(String.class, "String");
 					}
 					else
 					{
-						if (c2.equals(Double.class) || c1.equals(Double.class))
+						Class<?> nmc1 = TypeCheckHelper.NormalizeClass(c1.getCls());
+						Class<?> nmc2 = TypeCheckHelper.NormalizeClass(c2.getCls());
+						if (nmc1 != nmc2)
 						{
-							return new CCType(Double.class, "Double");
-						}
-						if (c2.equals(Float.class) || c1.equals(Float.class))
-						{
-							return new CCType(Float.class, "Float");
-						}
-						if (c2.equals(Long.class) || c1.equals(Long.class))
-						{
-							return new CCType(Long.class, "Long");
-						}
-						if (c2.equals(Integer.class) || c1.equals(Integer.class))
-						{
-							return new CCType(Integer.class, "Integer");
-						}
-						if (c2.equals(Short.class) || c1.equals(Short.class))
-						{
-							return new CCType(Short.class, "Short");
-						}
-						if (c2.equals(Byte.class) || c1.equals(Byte.class))
-						{
-							return new CCType(Byte.class, "Byte");
-						}
-						if (c2.equals(Boolean.class) || c1.equals(Boolean.class))
-						{
-							return new CCType(Boolean.class, "Boolean");
+							throw new TypeConflictException("Arith optr two types not handled.");
 						}
 						return c1;
 					}
@@ -214,5 +192,37 @@ public class TypeComputer {
 		}
 		throw new CodeSynthesisException("Type Conflict in choose before and after types!");
 	}
+	
+	/*public boolean couldBeCasted()
+	{
+		if (c2.equals(Double.class) || c1.equals(Double.class))
+		{
+			return new CCType(Double.class, "Double");
+		}
+		if (c2.equals(Float.class) || c1.equals(Float.class))
+		{
+			return new CCType(Float.class, "Float");
+		}
+		if (c2.equals(Long.class) || c1.equals(Long.class))
+		{
+			return new CCType(Long.class, "Long");
+		}
+		if (c2.equals(Integer.class) || c1.equals(Integer.class))
+		{
+			return new CCType(Integer.class, "Integer");
+		}
+		if (c2.equals(Short.class) || c1.equals(Short.class))
+		{
+			return new CCType(Short.class, "Short");
+		}
+		if (c2.equals(Byte.class) || c1.equals(Byte.class))
+		{
+			return new CCType(Byte.class, "Byte");
+		}
+		if (c2.equals(Boolean.class) || c1.equals(Boolean.class))
+		{
+			return new CCType(Boolean.class, "Boolean");
+		}
+	}*/
 	
 }

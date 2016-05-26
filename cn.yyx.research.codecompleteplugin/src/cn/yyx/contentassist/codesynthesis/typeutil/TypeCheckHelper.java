@@ -40,7 +40,7 @@ public class TypeCheckHelper {
 		return false;
 	}
 	
-	private static Class<?> NormalizeClass(Class<?> onetype)
+	public static Class<?> NormalizeClass(Class<?> onetype)
 	{
 		if (onetype.equals(int.class))
 		{
