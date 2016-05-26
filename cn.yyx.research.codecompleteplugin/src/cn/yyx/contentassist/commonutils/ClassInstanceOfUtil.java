@@ -6,7 +6,7 @@ import cn.yyx.contentassist.codeutils.statement;
 
 public class ClassInstanceOfUtil {
 	
-	public boolean ObjectInstanceOf(Object ref, Class<?> cls)
+	public static boolean ObjectInstanceOf(Object ref, Class<?> cls)
 	{
 		if (cls.isAssignableFrom(ref.getClass()))
 		{
@@ -35,7 +35,5 @@ public class ClassInstanceOfUtil {
 		}
 		return false;
 	}
-	
-	
 	
 }

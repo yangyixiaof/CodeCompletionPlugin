@@ -27,6 +27,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
 import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codehelper.MyCompilationUnit;
+import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.StringUtil;
 import cn.yyx.contentassist.commonutils.TimeOutProgressMonitor;
@@ -130,11 +131,11 @@ public class SearchSpecificationOfAReference {
 		{
 			ICompletionProposal icp = itr.next();
 			String pstr = null;
-			if (icp instanceof JavaMethodCompletionProposal)
+			if (ClassInstanceOfUtil.ObjectInstanceOf(icp, JavaMethodCompletionProposal.class))
 			{
 				pstr = ((JavaMethodCompletionProposal)icp).getDisplayString();
 			}
-			if (icp instanceof ParameterGuessingProposal)
+			if (ClassInstanceOfUtil.ObjectInstanceOf(icp, ParameterGuessingProposal.class))
 			{
 				pstr = ((ParameterGuessingProposal)icp).getDisplayString();
 			}
@@ -196,22 +197,6 @@ public class SearchSpecificationOfAReference {
 			 idx++;
 			ICompletionProposal icp = itr.next();
 			// interested
-			/*if (icp instanceof JavaMethodCompletionProposal || icp instanceof ParameterGuessingProposal)
-			{
-				result.AddMethodMember(new MethodMember(icp));
-			}
-			if (icp instanceof JavaCompletionProposal)
-			{
-				result.AddFieldMember(new FieldMember((JavaCompletionProposal)icp));
-			}
-			if (icp instanceof LazyGenericTypeProposal)
-			{
-				try {
-					result.AddTypeMember(new TypeMember((LazyGenericTypeProposal)icp));
-				} catch (ClassNotFoundException e) {
-					continue;
-				}
-			}*/
 			 System.err.println("proposal" + idx + " display : " + icp.getDisplayString());
 			 System.err.println("proposal" + idx + " type : " + icp.getClass());
 			 System.err.println("proposal" + idx + " : " + icp.toString());

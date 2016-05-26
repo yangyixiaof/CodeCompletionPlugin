@@ -5,6 +5,7 @@ import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
+import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 
 public class CSVariableHolderExtraInfo implements CSSelfClosedMergable{
 	
@@ -37,7 +38,7 @@ public class CSVariableHolderExtraInfo implements CSSelfClosedMergable{
 
 	@Override
 	public Object SelfClosedMerge(Object tv) throws CodeSynthesisException {
-		if (!(tv instanceof CSVariableHolderExtraInfo))
+		if (!(ClassInstanceOfUtil.ObjectInstanceOf(tv, CSVariableHolderExtraInfo.class)))
 		{
 			throw new CodeSynthesisException("Not corresponding type, expect CSVariableHolderExtraInfo.");
 		}

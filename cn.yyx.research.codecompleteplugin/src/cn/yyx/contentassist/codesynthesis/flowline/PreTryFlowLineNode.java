@@ -1,5 +1,6 @@
 package cn.yyx.contentassist.codesynthesis.flowline;
 
+import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 
 public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
@@ -18,7 +19,7 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public int compareTo(FlowLineNode<T> o) {
-		if (o instanceof PreTryFlowLineNode)
+		if (ClassInstanceOfUtil.ObjectInstanceOf(o, PreTryFlowLineNode.class))
 		{
 			if (!SimilarityHelper.CouldThoughtTwoDoubleSame(getSeqencesimilarity(), ((PreTryFlowLineNode) o).getSeqencesimilarity()))
 			{

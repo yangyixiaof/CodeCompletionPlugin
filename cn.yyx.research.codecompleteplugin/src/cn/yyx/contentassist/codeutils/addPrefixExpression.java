@@ -9,6 +9,7 @@ import cn.yyx.contentassist.codesynthesis.ErrorCheck;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 
 public class addPrefixExpression extends referedExpression{
 	
@@ -27,7 +28,7 @@ public class addPrefixExpression extends referedExpression{
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		if (t instanceof addPrefixExpression)
+		if (ClassInstanceOfUtil.ObjectInstanceOf(t, addPrefixExpression.class))
 		{
 			if (rexp.CouldThoughtSame(((addPrefixExpression) t).rexp))
 			{

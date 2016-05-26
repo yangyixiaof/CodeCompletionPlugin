@@ -11,6 +11,7 @@ import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
 import cn.yyx.contentassist.codecompletion.IntelliJavaProposalComputer;
+import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;
 
 public class CodePredictTest implements CodePredict{
@@ -22,7 +23,7 @@ public class CodePredictTest implements CodePredict{
 		proposals.add(new CompletionProposal("www.yyx.com", context.getInvocationOffset(), 0, "www.yyx.com".length()));
 		proposals.add(new CompletionProposal("<yyx proposal here>", context.getInvocationOffset(), 0,
 				"<yyx proposal here>".length()));
-		if (context instanceof JavaContentAssistInvocationContext)
+		if (ClassInstanceOfUtil.ObjectInstanceOf(context, JavaContentAssistInvocationContext.class))
 		{
 			try {
 				JavaContentAssistInvocationContext javacontext = (JavaContentAssistInvocationContext)context;

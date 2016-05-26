@@ -20,6 +20,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLines;
 import cn.yyx.contentassist.codeutils.methodInvocationStatement;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
+import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 import cn.yyx.contentassist.commonutils.ContextHandler;
 import cn.yyx.contentassist.commonutils.ProbabilityComputer;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
@@ -196,7 +197,7 @@ public class PredictionFetch {
 					Sentence pred = ppp.getPred();
 					statement predsmt = pred.getSmt();
 					triedcmp.add(predsmt);
-					if (predsmt instanceof methodInvocationStatement)
+					if (ClassInstanceOfUtil.ObjectInstanceOf(predsmt, methodInvocationStatement.class))
 					{
 						triedcmpsmi.add((methodInvocationStatement) predsmt);
 					}
@@ -207,7 +208,7 @@ public class PredictionFetch {
 					// fls.AddToNextLevel(nf, fln);
 					pppqueue.add(nf);
 					((LinkedList<statement>)triedcmp).removeLast();
-					if (predsmt instanceof methodInvocationStatement)
+					if (ClassInstanceOfUtil.ObjectInstanceOf(predsmt, methodInvocationStatement.class))
 					{
 						((LinkedList<methodInvocationStatement>)triedcmpsmi).removeLast();
 					}

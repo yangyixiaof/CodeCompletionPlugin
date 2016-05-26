@@ -6,6 +6,7 @@ import java.util.List;
 
 import cn.yyx.contentassist.codeutils.methodInvocationStatement;
 import cn.yyx.contentassist.codeutils.statement;
+import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 import cn.yyx.contentassist.commonutils.StatementsMIs;
 import cn.yyx.contentassist.parsehelper.ComplexParser;
 
@@ -33,7 +34,7 @@ public class SentenceHelper {
 			Sentence sete = itr.next();
 			statement smt = sete.getSmt();
 			smtlist.add(smt);
-			if (smt instanceof methodInvocationStatement)
+			if (ClassInstanceOfUtil.ObjectInstanceOf(smt, methodInvocationStatement.class))
 			{
 				smilist.add((methodInvocationStatement) smt);
 			}

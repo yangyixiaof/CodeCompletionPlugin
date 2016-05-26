@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 
 public class CSExtraData implements CSSelfClosedMergable{
 	
@@ -59,7 +60,7 @@ public class CSExtraData implements CSSelfClosedMergable{
 			Object tv = t.extras.get(key);
 			if (tv != null)
 			{
-				if (v instanceof CSSelfClosedMergable)
+				if (ClassInstanceOfUtil.ObjectInstanceOf(v, CSSelfClosedMergable.class))
 				{
 					if (!(tv.getClass().equals(v.getClass())))
 					{

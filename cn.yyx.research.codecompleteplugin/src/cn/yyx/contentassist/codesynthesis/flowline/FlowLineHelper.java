@@ -8,6 +8,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codeutils.methodInvocationStatement;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.CheckUtil;
+import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 import cn.yyx.contentassist.commonutils.StatementsMIs;
 
 public class FlowLineHelper {
@@ -29,11 +30,11 @@ public class FlowLineHelper {
 			needsize--;
 			Sentence sete = null;
 			Object obj = tempfln.getData();
-			if (obj instanceof Sentence)
+			if (ClassInstanceOfUtil.ObjectInstanceOf(obj, Sentence.class))
 			{
 				sete = (Sentence) obj;
 			} else {
-				if (obj instanceof CSFlowLineData)
+				if (ClassInstanceOfUtil.ObjectInstanceOf(obj, CSFlowLineData.class))
 				{
 					sete = ((CSFlowLineData) obj).getSete();
 				} else {
@@ -87,7 +88,7 @@ public class FlowLineHelper {
 		while (tempfln != null) {
 			statement smt = tempfln.getData().getSmt();
 			idx++;
-			if (smt instanceof methodInvocationStatement && idx <= totalkey)
+			if (ClassInstanceOfUtil.ObjectInstanceOf(smt, methodInvocationStatement.class) && idx <= totalkey)
 			{
 				smis.add((methodInvocationStatement) smt);
 			}

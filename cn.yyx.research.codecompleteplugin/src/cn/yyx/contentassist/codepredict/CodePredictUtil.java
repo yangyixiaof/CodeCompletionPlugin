@@ -12,6 +12,7 @@ import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
 import cn.yyx.contentassist.codecompletion.IntelliJavaProposalComputer;
+import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 import cn.yyx.contentassist.commonutils.DocumentContentHelper;
 import cn.yyx.contentassist.commonutils.ProposalHelper;
 
@@ -21,7 +22,7 @@ public class CodePredictUtil implements CodePredict {
 	public ArrayList<ICompletionProposal> PredictCodes(ContentAssistInvocationContext context,
 			IProgressMonitor monitor) {
 		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
-		if (!(context instanceof JavaContentAssistInvocationContext)) {
+		if (!(ClassInstanceOfUtil.ObjectInstanceOf(context, JavaContentAssistInvocationContext.class))) {
 			NotifyError(proposals, context);
 			return proposals;
 		}

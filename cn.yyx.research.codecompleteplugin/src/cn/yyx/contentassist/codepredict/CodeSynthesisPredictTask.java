@@ -17,6 +17,7 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
+import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class CodeSynthesisPredictTask implements Runnable {
@@ -111,7 +112,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 						boolean over = false;
 						try {
 							FlowLineNode<CSFlowLineData> lastone = null;
-							if (!(csdflq instanceof VirtualCSFlowLineQueue)) {
+							if (!(ClassInstanceOfUtil.ObjectInstanceOf(csdflq, VirtualCSFlowLineQueue.class))) {
 								lastone = (FlowLineNode<CSFlowLineData>) fln;
 							}
 							over = predsmt.HandleOverSignal(new FlowLineStack(lastone));
@@ -127,7 +128,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 							csfl.AddCodeSynthesisOver(addnode, pred);
 							totalsuccess++;
 						} else {
-							if (csdflq instanceof VirtualCSFlowLineQueue) {
+							if (ClassInstanceOfUtil.ObjectInstanceOf(csdflq, VirtualCSFlowLineQueue.class)) {
 								// means first infer level.
 								csfl.AddToFirstLevel(addnode, (FlowLineNode<Sentence>) fln);
 							} else {

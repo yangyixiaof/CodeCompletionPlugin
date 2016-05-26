@@ -2,6 +2,7 @@ package cn.yyx.contentassist.codepredict;
 
 import cn.yyx.contentassist.codeutils.commonOverStatement;
 import cn.yyx.contentassist.codeutils.statement;
+import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 
 public class TerminationHelper {
 	
@@ -22,18 +23,10 @@ public class TerminationHelper {
 		{
 			minilevel = currlen >= totallen;
 		}
-		if (lastchar == ';' && (smt instanceof commonOverStatement) && minilevel)
+		if (lastchar == ';' && (ClassInstanceOfUtil.ObjectInstanceOf(smt, commonOverStatement.class)) && minilevel)
 		{
 			return true;
 		}
-		/*if (lastchar == '}' && (smt instanceof rightBraceStatement))
-		{
-			return true;
-		}
-		if (lastchar == '{' && (smt instanceof leftBraceStatement))
-		{
-			return true;
-		}*/
 		return false;
 	}
 	
