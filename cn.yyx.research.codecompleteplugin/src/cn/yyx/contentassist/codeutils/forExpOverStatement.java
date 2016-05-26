@@ -11,7 +11,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSForExpOverProperty;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class forExpOverStatement extends rawForExpOverStatement{
+public class forExpOverStatement extends rawForExpOverStatement implements SWrapper{
 	
 	statement smt = null;
 	
@@ -75,6 +75,11 @@ public class forExpOverStatement extends rawForExpOverStatement{
 		}
 		// result.add(new FlowLineNode<CSFlowLineData>(new CSForExpOverData(squeue.GenerateNewNodeId(), smthandler.getSete(), ";", null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return smtls;
+	}
+
+	@Override
+	public statement GetContent() {
+		return smt;
 	}
 	
 }

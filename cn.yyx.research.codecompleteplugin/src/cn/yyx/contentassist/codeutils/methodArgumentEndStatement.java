@@ -11,7 +11,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class methodArgumentEndStatement extends statement {
+public class methodArgumentEndStatement extends statement implements SWrapper{
 	
 	statement smt = null;
 	
@@ -63,6 +63,11 @@ public class methodArgumentEndStatement extends statement {
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		return false;
+	}
+
+	@Override
+	public statement GetContent() {
+		return smt;
 	}
 
 }

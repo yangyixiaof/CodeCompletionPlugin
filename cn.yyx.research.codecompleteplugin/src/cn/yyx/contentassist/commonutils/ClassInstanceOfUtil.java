@@ -1,5 +1,6 @@
 package cn.yyx.contentassist.commonutils;
 
+import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codeutils.SWrapper;
 import cn.yyx.contentassist.codeutils.statement;
 
@@ -18,6 +19,10 @@ public class ClassInstanceOfUtil {
 			{
 				return true;
 			}
+		}
+		if (ref instanceof CSFlowLineData)
+		{
+			return ((CSFlowLineData) ref).HasSpecialProperty(cls);
 		}
 		return false;
 	}

@@ -11,7 +11,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSForIniOverProperty;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class forIniOverStatement extends rawForIniOverStatement{
+public class forIniOverStatement extends rawForIniOverStatement implements SWrapper{
 	
 	statement smt = null;
 	
@@ -68,6 +68,11 @@ public class forIniOverStatement extends rawForIniOverStatement{
 			smtdata.setCsep(CSForIniOverProperty.GetInstance());
 		}
 		return smtls;
+	}
+
+	@Override
+	public statement GetContent() {
+		return smt;
 	}
 	
 }

@@ -13,7 +13,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class commonOverStatement extends statement {
+public class commonOverStatement extends statement implements SWrapper{
 	
 	statement smt = null;
 	
@@ -67,6 +67,11 @@ public class commonOverStatement extends statement {
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		cstack.EnsureAllSignalNull();
 		return true;
+	}
+
+	@Override
+	public statement GetContent() {
+		return smt;
 	}
 	
 }

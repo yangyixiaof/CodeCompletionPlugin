@@ -13,7 +13,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSForUpdOverProperty;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class forUpdOverStatement extends rawForUpdOverStatement {
+public class forUpdOverStatement extends rawForUpdOverStatement implements SWrapper{
 	
 	statement smt = null;
 	
@@ -76,6 +76,11 @@ public class forUpdOverStatement extends rawForUpdOverStatement {
 			result.addAll(CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, null));
 		}
 		return result;
+	}
+
+	@Override
+	public statement GetContent() {
+		return smt;
 	}
 	
 }
