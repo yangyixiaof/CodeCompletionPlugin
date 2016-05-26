@@ -143,9 +143,9 @@ public class PredictionFetch {
 			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, smtmilist, (int)(needsize), 2*needsize, lastchar, pi);
 		}
 		int size = fls.GetValidOveredSize();
-		int overtailsize = fls.getOvertails().size();
+		// int overtailsize = fls.getOvertails().size();
 		int turn = 0;
-		while ((size < needsize && overtailsize < needsize*2) && turn < PredictMetaInfo.PreTryMaxStep)
+		while ((size == 0) && turn < PredictMetaInfo.PreTryMaxStep)
 		{
 			turn++;
 			DoOnePreTrySequencePredict(alc, fls, null, smtlist, smtmilist, (int)((needsize-size)), 2*(needsize-size), lastchar, pi);
@@ -203,6 +203,12 @@ public class PredictionFetch {
 						triedcmpsmi.add(predsmt);
 					}
 					double mtsim = LCSComparison.LCSSimilarity(oraclelist, triedcmp);
+					
+					if (pred.getSentence().equals("MI@getActionCommand(@PE);"))
+					{
+						System.err.println("Debugging Sentence.");
+					}
+					
 					double misim = LCSComparison.LCSSimilarity(oraclemilist, triedcmpsmi);
 					double sim = 0.5*mtsim + 0.5*misim;
 					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability(), sim, fln, ppp.getKeylen());

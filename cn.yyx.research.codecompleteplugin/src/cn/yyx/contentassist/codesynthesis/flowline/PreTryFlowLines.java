@@ -87,6 +87,12 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 			{
 				validovers++;
 				finalovertails.add(pop);
+			} else
+			{
+				if (i == 0)
+				{
+					finalovertails.add(pop);
+				}
 			}
 		}
 		overtails = finalovertails;

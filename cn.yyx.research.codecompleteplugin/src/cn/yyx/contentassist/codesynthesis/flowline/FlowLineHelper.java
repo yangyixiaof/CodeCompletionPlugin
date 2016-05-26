@@ -90,7 +90,7 @@ public class FlowLineHelper {
 			idx++;
 			if (ClassInstanceOfUtil.ObjectInstanceOf(smt, methodInvocationStatement.class) && idx <= totalkey)
 			{
-				smis.add((methodInvocationStatement) smt);
+				smis.add(smt);
 			}
 			smts.add(0, smt);
 			tempfln = (PreTryFlowLineNode<Sentence>) tempfln.getPrev();
