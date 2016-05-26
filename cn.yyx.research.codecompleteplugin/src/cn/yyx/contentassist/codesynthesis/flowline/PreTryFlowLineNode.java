@@ -42,7 +42,7 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 	}
 	
 	public String rawString() {
-		return super.rawString() + ";seqsim:" + getSeqencesimilarity();
+		return super.rawString() + ";keylen:" + keylen + ";seqsim:" + getSeqencesimilarity();
 	}
 
 	public double getSeqencesimilarity() {

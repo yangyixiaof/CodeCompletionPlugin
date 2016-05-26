@@ -200,7 +200,9 @@ public class PredictionFetch {
 					{
 						triedcmpsmi.add((methodInvocationStatement) predsmt);
 					}
-					double sim = 0.5*LCSComparison.LCSSimilarity(oraclelist, triedcmp) + 0.5*LCSComparison.LCSSimilarityMIs(oraclemilist, triedcmpsmi);
+					double mtsim = LCSComparison.LCSSimilarity(oraclelist, triedcmp);
+					double misim = LCSComparison.LCSSimilarityMIs(oraclemilist, triedcmpsmi);
+					double sim = 0.5*mtsim + 0.5*misim;
 					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability(), sim, fln, ppp.getKeylen());
 					// fls.AddToNextLevel(nf, fln);
 					pppqueue.add(nf);

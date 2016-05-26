@@ -90,6 +90,14 @@ public class LCSComparison {
 	}
 	
 	public static double LCSSimilarityMIs(List<methodInvocationStatement> x, List<methodInvocationStatement> y) {
+		if (x.size() == 0 && y.size() == 0)
+		{
+			return 1;
+		}
+		if ((x.size() != 0 && y.size() == 0) || (x.size() == 0 && y.size() != 0))
+		{
+			return 0;
+		}
 		int m = x.size();
 		int n = y.size();
 		double[][] c = new double[m+1][n+1];

@@ -39,7 +39,7 @@ public class PredictProbPair implements Comparable<PredictProbPair>{
 	
 	@Override
 	public String toString() {
-		return "predict sentence:" + pred + ";prob:" + prob;
+		return "predict sentence:" + pred + ";keylen:" + keylen + ";prob:" + prob;
 	}
 
 	public int getKeylen() {

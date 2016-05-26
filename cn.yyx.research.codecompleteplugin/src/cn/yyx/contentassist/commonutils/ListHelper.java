@@ -73,7 +73,7 @@ public class ListHelper {
 		Iterator<Sentence> itr = analysislist.iterator();
 		Sentence sete = itr.next();
 		sb.append(sete.getSentence());
-		int keylen = 0;
+		int keylen = 1;
 		while (itr.hasNext()) {
 			sete = itr.next();
 			String split = " ";
