@@ -143,8 +143,9 @@ public class PredictionFetch {
 			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, smtmilist, (int)(needsize), 2*needsize, lastchar, pi);
 		}
 		int size = fls.GetValidOveredSize();
+		int overtailsize = fls.getOvertails().size();
 		int turn = 0;
-		while (size < ((int)(needsize)) && turn < PredictMetaInfo.PreTryMaxStep)
+		while ((size < needsize && overtailsize < needsize*2) && turn < PredictMetaInfo.PreTryMaxStep)
 		{
 			turn++;
 			DoOnePreTrySequencePredict(alc, fls, null, smtlist, smtmilist, (int)((needsize-size)), 2*(needsize-size), lastchar, pi);
@@ -199,7 +200,7 @@ public class PredictionFetch {
 					triedcmp.add(predsmt);
 					if (ClassInstanceOfUtil.ObjectInstanceOf(predsmt, methodInvocationStatement.class))
 					{
-						triedcmpsmi.add((methodInvocationStatement) predsmt);
+						triedcmpsmi.add(predsmt);
 					}
 					double mtsim = LCSComparison.LCSSimilarity(oraclelist, triedcmp);
 					double misim = LCSComparison.LCSSimilarity(oraclemilist, triedcmpsmi);

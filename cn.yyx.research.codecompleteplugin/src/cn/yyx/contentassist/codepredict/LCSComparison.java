@@ -6,7 +6,6 @@ import java.util.List;
 import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codeutils.OneCode;
 import cn.yyx.contentassist.codeutils.argType;
-import cn.yyx.contentassist.codeutils.methodInvocationStatement;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.codeutils.type;
 import cn.yyx.contentassist.codeutils.typeArgument;
@@ -52,6 +51,14 @@ public class LCSComparison {
 	}
 	
 	public static double LCSSimilarity(List<statement> x, List<statement> y) {
+		if (x.size() == 0 && y.size() == 0)
+		{
+			return 1;
+		}
+		if ((x.size() != 0 && y.size() == 0) || (x.size() == 0 && y.size() != 0))
+		{
+			return 0;
+		}
 		int m = x.size();
 		int n = y.size();
 		double[][] c = new double[m+1][n+1];
@@ -89,7 +96,7 @@ public class LCSComparison {
 		return 0.4*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.6*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
-	public static double LCSSimilarityMIs(List<methodInvocationStatement> x, List<methodInvocationStatement> y) {
+	/*public static double LCSSimilarityMIs(List<methodInvocationStatement> x, List<methodInvocationStatement> y) {
 		if (x.size() == 0 && y.size() == 0)
 		{
 			return 1;
@@ -133,7 +140,7 @@ public class LCSComparison {
 			}
 		}
 		return 0.4*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.6*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
-	}
+	}*/
 	
 	public static double LCSSimilarityListType(List<type> x, List<type> y) {
 		int m = x.size();

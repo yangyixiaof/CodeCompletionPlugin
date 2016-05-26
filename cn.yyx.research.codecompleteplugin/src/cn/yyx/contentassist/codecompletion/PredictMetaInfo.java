@@ -14,7 +14,7 @@ public class PredictMetaInfo {
 	
 	public static final int PredictMaxSequence = 15;
 	public static final int PrePredictWindow = 8;
-	public static final int PreTryMaxStep = 8;
+	public static final int PreTryMaxStep = 6;
 	public static final int PreTryNeedSize = 4;
 	
 	public static final int OneExtendFirstTotalStep = 50;
