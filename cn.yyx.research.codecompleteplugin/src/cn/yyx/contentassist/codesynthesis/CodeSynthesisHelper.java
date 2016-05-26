@@ -23,6 +23,7 @@ import cn.yyx.contentassist.codeutils.argumentList;
 import cn.yyx.contentassist.codeutils.firstArgReferedExpression;
 import cn.yyx.contentassist.codeutils.identifier;
 import cn.yyx.contentassist.codeutils.type;
+import cn.yyx.contentassist.commonutils.ListHelper;
 import cn.yyx.contentassist.commonutils.NameConvention;
 import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
 import cn.yyx.contentassist.commonutils.SignalHelper;
@@ -351,7 +352,8 @@ public class CodeSynthesisHelper {
 			System.err.println("Error! EnterParam not the start of the method.");
 			throw new CodeSynthesisException("Error! EnterParam not the start of the method.");
 		}
-		return alls;
+		return ListHelper.TranslateToMethodDataNode(alls, hasem);
+		// return alls;
 	}
 	
 	public static List<FlowLineNode<CSFlowLineData>> HandleInferredContent(CSFlowLineQueue squeue, CSStatementHandler smthandler, List<FlowLineNode<CSFlowLineData>> infermain, List<FlowLineNode<CSFlowLineData>> expectedinfer, String inferoperator) throws CodeSynthesisException

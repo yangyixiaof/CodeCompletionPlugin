@@ -49,6 +49,10 @@ public class CSFlowLineBackTraceGenerationHelper {
 		while (mergestart != stopnode) {
 			FlowLineNode<CSFlowLineData> two = mergestart;
 			FlowLineNode<CSFlowLineData> one = SearchForWholeNode(two.getPrev());
+			if (one == null)
+			{
+				break;
+			}
 			if (one == two)
 			{
 				// reach to the head of the queue.
@@ -136,6 +140,10 @@ public class CSFlowLineBackTraceGenerationHelper {
 	}
 
 	private static FlowLineNode<CSFlowLineData> SearchForWholeNode(FlowLineNode<CSFlowLineData> tailnode) throws CodeSynthesisException {
+		if (tailnode == null)
+		{
+			return null;
+		}
 		SynthesisCodeManager tailscm = tailnode.getData().getSynthesisCodeManager();
 		FlowLineNode<CSFlowLineData> bs = tailscm.getBlockstart();
 		if (bs == null)
@@ -162,20 +170,25 @@ public class CSFlowLineBackTraceGenerationHelper {
 		}
 		
 		FlowLineNode<CSFlowLineData> bs = startnode.getData().getSynthesisCodeManager().getBlockstart();
-		if (bs != null)
-		{
-			// TODO
+		FlowLineNode<CSFlowLineData> mergestart = null;
+		String preid = null;
+		if (bs != null) {
+			mergestart = bs;
+			preid = startnode.getData().getSynthesisCodeManager().getBlocktostartid();
+		} else {
+			FlowLineNode<CSFlowLineData> queuestartnode = squeue.getLast();
+			FlowLineNode<CSFlowLineData> snqueuestartnode = SearchForWholeNode(queuestartnode);
+			preid = ConcateTwoNodes(snqueuestartnode, queuestartnode, startnode, startnode, GetConcateId(startnode, startnode), squeue, smthandler);
+			mergestart = snqueuestartnode;
 		}
-		
-		FlowLineNode<CSFlowLineData> queuestartnode = squeue.getLast();
-		FlowLineNode<CSFlowLineData> snqueuestartnode = SearchForWholeNode(queuestartnode);
-		String preid = ConcateTwoNodes(snqueuestartnode, queuestartnode, startnode, startnode, GetConcateId(startnode, startnode), squeue, smthandler);
-		
-		FlowLineNode<CSFlowLineData> mergestart = snqueuestartnode;
 		FlowLineNode<CSFlowLineData> thelastone = mergestart;
 		while (mergestart != stopnode) {
 			FlowLineNode<CSFlowLineData> two = mergestart;
 			FlowLineNode<CSFlowLineData> one = SearchForWholeNode(two.getPrev());
+			if (one == null)
+			{
+				break;
+			}
 			if (one == two)
 			{
 				// reach to the head of the queue.
