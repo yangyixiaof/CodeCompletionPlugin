@@ -128,9 +128,10 @@ public class preExist extends referedExpression{
 		Stack<Integer> signals = realhandler.getSignals();
 		FlowLineNode<CSFlowLineData> ns = realhandler.getNextstart();
 		FlowLineNode<CSFlowLineData> tmp = ns;
-		FlowLineNode<CSFlowLineData> tmpnext = null;
 		FlowLineNode<CSFlowLineData> mstart = ns;
 		FlowLineNode<CSFlowLineData> mstop = null;
+		FlowLineNode<CSFlowLineData> tmpnext = tmp;
+		tmp = tmp.getPrev();
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();
@@ -143,6 +144,24 @@ public class preExist extends referedExpression{
 			}
 			
 			if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoData.class) || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class))
+			{
+				tmpdata.HandleStackSignal(signals);
+				
+				if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoData.class) && signals.size() == 1)
+				{
+					mstop = tmp;
+					realhandler.setNextstart(null);
+					realhandler.setMostfar(mstop);
+				}
+				
+				if ((tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class)) && signals.size() == 1)
+				{
+					mstop = tmpnext;
+					realhandler.setNextstart(tmp);
+					realhandler.setMostfar(mstop);
+				}
+			}
+			/*if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoData.class) || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class))
 			{   //  || ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSMethodInvocationData.class)
 				// Integer preps = signals.peek();
 				tmpdata.HandleStackSignal(signals);
@@ -167,7 +186,7 @@ public class preExist extends referedExpression{
 					}
 					break;
 				}
-			}
+			}*/
 			tmpnext = tmp;
 			tmp = tmp.getPrev();
 		}
