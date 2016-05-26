@@ -24,7 +24,6 @@ import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
 import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.commonutils.ListDynamicHeper;
-import cn.yyx.contentassist.commonutils.ListHelper;
 import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.specification.SpecificationHelper;
@@ -114,8 +113,8 @@ public class argumentList implements OneCode {
 	 * sb.append(")"); resdatas.put(sb.toString(), retandparamstypes); }
 	 * result.setDatas(resdatas); expected.pop(); return false; }
 	 */
-
-	private String HandleOneClassParamNodes(LinkedList<CCType> c, List<List<FlowLineNode<CSFlowLineData>>> paramsnode,
+	
+	/*private String HandleOneClassParamNodes(LinkedList<CCType> c, List<List<FlowLineNode<CSFlowLineData>>> paramsnode,
 			List<Boolean> usedparams) {
 		Iterator<List<FlowLineNode<CSFlowLineData>>> pitr = paramsnode.iterator();
 		int usedidx = 0;
@@ -151,7 +150,7 @@ public class argumentList implements OneCode {
 			usedidx++;
 		}
 		return unusedorlatestused;
-	}
+	}*/
 
 	public List<FlowLineNode<CSFlowLineData>> HandleMethodIntegrationCodeSynthesis(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String methodname) throws CodeSynthesisException {
@@ -204,17 +203,28 @@ public class argumentList implements OneCode {
 			}
 			// msig != null.
 			// check and add argument.
-			List<Boolean> usedparams = ListHelper.InitialBooleanArray(positiveargs.size());
+			// List<Boolean> usedparams = ListHelper.InitialBooleanArray(positiveargs.size());
 			List<LinkedList<CCType>> tps = msig.getArgtypes();
+			if (tps.size() != positiveargs.size())
+			{
+				continue;
+			}
 			Iterator<LinkedList<CCType>> tpitr = tps.iterator();
+			Iterator<List<FlowLineNode<CSFlowLineData>>> pitr = positiveargs.iterator();
 			sb.append("(");
-			while (tpitr.hasNext()) {
-				LinkedList<CCType> c = tpitr.next();
-				String ct = HandleOneClassParamNodes(c, positiveargs, usedparams);
-				sb.append(ct);
-				if (tpitr.hasNext()) {
-					sb.append(",");
+			try {
+				while (tpitr.hasNext()) {
+					LinkedList<CCType> c = tpitr.next();
+					List<FlowLineNode<CSFlowLineData>> parg = pitr.next();
+					// String ct = HandleOneClassParamNodes(c, positiveargs, usedparams);
+					String ct = HandleOneParam(c, parg);
+					sb.append(ct);
+					if (tpitr.hasNext()) {
+						sb.append(",");
+					}
 				}
+			} catch (Exception e) {
+				continue;
 			}
 			sb.append(")");
 			data.setData(sb.toString());
@@ -230,6 +240,21 @@ public class argumentList implements OneCode {
 			}
 		}
 		return invokers;
+	}
+	
+	public String HandleOneParam(LinkedList<CCType> c, List<FlowLineNode<CSFlowLineData>> parg) throws CodeSynthesisException
+	{
+		Iterator<FlowLineNode<CSFlowLineData>> pitr = parg.iterator();
+		while (pitr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> fln = pitr.next();
+			CSFlowLineData flndata = fln.getData();
+			if (TypeCheckHelper.CanBeMutualCast(c, flndata.getDcls()))
+			{
+				return flndata.getData();
+			}
+		}
+		throw new CodeSynthesisException("Argument and param type are not equal.");
 	}
 
 	@Override

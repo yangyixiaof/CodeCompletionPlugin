@@ -158,7 +158,7 @@ public class preExist extends referedExpression{
 						// only one. tmpnext is not set yet.
 						mstop = tmp;
 					}
-					realhandler.setNextstart(tmp);
+					realhandler.setNextstart(mstop.getPrev());
 					if (tmpdata instanceof CSEnterParamInfoData)
 					{
 						mstop = tmp;

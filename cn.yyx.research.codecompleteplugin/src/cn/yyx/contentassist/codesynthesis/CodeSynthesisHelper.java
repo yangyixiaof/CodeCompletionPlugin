@@ -171,24 +171,29 @@ public class CodeSynthesisHelper {
 		// CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
 		// String mcode = realhandler.getMethodname();
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		String mcode = ((between == null || between.equals("")) ? "" : between) + methodname;
+		String mcodelater = ((between == null || between.equals("")) ? "" : between) + methodname;
 		if (rexp != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> ls = rexp.HandleCodeSynthesis(squeue, smthandler);
 			// Solved. here should not just get the first element. such as commonFieldRef, they can not distinguish their priority.
 			Iterator<FlowLineNode<CSFlowLineData>> itr = ls.iterator();
+			String rexpcodepre = null;
 			while (itr.hasNext())
 			{
 				FlowLineNode<CSFlowLineData> fln = itr.next();
 				String rexpcode = fln.getData().getData();
-				mcode = rexpcode + "." + mcode;
-				result.addAll(CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, smthandler, mcode, rexpcode, mts));
+				if (!rexpcode.equals(rexpcodepre))
+				{
+					String mcode = rexpcode + "." + mcodelater;
+					result.addAll(CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, smthandler, mcode, rexpcode, mts));
+				}
+				rexpcodepre = rexpcode;
 			}
 			return result;
 		}
 		else
 		{
-			return CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, smthandler, mcode, null, mts);
+			return CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, smthandler, mcodelater, null, mts);
 		}
 	}
 	
