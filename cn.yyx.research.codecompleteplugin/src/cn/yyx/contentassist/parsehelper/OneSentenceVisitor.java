@@ -41,7 +41,6 @@ import cn.yyx.parse.szparse8java.Java8Parser.EqualInfixExpressionStatementContex
 import cn.yyx.parse.szparse8java.Java8Parser.ExtendBoundContext;
 import cn.yyx.parse.szparse8java.Java8Parser.FieldRefNameStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.FinallyStatementContext;
-import cn.yyx.parse.szparse8java.Java8Parser.FirstArgPreExistContext;
 import cn.yyx.parse.szparse8java.Java8Parser.FirstArgReferedExpressionContext;
 import cn.yyx.parse.szparse8java.Java8Parser.GeInfixExpressionStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.GtInfixExpressionStatementContext;
@@ -54,7 +53,6 @@ import cn.yyx.parse.szparse8java.Java8Parser.LeInfixExpressionStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.LshiftInfixExpressionStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.LshiftassignAssignmentStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.LtInfixExpressionStatementContext;
-import cn.yyx.parse.szparse8java.Java8Parser.MethodArgPreExistContext;
 import cn.yyx.parse.szparse8java.Java8Parser.MethodArgReferedExpressionContext;
 import cn.yyx.parse.szparse8java.Java8Parser.ModInfixExpressionStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.ModassignAssignmentStatementContext;
@@ -1200,11 +1198,11 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		return visitChildren(ctx);
 	}
 	
-	@Override
+	/*@Override
 	public Integer visitFirstArgPreExist(FirstArgPreExistContext ctx) {
 		usedobj.push(new firstArgPreExist());
 		return visitChildren(ctx);
-	}
+	}*/
 
 	@Override
 	public Integer visitFirstArgReferedExpression(FirstArgReferedExpressionContext ctx) {
@@ -1277,11 +1275,11 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		return visitChildren(ctx);
 	}
 
-	@Override
+	/*@Override
 	public Integer visitMethodArgPreExist(MethodArgPreExistContext ctx) {
 		usedobj.push(new methodArgPreExist());
 		return super.visitMethodArgPreExist(ctx);
-	}
+	}*/
 
 	@Override
 	public Integer visitMethodArgReferedExpression(MethodArgReferedExpressionContext ctx) {

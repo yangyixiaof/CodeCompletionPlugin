@@ -25,14 +25,12 @@ import cn.yyx.contentassist.codeutils.fieldAccess;
 import cn.yyx.contentassist.codeutils.finalFieldRef;
 import cn.yyx.contentassist.codeutils.finalVarRef;
 import cn.yyx.contentassist.codeutils.firstArg;
-import cn.yyx.contentassist.codeutils.firstArgPreExist;
 import cn.yyx.contentassist.codeutils.firstArgReferedExpression;
 import cn.yyx.contentassist.codeutils.floatingPointLiteral;
 import cn.yyx.contentassist.codeutils.identifier;
 import cn.yyx.contentassist.codeutils.integerLiteral;
 import cn.yyx.contentassist.codeutils.intersectionType;
 import cn.yyx.contentassist.codeutils.lastArgType;
-import cn.yyx.contentassist.codeutils.methodArgPreExist;
 import cn.yyx.contentassist.codeutils.newClassInvoke;
 import cn.yyx.contentassist.codeutils.nullLiteral;
 import cn.yyx.contentassist.codeutils.parameterizedType;
@@ -77,7 +75,6 @@ import cn.yyx.parse.szparse8java.Java8Parser.DivInfixExpressionStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.DivassignAssignmentStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.EqualInfixExpressionStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.ExtendBoundContext;
-import cn.yyx.parse.szparse8java.Java8Parser.FirstArgPreExistContext;
 import cn.yyx.parse.szparse8java.Java8Parser.FirstArgReferedExpressionContext;
 import cn.yyx.parse.szparse8java.Java8Parser.GeInfixExpressionStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.GtInfixExpressionStatementContext;
@@ -88,7 +85,6 @@ import cn.yyx.parse.szparse8java.Java8Parser.LeInfixExpressionStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.LshiftInfixExpressionStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.LshiftassignAssignmentStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.LtInfixExpressionStatementContext;
-import cn.yyx.parse.szparse8java.Java8Parser.MethodArgPreExistContext;
 import cn.yyx.parse.szparse8java.Java8Parser.MethodArgReferedExpressionContext;
 import cn.yyx.parse.szparse8java.Java8Parser.ModInfixExpressionStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.ModassignAssignmentStatementContext;
@@ -534,11 +530,11 @@ public class OneTypeVisitor extends Java8BaseVisitor<Integer> {
 		return count;
 	}
 	
-	@Override
+	/*@Override
 	public Integer visitFirstArgPreExist(FirstArgPreExistContext ctx) {
 		usedobj.push(new firstArgPreExist());
 		return visitChildren(ctx);
-	}
+	}*/
 	
 	@Override
 	public Integer visitFirstArgReferedExpression(FirstArgReferedExpressionContext ctx) {
@@ -616,11 +612,11 @@ public class OneTypeVisitor extends Java8BaseVisitor<Integer> {
 		return visitChildren(ctx);
 	}
 	
-	@Override
+	/*@Override
 	public Integer visitMethodArgPreExist(MethodArgPreExistContext ctx) {
 		usedobj.push(new methodArgPreExist());
 		return super.visitMethodArgPreExist(ctx);
-	}
+	}*/
 	
 	@Override
 	public Integer visitMethodArgReferedExpression(MethodArgReferedExpressionContext ctx) {

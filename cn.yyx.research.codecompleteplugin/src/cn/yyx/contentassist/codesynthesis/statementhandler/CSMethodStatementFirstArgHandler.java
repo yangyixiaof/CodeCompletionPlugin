@@ -1,8 +1,8 @@
 package cn.yyx.contentassist.codesynthesis.statementhandler;
 
-public class CSMethodStatementArgHandler extends CSMethodStatementHandler {
+public class CSMethodStatementFirstArgHandler extends CSMethodStatementHandler {
 
-	public CSMethodStatementArgHandler(CSMethodStatementHandler csh) {
+	public CSMethodStatementFirstArgHandler(CSMethodStatementHandler csh) {
 		super(csh.getSete(), csh.getProb(), csh.getAoi());
 		setNextstart(csh.getNextstart());
 		setMostfar(csh.getMostfar());
