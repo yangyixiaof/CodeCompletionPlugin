@@ -249,6 +249,7 @@ public class PredictionFetch {
 					isexactmatch = true;
 					exactmatchhandled = true;
 					fls.setExactmatchtail(nf);
+					fls.MoveTempTailSpecificToFirst(nf);
 				}
 				
 				if (TerminationHelper.couldTerminate(nf.getData(), lastchar, nf.getParent().getLength()+1, oraclelist.size(), isexactmatch))

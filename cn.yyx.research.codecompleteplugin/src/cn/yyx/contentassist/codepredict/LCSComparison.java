@@ -39,7 +39,7 @@ public class LCSComparison {
 				double sim = ismt.Similarity(jsmt);
 				if (sim >= PredictMetaInfo.OneSentenceSimilarThreshold)
 				{
-					c[iidx][jidx] = c[iidx - 1][jidx - 1] + 1;
+					c[iidx][jidx] = c[iidx - 1][jidx - 1] + sim;
 				} else if (c[iidx - 1][jidx] >= c[iidx][jidx - 1]) {
 					c[iidx][jidx] = c[iidx - 1][jidx];
 				} else {
@@ -85,7 +85,7 @@ public class LCSComparison {
 				double sim = ismt.Similarity(jsmt);
 				if (sim >= PredictMetaInfo.OneSentenceSimilarThreshold)
 				{
-					c[iidx][jidx] = c[iidx - 1][jidx - 1] + 1;
+					c[iidx][jidx] = c[iidx - 1][jidx - 1] + sim;
 				} else if (c[iidx - 1][jidx] >= c[iidx][jidx - 1]) {
 					c[iidx][jidx] = c[iidx - 1][jidx];
 				} else {
@@ -169,7 +169,7 @@ public class LCSComparison {
 				double sim = ismt.Similarity(jsmt);
 				if (sim >= PredictMetaInfo.OneSentenceSimilarThreshold)
 				{
-					c[iidx][jidx] = c[iidx - 1][jidx - 1] + 1;
+					c[iidx][jidx] = c[iidx - 1][jidx - 1] + sim;
 				} else if (c[iidx - 1][jidx] >= c[iidx][jidx - 1]) {
 					c[iidx][jidx] = c[iidx - 1][jidx];
 				} else {
@@ -207,7 +207,7 @@ public class LCSComparison {
 				double sim = ismt.Similarity(jsmt);
 				if (sim >= PredictMetaInfo.OneSentenceSimilarThreshold)
 				{
-					c[iidx][jidx] = c[iidx - 1][jidx - 1] + 1;
+					c[iidx][jidx] = c[iidx - 1][jidx - 1] + sim;
 				} else if (c[iidx - 1][jidx] >= c[iidx][jidx - 1]) {
 					c[iidx][jidx] = c[iidx - 1][jidx];
 				} else {
@@ -245,7 +245,7 @@ public class LCSComparison {
 				double sim = ismt.Similarity(jsmt);
 				if (sim >= PredictMetaInfo.OneSentenceSimilarThreshold)
 				{
-					c[iidx][jidx] = c[iidx - 1][jidx - 1] + 1;
+					c[iidx][jidx] = c[iidx - 1][jidx - 1] + sim;
 				} else if (c[iidx - 1][jidx] >= c[iidx][jidx - 1]) {
 					c[iidx][jidx] = c[iidx - 1][jidx];
 				} else {
@@ -281,7 +281,7 @@ public class LCSComparison {
 				double sim = ComputeTwoStringDirectSimilarity(ismt, jsmt);
 				if (sim >= PredictMetaInfo.OneSentenceSimilarThreshold)
 				{
-					c[iidx][jidx] = c[iidx - 1][jidx - 1] + 1;
+					c[iidx][jidx] = c[iidx - 1][jidx - 1] + sim;
 				} else if (c[iidx - 1][jidx] >= c[iidx][jidx - 1]) {
 					c[iidx][jidx] = c[iidx - 1][jidx];
 				} else {
