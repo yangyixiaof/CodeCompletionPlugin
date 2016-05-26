@@ -42,15 +42,7 @@ public class preExist extends referedExpression{
 		}
 		return 0;
 	}
-
-	/*@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
-		CSNode cs = squeue.Pop();
-		result.SetCSNodeContent(cs);
-		return false;
-	}*/
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
@@ -145,6 +137,7 @@ public class preExist extends referedExpression{
 			FlowLineNode<CSFlowLineData> tmpblockstart = tmpdata.getSynthesisCodeManager().getBlockstart();
 			if (tmpblockstart != null)
 			{
+				tmpnext = tmpblockstart;
 				tmp = tmpblockstart.getPrev();
 				continue;
 			}
@@ -160,6 +153,11 @@ public class preExist extends referedExpression{
 				if ((!(tmpdata instanceof CSMethodInvocationData)) && signals.size() == 1)
 				{
 					mstop = tmpnext;
+					if (tmpnext == null)
+					{
+						// only one. tmpnext is not set yet.
+						mstop = tmp;
+					}
 					realhandler.setNextstart(tmp);
 					if (tmpdata instanceof CSEnterParamInfoData)
 					{
