@@ -11,7 +11,7 @@ public class CSPsProperty extends CSExtraProperty {
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
 		Integer top = signals.peek();
-		if (top == null || top != DataStructureSignalMetaInfo.MethodInvocation || top != DataStructureSignalMetaInfo.MethodPs)
+		if (top == null || (top != DataStructureSignalMetaInfo.MethodInvocation && top != DataStructureSignalMetaInfo.MethodPs))
 		{
 			throw new CodeSynthesisException("When handling ps, the top of stack is not MethodInvocation or MethodPs.");
 		}

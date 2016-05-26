@@ -19,6 +19,7 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementFirs
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.commonutils.CheckUtil;
+import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 
 public class preExist extends referedExpression{
 	
@@ -141,14 +142,21 @@ public class preExist extends referedExpression{
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();
-			if (tmpdata instanceof CSEnterParamInfoData || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class) || tmpdata instanceof CSMethodInvocationData)
+			FlowLineNode<CSFlowLineData> tmpblockstart = tmpdata.getSynthesisCodeManager().getBlockstart();
+			if (tmpblockstart != null)
 			{
-				Integer preps = signals.peek();
+				tmp = tmpblockstart.getPrev();
+				continue;
+			}
+			
+			if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoData.class) || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class))
+			{   //  || ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSMethodInvocationData.class)
+				// Integer preps = signals.peek();
 				tmpdata.HandleStackSignal(signals);
-				if (preps == DataStructureSignalMetaInfo.MethodInvocation)
-				{
-					continue;
-				}
+				//if (preps == DataStructureSignalMetaInfo.MethodInvocation)
+				//{
+				//	continue;
+				//}
 				if ((!(tmpdata instanceof CSMethodInvocationData)) && signals.size() == 1)
 				{
 					mstop = tmpnext;
