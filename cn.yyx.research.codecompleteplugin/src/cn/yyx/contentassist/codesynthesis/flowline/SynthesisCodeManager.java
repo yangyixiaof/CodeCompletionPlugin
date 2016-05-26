@@ -16,6 +16,7 @@ public class SynthesisCodeManager {
 	
 	private Map<String, FlowLineNode<CSFlowLineData>> syncodes = new TreeMap<String, FlowLineNode<CSFlowLineData>>();
 	private FlowLineNode<CSFlowLineData> blockstart = null;
+	private String blocktostartid = null;
 	
 	private int id = 0;
 	
@@ -60,13 +61,22 @@ public class SynthesisCodeManager {
 		return blockstart;
 	}
 
-	public void setBlockstart(FlowLineNode<CSFlowLineData> blockstart) {
+	public void setBlockstart(FlowLineNode<CSFlowLineData> blockstart, String blocktostartid) {
 		this.blockstart = blockstart;
+		this.setBlocktostartid(blocktostartid);
 	}
 
 	public int GenerateNextLevelId() {
 		id++;
 		return id;
+	}
+
+	public String getBlocktostartid() {
+		return blocktostartid;
+	}
+
+	public void setBlocktostartid(String blocktostartid) {
+		this.blocktostartid = blocktostartid;
 	}
 	
 }

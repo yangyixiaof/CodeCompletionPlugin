@@ -100,10 +100,10 @@ public class CSFlowLineBackTraceGenerationHelper {
 		String tresid = oneid + "." + twoid;
 		one.getData().getSynthesisCodeManager().AddSynthesisCode(tresid, tres);
 		
-		two.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
-		twostart.getData().getSynthesisCodeManager().setBlockstart(one);
-		onestart.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
-		one.getData().getSynthesisCodeManager().setBlockstart(one);
+		// two.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
+		twostart.getData().getSynthesisCodeManager().setBlockstart(one, tresid);
+		// onestart.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
+		// one.getData().getSynthesisCodeManager().setBlockstart(one);
 		
 		return tresid;
 	}
@@ -122,6 +122,7 @@ public class CSFlowLineBackTraceGenerationHelper {
 			{
 				fin = tmp.getData().getId() + "." + fin;
 			}
+			tmp = tmp.getPrev();
 		}
 		if (fin == null)
 		{
@@ -158,6 +159,12 @@ public class CSFlowLineBackTraceGenerationHelper {
 			{
 				stopnode = startnode;
 			}
+		}
+		
+		FlowLineNode<CSFlowLineData> bs = startnode.getData().getSynthesisCodeManager().getBlockstart();
+		if (bs != null)
+		{
+			// TODO
 		}
 		
 		FlowLineNode<CSFlowLineData> queuestartnode = squeue.getLast();

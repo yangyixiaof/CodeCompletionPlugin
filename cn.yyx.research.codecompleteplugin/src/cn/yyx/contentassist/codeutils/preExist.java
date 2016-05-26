@@ -110,8 +110,8 @@ public class preExist extends referedExpression{
 		{
 			throw new CodeSynthesisException("No firstArg start or stop, conflict happens. CSEnterParamInfoData times < 0, conflict happens.");
 		}
-		mstart.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
-		mstop.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
+		// mstart.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
+		// mstop.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
 		List<FlowLineNode<CSFlowLineData>> result = CSFlowLineBackTraceGenerationHelper.GenerateSynthesisCode(squeue, realhandler, mstart, mstop);
 		tmpcache = result;
 		return result;
@@ -195,8 +195,8 @@ public class preExist extends referedExpression{
 		{
 			throw new CodeSynthesisException("No firstArg start or stop, conflict happens.");
 		}
-		mstart.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
-		mstop.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
+		// mstart.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
+		// mstop.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
 		List<FlowLineNode<CSFlowLineData>> result = CSFlowLineBackTraceGenerationHelper.GenerateSynthesisCode(squeue, realhandler, mstart, mstop);
 		tmpcache = result;
 		return result;

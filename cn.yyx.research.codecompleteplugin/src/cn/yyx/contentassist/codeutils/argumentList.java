@@ -234,9 +234,9 @@ public class argumentList implements OneCode {
 			FlowLineNode<CSFlowLineData> mf = realhandler.getMostfar();
 			// realhandler.getMostfar();
 			if (mf != null) {
-				data.getSynthesisCodeManager().setBlockstart(mf);
 				String id = CSFlowLineBackTraceGenerationHelper.GetConcateId(squeue.getLast(), mf) + "." + data.getId();
 				mf.getData().getSynthesisCodeManager().AddSynthesisCode(id, fln);
+				data.getSynthesisCodeManager().setBlockstart(mf, id);
 			}
 		}
 		return results;
