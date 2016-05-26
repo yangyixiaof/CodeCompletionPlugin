@@ -42,6 +42,8 @@ public class aaaaImportantMustTodo {
 	
 	// TODO if while and do-while enhanced-for needs to be like for.
 	
+	// TODO The termination condition in pre try predict must be the same as code synthesis, whcih means HandleOverSignal returns true, the termination condition must also return true.
+	
 	// Solved. Complex type should be resolved one level by level. This is resolved by level. Especially, ParameterizedType as List<String> can not be resolved but List can.
 	
 	// Solved. the handle of @HO can only be in the very end. remember to handle @HO at very end. No need to do that, array start and array end signal has solved the problem.
