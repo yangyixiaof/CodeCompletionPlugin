@@ -12,6 +12,8 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
+import cn.yyx.contentassist.codesynthesis.typeutil.CSFlowLineTypeCheckRefiner;
 
 public class arrayAccessStatement extends expressionStatement {
 	
@@ -84,10 +86,14 @@ public class arrayAccessStatement extends expressionStatement {
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rals = rarr.HandleCodeSynthesis(squeue, smthandler);
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		/*String postfix = null;
+		rals = CSFlowLineTypeCheckRefiner.RetainTheArrayFlowLineNodes(rals);
 		if (accessEnd)
 		{
-			postfix = "]";
+			rels = CSFlowLineTypeCheckRefiner.RetainTheFallThroughFlowLineNodes(rels, new CCType(int.class, "int"));
+		}
+		/*if (rals == null || rals.size() == 0 || rels == null || rels.size() == 0)
+		{
+			return null;
 		}*/
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<FlowLineNode<CSFlowLineData>> fmls = CSFlowLineHelper.ForwardConcate(null, rals, "[", rels, null, squeue, smthandler, null, null);

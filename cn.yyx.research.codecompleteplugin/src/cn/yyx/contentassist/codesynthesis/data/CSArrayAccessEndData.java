@@ -13,6 +13,14 @@ public class CSArrayAccessEndData extends CSFlowLineData{
 	
 	private int times = -1;
 	
+	public CSArrayAccessEndData(int times, CSFlowLineData cd) {
+		super(cd.getId(), cd.getSete(), cd.getData(), cd.getDcls(), cd.isHaspre(), cd.isHashole(), cd.getPretck(),
+				cd.getPosttck(), cd.getHandler());
+		this.setTimes(times);
+		this.setCsep(cd.getCsep());
+		this.setScm(cd.getSynthesisCodeManager());
+	}
+	
 	public CSArrayAccessEndData(int times, Integer id, Sentence sete, String data, CCType dcls, boolean haspre,
 			boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
 		super(id, sete, data, dcls, haspre, hashole, pretck, posttck, handler);

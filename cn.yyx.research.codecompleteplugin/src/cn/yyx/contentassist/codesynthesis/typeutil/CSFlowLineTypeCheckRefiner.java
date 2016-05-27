@@ -9,6 +9,22 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 
 public class CSFlowLineTypeCheckRefiner {
 	
+	public static List<FlowLineNode<CSFlowLineData>> RetainTheArrayFlowLineNodes(List<FlowLineNode<CSFlowLineData>> ls)
+	{
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		Iterator<FlowLineNode<CSFlowLineData>> itr = ls.iterator();
+		while (itr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> fln = itr.next();
+			CCType c = fln.getData().getDcls();
+			if (c != null && c.getCls() != null && c.getCls().isArray())
+			{
+				result.add(fln);
+			}
+		}
+		return result;
+	}
+	
 	public static List<FlowLineNode<CSFlowLineData>> RetainTheFallThroughFlowLineNodes(List<FlowLineNode<CSFlowLineData>> ls, List<CCType> checkclass)
 	{
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
