@@ -47,6 +47,11 @@ public class SearchSpecificationOfAReference {
 		{
 			ICompletionProposal icp = itr.next();
 			LazyGenericTypeProposal lgtp = (LazyGenericTypeProposal)icp;
+			/*if (CodeCompletionMetaInfo.DebugMode)
+			{
+				System.out.println(lgtp.getAdditionalProposalInfo());
+				System.out.println(lgtp.getQualifiedTypeName());
+			}*/
 			String display = lgtp.getDisplayString();
 			String[] dps = display.split("-");
 			String rt = dps[0].trim();
@@ -90,6 +95,11 @@ public class SearchSpecificationOfAReference {
 		{
 			ICompletionProposal icp = itr.next();
 			JavaCompletionProposal jcp = (JavaCompletionProposal)icp;
+			/*if (CodeCompletionMetaInfo.DebugMode)
+			{
+				System.out.println(jcp.getAdditionalProposalInfo());
+				System.out.println(jcp.getClass());
+			}*/
 			String pstr =  jcp.getDisplayString().trim();
 			String[] strs = pstr.split(":|-");
 			String fieldname = strs[0].trim();
@@ -133,11 +143,24 @@ public class SearchSpecificationOfAReference {
 			String pstr = null;
 			if (ClassInstanceOfUtil.ObjectInstanceOf(icp, JavaMethodCompletionProposal.class))
 			{
-				pstr = ((JavaMethodCompletionProposal)icp).getDisplayString();
+				JavaMethodCompletionProposal jmip = (JavaMethodCompletionProposal)icp;
+				pstr = jmip.getDisplayString();
+				/*if (CodeCompletionMetaInfo.DebugMode)
+				{
+					System.out.println(jmip.getAdditionalProposalInfo());
+					System.out.println(jmip.getClass());
+				}*/
 			}
 			if (ClassInstanceOfUtil.ObjectInstanceOf(icp, ParameterGuessingProposal.class))
 			{
-				pstr = ((ParameterGuessingProposal)icp).getDisplayString();
+				ParameterGuessingProposal jmip = (ParameterGuessingProposal)icp;
+				pstr = jmip.getDisplayString();
+				/*if (CodeCompletionMetaInfo.DebugMode)
+				{
+					System.out.println(jmip.getAdditionalProposalInfo());
+					System.out.println(jmip.getClass());
+					System.out.println(jmip.getJavaElement());
+				}*/
 			}
 			if (pstr != null)
 			{
