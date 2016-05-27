@@ -164,7 +164,12 @@ public class argumentList implements OneCode {
 			referedExpression re = ritr.next();
 			// List<FlowLineNode<CSFlowLineData>> oneargpospossibles = ;
 			if (!ritr.hasNext()) {
-				positiveargs.add(re.HandleCodeSynthesis(squeue, smthandler));
+				List<FlowLineNode<CSFlowLineData>> rels = re.HandleCodeSynthesis(squeue, smthandler);
+				if (rels == null || rels.size() == 0)
+				{
+					return null;
+				}
+				positiveargs.add(rels);
 			}
 		}
 		// handle invoker.

@@ -24,6 +24,10 @@ public class methodPreRerferedExpressionEndStatement extends statement implement
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> smtls = smt.HandleCodeSynthesis(squeue, smthandler);
+		if (smtls == null || smtls.size() == 0)
+		{
+			return null;
+		}
 		Iterator<FlowLineNode<CSFlowLineData>> itr = smtls.iterator();
 		while (itr.hasNext())
 		{

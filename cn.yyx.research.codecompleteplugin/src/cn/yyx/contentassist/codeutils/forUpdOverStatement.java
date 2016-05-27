@@ -62,6 +62,10 @@ public class forUpdOverStatement extends rawForUpdOverStatement implements SWrap
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<FlowLineNode<CSFlowLineData>> smtls = smt.HandleCodeSynthesis(squeue, smthandler);
 		smtls = CSFlowLineHelper.ConcateOneFlowLineList(null, smtls, ") {\n}");
+		if (smtls == null || smtls.size() == 0)
+		{
+			return null;
+		}
 		Iterator<FlowLineNode<CSFlowLineData>> smtitr = smtls.iterator();
 		while (smtitr.hasNext())
 		{

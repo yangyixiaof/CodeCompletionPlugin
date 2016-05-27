@@ -67,6 +67,10 @@ public class classOrInterfaceType extends type{
 		{
 			type tp = itr.next();
 			List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
+			if (tpls == null || tpls.size() == 0)
+			{
+				continue;
+			}
 			if (result == null)
 			{
 				result = tpls;

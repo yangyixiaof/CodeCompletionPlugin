@@ -81,6 +81,10 @@ public class variableDeclarationHolderStatement extends statement{
 			modified = GetModifiedName(squeue, smthandler, typecode, name);
 			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
 			List<FlowLineNode<CSFlowLineData>> tmpls = CSFlowLineHelper.ConcateOneFlowLineList(" " + modified + " = ", rels, null);
+			if (tmpls == null || tmpls.size() == 0)
+			{
+				return null;
+			}
 			Iterator<FlowLineNode<CSFlowLineData>> itr = tmpls.iterator();
 			while (itr.hasNext())
 			{

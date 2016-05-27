@@ -79,6 +79,10 @@ public class typeList implements OneCode {
 		Iterator<type> itr = tps.iterator();
 		type tp = itr.next();
 		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
+		if (tpls == null || tpls.size() == 0)
+		{
+			return null;
+		}
 		while (itr.hasNext())
 		{
 			type ntp = itr.next();

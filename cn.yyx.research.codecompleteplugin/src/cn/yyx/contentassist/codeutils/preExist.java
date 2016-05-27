@@ -210,6 +210,10 @@ public class preExist extends referedExpression{
 		{
 			tmpcache = HandleCodeSynthesis(squeue, smthandler);
 		}
+		if (tmpcache == null || tmpcache.size() == 0)
+		{
+			return null;
+		}
 		return CodeSynthesisHelper.HandleInferredField(tmpcache, squeue, smthandler, reservedword, expectedinfer);
 	}
 
@@ -221,6 +225,10 @@ public class preExist extends referedExpression{
 		if (tmpcache == null)
 		{
 			tmpcache = HandleCodeSynthesis(squeue, smthandler);
+		}
+		if (tmpcache == null || tmpcache.size() == 0)
+		{
+			return null;
 		}
 		return CodeSynthesisHelper.HandleInferredMethodReference(tmpcache, squeue, smthandler, reservedword, expectedinfer);
 	}

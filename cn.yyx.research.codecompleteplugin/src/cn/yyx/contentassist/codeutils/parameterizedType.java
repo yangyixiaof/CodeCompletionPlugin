@@ -65,7 +65,7 @@ public class parameterizedType extends type{
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
 		List<FlowLineNode<CSFlowLineData>> modifiedidls = CodeSynthesisHelper.HandleRawTypeSpecificationInfer(idls, squeue, smthandler);
-		if (modifiedidls.size() == 0)
+		if (modifiedidls == null || modifiedidls.size() == 0)
 		{
 			modifiedidls = idls;
 		}

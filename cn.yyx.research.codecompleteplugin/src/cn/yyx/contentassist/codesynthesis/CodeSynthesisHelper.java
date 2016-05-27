@@ -177,6 +177,10 @@ public class CodeSynthesisHelper {
 		if (rexp != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> ls = rexp.HandleCodeSynthesis(squeue, smthandler);
+			if (ls == null || ls.size() == 0)
+			{
+				return null;
+			}
 			// Solved. here should not just get the first element. such as commonFieldRef, they can not distinguish their priority.
 			Iterator<FlowLineNode<CSFlowLineData>> itr = ls.iterator();
 			String rexpcodepre = null;

@@ -48,6 +48,10 @@ public class variableDeclarationStatement extends statement{
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
+		if (tpls == null || tpls.size() == 0)
+		{
+			return null;
+		}
 		Iterator<FlowLineNode<CSFlowLineData>> itr = tpls.iterator();
 		while (itr.hasNext())
 		{

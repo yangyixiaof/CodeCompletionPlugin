@@ -28,7 +28,7 @@ public class commonMethodReferenceExpression extends methodReferenceExpression{
 		// CSMethodReferenceStatementHandler csmrsh = new CSMethodReferenceStatementHandler(idls.get(0).getData().getData(), smthandler);
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
 		List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleFieldSpecificationInfer(rels, idls, squeue, smthandler, "::");
-		if (ls.size() == 0)
+		if (ls == null || ls.size() == 0)
 		{
 			return CSFlowLineHelper.ForwardConcate(null, rels, "::", idls, null, squeue, smthandler, null, null);
 		}

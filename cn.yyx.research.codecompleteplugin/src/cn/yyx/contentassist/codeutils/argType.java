@@ -71,6 +71,10 @@ public class argType implements OneCode{
 		else
 		{
 			tpls = tp.HandleCodeSynthesis(squeue, smthandler);
+			if (tpls == null || tpls.size() == 0)
+			{
+				return null;
+			}
 			CodeSynthesisHelper.DirectlyGenerateNameOfType(tpls, squeue, smthandler);
 		}
 		return tpls;

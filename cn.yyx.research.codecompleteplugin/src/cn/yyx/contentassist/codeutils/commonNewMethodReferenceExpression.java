@@ -22,8 +22,7 @@ public class commonNewMethodReferenceExpression extends methodReferenceExpressio
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		CSFlowLineHelper.ConcateOneFlowLineList(null, rels, "::new");
-		return null;
+		return CSFlowLineHelper.ConcateOneFlowLineList(null, rels, "::new");
 	}
 
 	@Override

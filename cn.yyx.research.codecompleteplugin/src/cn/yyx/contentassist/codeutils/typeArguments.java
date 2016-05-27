@@ -52,6 +52,10 @@ public class typeArguments implements OneCode{
 		Iterator<typeArgument> itr = tas.iterator();
 		typeArgument ta = itr.next();
 		List<FlowLineNode<CSFlowLineData>> tals = ta.HandleCodeSynthesis(squeue, smthandler);
+		if (tals == null || tals.size() == 0)
+		{
+			return null;
+		}
 		while (itr.hasNext())
 		{
 			ta = itr.next();
