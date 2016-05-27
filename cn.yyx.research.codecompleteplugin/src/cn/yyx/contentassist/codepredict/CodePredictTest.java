@@ -36,8 +36,14 @@ public class CodePredictTest implements CodePredict{
 				{
 					SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("new StringBuffer", javacontext);
 					SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix("System.", javacontext);
-					SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix("PrintStream", javacontext);
-					SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix("Integer", javacontext);
+					System.err.println("===================split line=================");
+					SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("System.", javacontext);
+					SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix("System.class", javacontext);
+					System.err.println("===================begin class=================");
+					SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix("PrintSteam.", javacontext);
+					System.err.println("===================end class=================");
+					SearchSpecificationOfAReference.SearchTypeSpecificationByPrefix("PrintStream", javacontext);
+					SearchSpecificationOfAReference.SearchTypeSpecificationByPrefix("Integer", javacontext);
 				}
 				else
 				{

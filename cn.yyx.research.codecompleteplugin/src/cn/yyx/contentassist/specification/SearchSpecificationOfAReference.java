@@ -51,7 +51,7 @@ public class SearchSpecificationOfAReference {
 			String display = lgtp.getDisplayString();
 			if (CodeCompletionMetaInfo.DebugMode)
 			{
-				System.out.println(display);
+				System.err.println(display);
 			}
 			String[] dps = display.split("-");
 			String rt = dps[0].trim();
@@ -98,7 +98,7 @@ public class SearchSpecificationOfAReference {
 			String pstr =  jcp.getDisplayString().trim();
 			if (CodeCompletionMetaInfo.DebugMode)
 			{
-				System.out.println(pstr);
+				System.err.println(pstr);
 			}
 			String[] strs = pstr.split(":|-");
 			String fieldname = strs[0].trim();
@@ -149,16 +149,10 @@ public class SearchSpecificationOfAReference {
 			{
 				ParameterGuessingProposal jmip = (ParameterGuessingProposal)icp;
 				pstr = jmip.getDisplayString();
-				/*if (CodeCompletionMetaInfo.DebugMode)
-				{
-					System.out.println(jmip.getAdditionalProposalInfo());
-					System.out.println(jmip.getClass());
-					System.out.println(jmip.getJavaElement());
-				}*/
 			}
 			if (CodeCompletionMetaInfo.DebugMode)
 			{
-				System.out.println(pstr);
+				System.err.println(pstr);
 			}
 			if (pstr != null)
 			{
@@ -376,7 +370,7 @@ public class SearchSpecificationOfAReference {
 		// collector.setIgnored(CompletionProposal.PACKAGE_REF, false);
 		// collector.setIgnored(CompletionProposal.POTENTIAL_METHOD_DECLARATION, false);
 		// collector.setIgnored(CompletionProposal.VARIABLE_DECLARATION, false);
-		// collector.setIgnored(CompletionProposal.TYPE_REF, false);
+		collector.setIgnored(CompletionProposal.TYPE_REF, false);
 
 		// Allow completions for unresolved types - since 3.3
 		collector.setAllowsRequiredProposals(CompletionProposal.FIELD_REF, CompletionProposal.TYPE_REF, true);
@@ -388,7 +382,7 @@ public class SearchSpecificationOfAReference {
 		// collector.setAllowsRequiredProposals(CompletionProposal.CONSTRUCTOR_INVOCATION, CompletionProposal.TYPE_REF, true);
 		// collector.setAllowsRequiredProposals(CompletionProposal.ANONYMOUS_CLASS_CONSTRUCTOR_INVOCATION, CompletionProposal.TYPE_REF, true);
 		// collector.setAllowsRequiredProposals(CompletionProposal.ANONYMOUS_CLASS_DECLARATION, CompletionProposal.TYPE_REF, true);
-		// collector.setAllowsRequiredProposals(CompletionProposal.TYPE_REF, CompletionProposal.TYPE_REF, true);
+		collector.setAllowsRequiredProposals(CompletionProposal.TYPE_REF, CompletionProposal.TYPE_REF, true);
 		
 		return collector;
 	}

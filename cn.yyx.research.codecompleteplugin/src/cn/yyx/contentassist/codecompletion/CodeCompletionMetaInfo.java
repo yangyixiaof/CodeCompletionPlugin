@@ -7,6 +7,6 @@ public class CodeCompletionMetaInfo {
 	
 	public static final int alltimeout = 100;//ms
 	public static final int typetimeout = 50;//ms
-	public static final int methodtimeout = 50;//ms
 	public static final int fieldtimeout = 50;//ms
+	public static final int methodtimeout = 80;//ms
 }
