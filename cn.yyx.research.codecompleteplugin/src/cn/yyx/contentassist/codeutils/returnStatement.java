@@ -63,7 +63,7 @@ public class returnStatement extends statement{
 		if (rexp != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-			return CSFlowLineHelper.ConcateOneFlowLineList("return ", rels, ";");
+			return CSFlowLineHelper.ConcateOneFlowLineList("return ", rels, null);
 		}
 		else
 		{

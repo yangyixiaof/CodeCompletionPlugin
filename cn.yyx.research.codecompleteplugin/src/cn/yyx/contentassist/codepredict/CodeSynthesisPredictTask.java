@@ -2,6 +2,7 @@ package cn.yyx.contentassist.codepredict;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
 import cn.yyx.contentassist.aerospikehandle.AeroLifeCycle;
 import cn.yyx.contentassist.aerospikehandle.PredictProbPair;
@@ -132,7 +133,10 @@ public class CodeSynthesisPredictTask implements Runnable {
 							if (!(ClassInstanceOfUtil.ObjectInstanceOf(csdflq, VirtualCSFlowLineQueue.class))) {
 								lastone = (FlowLineNode<CSFlowLineData>) fln;
 							}
-							over = predsmt.HandleOverSignal(new FlowLineStack(lastone));
+							Stack<Integer> signals = new Stack<Integer>();
+							CSFlowLineData addnodedata = addnode.getData();
+							addnodedata.HandleStackSignal(signals);
+							over = predsmt.HandleOverSignal(new FlowLineStack(lastone, signals));
 							addnode.setCouldextend(!over);
 						} catch (CodeSynthesisException e) {
 							// testing

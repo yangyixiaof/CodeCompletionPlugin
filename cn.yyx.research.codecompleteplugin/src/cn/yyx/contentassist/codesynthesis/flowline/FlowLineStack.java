@@ -8,32 +8,14 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 public class FlowLineStack {
 	
 	FlowLineNode<CSFlowLineData> last = null;
+	Stack<Integer> signals = null;
 	
-	public FlowLineStack(FlowLineNode<CSFlowLineData> last) {
+	public FlowLineStack(FlowLineNode<CSFlowLineData> last, Stack<Integer> signals) {
 		this.last = last;
+		this.signals = signals;
 	}
-	
-	/*public void SetLastStructureSignal(int structuresignal)
-	{
-		last.getData().setStructsignal(structuresignal);
-	}
-
-	public FlowLineNode<CSFlowLineData> BackSearchForStructureSignal(int signal) {
-		FlowLineNode<CSFlowLineData> tmp = last;
-		while (tmp.HasPrev())
-		{
-			Integer sig = tmp.getData().getStructsignal();
-			if ((sig != null) && (sig == signal))
-			{
-				return tmp;
-			}
-			tmp = tmp.getPrev();
-		}
-		return null;
-	}*/
 	
 	public void EnsureAllSignalNull(FlowLineNode<CSFlowLineData> fromwhere) throws CodeSynthesisException {
-		Stack<Integer> signals = new Stack<Integer>();
 		FlowLineNode<CSFlowLineData> tmp = fromwhere;
 		while (tmp != null)
 		{
