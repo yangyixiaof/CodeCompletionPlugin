@@ -95,7 +95,11 @@ public class arrayAccessStatement extends expressionStatement {
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
-			result.add(new FlowLineNode<CSFlowLineData>(new CSArrayAccessStartData(fln.getData()), fln.getProbability()));
+			if (accessEnd) {
+				result.add(fln);
+			} else {
+				result.add(new FlowLineNode<CSFlowLineData>(new CSArrayAccessStartData(fln.getData()), fln.getProbability()));
+			}
 		}
 		// (accessEnd ? null : StructureSignalMetaInfo.ArrayAccessBlcok
 		return result;

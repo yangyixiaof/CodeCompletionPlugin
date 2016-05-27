@@ -1,5 +1,6 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -11,9 +12,11 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSArrayAccessEndData;
 import cn.yyx.contentassist.codesynthesis.data.CSArrayAccessStartData;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.commonutils.ComplicatedSignal;
 import cn.yyx.contentassist.commonutils.StringUtil;
 
 public class partialEndArrayAccessStatement extends statement{
@@ -44,30 +47,7 @@ public class partialEndArrayAccessStatement extends statement{
 		}
 		return 0;
 	}
-
-	/*@Override
-	public boolean HandleOverSignal(Stack<Integer> cstack) {
-		Integer res = cstack.peek();
-		if (res == null || res != StructureSignalMetaInfo.ArrayAccessBlcok)
-		{
-			return true;
-		}
-		cstack.pop();
-		return false;
-	}
-
-	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
-		boolean conflict = es.HandleCodeSynthesis(squeue, expected, handler, result, ai);
-		if (conflict)
-		{
-			return true;
-		}
-		squeue.getLast().setPostfix("]");
-		return false;
-	}*/
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
@@ -76,9 +56,26 @@ public class partialEndArrayAccessStatement extends statement{
 		String endrcode = StringUtil.GenerateDuplicates("]", endrtimes);
 		List<FlowLineNode<CSFlowLineData>> esls = es.HandleCodeSynthesis(squeue, smthandler);
 		CSFlowLineHelper.ConcateOneFlowLineList(null, esls, endrcode);
+		
 		if (es instanceof arrayAccessStatement)
 		{
-			
+			FlowLineNode<CSFlowLineData> cnode = null;
+			if (endrtimes > 1)
+			{
+				Stack<Integer> signals = new Stack<Integer>();
+				signals.push(ComplicatedSignal.GenerateComplicatedSignal(DataStructureSignalMetaInfo.ArrayAccessBlcok, endrtimes-1));
+				cnode = squeue.BackSearchForSpecialClass(CSArrayAccessStartData.class, signals);
+			}
+			if (cnode != null)
+			{
+				Iterator<FlowLineNode<CSFlowLineData>> itr = esls.iterator();
+				while (itr.hasNext())
+				{
+					FlowLineNode<CSFlowLineData> fln = itr.next();
+					CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, cnode);
+					result.add(fln);
+				}
+			}
 		}
 		else
 		{
@@ -95,7 +92,7 @@ public class partialEndArrayAccessStatement extends statement{
 			result.add(fln);
 		}
 		
-		return result;
+		return esls;
 	}
 
 	@Override
