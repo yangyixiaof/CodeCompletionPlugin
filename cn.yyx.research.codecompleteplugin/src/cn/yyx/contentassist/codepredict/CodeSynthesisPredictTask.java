@@ -7,6 +7,7 @@ import java.util.Stack;
 import cn.yyx.contentassist.aerospikehandle.AeroLifeCycle;
 import cn.yyx.contentassist.aerospikehandle.PredictProbPair;
 import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
+import cn.yyx.contentassist.codepredict.aerohandle.PredictInfer;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.VirtualCSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;

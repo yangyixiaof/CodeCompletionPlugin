@@ -1,4 +1,4 @@
-package cn.yyx.contentassist.codepredict;
+package cn.yyx.contentassist.codepredict.aerohandle;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -9,6 +9,7 @@ import java.util.TreeMap;
 import cn.yyx.contentassist.aerospikehandle.AeroLifeCycle;
 import cn.yyx.contentassist.aerospikehandle.PredictProbPair;
 import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
+import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLineNode;

@@ -12,6 +12,7 @@ import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import cn.yyx.contentassist.aerospikehandle.AeroLifeCycle;
 import cn.yyx.contentassist.aerospikehandle.PredictProbPair;
 import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
+import cn.yyx.contentassist.codepredict.aerohandle.PredictInfer;
 import cn.yyx.contentassist.codesynthesis.flowline.CodeSynthesisFlowLines;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
