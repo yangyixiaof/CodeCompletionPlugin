@@ -129,6 +129,24 @@ public class CSFlowLineQueue {
 		}
 		return null;
 	}
+	
+	public FlowLineNode<CSFlowLineData> BackSearchForTheNextOfSpecialClass(Class<?> cls,
+			Stack<Integer> signals) throws CodeSynthesisException {
+		FlowLineNode<CSFlowLineData> tmp = last;
+		FlowLineNode<CSFlowLineData> tmpnext = null;
+		while (tmp != null)
+		{
+			CSFlowLineData tmpdata = tmp.getData();
+			tmpdata.HandleStackSignal(signals);
+			if (tmpdata.HasSpecialProperty(cls) && signals.isEmpty())
+			{
+				return tmpnext;
+			}
+			tmpnext = tmp;
+			tmp = tmp.getPrev();
+		}
+		return null;
+	}
 
 	/*public CSMethodSignalHandleResult BackSearchForMethodRelatedSignal() throws CodeSynthesisException {
 		// Solved. This function is not used any more. The right of this function should be verified carefully.
