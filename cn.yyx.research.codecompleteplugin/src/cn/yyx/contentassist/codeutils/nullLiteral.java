@@ -47,7 +47,7 @@ public class nullLiteral extends literal{
 	}
 
 	@Override
-	public void HandleNegativeOperator() {
+	public void HandleNegativeOperator() throws CodeSynthesisException {
 		ErrorCheck.NoGenerationCheck("null literal should handle negative operator?");
 	}
 

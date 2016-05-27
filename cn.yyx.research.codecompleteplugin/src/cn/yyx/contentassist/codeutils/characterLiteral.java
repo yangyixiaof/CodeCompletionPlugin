@@ -58,14 +58,14 @@ public class characterLiteral extends literal{
 	}
 
 	@Override
-	public void HandleNegativeOperator() {
+	public void HandleNegativeOperator() throws CodeSynthesisException {
 		ErrorCheck.NoGenerationCheck("char literal should handle negative operator?");
 	}
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String reservedword,
-			List<FlowLineNode<CSFlowLineData>> expectedinfer) {
+			List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
 		ErrorCheck.NoGenerationCheck("characterLiteral should handle InferredField?");
 		return null;
 	}
@@ -73,7 +73,7 @@ public class characterLiteral extends literal{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String reservedword,
-			List<FlowLineNode<CSFlowLineData>> expectedinfer) {
+			List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
 		ErrorCheck.NoGenerationCheck("characterLiteral should handle InferredMethodReference?");
 		return null;
 	}

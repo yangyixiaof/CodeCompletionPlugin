@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
+import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codeutils.*;
 import cn.yyx.contentassist.commonutils.StringUtil;
 import cn.yyx.parse.szparse8java.Java8BaseVisitor;
@@ -282,7 +283,13 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	public Integer visitNegativeLiteralStatement(Java8Parser.NegativeLiteralStatementContext ctx) {
 		Integer res = visitChildren(ctx);
 		literal lt = (literal) usedobj.pop();
-		lt.HandleNegativeOperator();
+		try {
+			lt.HandleNegativeOperator();
+		} catch (CodeSynthesisException e) {
+			System.err.println("Parse error, some lt can not execute negative operator.");
+			e.printStackTrace();
+			System.exit(1);
+		}
 		smt = new literalStatement(ctx.getText(), lt);
 		return res;
 	}

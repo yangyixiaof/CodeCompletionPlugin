@@ -60,14 +60,14 @@ public class booleanLiteral extends literal{
 	}
 
 	@Override
-	public void HandleNegativeOperator() {
+	public void HandleNegativeOperator() throws CodeSynthesisException {
 		ErrorCheck.NoGenerationCheck("Boolean literal needs to handle negative operator?");
 	}
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String reservedword,
-			List<FlowLineNode<CSFlowLineData>> expectedinfer) {
+			List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
 		ErrorCheck.NoGenerationCheck("booleanLiteral should handle InferredField?");
 		return null;
 	}
@@ -75,7 +75,7 @@ public class booleanLiteral extends literal{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String reservedword,
-			List<FlowLineNode<CSFlowLineData>> expectedinfer) {
+			List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
 		ErrorCheck.NoGenerationCheck("booleanLiteral should handle InferredMethodReference?");
 		return null;
 	}
