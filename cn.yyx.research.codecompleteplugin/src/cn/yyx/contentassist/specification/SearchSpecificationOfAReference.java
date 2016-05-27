@@ -25,6 +25,7 @@ import org.eclipse.jdt.ui.text.java.CompletionProposalCollector;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
+import cn.yyx.contentassist.codecompletion.CodeCompletionMetaInfo;
 import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codehelper.MyCompilationUnit;
 import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
@@ -39,7 +40,7 @@ public class SearchSpecificationOfAReference {
 	{
 		List<TypeMember> tmlist = new LinkedList<TypeMember>();
 		CompletionProposalCollector collector = GetTypeMemberProposalCollector(javacontext);
-		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(1000);
+		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.typetimeout);
 		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, topm);
 		Iterator<ICompletionProposal> itr = proposals.iterator();
 		Queue<MemberSorter> prioriqueue = new PriorityQueue<MemberSorter>();
@@ -47,12 +48,11 @@ public class SearchSpecificationOfAReference {
 		{
 			ICompletionProposal icp = itr.next();
 			LazyGenericTypeProposal lgtp = (LazyGenericTypeProposal)icp;
-			/*if (CodeCompletionMetaInfo.DebugMode)
-			{
-				System.out.println(lgtp.getAdditionalProposalInfo());
-				System.out.println(lgtp.getQualifiedTypeName());
-			}*/
 			String display = lgtp.getDisplayString();
+			if (CodeCompletionMetaInfo.DebugMode)
+			{
+				System.out.println(display);
+			}
 			String[] dps = display.split("-");
 			String rt = dps[0].trim();
 			String pkg = dps[1].trim();
@@ -87,7 +87,7 @@ public class SearchSpecificationOfAReference {
 	public static List<FieldMember> SearchFieldSpecificationByPrefix(String prefix, JavaContentAssistInvocationContext javacontext)
 	{
 		CompletionProposalCollector collector = GetFieldMemberProposalCollector(javacontext);
-		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(1000);
+		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.fieldtimeout);
 		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, topm);
 		Iterator<ICompletionProposal> itr = proposals.iterator();
 		Queue<MemberSorter> prioriqueue = new PriorityQueue<MemberSorter>();
@@ -95,12 +95,11 @@ public class SearchSpecificationOfAReference {
 		{
 			ICompletionProposal icp = itr.next();
 			JavaCompletionProposal jcp = (JavaCompletionProposal)icp;
-			/*if (CodeCompletionMetaInfo.DebugMode)
-			{
-				System.out.println(jcp.getAdditionalProposalInfo());
-				System.out.println(jcp.getClass());
-			}*/
 			String pstr =  jcp.getDisplayString().trim();
+			if (CodeCompletionMetaInfo.DebugMode)
+			{
+				System.out.println(pstr);
+			}
 			String[] strs = pstr.split(":|-");
 			String fieldname = strs[0].trim();
 			String fieldtype = strs[1].trim();
@@ -132,7 +131,7 @@ public class SearchSpecificationOfAReference {
 	public static List<MethodMember> SearchMethodSpecificationByPrefix(String prefix, JavaContentAssistInvocationContext javacontext)
 	{
 		CompletionProposalCollector collector = GetMethodMemberProposalCollector(javacontext);
-		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(1500);
+		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.methodtimeout);
 		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, topm);
 		Iterator<ICompletionProposal> itr = proposals.iterator();
 		String cmp = StringUtil.GetContentBehindFirstWhiteSpace(prefix);
@@ -145,11 +144,6 @@ public class SearchSpecificationOfAReference {
 			{
 				JavaMethodCompletionProposal jmip = (JavaMethodCompletionProposal)icp;
 				pstr = jmip.getDisplayString();
-				/*if (CodeCompletionMetaInfo.DebugMode)
-				{
-					System.out.println(jmip.getAdditionalProposalInfo());
-					System.out.println(jmip.getClass());
-				}*/
 			}
 			if (ClassInstanceOfUtil.ObjectInstanceOf(icp, ParameterGuessingProposal.class))
 			{
@@ -161,6 +155,10 @@ public class SearchSpecificationOfAReference {
 					System.out.println(jmip.getClass());
 					System.out.println(jmip.getJavaElement());
 				}*/
+			}
+			if (CodeCompletionMetaInfo.DebugMode)
+			{
+				System.out.println(pstr);
 			}
 			if (pstr != null)
 			{
@@ -210,7 +208,7 @@ public class SearchSpecificationOfAReference {
 		// the prefix must be as the following form: <form:System.out.>
 		MembersOfAReference result = new MembersOfAReference();
 		CompletionProposalCollector collector = GetProposalCollector(javacontext);
-		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(5000);
+		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.alltimeout);
 		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, topm);
 		// System.out.println("start print proposals. proposals length:" + proposals.size());
 		Iterator<ICompletionProposal> itr = proposals.iterator();
@@ -407,35 +405,35 @@ public class SearchSpecificationOfAReference {
 			collector = new CompletionProposalCollector(javacontext.getCompilationUnit(), true);
 		}
 		collector.setInvocationContext(javacontext);
-		collector.setIgnored(CompletionProposal.ANNOTATION_ATTRIBUTE_REF, false);
+		// collector.setIgnored(CompletionProposal.ANNOTATION_ATTRIBUTE_REF, false);
 		collector.setIgnored(CompletionProposal.ANONYMOUS_CLASS_DECLARATION, false);
 		collector.setIgnored(CompletionProposal.ANONYMOUS_CLASS_CONSTRUCTOR_INVOCATION, false);
-		collector.setIgnored(CompletionProposal.FIELD_REF, false);
-		collector.setIgnored(CompletionProposal.FIELD_REF_WITH_CASTED_RECEIVER, false);
-		collector.setIgnored(CompletionProposal.KEYWORD, false);
-		collector.setIgnored(CompletionProposal.LABEL_REF, false);
-		collector.setIgnored(CompletionProposal.LOCAL_VARIABLE_REF, false);
+		// collector.setIgnored(CompletionProposal.FIELD_REF, false);
+		// collector.setIgnored(CompletionProposal.FIELD_REF_WITH_CASTED_RECEIVER, false);
+		// collector.setIgnored(CompletionProposal.KEYWORD, false);
+		// collector.setIgnored(CompletionProposal.LABEL_REF, false);
+		// collector.setIgnored(CompletionProposal.LOCAL_VARIABLE_REF, false);
 		collector.setIgnored(CompletionProposal.METHOD_DECLARATION, false);
 		collector.setIgnored(CompletionProposal.METHOD_NAME_REFERENCE, false);
 		collector.setIgnored(CompletionProposal.METHOD_REF, false);
 		collector.setIgnored(CompletionProposal.CONSTRUCTOR_INVOCATION, false);
 		collector.setIgnored(CompletionProposal.METHOD_REF_WITH_CASTED_RECEIVER, false);
-		collector.setIgnored(CompletionProposal.PACKAGE_REF, false);
-		collector.setIgnored(CompletionProposal.POTENTIAL_METHOD_DECLARATION, false);
-		collector.setIgnored(CompletionProposal.VARIABLE_DECLARATION, false);
-		collector.setIgnored(CompletionProposal.TYPE_REF, false);
+		// collector.setIgnored(CompletionProposal.PACKAGE_REF, false);
+		// collector.setIgnored(CompletionProposal.POTENTIAL_METHOD_DECLARATION, false);
+		// collector.setIgnored(CompletionProposal.VARIABLE_DECLARATION, false);
+		// collector.setIgnored(CompletionProposal.TYPE_REF, false);
 
 		// Allow completions for unresolved types - since 3.3
-		collector.setAllowsRequiredProposals(CompletionProposal.FIELD_REF, CompletionProposal.TYPE_REF, true);
-		collector.setAllowsRequiredProposals(CompletionProposal.FIELD_REF, CompletionProposal.TYPE_IMPORT, true);
-		collector.setAllowsRequiredProposals(CompletionProposal.FIELD_REF, CompletionProposal.FIELD_IMPORT, true);
+		// collector.setAllowsRequiredProposals(CompletionProposal.FIELD_REF, CompletionProposal.TYPE_REF, true);
+		// collector.setAllowsRequiredProposals(CompletionProposal.FIELD_REF, CompletionProposal.TYPE_IMPORT, true);
+		// collector.setAllowsRequiredProposals(CompletionProposal.FIELD_REF, CompletionProposal.FIELD_IMPORT, true);
 		collector.setAllowsRequiredProposals(CompletionProposal.METHOD_REF, CompletionProposal.TYPE_REF, true);
 		collector.setAllowsRequiredProposals(CompletionProposal.METHOD_REF, CompletionProposal.TYPE_IMPORT, true);
 		collector.setAllowsRequiredProposals(CompletionProposal.METHOD_REF, CompletionProposal.METHOD_IMPORT, true);
 		collector.setAllowsRequiredProposals(CompletionProposal.CONSTRUCTOR_INVOCATION, CompletionProposal.TYPE_REF, true);
 		collector.setAllowsRequiredProposals(CompletionProposal.ANONYMOUS_CLASS_CONSTRUCTOR_INVOCATION, CompletionProposal.TYPE_REF, true);
 		collector.setAllowsRequiredProposals(CompletionProposal.ANONYMOUS_CLASS_DECLARATION, CompletionProposal.TYPE_REF, true);
-		collector.setAllowsRequiredProposals(CompletionProposal.TYPE_REF, CompletionProposal.TYPE_REF, true);
+		// collector.setAllowsRequiredProposals(CompletionProposal.TYPE_REF, CompletionProposal.TYPE_REF, true);
 		
 		return collector;
 	}

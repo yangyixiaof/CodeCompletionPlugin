@@ -34,9 +34,10 @@ public class CodePredictTest implements CodePredict{
 				char lastchar = precontent.charAt(precontent.length()-1);
 				if (lastchar == ';' || lastchar == '}' || lastchar == ',' || lastchar == '{' || lastchar == '(' || lastchar == ':')
 				{
-					SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("System.", javacontext);
-					SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("PrintStream", javacontext);
-					SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("Integer", javacontext);
+					SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("new StringBuffer", javacontext);
+					SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix("System.", javacontext);
+					SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix("PrintStream", javacontext);
+					SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix("Integer", javacontext);
 				}
 				else
 				{
