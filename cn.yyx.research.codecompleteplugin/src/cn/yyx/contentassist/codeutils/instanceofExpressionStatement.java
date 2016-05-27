@@ -66,7 +66,7 @@ public class instanceofExpressionStatement extends expressionStatement{
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
 		List<FlowLineNode<CSFlowLineData>> tpls = type.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ForwardMerge(null, rels, " instanceof ", tpls, null, squeue, smthandler, null, null);
+		return CSFlowLineHelper.ForwardConcate(null, rels, " instanceof ", tpls, null, squeue, smthandler, null, null);
 	}
 
 	@Override

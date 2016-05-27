@@ -94,7 +94,7 @@ public class enhancedForStatement extends statement{
 		}
 		else
 		{
-			return CSFlowLineHelper.ForwardMerge("for (", tpls, " et: ", rels, "){\n\n}", squeue, smthandler, null, null);
+			return CSFlowLineHelper.ForwardConcate("for (", tpls, " et: ", rels, "){\n\n}", squeue, smthandler, null, null);
 		}
 	}
 

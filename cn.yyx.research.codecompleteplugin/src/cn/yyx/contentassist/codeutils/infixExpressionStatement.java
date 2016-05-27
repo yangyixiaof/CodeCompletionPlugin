@@ -76,7 +76,7 @@ public class infixExpressionStatement extends expressionStatement{
 		List<FlowLineNode<CSFlowLineData>> leftls = left.HandleCodeSynthesis(squeue, smthandler);
 		List<FlowLineNode<CSFlowLineData>> rightls = right.HandleCodeSynthesis(squeue, smthandler);
 		TypeComputationKind tc = TypeComputer.ComputeKindFromRawString(optr);
-		return CSFlowLineHelper.ForwardMerge(null, leftls, optr, rightls, null, squeue, smthandler, tc, tc);
+		return CSFlowLineHelper.ForwardConcate(null, leftls, optr, rightls, null, squeue, smthandler, tc, tc);
 	}
 
 	@Override

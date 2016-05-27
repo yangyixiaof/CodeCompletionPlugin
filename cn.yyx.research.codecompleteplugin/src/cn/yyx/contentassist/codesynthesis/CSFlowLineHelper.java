@@ -43,37 +43,11 @@ public class CSFlowLineHelper {
 		}
 	}
 	
-	public static List<FlowLineNode<CSFlowLineData>> ForwardMerge(String prefix, List<FlowLineNode<CSFlowLineData>> one, String concator, List<FlowLineNode<CSFlowLineData>> two, String postfix, CSFlowLineQueue squeue, CSStatementHandler smthandler, TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
+	public static List<FlowLineNode<CSFlowLineData>> ForwardConcate(String prefix, List<FlowLineNode<CSFlowLineData>> one, String concator, List<FlowLineNode<CSFlowLineData>> two, String postfix, CSFlowLineQueue squeue, CSStatementHandler smthandler, TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
 		if (one.size() == 0) {
-			//if (two == null || two.size() == 0) {
-			//	return null;
-			//} else {
-			//	if (prefix != null && !prefix.equals(""))
-			//	{
-					// testing
-			//		System.err.println("Warning: concate two list and one is null but prefix is not empty.");
-			//		return null;
-			//	}
-			//	else
-			//	{
-			//		CheckConcator(concator);
-			//		return CSFlowLineHelper.ConcateOneFlowLineList(concator, two, postfix);
-			//	}
-			//}
 			return null;
 		} else {
 			if (two == null || two.size() == 0) {
-				//if (postfix != null && !postfix.equals(""))
-				//{
-					// testing
-				//	System.err.println("Warning: concate two list and one is null but prefix is not empty.");
-				//	return null;
-				//}
-				//else
-				//{
-				//	CheckConcator(concator);
-				//	return CSFlowLineHelper.ConcateOneFlowLineList(prefix, one, concator);
-				//}
 				return null;
 			} else {
 				List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
@@ -87,6 +61,7 @@ public class CSFlowLineHelper {
 						try {
 							tmp = ConcateTwoFlowLineNode(prefix, fln1, concator, fln2, postfix, squeue, smthandler,
 									 oneafter, beforetwo);
+							ConcateBlockStart(tmp, fln1, fln2);
 						} catch (TypeConflictException e) {
 							// e.printStackTrace();
 							System.err.println(e.getMessage());
@@ -102,14 +77,6 @@ public class CSFlowLineHelper {
 			}
 		}
 	}
-	
-	//private static void CheckConcator(String concator) {
-	//	if (concator != null && !concator.equals("")) {
-	//		System.err
-	//				.println("No another part, but the concator has real values. Serious error, the system will exit.");
-	//		System.exit(1);
-	//	}
-	//}
 	
 	public static FlowLineNode<CSFlowLineData> ConcateTwoFlowLineNode(String prefix, FlowLineNode<CSFlowLineData> one,
 			String concator, FlowLineNode<CSFlowLineData> two, String postfix, 
@@ -132,6 +99,60 @@ public class CSFlowLineHelper {
 		{
 			return prob1 + prob2;
 		}
+	}
+	
+	private static void ConcateBlockStart(FlowLineNode<CSFlowLineData> ftmp, FlowLineNode<CSFlowLineData> fln1, FlowLineNode<CSFlowLineData> fln2)
+	{
+		CSFlowLineData d1 = fln1.getData();
+		CSFlowLineData d2 = fln2.getData();
+		FlowLineNode<CSFlowLineData> bs1 = d1.getSynthesisCodeManager().getBlockstart();
+		String bsi1 = d1.getSynthesisCodeManager().getBlocktostartid();
+		FlowLineNode<CSFlowLineData> bs2 = d2.getSynthesisCodeManager().getBlockstart();
+		String bsi2 = d2.getSynthesisCodeManager().getBlocktostartid();
+		if (bs1 != null && bs2 != null)
+		{
+			// choose the most head one.
+			FlowLineNode<CSFlowLineData> selected = null;
+			String selectedid = null;
+			if (IsParent(bs1, bs2))
+			{
+				selected = bs2;
+				selectedid = bsi2;
+			}
+			if (IsParent(bs2, bs1))
+			{
+				selected = bs1;
+				selectedid = bsi1;
+			}
+			if (selected == null)
+			{
+				System.err.println("No parent. Serious Error. The system should stop.");
+				System.exit(1);
+			}
+			ftmp.getData().getSynthesisCodeManager().setBlockstart(selected, selectedid);
+		}
+		if (bs1 == null && bs2 != null)
+		{
+			ftmp.getData().getSynthesisCodeManager().setBlockstart(bs2, bsi2);
+		}
+		if (bs1 != null && bs2 == null)
+		{
+			ftmp.getData().getSynthesisCodeManager().setBlockstart(bs1, bsi1);
+		}
+	}
+	
+	private static boolean IsParent(FlowLineNode<CSFlowLineData> child, FlowLineNode<CSFlowLineData> parent)
+	{
+		FlowLineNode<CSFlowLineData> tmp = child;
+		while (tmp != null)
+		{
+			if (tmp == parent)
+			{
+				return true;
+			}
+			tmp = tmp.getPrev();
+		}
+		return false;
 	}
 	
 }

@@ -70,7 +70,7 @@ public class parameterizedType extends type{
 			modifiedidls = idls;
 		}
 		List<FlowLineNode<CSFlowLineData>> tpls = tas.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ForwardMerge(null, modifiedidls, "<", tpls, ">", squeue, smthandler, null, null);
+		return CSFlowLineHelper.ForwardConcate(null, modifiedidls, "<", tpls, ">", squeue, smthandler, null, null);
 	}
 	
 }

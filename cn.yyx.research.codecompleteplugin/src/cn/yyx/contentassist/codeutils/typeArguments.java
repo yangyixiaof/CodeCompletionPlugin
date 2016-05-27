@@ -55,7 +55,7 @@ public class typeArguments implements OneCode{
 		while (itr.hasNext())
 		{
 			ta = itr.next();
-			tals = CSFlowLineHelper.ForwardMerge(null, tals, ",", ta.HandleCodeSynthesis(squeue, smthandler), null, squeue, smthandler, null, null);
+			tals = CSFlowLineHelper.ForwardConcate(null, tals, ",", ta.HandleCodeSynthesis(squeue, smthandler), null, squeue, smthandler, null, null);
 		}
 		return CSFlowLineHelper.ConcateOneFlowLineList("<", tals, ">");
 	}

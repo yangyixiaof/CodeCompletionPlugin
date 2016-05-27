@@ -73,14 +73,14 @@ public class methodDeclarationStatement extends statement{
 		if (typelist != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
-			mergedls = CSFlowLineHelper.ForwardMerge(null, idls, "(", tpls, "){\n\n}", squeue, smthandler, null, null);
+			mergedls = CSFlowLineHelper.ForwardConcate(null, idls, "(", tpls, "){\n\n}", squeue, smthandler, null, null);
 		}
 		else
 		{
 			mergedls = CSFlowLineHelper.ConcateOneFlowLineList(null, idls, "(){\n\n}");
 		}
 		List<FlowLineNode<CSFlowLineData>> rtls = rt.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ForwardMerge("public ", rtls, " ", mergedls, null, squeue, smthandler, null, null);
+		return CSFlowLineHelper.ForwardConcate("public ", rtls, " ", mergedls, null, squeue, smthandler, null, null);
 	}
 
 	@Override

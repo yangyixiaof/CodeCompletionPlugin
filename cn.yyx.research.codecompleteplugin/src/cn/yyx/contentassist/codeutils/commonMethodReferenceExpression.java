@@ -30,7 +30,7 @@ public class commonMethodReferenceExpression extends methodReferenceExpression{
 		List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleFieldSpecificationInfer(rels, idls, squeue, smthandler, "::");
 		if (ls.size() == 0)
 		{
-			return CSFlowLineHelper.ForwardMerge(null, rels, "::", idls, null, squeue, smthandler, null, null);
+			return CSFlowLineHelper.ForwardConcate(null, rels, "::", idls, null, squeue, smthandler, null, null);
 		}
 		return ls;
 	}

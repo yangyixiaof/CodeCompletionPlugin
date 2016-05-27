@@ -83,7 +83,7 @@ public class typeList implements OneCode {
 		{
 			type ntp = itr.next();
 			List<FlowLineNode<CSFlowLineData>> ntpls = ntp.HandleCodeSynthesis(squeue, smthandler);
-			tpls = CSFlowLineHelper.ForwardMerge(null, tpls, ",", ntpls, null, squeue, smthandler, null, null);
+			tpls = CSFlowLineHelper.ForwardConcate(null, tpls, ",", ntpls, null, squeue, smthandler, null, null);
 		}
 		return tpls;
 	}

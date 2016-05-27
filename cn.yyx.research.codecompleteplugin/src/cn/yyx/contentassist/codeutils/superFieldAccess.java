@@ -30,13 +30,13 @@ public class superFieldAccess extends fieldAccess{
 		{
 			List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
 			List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
-			return CSFlowLineHelper.ForwardMerge(null, tpls, ".super.", idls, null, squeue, smthandler, null, null);
+			return CSFlowLineHelper.ForwardConcate(null, tpls, ".super.", idls, null, squeue, smthandler, null, null);
 		}
 		if (tp == null && rexp != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
 			List<FlowLineNode<CSFlowLineData>> rexpls = rexp.HandleCodeSynthesis(squeue, smthandler);
-			return CSFlowLineHelper.ForwardMerge(null, rexpls, ".super.", idls, null, squeue, smthandler, null, null);
+			return CSFlowLineHelper.ForwardConcate(null, rexpls, ".super.", idls, null, squeue, smthandler, null, null);
 		}
 		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
 		return CSFlowLineHelper.ConcateOneFlowLineList("super.", idls, null);

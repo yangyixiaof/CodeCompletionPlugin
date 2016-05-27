@@ -90,7 +90,7 @@ public class arrayAccessStatement extends expressionStatement {
 			postfix = "]";
 		}
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		List<FlowLineNode<CSFlowLineData>> fmls = CSFlowLineHelper.ForwardMerge(null, rals, "[", rels, postfix, squeue, smthandler, null, null);
+		List<FlowLineNode<CSFlowLineData>> fmls = CSFlowLineHelper.ForwardConcate(null, rals, "[", rels, postfix, squeue, smthandler, null, null);
 		Iterator<FlowLineNode<CSFlowLineData>> itr = fmls.iterator();
 		while (itr.hasNext())
 		{

@@ -50,7 +50,7 @@ public class constructionDeclarationStatement extends statement {
 		if (typelist != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
-			mergedls = CSFlowLineHelper.ForwardMerge(null, idls, "(", tpls, "){\n\n}", squeue, smthandler, null, null);
+			mergedls = CSFlowLineHelper.ForwardConcate(null, idls, "(", tpls, "){\n\n}", squeue, smthandler, null, null);
 		}
 		else
 		{

@@ -131,7 +131,7 @@ public class CodeSynthesisHelper {
 		{
 			type ttp = itr.next();
 			List<FlowLineNode<CSFlowLineData>> tmpls = ttp.HandleCodeSynthesis(squeue, smthandler);
-			ls = CSFlowLineHelper.ForwardMerge(null, ls, concator, tmpls, null, squeue, smthandler, null, null);
+			ls = CSFlowLineHelper.ForwardConcate(null, ls, concator, tmpls, null, squeue, smthandler, null, null);
 		}
 		return ls;
 	}
@@ -361,7 +361,7 @@ public class CodeSynthesisHelper {
 		List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleFieldSpecificationInfer(infermain, expectedinfer, squeue, smthandler, inferoperator);
 		if (ls.size() == 0)
 		{
-			return CSFlowLineHelper.ForwardMerge(null, infermain, inferoperator, expectedinfer, null, squeue, smthandler, null, null);
+			return CSFlowLineHelper.ForwardConcate(null, infermain, inferoperator, expectedinfer, null, squeue, smthandler, null, null);
 		}
 		return ls;
 	}

@@ -101,7 +101,7 @@ public class lambdaExpressionStatement extends statement{
 			{
 				List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
 				List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-				return CSFlowLineHelper.ForwardMerge("(", tpls, ")->", rels, null, squeue, smthandler, null, null);
+				return CSFlowLineHelper.ForwardConcate("(", tpls, ")->", rels, null, squeue, smthandler, null, null);
 			}
 			else
 			{
