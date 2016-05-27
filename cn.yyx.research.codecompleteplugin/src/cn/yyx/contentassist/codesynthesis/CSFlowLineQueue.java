@@ -137,6 +137,7 @@ public class CSFlowLineQueue {
 			{
 				return tmp;
 			}
+			tmp = tmp.getPrev();
 		}
 		return null;
 	}

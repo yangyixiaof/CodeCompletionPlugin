@@ -135,7 +135,10 @@ public class CodeSynthesisPredictTask implements Runnable {
 							}
 							Stack<Integer> signals = new Stack<Integer>();
 							CSFlowLineData addnodedata = addnode.getData();
-							addnodedata.HandleStackSignal(signals);
+							try {
+								addnodedata.HandleStackSignal(signals);
+							} catch (CodeSynthesisException e) {
+							}
 							over = predsmt.HandleOverSignal(new FlowLineStack(lastone, signals));
 							addnode.setCouldextend(!over);
 						} catch (CodeSynthesisException e) {
