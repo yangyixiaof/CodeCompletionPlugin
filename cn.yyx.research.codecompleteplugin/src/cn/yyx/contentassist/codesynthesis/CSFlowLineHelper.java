@@ -116,7 +116,7 @@ public class CSFlowLineHelper {
 		if (bs1 != null && bs2 != null)
 		{
 			// choose the most head one.
-			FlowLineNode<CSFlowLineData> selected = null;
+			/*FlowLineNode<CSFlowLineData> selected = null;
 			String selectedid = null;
 			if (IsParent(bs1, bs2))
 			{
@@ -133,19 +133,24 @@ public class CSFlowLineHelper {
 				System.err.println("No parent. Serious Error. The system should stop.");
 				System.exit(1);
 			}
-			ftmp.getData().getSynthesisCodeManager().setBlockstart(selected, selectedid);
+			ftmp.getData().getSynthesisCodeManager().setBlockstart(selected, selectedid);*/
+			System.err.println("Important error! two nodes all have block start, what the fuck.");
+			new Exception("Important error! two nodes all have block start, what the fuck.").printStackTrace();
+			System.exit(1);
 		}
 		if (bs1 == null && bs2 != null)
 		{
 			ftmp.getData().getSynthesisCodeManager().setBlockstart(bs2, bsi2);
+			ftmp.getData().setId(d2.getId());
 		}
 		if (bs1 != null && bs2 == null)
 		{
 			ftmp.getData().getSynthesisCodeManager().setBlockstart(bs1, bsi1);
+			ftmp.getData().setId(d1.getId());
 		}
 	}
 	
-	private static boolean IsParent(FlowLineNode<CSFlowLineData> child, FlowLineNode<CSFlowLineData> parent)
+	/*private static boolean IsParent(FlowLineNode<CSFlowLineData> child, FlowLineNode<CSFlowLineData> parent)
 	{
 		FlowLineNode<CSFlowLineData> tmp = child;
 		while (tmp != null)
@@ -157,6 +162,6 @@ public class CSFlowLineHelper {
 			tmp = tmp.getPrev();
 		}
 		return false;
-	}
+	}*/
 	
 }
