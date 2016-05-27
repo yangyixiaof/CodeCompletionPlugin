@@ -17,13 +17,13 @@ public class arrayAccessStatement extends expressionStatement {
 	
 	referedExpression rarr = null;
 	referedExpression rexp = null;
-	// boolean accessEnd = false;
+	boolean accessEnd = false;
 	
-	public arrayAccessStatement(String smtcode, referedExpression rarr, referedExpression rexp) { //, boolean accessEnd
+	public arrayAccessStatement(String smtcode, referedExpression rarr, referedExpression rexp, boolean accessEnd) {
 		super(smtcode);
 		this.rarr = rarr;
 		this.rexp = rexp;
-		// this.accessEnd = accessEnd;
+		this.accessEnd = accessEnd;
 	}
 	
 	@Override

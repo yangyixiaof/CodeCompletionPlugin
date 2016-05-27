@@ -2,6 +2,7 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
@@ -59,7 +60,9 @@ public class arrayInitializerEndStatement extends statement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForSpecialClass(CSArrayInitializerStartData.class);
+		Stack<Integer> signals = new Stack<Integer>();
+		
+		FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForSpecialClass(CSArrayInitializerStartData.class, signals);
 		if (cnode != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();

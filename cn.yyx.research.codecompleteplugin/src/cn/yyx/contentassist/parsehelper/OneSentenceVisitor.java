@@ -1065,8 +1065,9 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		Integer res = visitChildren(ctx);
 		Object rexp = usedobj.pop();
 		Object rarr = usedobj.pop();
-		// EndOfArrayDeclarationIndexExpressionContext eoad = ctx.endOfArrayDeclarationIndexExpression();
-		smt = new arrayAccessStatement(ctx.getText(), (referedExpression) rarr, (referedExpression) rexp); // (eoad == null ? false : true)
+		EndOfArrayDeclarationIndexExpressionContext eoad = ctx.endOfArrayDeclarationIndexExpression();
+		boolean arend = eoad == null ? false : true;
+		smt = new arrayAccessStatement(ctx.getText(), (referedExpression) rarr, (referedExpression) rexp, arend);
 		return res;
 	}
 

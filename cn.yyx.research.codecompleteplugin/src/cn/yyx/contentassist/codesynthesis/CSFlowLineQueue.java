@@ -5,18 +5,11 @@ import java.util.List;
 import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
-import cn.yyx.contentassist.codesynthesis.data.CSEnterParamInfoData;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationData;
-import cn.yyx.contentassist.codesynthesis.data.CSMethodSignalHandleResult;
-import cn.yyx.contentassist.codesynthesis.data.CSPrProperty;
-import cn.yyx.contentassist.codesynthesis.data.CSPsProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableDeclarationData;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableHolderData;
-import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.commonutils.CheckUtil;
-import cn.yyx.contentassist.commonutils.ComplicatedSignal;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.VariableHT;
 
@@ -52,11 +45,6 @@ public class CSFlowLineQueue {
 	public void setLast(FlowLineNode<CSFlowLineData> last) {
 		this.last = last;
 	}
-	
-	/*public void SetLastHasHole()
-	{
-		last.getData().setHashole(true);
-	}*/
 	
 	public FlowLineNode<CSFlowLineData> SearcheForRecentVHolderNode() {
 		FlowLineNode<CSFlowLineData> tmp = last;
@@ -109,10 +97,10 @@ public class CSFlowLineQueue {
 		return null;
 	}
 
-	public FlowLineNode<CSFlowLineData> BackSearchForSpecialClass(Class<?> cls) throws CodeSynthesisException {
+	/*public FlowLineNode<CSFlowLineData> BackSearchForSpecialClass(Class<?> cls) throws CodeSynthesisException {
 		Stack<Integer> signals = new Stack<Integer>();
 		return BackSearchForSpecialClass(cls, signals);
-	}
+	}*/
 	
 	public FlowLineNode<CSFlowLineData> BackSearchForHead()
 	{
@@ -142,8 +130,8 @@ public class CSFlowLineQueue {
 		return null;
 	}
 
-	public CSMethodSignalHandleResult BackSearchForMethodRelatedSignal() throws CodeSynthesisException {
-		// TODO the right of this function should be verified carefully.
+	/*public CSMethodSignalHandleResult BackSearchForMethodRelatedSignal() throws CodeSynthesisException {
+		// Solved. This function is not used any more. The right of this function should be verified carefully.
 		Stack<Integer> signals = new Stack<Integer>();
 		FlowLineNode<CSFlowLineData> tmp = last;
 		int faremused = 0;
@@ -182,7 +170,7 @@ public class CSFlowLineQueue {
 		}
 		CSMethodSignalHandleResult csres = new CSMethodSignalHandleResult(tmp, faremused);
 		return csres;
-	}
+	}*/
 	
 	public VariableHT BackSearchForLastIthVariableHolderAndTypeDeclaration(int off) {
 		String vhtp = null;

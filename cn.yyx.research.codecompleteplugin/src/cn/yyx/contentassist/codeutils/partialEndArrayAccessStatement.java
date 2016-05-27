@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSArrayAccessEndData;
 import cn.yyx.contentassist.codesynthesis.data.CSArrayAccessStartData;
@@ -73,6 +74,8 @@ public class partialEndArrayAccessStatement extends statement{
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		
 		String endrcode = StringUtil.GenerateDuplicates("]", endrtimes);
+		List<FlowLineNode<CSFlowLineData>> esls = es.HandleCodeSynthesis(squeue, smthandler);
+		CSFlowLineHelper.ConcateOneFlowLineList(null, esls, endrcode);
 		if (es instanceof arrayAccessStatement)
 		{
 			
