@@ -26,6 +26,8 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 		super(cd.getId(), cd.getSete(), cd.getData(), cd.getDcls(), cd.isHaspre(), cd.isHashole(), cd.getPretck(),
 				cd.getPosttck(), cd.getHandler());
 		this.setTypecode(typecode);
+		this.setCsep(cd.getCsep());
+		this.setScm(cd.getSynthesisCodeManager());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -33,7 +35,6 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 	public CSFlowLineData Merge(String prefix, String concator, CSFlowLineData d2, String postfix,
 			CSFlowLineQueue squeue, CSStatementHandler smthandler, TypeComputationKind oneafter,
 			TypeComputationKind beforetwo) throws CodeSynthesisException {
-		// TODO this function has big problems.
 		CSFlowLineData pd = super.Merge(prefix, concator, d2, postfix, squeue, smthandler, oneafter, beforetwo);
 		CSExtraData pdextra = pd.getExtraData();
 		FlowLineNode<CSFlowLineData> lt = (FlowLineNode<CSFlowLineData>) pdextra.GetExtraData(CSDataMetaInfo.LastNode);

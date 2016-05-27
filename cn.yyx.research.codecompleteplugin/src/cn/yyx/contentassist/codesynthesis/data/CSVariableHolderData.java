@@ -18,6 +18,8 @@ public class CSVariableHolderData extends CSFlowLineData {
 				cd.getPosttck(), cd.getHandler());
 		this.setVarname(varname);
 		this.setNeedensuretype(needensuretype);
+		this.setCsep(cd.getCsep());
+		this.setScm(cd.getSynthesisCodeManager());
 	}
 
 	public CSVariableHolderData(String varname, boolean needensuretype, Integer id, Sentence sete, String data, CCType dcls, boolean haspre,

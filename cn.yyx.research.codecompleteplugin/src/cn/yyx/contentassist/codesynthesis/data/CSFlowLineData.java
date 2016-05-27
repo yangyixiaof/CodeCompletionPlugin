@@ -17,11 +17,8 @@ public class CSFlowLineData implements CSDataStructure{
 	private String id = null;
 	private Sentence sete = null;
 	private String data = null;
-	// private Integer structsignal = null;
-	// private Class<?> dcls = null;
 	private CCType dcls = null;
 	private SynthesisHandler handler = null;
-	private SynthesisCodeManager scm = new SynthesisCodeManager();
 	
 	private boolean haspre = false;
 	private boolean hashole = false;
@@ -29,6 +26,7 @@ public class CSFlowLineData implements CSDataStructure{
 	private TypeComputationKind posttck = TypeComputationKind.NoOptr;
 	
 	private CSExtraProperty csep = null;
+	private SynthesisCodeManager scm = new SynthesisCodeManager();
 	
 	public boolean HasSpecialProperty(Class<?> cls)
 	{
