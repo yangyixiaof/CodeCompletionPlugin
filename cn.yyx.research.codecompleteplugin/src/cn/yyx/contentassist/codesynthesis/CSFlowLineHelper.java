@@ -23,6 +23,10 @@ public class CSFlowLineHelper {
 	 * @param postfix
 	 */
 	public static List<FlowLineNode<CSFlowLineData>> ConcateOneFlowLineList(String prefix, List<FlowLineNode<CSFlowLineData>> one, String postfix) {
+		if (one == null || one.size() == 0)
+		{
+			return null;
+		}
 		Iterator<FlowLineNode<CSFlowLineData>> itr = one.iterator();
 		while (itr.hasNext()) {
 			FlowLineNode<CSFlowLineData> fln = itr.next();

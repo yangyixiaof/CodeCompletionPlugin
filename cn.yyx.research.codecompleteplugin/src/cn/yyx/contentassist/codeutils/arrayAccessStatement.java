@@ -97,6 +97,10 @@ public class arrayAccessStatement extends expressionStatement {
 		}*/
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<FlowLineNode<CSFlowLineData>> fmls = CSFlowLineHelper.ForwardConcate(null, rals, "[", rels, null, squeue, smthandler, null, null);
+		if (fmls == null || fmls.size() == 0)
+		{
+			return null;
+		}
 		Iterator<FlowLineNode<CSFlowLineData>> itr = fmls.iterator();
 		while (itr.hasNext())
 		{

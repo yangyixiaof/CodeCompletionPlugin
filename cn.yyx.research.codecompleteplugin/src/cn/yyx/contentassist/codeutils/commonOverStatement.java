@@ -28,6 +28,10 @@ public class commonOverStatement extends statement implements SWrapper{
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<FlowLineNode<CSFlowLineData>> smtls = smt.HandleCodeSynthesis(squeue, smthandler);
 		smtls = CSFlowLineHelper.ConcateOneFlowLineList(null, smtls, ";");
+		if (smtls == null)
+		{
+			return null;
+		}
 		Iterator<FlowLineNode<CSFlowLineData>> ritr = smtls.iterator();
 		while (ritr.hasNext())
 		{

@@ -20,12 +20,12 @@ import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.commonutils.ComplicatedSignal;
 import cn.yyx.contentassist.commonutils.StringUtil;
 
-public class partialEndArrayAccessStatement extends statement{
+public class arrayAccessEndStatement extends statement{
 	
 	expressionStatement es = null;
 	int endrtimes = -1;
 	
-	public partialEndArrayAccessStatement(String smtcode, expressionStatement es, int endrtimes) {
+	public arrayAccessEndStatement(String smtcode, expressionStatement es, int endrtimes) {
 		super(smtcode);
 		this.es = es;
 		this.endrtimes = endrtimes;
@@ -33,18 +33,18 @@ public class partialEndArrayAccessStatement extends statement{
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		if (t instanceof partialEndArrayAccessStatement)
+		if (t instanceof arrayAccessEndStatement)
 		{
-			return es.CouldThoughtSame(((partialEndArrayAccessStatement) t).es);
+			return es.CouldThoughtSame(((arrayAccessEndStatement) t).es);
 		}
 		return false;
 	}
 
 	@Override
 	public double Similarity(OneCode t) {
-		if (t instanceof partialEndArrayAccessStatement)
+		if (t instanceof arrayAccessEndStatement)
 		{
-			return 0.2 + 0.8*(es.Similarity(((partialEndArrayAccessStatement) t).es));
+			return 0.2 + 0.8*(es.Similarity(((arrayAccessEndStatement) t).es));
 		}
 		return 0;
 	}
@@ -56,7 +56,12 @@ public class partialEndArrayAccessStatement extends statement{
 		
 		String endrcode = StringUtil.GenerateDuplicates("]", endrtimes);
 		List<FlowLineNode<CSFlowLineData>> esls = es.HandleCodeSynthesis(squeue, smthandler);
-		CSFlowLineHelper.ConcateOneFlowLineList(null, esls, endrcode);
+		esls = CSFlowLineHelper.ConcateOneFlowLineList(null, esls, endrcode);
+		
+		if (esls == null || esls.size() == 0)
+		{
+			return null;
+		}
 		
 		FlowLineNode<CSFlowLineData> cnode = null;
 		int ertime = endrtimes;

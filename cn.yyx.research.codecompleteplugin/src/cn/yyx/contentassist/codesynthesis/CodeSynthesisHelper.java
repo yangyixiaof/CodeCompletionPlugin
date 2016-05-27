@@ -347,7 +347,7 @@ public class CodeSynthesisHelper {
 		 * }
 		 * return result;*/
 		FlowLineNode<CSFlowLineData> mf = csmsh.getMostfar();
-		if (!(mf.getData() instanceof CSEnterParamInfoData))
+		if (mf != null && !(mf.getData() instanceof CSEnterParamInfoData))
 		{
 			System.err.println("Error! EnterParam not the start of the method.");
 			throw new CodeSynthesisException("Error! EnterParam not the start of the method.");

@@ -1084,7 +1084,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		EndOfArrayDeclarationIndexExpressionContext eae = ctx.endOfArrayDeclarationIndexExpression();
 		String eaetx = eae.getText();
 		int acount = StringUtil.CountHappenTimes(eaetx, ']');
-		smt = new partialEndArrayAccessStatement(ctx.getText(), (expressionStatement) smt, acount);
+		smt = new arrayAccessEndStatement(ctx.getText(), (expressionStatement) smt, acount);
 		return res;
 	}
 
