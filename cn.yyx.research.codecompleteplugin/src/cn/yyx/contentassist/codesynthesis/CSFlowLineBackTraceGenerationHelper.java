@@ -100,14 +100,20 @@ public class CSFlowLineBackTraceGenerationHelper {
 			one = one.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(oneid);
 		}
 		
+		// debugging code, not remove.
+		if (two == null)
+		{
+			new Exception("two is null.").printStackTrace();
+		}
+		
 		FlowLineNode<CSFlowLineData> tres = CSFlowLineHelper.ConcateTwoFlowLineNode(null, one, null, two, null, squeue, smthandler, null, null);
 		String tresid = oneid + "." + twoid;
+		
+		// two.getData().getSynthesisCodeManager().setBlockstart(null, null);
+		// onestart.getData().getSynthesisCodeManager().setBlockstart(null, null);
+		// one.getData().getSynthesisCodeManager().setBlockstart(null, null);
+		
 		one.getData().getSynthesisCodeManager().AddSynthesisCode(tresid, tres);
-		
-		two.getData().getSynthesisCodeManager().setBlockstart(null, null);
-		onestart.getData().getSynthesisCodeManager().setBlockstart(null, null);
-		one.getData().getSynthesisCodeManager().setBlockstart(null, null);
-		
 		twostart.getData().getSynthesisCodeManager().setBlockstart(one, tresid);
 		
 		return tresid;
@@ -212,8 +218,8 @@ public class CSFlowLineBackTraceGenerationHelper {
 		return result;
 	}
 
-	private static void PreAddExtraLastNodeToStopNode(FlowLineNode<CSFlowLineData> stopnode) {
-		stopnode.getData().getExtraData().AddExtraData(CSDataMetaInfo.LastNode, stopnode);
+	private static void PreAddExtraLastNodeToStopNode(FlowLineNode<CSFlowLineData> snode) {
+		snode.getData().getExtraData().AddExtraData(CSDataMetaInfo.LastNode, snode);
 	}
 
 	public static FlowLineNode<CSFlowLineData> GetWholeNodeCode(FlowLineNode<CSFlowLineData> last) throws CodeSynthesisException {
