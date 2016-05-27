@@ -5,6 +5,7 @@ import java.util.List;
 
 import cn.yyx.contentassist.aerospikehandle.AeroLifeCycle;
 import cn.yyx.contentassist.aerospikehandle.PredictProbPair;
+import cn.yyx.contentassist.codecompletion.AeroMetaData;
 import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.commonutils.ListHelper;
 
@@ -15,7 +16,7 @@ public class PredictHelper {
 		int maxsize = Math.min(ls.size() - 1, PredictMetaInfo.NgramMaxSize-1);
 		for (int i = maxsize; i > 0; i--) {
 			String key = ListHelper.ConcatJoinLast(i, ls);
-			List<PredictProbPair> predicts = alc.AeroModelPredict(key, neededSize, i);
+			List<PredictProbPair> predicts = alc.AeroModelPredict(AeroMetaData.codengram[0], key, neededSize, i);
 			result.addAll(predicts);
 			neededSize -= predicts.size();
 			if (neededSize <= 0)

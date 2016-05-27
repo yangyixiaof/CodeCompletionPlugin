@@ -29,17 +29,18 @@ public class CodeSynthesisPredictTask implements Runnable {
 	AeroLifeCycle alc = null;
 	CodeSynthesisFlowLines csfl = null;
 	ASTOffsetInfo aoi = null;
-	PredictInfer pi = new PredictInfer();
+	PredictInfer pi = null;
 	int totalsuccess = 0;
 	int totalstep = 0;
 
 	public CodeSynthesisPredictTask(PreTryFlowLineNode<Sentence> pretrylastpara, SynthesisHandler sh, AeroLifeCycle alc,
-			CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi) {
+			CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi, int id) {
 		this.pretrylast = pretrylastpara;
 		this.sh = sh;
 		this.alc = alc;
 		this.csfl = csfl;
 		this.aoi = aoi;
+		this.pi = new PredictInfer(id);
 	}
 
 	@Override

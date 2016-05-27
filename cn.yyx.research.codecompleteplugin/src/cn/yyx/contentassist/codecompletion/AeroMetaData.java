@@ -1,10 +1,10 @@
-package cn.yyx.contentassist.aerospikehandle;
+package cn.yyx.contentassist.codecompletion;
 
 public class AeroMetaData {
 	
 	public static final int code1sim = 1;
 
-	public static final int codengram = 2;
+	public static final int[] codengram = {2,3,4};
 	
 	// if -1, infinite.
 	public static final int MaxPutAllLineNum = -1;

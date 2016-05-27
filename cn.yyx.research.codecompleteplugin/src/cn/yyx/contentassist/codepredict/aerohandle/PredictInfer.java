@@ -20,10 +20,12 @@ public class PredictInfer {
 	
 	Map<String, Boolean> keynull = new TreeMap<String, Boolean>();
 	Map<String, Boolean> handledkey = new TreeMap<String, Boolean>();
+	int id = 0;
 	
-	public PredictInfer() {
+	public PredictInfer(int id) {
+		this.id = id;
 	}
-	
+
 	public void BeginOperation()
 	{
 		// do nothing. Just a uniform API.
@@ -71,7 +73,7 @@ public class PredictInfer {
 			}
 			
 			// not handled key.
-			List<PredictProbPair> pps = alc.AeroModelPredict(key, remainsize, keylen);
+			List<PredictProbPair> pps = alc.AeroModelPredict(id, key, remainsize, keylen);
 			Iterator<PredictProbPair> ppsitr = pps.iterator();
 			while (ppsitr.hasNext())
 			{

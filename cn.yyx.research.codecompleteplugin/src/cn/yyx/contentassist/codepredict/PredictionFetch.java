@@ -11,6 +11,7 @@ import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 
 import cn.yyx.contentassist.aerospikehandle.AeroLifeCycle;
 import cn.yyx.contentassist.aerospikehandle.PredictProbPair;
+import cn.yyx.contentassist.codecompletion.AeroMetaData;
 import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codepredict.aerohandle.PredictInfer;
 import cn.yyx.contentassist.codesynthesis.flowline.CodeSynthesisFlowLines;
@@ -33,8 +34,8 @@ public class PredictionFetch {
 	
 	public List<String> FetchPrediction(JavaContentAssistInvocationContext javacontext, ScopeOffsetRefHandler handler, List<String> analist, ArrayList<String> result, ASTOffsetInfo aoi, char lastchar)
 	{
-		AeroLifeCycle alc = new AeroLifeCycle();
-		alc.Initialize();
+		AeroLifeCycle alc = AeroLifeCycle.GetInstance();
+		//alc.Initialize();
 		
 		int size = analist.size();
 		if (size > PredictMetaInfo.PrePredictWindow) {
@@ -54,8 +55,8 @@ public class PredictionFetch {
 		// List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesis(sh, alc, fls, aoi);
 		List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesisInSerial(sh, alc, fls, aoi);
 		
-		alc.Destroy();
-		alc = null;
+		// alc.Destroy();
+		// alc = null;
 		
 		List<String> list = new LinkedList<String>();
 		Iterator<CodeSynthesisFlowLines> itr = csfll.iterator();
@@ -72,11 +73,18 @@ public class PredictionFetch {
 		List<CodeSynthesisPredictTask> csptl = new LinkedList<CodeSynthesisPredictTask>();
 		List<PreTryFlowLineNode<Sentence>> ots = fls.getOvertails();
 		Iterator<PreTryFlowLineNode<Sentence>> otsitr = ots.iterator();
+		int alen = AeroMetaData.codengram.length;
+		int aidx = 0;
 		while (otsitr.hasNext())
 		{
 			PreTryFlowLineNode<Sentence> fln = otsitr.next();
+			aidx++;
+			if (aidx > alen)
+			{
+				break;
+			}
 			CodeSynthesisFlowLines csfl = new CodeSynthesisFlowLines();
-			csptl.add(new CodeSynthesisPredictTask(fln, sh, alc, csfl, aoi));
+			csptl.add(new CodeSynthesisPredictTask(fln, sh, alc, csfl, aoi, AeroMetaData.codengram[aidx-1]));
 			csfll.add(csfl);
 		}
 		List<Thread> tl = new LinkedList<Thread>();
@@ -114,11 +122,18 @@ public class PredictionFetch {
 		List<CodeSynthesisPredictTask> csptl = new LinkedList<CodeSynthesisPredictTask>();
 		List<PreTryFlowLineNode<Sentence>> ots = fls.getOvertails();
 		Iterator<PreTryFlowLineNode<Sentence>> otsitr = ots.iterator();
+		int alen = AeroMetaData.codengram.length;
+		int aidx = 0;
 		while (otsitr.hasNext())
 		{
 			PreTryFlowLineNode<Sentence> fln = otsitr.next();
+			aidx++;
+			if (aidx > alen)
+			{
+				break;
+			}
 			CodeSynthesisFlowLines csfl = new CodeSynthesisFlowLines();
-			csptl.add(new CodeSynthesisPredictTask(fln, sh, alc, csfl, aoi));
+			csptl.add(new CodeSynthesisPredictTask(fln, sh, alc, csfl, aoi, AeroMetaData.codengram[aidx-1]));
 			csfll.add(csfl);
 		}
 		Iterator<CodeSynthesisPredictTask> csptlitr = csptl.iterator();
@@ -134,7 +149,7 @@ public class PredictionFetch {
 	
 	private void DoPreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, List<Sentence> setelist,
 			List<statement> smtlist, final List<statement> smtmilist, int needsize, final char lastchar) {
-		PredictInfer pi = new PredictInfer();
+		PredictInfer pi = new PredictInfer(AeroMetaData.codengram[0]);
 		// Map<String, Boolean> keynull = new TreeMap<String, Boolean>();
 		
 		Iterator<Sentence> itr = setelist.iterator();

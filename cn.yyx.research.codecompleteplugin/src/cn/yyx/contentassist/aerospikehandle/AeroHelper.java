@@ -9,6 +9,7 @@ import com.aerospike.client.Bin;
 import com.aerospike.client.Key;
 import com.aerospike.client.Record;
 
+import cn.yyx.contentassist.codecompletion.AeroMetaData;
 import cn.yyx.contentassist.parsehelper.ComplexParser;
 
 public class AeroHelper {
