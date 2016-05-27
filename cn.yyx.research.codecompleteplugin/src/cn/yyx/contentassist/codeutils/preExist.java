@@ -153,6 +153,7 @@ public class preExist extends referedExpression{
 					mstop = tmp;
 					realhandler.setNextstart(null);
 					realhandler.setMostfar(mstop);
+					break;
 				}
 				
 				if ((tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class)) && signals.size() == 1)
@@ -160,6 +161,7 @@ public class preExist extends referedExpression{
 					mstop = tmpnext;
 					realhandler.setNextstart(tmp);
 					realhandler.setMostfar(mstop);
+					break;
 				}
 			}
 			/*if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoData.class) || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class))

@@ -43,9 +43,13 @@ public class CSFlowLineBackTraceGenerationHelper {
 			}
 		}
 		
-		FlowLineNode<CSFlowLineData> mergestart = startnode;
+		FlowLineNode<CSFlowLineData> mergestart = SearchForWholeNode(startnode);
 		FlowLineNode<CSFlowLineData> thelastone = mergestart;
 		String preid = null;
+		if (startnode != mergestart)
+		{
+			preid = startnode.getData().getSynthesisCodeManager().getBlocktostartid();
+		}
 		while (mergestart != stopnode) {
 			FlowLineNode<CSFlowLineData> two = mergestart;
 			FlowLineNode<CSFlowLineData> one = SearchForWholeNode(two.getPrev());
@@ -73,6 +77,7 @@ public class CSFlowLineBackTraceGenerationHelper {
 		// String id = GetConcateId(startnode, stopnode);
 		if (preid == null)
 		{
+			// the content from startnode to mergestart.
 			result.add(startnode);
 		}
 		else
