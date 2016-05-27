@@ -10,6 +10,7 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSArrayInitializerEndData;
 import cn.yyx.contentassist.codesynthesis.data.CSArrayInitializerStartData;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
@@ -61,7 +62,7 @@ public class arrayInitializerEndStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		Stack<Integer> signals = new Stack<Integer>();
-		
+		signals.push(DataStructureSignalMetaInfo.ArrayInitialBlock);
 		FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForSpecialClass(CSArrayInitializerStartData.class, signals);
 		if (cnode != null)
 		{
