@@ -17,13 +17,13 @@ public class arrayAccessStatement extends expressionStatement {
 	
 	referedExpression rarr = null;
 	referedExpression rexp = null;
-	boolean accessEnd = false;
+	// boolean accessEnd = false;
 	
-	public arrayAccessStatement(String smtcode, referedExpression rarr, referedExpression rexp, boolean accessEnd) {
+	public arrayAccessStatement(String smtcode, referedExpression rarr, referedExpression rexp) { //, boolean accessEnd
 		super(smtcode);
 		this.rarr = rarr;
 		this.rexp = rexp;
-		this.accessEnd = accessEnd;
+		// this.accessEnd = accessEnd;
 	}
 	
 	@Override
@@ -84,13 +84,13 @@ public class arrayAccessStatement extends expressionStatement {
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rals = rarr.HandleCodeSynthesis(squeue, smthandler);
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		String postfix = null;
+		/*String postfix = null;
 		if (accessEnd)
 		{
 			postfix = "]";
-		}
+		}*/
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		List<FlowLineNode<CSFlowLineData>> fmls = CSFlowLineHelper.ForwardConcate(null, rals, "[", rels, postfix, squeue, smthandler, null, null);
+		List<FlowLineNode<CSFlowLineData>> fmls = CSFlowLineHelper.ForwardConcate(null, rals, "[", rels, null, squeue, smthandler, null, null);
 		Iterator<FlowLineNode<CSFlowLineData>> itr = fmls.iterator();
 		while (itr.hasNext())
 		{

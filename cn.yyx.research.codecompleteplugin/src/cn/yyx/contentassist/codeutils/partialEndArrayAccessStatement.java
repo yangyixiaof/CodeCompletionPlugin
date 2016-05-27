@@ -13,6 +13,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.commonutils.StringUtil;
 
 public class partialEndArrayAccessStatement extends statement{
 	
@@ -70,17 +71,27 @@ public class partialEndArrayAccessStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		CSArrayAccessEndData caaed = new CSArrayAccessEndData(endrtimes, squeue.GenerateNewNodeId(), smthandler.getSete(), "]", null, true, false, null, null, squeue.GetLastHandler());
-		FlowLineNode<CSFlowLineData> fln = new FlowLineNode<CSFlowLineData>(caaed, smthandler.getProb());
-		Stack<Integer> signals = new Stack<Integer>();
-		caaed.HandleStackSignal(signals);
-		FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForSpecialClass(CSArrayAccessStartData.class, signals);
-		if (cnode == null)
+		
+		String endrcode = StringUtil.GenerateDuplicates("]", endrtimes);
+		if (es instanceof arrayAccessStatement)
 		{
-			throw new CodeSynthesisException("ArrayAccessBlcok disappeared.");
+			
 		}
-		CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, cnode);
-		result.add(fln);
+		else
+		{
+			CSArrayAccessEndData caaed = new CSArrayAccessEndData(endrtimes, squeue.GenerateNewNodeId(), smthandler.getSete(), endrcode, null, true, false, null, null, squeue.GetLastHandler());
+			FlowLineNode<CSFlowLineData> fln = new FlowLineNode<CSFlowLineData>(caaed, smthandler.getProb());
+			Stack<Integer> signals = new Stack<Integer>();
+			caaed.HandleStackSignal(signals);
+			FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForSpecialClass(CSArrayAccessStartData.class, signals);
+			if (cnode == null)
+			{
+				throw new CodeSynthesisException("ArrayAccessBlcok disappeared.");
+			}
+			CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, cnode);
+			result.add(fln);
+		}
+		
 		return result;
 	}
 
