@@ -48,7 +48,7 @@ public class CSFlowLineHelper {
 	}
 	
 	public static List<FlowLineNode<CSFlowLineData>> ForwardConcate(String prefix, List<FlowLineNode<CSFlowLineData>> one, String concator, List<FlowLineNode<CSFlowLineData>> two, String postfix, CSFlowLineQueue squeue, CSStatementHandler smthandler, TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
-		if (one.size() == 0) {
+		if (one == null || one.size() == 0) {
 			return null;
 		} else {
 			if (two == null || two.size() == 0) {
