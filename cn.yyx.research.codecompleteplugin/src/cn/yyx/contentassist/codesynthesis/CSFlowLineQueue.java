@@ -147,48 +147,6 @@ public class CSFlowLineQueue {
 		}
 		return null;
 	}
-
-	/*public CSMethodSignalHandleResult BackSearchForMethodRelatedSignal() throws CodeSynthesisException {
-		// Solved. This function is not used any more. The right of this function should be verified carefully.
-		Stack<Integer> signals = new Stack<Integer>();
-		FlowLineNode<CSFlowLineData> tmp = last;
-		int faremused = 0;
-		while (tmp != null)
-		{
-			CSFlowLineData tmpdata = tmp.getData();
-			if (!(tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class) || tmpdata instanceof CSMethodInvocationData || tmpdata instanceof CSEnterParamInfoData))
-			{
-				continue;
-			}
-			tmpdata.HandleStackSignal(signals);
-			if ((signals.size() == 1))
-			{
-				Integer top = signals.peek();
-				ComplicatedSignal cs = ComplicatedSignal.ParseComplicatedSignal(top);
-				int sign = cs.getSign();
-				int count = cs.getCount();
-				if (sign == DataStructureSignalMetaInfo.MethodEnterParam)
-				{
-					if (tmpdata instanceof CSEnterParamInfoData)
-					{
-						faremused = (((CSEnterParamInfoData) tmpdata).getTimes() - count);
-					}
-					else
-					{
-						throw new CodeSynthesisException("What the fuck! the signal on top is MethodEnterParam but the corresponding data is not?");
-					}
-					break;
-				}
-			}
-			tmp = tmp.getPrev();
-		}
-		if (faremused == 0 || tmp == null)
-		{
-			throw new CodeSynthesisException("faremused is 0?");
-		}
-		CSMethodSignalHandleResult csres = new CSMethodSignalHandleResult(tmp, faremused);
-		return csres;
-	}*/
 	
 	public VariableHT BackSearchForLastIthVariableHolderAndTypeDeclaration(int off) {
 		String vhtp = null;

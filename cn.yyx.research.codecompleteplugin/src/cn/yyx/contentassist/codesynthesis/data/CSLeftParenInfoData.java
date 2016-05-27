@@ -53,6 +53,10 @@ public class CSLeftParenInfoData extends CSFlowLineData{
 		int usetimes = times;
 		while (!couldstop)
 		{
+			if (signals.size() == 0)
+			{
+				throw new CodeSynthesisException("Right parenthese stack signal handling runs into error.");
+			}
 			Integer hint = signals.peek();
 			if (hint == null)
 			{

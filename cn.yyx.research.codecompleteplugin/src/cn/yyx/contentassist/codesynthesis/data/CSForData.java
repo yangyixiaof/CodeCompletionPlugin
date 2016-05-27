@@ -18,6 +18,10 @@ public class CSForData extends CSFlowLineData{
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
 		super.HandleStackSignal(signals);
+		if (signals.size() == 0)
+		{
+			throw new CodeSynthesisException("for ini over does not have common for prefixed.");
+		}
 		Integer sl = signals.peek();
 		if (sl == null || sl != DataStructureSignalMetaInfo.CommonForInitWaitingOver)
 		{

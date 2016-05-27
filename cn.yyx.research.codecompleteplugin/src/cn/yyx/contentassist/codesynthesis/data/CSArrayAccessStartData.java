@@ -16,6 +16,10 @@ public class CSArrayAccessStartData extends CSFlowLineData{
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException{
 		super.HandleStackSignal(signals);
+		if (signals.size() == 0)
+		{
+			throw new CodeSynthesisException("array access does not in right block.");
+		}
 		Integer sl = signals.peek();
 		if (sl != null)
 		{

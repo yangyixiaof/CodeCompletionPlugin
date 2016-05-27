@@ -18,6 +18,10 @@ public class CSCondExpBeginData extends CSFlowLineData{
 	@Override
 	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
 		super.HandleStackSignal(signals);
+		if (signals.size() == 0)
+		{
+			throw new CodeSynthesisException("cond exp begin does not have common for prefixed.");
+		}
 		Integer sl = signals.peek();
 		if (sl == null || sl != DataStructureSignalMetaInfo.ConditionExpressionQuestion)
 		{
