@@ -31,7 +31,7 @@ public class IntelliJavaProposalComputer implements IJavaCompletionProposalCompu
 			IProgressMonitor monitor) {
 		ArrayList<ICompletionProposal> proposal = null;
 		// proposal = cpu.PredictCodes(context, monitor);
-		proposal = cpt.PredictCodes(context, monitor);
+		proposal = cpu.PredictCodes(context, monitor);
 		return proposal;
 	}
 
