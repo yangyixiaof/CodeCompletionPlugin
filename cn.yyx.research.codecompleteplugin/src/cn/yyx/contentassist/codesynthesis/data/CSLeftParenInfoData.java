@@ -63,7 +63,7 @@ public class CSLeftParenInfoData extends CSFlowLineData{
 				throw new CodeSynthesisException("Right parenthese stack signal handling runs into error.");
 			}
 			ComplicatedSignal cs = ComplicatedSignal.ParseComplicatedSignal(hint);
-			if (cs == null || cs.getSign() == DataStructureSignalMetaInfo.ParentheseBlock)
+			if (cs == null || cs.getSign() != DataStructureSignalMetaInfo.ParentheseBlock)
 			{
 				throw new CodeSynthesisException("Right parenthese stack signal handling runs into error.");
 			}

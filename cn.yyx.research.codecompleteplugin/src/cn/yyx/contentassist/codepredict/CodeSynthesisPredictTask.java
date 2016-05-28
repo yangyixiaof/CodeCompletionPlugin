@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.aerospikehandle.AeroLifeCycle;
 import cn.yyx.contentassist.aerospikehandle.PredictProbPair;
+import cn.yyx.contentassist.codecompletion.CodeCompletionMetaInfo;
 import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codepredict.aerohandle.PredictInfer;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
@@ -135,8 +136,14 @@ public class CodeSynthesisPredictTask implements Runnable {
 							if (!(ClassInstanceOfUtil.ObjectInstanceOf(csdflq, VirtualCSFlowLineQueue.class))) {
 								lastone = (FlowLineNode<CSFlowLineData>) fln;
 							}
-							Stack<Integer> signals = new Stack<Integer>();
 							CSFlowLineData addnodedata = addnode.getData();
+							
+							if (CodeCompletionMetaInfo.DebugMode)
+							{
+								PrintWholeTrace(lastone, addnodedata.getSete().getSentence());
+							}
+							
+							Stack<Integer> signals = new Stack<Integer>();
 							try {
 								addnodedata.HandleStackSignal(signals);
 							} catch (CodeSynthesisException e) {
@@ -144,7 +151,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 							over = predsmt.HandleOverSignal(new FlowLineStack(lastone, signals));
 							addnode.setCouldextend(!over);
 						} catch (CodeSynthesisException e) {
-							// testing
+							
 							System.err.println(
 									"Error occurs when doing code synthesis, this predict and the following will be ignored.");
 							e.printStackTrace();
@@ -181,6 +188,17 @@ public class CodeSynthesisPredictTask implements Runnable {
 		return pps;
 	}
 	
+	private void PrintWholeTrace(FlowLineNode<CSFlowLineData> lastone, String mlast) {
+		FlowLineNode<CSFlowLineData> tmp = lastone;
+		String one = mlast;
+		while (tmp != null)
+		{
+			one = tmp.getData().getSete().getSentence() + " " + one;
+			tmp = tmp.getPrev();
+		}
+		System.err.println("one trace:" + one);
+	}
+
 	public boolean TotalStopCondition()
 	{
 		if (totalsuccess >= PredictMetaInfo.OneFirstMaxTotalSuccess || totalstep >= PredictMetaInfo.OneExtendFirstTotalStep)
