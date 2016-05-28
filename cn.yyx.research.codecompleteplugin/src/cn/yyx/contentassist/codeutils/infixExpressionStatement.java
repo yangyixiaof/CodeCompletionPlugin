@@ -69,7 +69,7 @@ public class infixExpressionStatement extends expressionStatement{
 		squeue.add(rtcs);
 		return false;
 	}*/
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {

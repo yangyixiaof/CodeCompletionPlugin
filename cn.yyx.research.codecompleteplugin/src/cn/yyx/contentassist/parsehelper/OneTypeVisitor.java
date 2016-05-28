@@ -835,7 +835,8 @@ public class OneTypeVisitor extends Java8BaseVisitor<Integer> {
 		List<type> result = new LinkedList<type>();
 		while (itr.hasNext()) {
 			itr.next();
-			result.add(0, (type)usedobj.pop());
+			// important, the handle in code completion environment is opposite as the handle of program-process.
+			result.add((type)usedobj.pop());
 		}
 		usedobj.push(new classOrInterfaceType(result));
 		return res;

@@ -154,9 +154,16 @@ public class CSFlowLineQueue {
 		FlowLineNode<CSFlowLineData> tmp = last;
 		String recentvhne = null;
 		int totalvh = 0;
+		// skip very close var holder.
+		// off++; TODO
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();
+			// TODO remove
+			/*if (tmpdata.HasSpecialProperty(CSForIniOverProperty.class))
+			{
+				off--;
+			}*/
 			if (tmpdata instanceof CSVariableHolderData)
 			{
 				totalvh++;
@@ -172,14 +179,6 @@ public class CSFlowLineQueue {
 			}
 			if (tmpdata instanceof CSVariableDeclarationData)
 			{
-				/*if (vhne == null)
-				{
-					vhne = recentvhne;
-					if (vhne == null)
-					{
-						return null;
-					}
-				}*/
 				vhtp = ((CSVariableDeclarationData)tmpdata).getData();
 				break;
 			}
