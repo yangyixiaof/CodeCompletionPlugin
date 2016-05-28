@@ -12,6 +12,7 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.ErrorCheck;
+import cn.yyx.contentassist.codesynthesis.data.CSDataMetaInfo;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementFirstArgHandler;
@@ -241,6 +242,7 @@ public class argumentList implements OneCode {
 			if (mf != null) {
 				String id = CSFlowLineBackTraceGenerationHelper.GetConcateId(squeue.getLast(), mf) + "." + data.getId();
 				mf.getData().getSynthesisCodeManager().AddSynthesisCode(id, fln);
+				data.getExtraData().AddExtraData(CSDataMetaInfo.LastNode, data);
 				data.getSynthesisCodeManager().setBlockstart(mf, id);
 			}
 		}
