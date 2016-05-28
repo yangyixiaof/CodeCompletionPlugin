@@ -223,7 +223,7 @@ public class CodeSynthesisHelper {
 		return false;
 	}*/
 	
-	public static List<FlowLineNode<CSFlowLineData>> HandleTypeSpecificationInfer(List<FlowLineNode<CSFlowLineData>> tmp, List<FlowLineNode<CSFlowLineData>> tpls, CSFlowLineQueue squeue, CSStatementHandler smthandler) throws CodeSynthesisException
+	/*public static List<FlowLineNode<CSFlowLineData>> HandleTypeSpecificationInfer(List<FlowLineNode<CSFlowLineData>> tmp, List<FlowLineNode<CSFlowLineData>> tpls, CSFlowLineQueue squeue, CSStatementHandler smthandler) throws CodeSynthesisException
 	{
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		Iterator<FlowLineNode<CSFlowLineData>> itr = tmp.iterator();
@@ -249,7 +249,7 @@ public class CodeSynthesisHelper {
 			}
 		}
 		return result;
-	}
+	}*/
 	
 	public static List<FlowLineNode<CSFlowLineData>> HandleFieldSpecificationInfer(List<FlowLineNode<CSFlowLineData>> tmp, List<FlowLineNode<CSFlowLineData>> idls, CSFlowLineQueue squeue, CSStatementHandler smthandler, String concator) throws CodeSynthesisException
 	{
@@ -287,7 +287,7 @@ public class CodeSynthesisHelper {
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
 			String rawtype = fln.getData().getData();
-			List<TypeMember> tps = SearchSpecificationOfAReference.SearchTypeSpecificationByPrefix(rawtype, squeue.GetLastHandler().getContextHandler().getJavacontext());
+			List<TypeMember> tps = SearchSpecificationOfAReference.SearchFieldClassMemberSpecificationByPrefix(rawtype, squeue.GetLastHandler().getContextHandler().getJavacontext());
 			Iterator<TypeMember> tpitr = tps.iterator();
 			int tpspesize = 0;
 			while (tpitr.hasNext())
@@ -298,10 +298,10 @@ public class CodeSynthesisHelper {
 					break;
 				}
 				TypeMember tp = tpitr.next();
-				if (SimilarityHelper.ComputeTwoStringSimilarity(rawtype, tp.getTypeclass().getSimpleName()) > PredictMetaInfo.TwoStringSimilarThreshold)
-				{
-					result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), tp.getType(), new CCType(tp), false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
-				}
+				//if (SimilarityHelper.ComputeTwoStringSimilarity(rawtype, tp.getTypeclass().getSimpleName()) > PredictMetaInfo.TwoStringSimilarThreshold)
+				//{
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), tp.getType(), new CCType(tp), false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+				//}
 			}
 		}
 		return result;

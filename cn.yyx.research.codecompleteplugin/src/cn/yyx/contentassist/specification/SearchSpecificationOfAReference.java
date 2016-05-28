@@ -18,7 +18,6 @@ import org.eclipse.jdt.internal.core.SearchableEnvironment;
 import org.eclipse.jdt.internal.ui.text.java.FillArgumentNamesCompletionProposalCollector;
 import org.eclipse.jdt.internal.ui.text.java.JavaCompletionProposal;
 import org.eclipse.jdt.internal.ui.text.java.JavaMethodCompletionProposal;
-import org.eclipse.jdt.internal.ui.text.java.LazyGenericTypeProposal;
 import org.eclipse.jdt.internal.ui.text.java.ParameterGuessingProposal;
 import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.jdt.ui.text.java.CompletionProposalCollector;
@@ -35,9 +34,9 @@ import cn.yyx.contentassist.commonutils.TimeOutProgressMonitor;
 
 @SuppressWarnings("restriction")
 public class SearchSpecificationOfAReference {
-
-	public static List<TypeMember> SearchTypeSpecificationByPrefix(String prefix,
-			JavaContentAssistInvocationContext javacontext) {
+	// ambugious
+	/*public static List<TypeMember> SearchTypeSpecificationByPrefix(String prefix,
+			JavaContentAssistInvocationContext javacontext, boolean ambiguous) {
 		List<TypeMember> tmlist = new LinkedList<TypeMember>();
 		CompletionProposalCollector collector = GetTypeMemberProposalCollector(javacontext);
 		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.typetimeout);
@@ -79,7 +78,7 @@ public class SearchSpecificationOfAReference {
 			tmlist.add(0, (TypeMember) ms.getMember());
 		}
 		return tmlist;
-	}
+	}*/
 
 	public static List<FieldMember> SearchFieldSpecificationByPrefix(String prefix,
 			JavaContentAssistInvocationContext javacontext) {
@@ -121,13 +120,15 @@ public class SearchSpecificationOfAReference {
 		return fmlist;
 	}
 	
-	public static List<FieldMember> SearchFieldClassMemberSpecificationByPrefix(String prefix,
+	public static List<TypeMember> SearchFieldClassMemberSpecificationByPrefix(String prefix,
 			JavaContentAssistInvocationContext javacontext) {
+		// TODO
 		CompletionProposalCollector collector = GetFieldClassMemberProposalCollector(javacontext);
-		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.fieldtimeout);
-		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, topm);
+		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.typetimeout);
+		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix + ".class", javacontext, topm);
 		Iterator<ICompletionProposal> itr = proposals.iterator();
 		Queue<MemberSorter> prioriqueue = new PriorityQueue<MemberSorter>();
+		List<TypeMember> tmlist = new LinkedList<TypeMember>();
 		while (itr.hasNext()) {
 			ICompletionProposal icp = itr.next();
 			JavaCompletionProposal jcp = (JavaCompletionProposal) icp;
@@ -146,19 +147,7 @@ public class SearchSpecificationOfAReference {
 			FieldMember fm = new FieldMember(fieldname, fieldtype, wheredeclared);
 			prioriqueue.add(new MemberSorter(similarity, fm));
 		}
-
-		List<FieldMember> fmlist = new LinkedList<FieldMember>();
-		int total = 0;
-		while (!(prioriqueue.isEmpty())) {
-			MemberSorter ms = prioriqueue.poll();
-			total++;
-			if (total > PredictMetaInfo.MaxFieldSpecificationSize
-					|| (total > 0 && ms.getSimilarity() <= PredictMetaInfo.TwoFieldStringSimilarThreshold)) {
-				break;
-			}
-			fmlist.add(0, (FieldMember) ms.getMember());
-		}
-		return fmlist;
+		return tmlist;
 	}
 
 	public static List<MethodMember> SearchMethodSpecificationByPrefix(String prefix,
@@ -335,7 +324,7 @@ public class SearchSpecificationOfAReference {
 		return new String[0];
 	}
 
-	private static CompletionProposalCollector GetTypeMemberProposalCollector(
+	/*private static CompletionProposalCollector GetTypeMemberProposalCollector(
 			JavaContentAssistInvocationContext javacontext) {
 		CompletionProposalCollector collector = null;
 		if (PreferenceConstants.getPreferenceStore().getBoolean(PreferenceConstants.CODEASSIST_FILL_ARGUMENT_NAMES)) {
@@ -392,7 +381,7 @@ public class SearchSpecificationOfAReference {
 		collector.setAllowsRequiredProposals(CompletionProposal.TYPE_REF, CompletionProposal.TYPE_REF, true);
 
 		return collector;
-	}
+	}*/
 
 	private static CompletionProposalCollector GetFieldMemberProposalCollector(
 			JavaContentAssistInvocationContext javacontext) {

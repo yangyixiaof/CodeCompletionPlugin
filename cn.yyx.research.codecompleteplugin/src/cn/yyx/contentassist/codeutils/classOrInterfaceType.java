@@ -1,6 +1,5 @@
 package cn.yyx.contentassist.codeutils;
 
-import java.util.Iterator;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
@@ -9,7 +8,6 @@ import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
-import cn.yyx.contentassist.commonutils.ListDynamicHeper;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 
 public class classOrInterfaceType extends type{
@@ -61,8 +59,9 @@ public class classOrInterfaceType extends type{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = null;
-		List<type> reveredtps = new ListDynamicHeper<type>().ReverseList(tps);
-		Iterator<type> itr = reveredtps.iterator();
+		type tp = tps.iterator().next();
+		result = tp.HandleCodeSynthesis(squeue, smthandler);
+		/*Iterator<type> itr = reveredtps.iterator();
 		while (itr.hasNext())
 		{
 			type tp = itr.next();
@@ -83,7 +82,7 @@ public class classOrInterfaceType extends type{
 				}
 				result = CodeSynthesisHelper.HandleTypeSpecificationInfer(result, tpls, squeue, smthandler);
 			}
-		}
+		}*/
 		if (result == null || result.size() == 0)
 		{
 			return CodeSynthesisHelper.HandleMultipleConcateType(squeue, smthandler, tps, ".");
