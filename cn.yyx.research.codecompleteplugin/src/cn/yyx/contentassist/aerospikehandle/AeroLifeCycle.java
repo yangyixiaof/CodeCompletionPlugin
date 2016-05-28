@@ -21,13 +21,13 @@ public class AeroLifeCycle {
 	}
 
 	private void Initialize() {
-		Parameters param = new Parameters(CodeCompletionMetaInfo.ServerIp, 3000, null, null, "yyx", "code1sim");
-		AeroHelper.ANewClient(AeroMetaData.code1sim, param);
+		// Parameters param = new Parameters(CodeCompletionMetaInfo.ServerIp, 3000, null, null, "yyx", "code1sim");
+		// AeroHelper.ANewClient(AeroMetaData.code1sim, param);
 		int alen = AeroMetaData.codengram.length;
 		for (int i=0;i<alen;i++)
 		{
-			Parameters param2 = new Parameters(CodeCompletionMetaInfo.ServerIp, 3000, null, null, "yyx", "codengram");
-			AeroHelper.ANewClient(AeroMetaData.codengram[i], param2);
+			Parameters param = new Parameters(CodeCompletionMetaInfo.ServerIp, 3000, null, null, "yyx", "codengram");
+			AeroHelper.ANewClient(AeroMetaData.codengram[i], param);
 		}
 		hasInitialized = true;
 	}
