@@ -1,10 +1,10 @@
 package cn.yyx.contentassist.codeutils;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.ErrorCheck;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
@@ -19,9 +19,11 @@ public class elseStatement extends statement {
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "else {\n\n}", null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
-		return result;
+		// List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		// result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "else {\n\n}", null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+		// return result;
+		ErrorCheck.NoGenerationCheck("DH@else should not be generated.");
+		return null;
 	}
 
 	@Override
@@ -44,7 +46,8 @@ public class elseStatement extends statement {
 	
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		cstack.EnsureAllSignalNull();
+		ErrorCheck.NoGenerationCheck("DH@else should not handle over signal.");
+		// cstack.EnsureAllSignalNull();
 		return true;
 	}
 	
