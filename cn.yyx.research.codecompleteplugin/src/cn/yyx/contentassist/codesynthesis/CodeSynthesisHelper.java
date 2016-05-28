@@ -12,7 +12,6 @@ import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.data.CSEnterParamInfoProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationProperty;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
@@ -24,7 +23,6 @@ import cn.yyx.contentassist.codeutils.argumentList;
 import cn.yyx.contentassist.codeutils.firstArgReferedExpression;
 import cn.yyx.contentassist.codeutils.identifier;
 import cn.yyx.contentassist.codeutils.type;
-import cn.yyx.contentassist.commonutils.ListHelper;
 import cn.yyx.contentassist.commonutils.NameConvention;
 import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
 import cn.yyx.contentassist.commonutils.SignalHelper;
@@ -357,8 +355,8 @@ public class CodeSynthesisHelper {
 			System.err.println("Error! EnterParam not the start of the method.");
 			throw new CodeSynthesisException("Error! EnterParam not the start of the method.");
 		}
-		return ListHelper.AddExtraPropertyToAllListNodes(alls, new CSMethodInvocationProperty(hasem));
-		// return alls;
+		// return ListHelper.AddExtraPropertyToAllListNodes(alls, new CSMethodInvocationProperty(hasem));
+		return alls;
 	}
 	
 	public static List<FlowLineNode<CSFlowLineData>> HandleInferredContent(CSFlowLineQueue squeue, CSStatementHandler smthandler, List<FlowLineNode<CSFlowLineData>> infermain, List<FlowLineNode<CSFlowLineData>> expectedinfer, String inferoperator) throws CodeSynthesisException
