@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSForIniOverProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableDeclarationData;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableHolderData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -155,15 +156,14 @@ public class CSFlowLineQueue {
 		String recentvhne = null;
 		int totalvh = 0;
 		// skip very close var holder.
-		// off++; TODO
+		off++;
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();
-			// TODO remove
-			/*if (tmpdata.HasSpecialProperty(CSForIniOverProperty.class))
+			if (tmpdata.HasSpecialProperty(CSForIniOverProperty.class))
 			{
 				off--;
-			}*/
+			}
 			if (tmpdata instanceof CSVariableHolderData)
 			{
 				totalvh++;
@@ -179,7 +179,15 @@ public class CSFlowLineQueue {
 			}
 			if (tmpdata instanceof CSVariableDeclarationData)
 			{
-				vhtp = ((CSVariableDeclarationData)tmpdata).getData();
+				CSVariableDeclarationData csvdd = (CSVariableDeclarationData)tmpdata;
+				if (csvdd.getDcls() != null && csvdd.getDcls().getCls() != null)
+				{
+					vhtp = csvdd.getDcls().getCls().getSimpleName();
+				}
+				else
+				{
+					vhtp = ((CSVariableDeclarationData)tmpdata).getData();
+				}
 				break;
 			}
 			tmp = tmp.getPrev();
