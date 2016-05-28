@@ -155,16 +155,16 @@ public class CSFlowLineQueue {
 		FlowLineNode<CSFlowLineData> tmp = last;
 		String recentvhne = null;
 		int totalvh = 0;
+		boolean barrierdestroy = false;
 		// skip very close var holder.
-		off++;
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();
 			if (tmpdata.HasSpecialProperty(CSForIniOverProperty.class))
 			{
-				off--;
+				barrierdestroy = true;
 			}
-			if (tmpdata instanceof CSVariableHolderData)
+			if (tmpdata instanceof CSVariableHolderData && barrierdestroy)
 			{
 				totalvh++;
 				if (off >= 0)
@@ -176,6 +176,11 @@ public class CSFlowLineQueue {
 						vhne = recentvhne;
 					}
 				}
+			}
+			 // the order of this if and above if can not be changed.
+			if (tmpdata instanceof CSVariableHolderData && !barrierdestroy)
+			{
+				barrierdestroy = true;
 			}
 			if (tmpdata instanceof CSVariableDeclarationData)
 			{
