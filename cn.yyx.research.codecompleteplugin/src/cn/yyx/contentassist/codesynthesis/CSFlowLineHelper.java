@@ -6,6 +6,7 @@ import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codepredict.Sentence;
+import cn.yyx.contentassist.codesynthesis.data.CSExtraProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
@@ -66,6 +67,7 @@ public class CSFlowLineHelper {
 							tmp = ConcateTwoFlowLineNode(prefix, fln1, concator, fln2, postfix, squeue, smthandler,
 									 oneafter, beforetwo);
 							ConcateBlockStart(tmp, fln1, fln2);
+							ConcateExtraProperty(tmp, fln1, fln2);
 						} catch (TypeConflictException e) {
 							// e.printStackTrace();
 							System.err.println(e.getMessage());
@@ -102,6 +104,28 @@ public class CSFlowLineHelper {
 		else
 		{
 			return prob1 + prob2;
+		}
+	}
+	
+	private static void ConcateExtraProperty(FlowLineNode<CSFlowLineData> tmp, FlowLineNode<CSFlowLineData> fln1,
+			FlowLineNode<CSFlowLineData> fln2) {
+		CSFlowLineData d1 = fln1.getData();
+		CSFlowLineData d2 = fln2.getData();
+		CSExtraProperty cs1 = d1.getCsep();
+		CSExtraProperty cs2 = d2.getCsep();
+		if (cs1 != null && cs2 != null)
+		{
+			System.err.println("Important error! two nodes all have block start, what the fuck.");
+			new Exception("Important error! two nodes all have block start, what the fuck.").printStackTrace();
+			System.exit(1);
+		}
+		if (cs1 == null && cs2 != null)
+		{
+			tmp.getData().setCsep(cs2);
+		}
+		if (cs1 != null && cs2 == null)
+		{
+			tmp.getData().setCsep(cs1);
 		}
 	}
 	
