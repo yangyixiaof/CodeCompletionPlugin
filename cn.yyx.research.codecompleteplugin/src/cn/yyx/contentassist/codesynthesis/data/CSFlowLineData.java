@@ -28,6 +28,8 @@ public class CSFlowLineData implements CSDataStructure{
 	private CSExtraProperty csep = null;
 	private SynthesisCodeManager scm = new SynthesisCodeManager();
 	
+	protected CSExtraData csed = new CSExtraData();
+	
 	public boolean HasSpecialProperty(Class<?> cls)
 	{
 		if (getClass().equals(cls))
@@ -40,8 +42,6 @@ public class CSFlowLineData implements CSDataStructure{
 		}
 		return false;
 	}
-	
-	protected CSExtraData csed = new CSExtraData();
 	
 	// this boolean field is used to skip some useless node.
 	// private boolean shouldskip = false;

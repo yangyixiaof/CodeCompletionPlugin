@@ -11,6 +11,7 @@ public class CSArrayAccessStartData extends CSFlowLineData{
 		super(dt.getId(), dt.getSete(), dt.getData(), dt.getDcls(), dt.isHaspre(), dt.isHashole(), dt.getPretck(), dt.getPosttck(), dt.getHandler());
 		this.setCsep(dt.getCsep());
 		this.setScm(dt.getSynthesisCodeManager());
+		this.setExtraData(dt.getExtraData());
 	}
 	
 	@Override

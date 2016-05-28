@@ -13,6 +13,7 @@ public class CSMethodInvocationData extends CSFlowLineData{
 		this.setHasem(hasem);
 		this.setCsep(dt.getCsep());
 		this.setScm(dt.getSynthesisCodeManager());
+		this.setExtraData(dt.getExtraData());
 	}
 	
 	public boolean isHasem() {

@@ -19,6 +19,7 @@ public class CSArrayAccessEndData extends CSFlowLineData{
 		this.setTimes(times);
 		this.setCsep(cd.getCsep());
 		this.setScm(cd.getSynthesisCodeManager());
+		this.setExtraData(cd.getExtraData());
 	}
 	
 	public CSArrayAccessEndData(int times, Integer id, Sentence sete, String data, CCType dcls, boolean haspre,
