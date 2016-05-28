@@ -8,13 +8,13 @@ public class BooleanROnlyOneBoolean extends TypeComputationKind {
 	@Override
 	public void HandlePre(CCType pre) throws TypeConflictException {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void HandlePost(CCType post) throws TypeConflictException {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
