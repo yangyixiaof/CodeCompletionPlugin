@@ -6,20 +6,21 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.Sentence;
+import cn.yyx.contentassist.codesynthesis.data.CSExtraProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 
 public class ListHelper {
 	
-	public static List<FlowLineNode<CSFlowLineData>> TranslateToMethodDataNode(List<FlowLineNode<CSFlowLineData>> alls, boolean hasem)
+	public static List<FlowLineNode<CSFlowLineData>> AddExtraPropertyToAllListNodes(List<FlowLineNode<CSFlowLineData>> alls, CSExtraProperty csep)
 	{
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		Iterator<FlowLineNode<CSFlowLineData>> itr = alls.iterator();
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
-			result.add(new FlowLineNode<CSFlowLineData>(new CSMethodInvocationData(hasem, fln.getData()), fln.getProbability()));
+			fln.getData().setCsep(csep);
+			result.add(fln);
 		}
 		return result;
 	}

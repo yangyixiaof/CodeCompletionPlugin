@@ -10,8 +10,9 @@ import java.util.TreeMap;
 import cn.yyx.contentassist.codecompletion.CodeCompletionMetaInfo;
 import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
-import cn.yyx.contentassist.codesynthesis.data.CSEnterParamInfoData;
+import cn.yyx.contentassist.codesynthesis.data.CSEnterParamInfoProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationProperty;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
@@ -351,12 +352,12 @@ public class CodeSynthesisHelper {
 		 * }
 		 * return result;*/
 		FlowLineNode<CSFlowLineData> mf = csmsh.getMostfar();
-		if (mf != null && !(mf.getData() instanceof CSEnterParamInfoData))
+		if (mf != null && !(mf.getData().HasSpecialProperty(CSEnterParamInfoProperty.class)))
 		{
 			System.err.println("Error! EnterParam not the start of the method.");
 			throw new CodeSynthesisException("Error! EnterParam not the start of the method.");
 		}
-		return ListHelper.TranslateToMethodDataNode(alls, hasem);
+		return ListHelper.AddExtraPropertyToAllListNodes(alls, new CSMethodInvocationProperty(hasem));
 		// return alls;
 	}
 	

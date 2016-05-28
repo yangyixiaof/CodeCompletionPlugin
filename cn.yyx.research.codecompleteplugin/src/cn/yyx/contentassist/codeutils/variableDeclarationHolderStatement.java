@@ -9,7 +9,6 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.CSHoleData;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableHolderData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
@@ -91,7 +90,7 @@ public class variableDeclarationHolderStatement extends statement{
 				FlowLineNode<CSFlowLineData> fln = itr.next();
 				boolean needensuretype = false;
 				CSFlowLineData data = fln.getData();
-				if (data instanceof CSHoleData)
+				if (rexp instanceof codeHole)
 				{
 					needensuretype = true;
 				}

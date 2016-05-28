@@ -8,9 +8,9 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
-import cn.yyx.contentassist.codesynthesis.data.CSEnterParamInfoData;
+import cn.yyx.contentassist.codesynthesis.data.CSEnterParamInfoProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationData;
+import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSPrProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSPsProperty;
 import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
@@ -81,7 +81,7 @@ public class preExist extends referedExpression{
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();
-			if (tmpdata instanceof CSEnterParamInfoData || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class) || tmpdata instanceof CSMethodInvocationData)
+			if (tmpdata.HasSpecialProperty(CSEnterParamInfoProperty.class) || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class) || tmpdata.HasSpecialProperty(CSMethodInvocationProperty.class))
 			{
 				Integer preps = signals.peek();
 				tmpdata.HandleStackSignal(signals);
@@ -91,7 +91,7 @@ public class preExist extends referedExpression{
 				}
 				if (signals.size() == 1)
 				{
-					if (tmpdata instanceof CSEnterParamInfoData)
+					if (tmpdata.HasSpecialProperty(CSEnterParamInfoProperty.class))
 					{
 						mstop = tmp;
 						realhandler.setNextstart(null);
@@ -144,11 +144,11 @@ public class preExist extends referedExpression{
 				continue;
 			}
 			
-			if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoData.class) || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class))
+			if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoProperty.class) || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class))
 			{
 				tmpdata.HandleStackSignal(signals);
 				
-				if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoData.class) && signals.size() == 0)
+				if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoProperty.class) && signals.size() == 0)
 				{
 					mstop = tmp;
 					realhandler.setNextstart(null);

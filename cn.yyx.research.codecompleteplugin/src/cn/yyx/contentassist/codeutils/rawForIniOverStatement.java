@@ -7,8 +7,8 @@ import java.util.Stack;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.CSForData;
 import cn.yyx.contentassist.codesynthesis.data.CSForIniOverProperty;
+import cn.yyx.contentassist.codesynthesis.data.CSForProperty;
 import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
@@ -54,7 +54,7 @@ public class rawForIniOverStatement extends statement {
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		Stack<Integer> signals = new Stack<Integer>();
 		signals.push(DataStructureSignalMetaInfo.CommonForInitWaitingOver);
-		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSForData.class, signals);
+		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSForProperty.class, signals);
 		if (cnode == null)
 		{
 			throw new CodeSynthesisException("for ini over does not have init over in pre.");
