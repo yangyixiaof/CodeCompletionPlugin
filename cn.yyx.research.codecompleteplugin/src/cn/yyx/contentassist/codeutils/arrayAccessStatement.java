@@ -7,7 +7,7 @@ import java.util.List;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.data.CSArrayAccessStartData;
+import cn.yyx.contentassist.codesynthesis.data.CSArrayAccessStartProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
@@ -106,10 +106,12 @@ public class arrayAccessStatement extends expressionStatement {
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
 			if (accessEnd) {
-				result.add(fln);
+				// do nothing.
 			} else {
-				result.add(new FlowLineNode<CSFlowLineData>(new CSArrayAccessStartData(fln.getData()), fln.getProbability()));
+				// result.add(new FlowLineNode<CSFlowLineData>(new CSArrayAccessStartData(fln.getData()), fln.getProbability()));
+				fln.getData().setCsep(new CSArrayAccessStartProperty());
 			}
+			result.add(fln);
 		}
 		// (accessEnd ? null : StructureSignalMetaInfo.ArrayAccessBlcok
 		return result;

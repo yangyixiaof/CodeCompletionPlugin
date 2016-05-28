@@ -5,7 +5,7 @@ import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.data.CSCondExpBeginData;
+import cn.yyx.contentassist.codesynthesis.data.CSCondExpBeginProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
@@ -52,7 +52,7 @@ public class condExpBeginStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSCondExpBeginData(squeue.GenerateNewNodeId(), smthandler.getSete(), "", null, false, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId()+"", smthandler.getSete(), "", null, false, true, null, null, squeue.GetLastHandler(), new CSCondExpBeginProperty()), smthandler.getProb()));
 		return result;
 	}
 

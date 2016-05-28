@@ -6,8 +6,8 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.data.CSCondExpColonMarkData;
-import cn.yyx.contentassist.codesynthesis.data.CSCondExpQuestionMarkData;
+import cn.yyx.contentassist.codesynthesis.data.CSCondExpColonMarkProperty;
+import cn.yyx.contentassist.codesynthesis.data.CSCondExpQuestionMarkProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -56,7 +56,7 @@ public class condExpColonMarkStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSCondExpColonMarkData(squeue.GenerateNewNodeId(), smthandler.getSete(), ":", null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId()+"", smthandler.getSete(), ":", null, true, true, null, null, squeue.GetLastHandler(), new CSCondExpColonMarkProperty()), smthandler.getProb()));
 		return result;
 	}
 
@@ -64,7 +64,7 @@ public class condExpColonMarkStatement extends statement{
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		Stack<Integer> signals = new Stack<Integer>();
 		signals.push(DataStructureSignalMetaInfo.ConditionExpressionColon);
-		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSCondExpQuestionMarkData.class, signals);
+		FlowLineNode<CSFlowLineData> cnode = cstack.BackSearchForFirstSpecialClass(CSCondExpQuestionMarkProperty.class, signals);
 		if (cnode == null)
 		{
 			throw new CodeSynthesisException("No conditional expression start signal.");

@@ -9,8 +9,8 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.data.CSArrayAccessEndData;
-import cn.yyx.contentassist.codesynthesis.data.CSArrayAccessStartData;
+import cn.yyx.contentassist.codesynthesis.data.CSArrayAccessEndProperty;
+import cn.yyx.contentassist.codesynthesis.data.CSArrayAccessStartProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -90,7 +90,7 @@ public class arrayAccessEndStatement extends statement{
 		{
 			Stack<Integer> signals = new Stack<Integer>();
 			signals.push(ComplicatedSignal.GenerateComplicatedSignal(DataStructureSignalMetaInfo.ArrayAccessBlcok, ertime));
-			cnode = squeue.BackSearchForTheNextOfSpecialClass(CSArrayAccessStartData.class, signals);
+			cnode = squeue.BackSearchForTheNextOfSpecialClass(CSArrayAccessStartProperty.class, signals);
 			if (cnode != null)
 			{
 				FlowLineNode<CSFlowLineData> aastart = cnode.getPrev();
@@ -106,7 +106,9 @@ public class arrayAccessEndStatement extends statement{
 						if (icls != null && (icls.getCls() == int.class || icls.getCls() == Integer.class))
 						{
 							CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, aastart);
-							result.add(new FlowLineNode<CSFlowLineData>(new CSArrayAccessEndData(ertime, fln.getData()), fln.getProbability()));
+							fln.getData().setCsep(new CSArrayAccessEndProperty(ertime));
+							result.add(fln);
+							// result.add(new FlowLineNode<CSFlowLineData>(new CSArrayAccessEndData(ertime, fln.getData()), fln.getProbability()));
 						}
 					}
 				}
