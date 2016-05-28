@@ -1,13 +1,10 @@
 package cn.yyx.contentassist.codesynthesis.typeutil;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
-import cn.yyx.contentassist.codesynthesis.typeutil.computations.BooleanROnlyOneBoolean;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.BooleanRTwoSideSame;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.BooleanRTwoSideSameBoolean;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.InheritLeftOrRightTwoSameSide;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.InheritLeftRightNumbetBit;
-import cn.yyx.contentassist.codesynthesis.typeutil.computations.NumberBitROneOrTwoSideSameNumberBit;
-import cn.yyx.contentassist.codesynthesis.typeutil.computations.NumberBitROnlyOneNumberBit;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.NumberBitRTwoSideSameNumberBit;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.StringNumberBitRTwoSideSameNumberBitOrOneString;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationKind;
@@ -120,21 +117,23 @@ public class TypeComputer {
 			return new BooleanRTwoSideSameBoolean();
 		case "!":
 		case "~":
-			return new BooleanROnlyOneBoolean();
+			// return new BooleanROnlyOneBoolean();
+			throw new TypeConflictException("! and ~ should be handled in prefix expression.");
 		case "++":
 		case "--":
-			return new NumberBitROnlyOneNumberBit();
+			// return new NumberBitROnlyOneNumberBit();
+			throw new TypeConflictException("++ and -- should be handled in prefix or postfix expression.");
 		case "*":
 		case "/":
 		case "&":
 		case "|":
 		case "^":
 		case "%":
+		case "-":
 			return new NumberBitRTwoSideSameNumberBit();
 		case "+":
 			return new StringNumberBitRTwoSideSameNumberBitOrOneString();
-		case "-":
-			return new NumberBitROneOrTwoSideSameNumberBit();
+			// return new NumberBitROneOrTwoSideSameNumberBit();
 			// return TypeComputationKind.ArithOptr;
 		case "()":
 			// this will never happen.
