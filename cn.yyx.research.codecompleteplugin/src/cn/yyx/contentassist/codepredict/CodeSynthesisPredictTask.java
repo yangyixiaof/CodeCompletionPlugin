@@ -26,6 +26,7 @@ import cn.yyx.contentassist.commonutils.SynthesisHandler;
 public class CodeSynthesisPredictTask implements Runnable {
 
 	PreTryFlowLineNode<Sentence> pretrylast = null;
+	String pretrylastwholetrace = null;
 	SynthesisHandler sh = null;
 	AeroLifeCycle alc = null;
 	CodeSynthesisFlowLines csfl = null;
@@ -42,6 +43,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 		this.csfl = csfl;
 		this.aoi = aoi;
 		this.pi = new PredictInfer(id);
+		this.pretrylastwholetrace = PrintWholeTrace(pretrylastpara, "");
 	}
 
 	@Override
@@ -188,15 +190,27 @@ public class CodeSynthesisPredictTask implements Runnable {
 		return pps;
 	}
 	
-	private void PrintWholeTrace(FlowLineNode<CSFlowLineData> lastone, String mlast) {
-		FlowLineNode<CSFlowLineData> tmp = lastone;
+	private String PrintWholeTrace(FlowLineNode<?> lastone, String mlast) {
+		FlowLineNode<?> tmp = lastone;
 		String one = mlast;
 		while (tmp != null)
 		{
-			one = tmp.getData().getSete().getSentence() + " " + one;
+			Object obj = tmp.getData();
+			if (obj instanceof CSFlowLineData) {
+				one = ((CSFlowLineData)obj).getSete().getSentence() + " " + one;
+			} else {
+				if (obj instanceof Sentence) {
+					one = ((Sentence)obj).getSentence() + " " + one;
+				} else {
+					System.err.println("What the fuck? the element of FlowLineNode is not Sentence or CSFlowLineData? Serious error, the system will exit.");
+					System.exit(1);
+				}
+			}
 			tmp = tmp.getPrev();
 		}
-		System.err.println("one trace:" + one);
+		String trace = "one trace:" + one;
+		System.err.println(trace);
+		return trace;
 	}
 
 	public boolean TotalStopCondition()
