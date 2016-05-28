@@ -71,7 +71,7 @@ public class enumConstantDeclarationStatement extends statement{
 		String methodname = nls.get(0).getData().getData();
 		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(smthandler, SignalHelper.HasEmBeforeMethod(squeue));
 		csmsh.setNextstart(squeue.getLast());
-		return arglist.HandleMethodIntegrationCodeSynthesis(squeue, smthandler, methodname);
+		return arglist.HandleMethodIntegrationCodeSynthesis(squeue, smthandler, methodname, SignalHelper.HasEmBeforeMethod(squeue));
 	}
 
 	@Override

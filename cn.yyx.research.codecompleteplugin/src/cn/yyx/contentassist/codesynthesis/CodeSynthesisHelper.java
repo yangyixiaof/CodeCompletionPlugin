@@ -339,7 +339,7 @@ public class CodeSynthesisHelper {
 			methodname = methodnamepara;
 		}
 		// List<FlowLineNode<CSFlowLineData>> alls = arglist.HandleCodeSynthesis(squeue, csmsh);
-		List<FlowLineNode<CSFlowLineData>> alls = arglist.HandleMethodIntegrationCodeSynthesis(squeue, csmsh, methodname);
+		List<FlowLineNode<CSFlowLineData>> alls = arglist.HandleMethodIntegrationCodeSynthesis(squeue, csmsh, methodname, hasem);
 		/*
 		 * CSMethodSignalHandleResult csmshr = squeue.BackSearchForMethodRelatedSignal();
 		 * List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();

@@ -14,6 +14,7 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.ErrorCheck;
 import cn.yyx.contentassist.codesynthesis.data.CSDataMetaInfo;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationProperty;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementFirstArgHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
@@ -152,7 +153,7 @@ public class argumentList implements OneCode {
 	}*/
 
 	public List<FlowLineNode<CSFlowLineData>> HandleMethodIntegrationCodeSynthesis(CSFlowLineQueue squeue,
-			CSStatementHandler smthandler, String methodname) throws CodeSynthesisException {
+			CSStatementHandler smthandler, String methodname, boolean hasem) throws CodeSynthesisException {
 		CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
 		CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
 		// realhandler.setArgsize(el.size() - 1);
@@ -244,6 +245,8 @@ public class argumentList implements OneCode {
 				mf.getData().getSynthesisCodeManager().AddSynthesisCode(id, fln);
 				data.getExtraData().AddExtraData(CSDataMetaInfo.LastNode, data);
 				data.getSynthesisCodeManager().setBlockstart(mf, id);
+				data.setCsep(new CSMethodInvocationProperty(hasem));
+				// TODO
 			}
 		}
 		return results;
