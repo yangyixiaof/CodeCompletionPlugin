@@ -74,7 +74,7 @@ public class castExpressionStatement extends expressionStatement{
 			System.err.println("rels == null");
 		}
 		
-		return CSFlowLineHelper.ForwardConcate("(", tpls, ")", rels, null, squeue, smthandler, TypeComputationKind.AssignOptr, TypeComputationKind.AssignOptr);
+		return CSFlowLineHelper.ForwardConcate("(", tpls, ")", rels, null, squeue, smthandler, TypeComputationKind.LeftOrRightCast, TypeComputationKind.LeftOrRightCast);
 	}
 
 	@Override

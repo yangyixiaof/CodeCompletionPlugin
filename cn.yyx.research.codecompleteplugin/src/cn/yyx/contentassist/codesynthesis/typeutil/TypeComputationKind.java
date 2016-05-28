@@ -1,7 +1,7 @@
 package cn.yyx.contentassist.codesynthesis.typeutil;
 
 public enum TypeComputationKind {
-	NotSureOptr,
+	/*NotSureOptr,
 	NoOptr,
 	JudgeOptr,
 	ArithOptr,
@@ -11,5 +11,18 @@ public enum TypeComputationKind {
 	RightOptr,// >>
 	DirectUniqueUseFirstTypeOptr,
 	DirectUniqueUseSecondTypeOptr,
-	Unknown;
+	Unknown;*/
+	NoOptr,
+	BooleanRTwoSideSame,
+	BooleanRTwoSideSameBoolean,
+	BooleanROnlyOneBoolean,
+	NumberBitROnlyOneNumberBit,
+	NumberBitRTwoSideSameNumberBit,
+	StringNumberBitRTwoSideSameNumberBitOrOneString,
+	NumberBitROneOrTwoSideSameNumberBit,
+	InheritLeftOrRightTwoSameSide,
+	InheritLeftRightNumbetBit,
+	DirectUniqueUseFirstTypeOptr,
+	DirectUniqueUseSecondTypeOptr,
+	LeftOrRightCast;
 }
