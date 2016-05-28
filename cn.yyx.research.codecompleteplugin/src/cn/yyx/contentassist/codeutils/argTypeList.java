@@ -88,7 +88,7 @@ public class argTypeList implements OneCode {
 			}
 			else
 			{
-				ntpls = CSFlowLineHelper.ForwardConcate(null, tpls, ",", ntpls, null, squeue, smthandler, null, null);
+				ntpls = CSFlowLineHelper.ForwardConcate(null, tpls, ",", ntpls, null, squeue, smthandler, null);
 			}
 		}
 		return ntpls;

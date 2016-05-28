@@ -31,7 +31,7 @@ public class superMethodReferenceExpression extends methodReferenceExpression{
 		else
 		{
 			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-			return CSFlowLineHelper.ForwardConcate(null, rels, ".super::", idls, null, squeue, smthandler, null, null);
+			return CSFlowLineHelper.ForwardConcate(null, rels, ".super::", idls, null, squeue, smthandler, null);
 		}
 	}
 

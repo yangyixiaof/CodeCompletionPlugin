@@ -29,7 +29,7 @@ public class typeLiteral extends literal{
 		if (res == null || res.size() == 0)
 		{
 			List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), typecode + ".class", null, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), typecode + ".class", null, false, false, null, squeue.GetLastHandler()), smthandler.getProb()));
 			return result;
 		}
 		return res;

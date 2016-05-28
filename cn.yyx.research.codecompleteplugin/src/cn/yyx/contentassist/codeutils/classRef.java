@@ -62,7 +62,7 @@ public class classRef extends type {
 		while (itr.hasNext())
 		{
 			CCType cct = itr.next();
-			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), cct.getClstr(), cct, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), cct.getClstr(), cct, false, false, null, squeue.GetLastHandler()), smthandler.getProb()));
 		}
 		return result;
 	}

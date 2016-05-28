@@ -9,7 +9,7 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
@@ -23,8 +23,8 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 	private String typecode = null;
 	
 	public CSVariableDeclarationData(String typecode, CSFlowLineData cd) {
-		super(cd.getId(), cd.getSete(), cd.getData(), cd.getDcls(), cd.isHaspre(), cd.isHashole(), cd.getPretck(),
-				cd.getPosttck(), cd.getHandler());
+		super(cd.getId(), cd.getSete(), cd.getData(), cd.getDcls(), cd.isHaspre(), cd.isHashole(), 
+				cd.getTck(), cd.getHandler());
 		this.setTypecode(typecode);
 		this.setCsep(cd.getCsep());
 		this.setScm(cd.getSynthesisCodeManager());
@@ -33,9 +33,8 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 	@SuppressWarnings("unchecked")
 	@Override
 	public CSFlowLineData Merge(String prefix, String concator, CSFlowLineData d2, String postfix,
-			CSFlowLineQueue squeue, CSStatementHandler smthandler, TypeComputationKind oneafter,
-			TypeComputationKind beforetwo) throws CodeSynthesisException {
-		CSFlowLineData pd = super.Merge(prefix, concator, d2, postfix, squeue, smthandler, oneafter, beforetwo);
+			CSFlowLineQueue squeue, CSStatementHandler smthandler, TypeComputationKind tck) throws CodeSynthesisException {
+		CSFlowLineData pd = super.Merge(prefix, concator, d2, postfix, squeue, smthandler, tck);
 		CSExtraData pdextra = pd.getExtraData();
 		FlowLineNode<CSFlowLineData> lt = (FlowLineNode<CSFlowLineData>) pdextra.GetExtraData(CSDataMetaInfo.LastNode);
 		CSVariableHolderExtraInfo cvhei = (CSVariableHolderExtraInfo) pdextra

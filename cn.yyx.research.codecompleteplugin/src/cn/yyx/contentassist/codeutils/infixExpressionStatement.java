@@ -9,8 +9,8 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputer;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationKind;
 
 public class infixExpressionStatement extends expressionStatement{
 	
@@ -76,7 +76,7 @@ public class infixExpressionStatement extends expressionStatement{
 		List<FlowLineNode<CSFlowLineData>> leftls = left.HandleCodeSynthesis(squeue, smthandler);
 		List<FlowLineNode<CSFlowLineData>> rightls = right.HandleCodeSynthesis(squeue, smthandler);
 		TypeComputationKind tc = TypeComputer.ComputeKindFromRawString(optr);
-		return CSFlowLineHelper.ForwardConcate(null, leftls, optr, rightls, null, squeue, smthandler, tc, tc);
+		return CSFlowLineHelper.ForwardConcate(null, leftls, optr, rightls, null, squeue, smthandler, tc);
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.LeftOrRightCast;
 
 public class castExpressionStatement extends expressionStatement{
 	
@@ -74,7 +74,7 @@ public class castExpressionStatement extends expressionStatement{
 			System.err.println("rels == null");
 		}
 		
-		return CSFlowLineHelper.ForwardConcate("(", tpls, ")", rels, null, squeue, smthandler, TypeComputationKind.LeftOrRightCast, TypeComputationKind.LeftOrRightCast);
+		return CSFlowLineHelper.ForwardConcate("(", tpls, ")", rels, null, squeue, smthandler, new LeftOrRightCast());
 	}
 
 	@Override

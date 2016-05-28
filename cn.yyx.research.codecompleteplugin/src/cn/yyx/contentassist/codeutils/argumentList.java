@@ -246,6 +246,7 @@ public class argumentList implements OneCode {
 				data.getExtraData().AddExtraData(CSDataMetaInfo.LastNode, data);
 				data.getSynthesisCodeManager().setBlockstart(mf, id);
 				data.setCsep(new CSMethodInvocationProperty(hasem));
+				data.setTck(null);
 			}
 		}
 		return results;

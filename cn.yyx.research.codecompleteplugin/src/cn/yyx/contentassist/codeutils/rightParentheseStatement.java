@@ -70,7 +70,7 @@ public class rightParentheseStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		CSFlowLineData cr = new CSFlowLineData(squeue.GenerateNewNodeId() + "", smthandler.getSete(), StringUtil.GenerateDuplicates(")", times), null, true, true, null, null, squeue.GetLastHandler(), new CSRightParenInfoProperty(times));
+		CSFlowLineData cr = new CSFlowLineData(squeue.GenerateNewNodeId() + "", smthandler.getSete(), StringUtil.GenerateDuplicates(")", times), null, true, true, null, squeue.GetLastHandler(), new CSRightParenInfoProperty(times));
 		FlowLineNode<CSFlowLineData> fln = new FlowLineNode<CSFlowLineData>(cr, smthandler.getProb());
 		result.add(fln);
 		Stack<Integer> signals = new Stack<Integer>();

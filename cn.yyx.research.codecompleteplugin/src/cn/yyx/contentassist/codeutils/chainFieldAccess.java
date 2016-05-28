@@ -25,7 +25,7 @@ public class chainFieldAccess extends fieldAccess {
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
 		List<FlowLineNode<CSFlowLineData>> fals = fa.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ForwardConcate(null, fals, ".", idls, null, squeue, smthandler, null, null);
+		return CSFlowLineHelper.ForwardConcate(null, fals, ".", idls, null, squeue, smthandler, null);
 	}
 	
 	@Override

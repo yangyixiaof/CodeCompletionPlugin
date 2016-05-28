@@ -111,7 +111,7 @@ public class CSFlowLineBackTraceGenerationHelper {
 			new Exception("two is null.").printStackTrace();
 		}
 		
-		FlowLineNode<CSFlowLineData> tres = CSFlowLineHelper.ConcateTwoFlowLineNode(null, one, null, two, null, squeue, smthandler, null, null);
+		FlowLineNode<CSFlowLineData> tres = CSFlowLineHelper.ConcateTwoFlowLineNode(null, one, null, two, null, squeue, smthandler, null);
 		String tresid = oneid + "." + twoid;
 		
 		// two.getData().getSynthesisCodeManager().setBlockstart(null, null);
@@ -121,6 +121,7 @@ public class CSFlowLineBackTraceGenerationHelper {
 		one.getData().getSynthesisCodeManager().AddSynthesisCode(tresid, tres);
 		twostart.getData().getSynthesisCodeManager().setBlockstart(one, tresid);
 		tres.getData().setCsep(twostart.getData().getCsep());
+		tres.getData().setTck(twostart.getData().getTck());
 		
 		return tresid;
 	}

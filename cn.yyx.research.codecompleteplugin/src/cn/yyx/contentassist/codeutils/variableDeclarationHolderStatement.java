@@ -100,7 +100,7 @@ public class variableDeclarationHolderStatement extends statement{
 		else
 		{
 			modified = GetModifiedName(squeue, smthandler, typecode, name);
-			result.add(new FlowLineNode<CSFlowLineData>(new CSVariableHolderData(modified, false, squeue.GenerateNewNodeId(), smthandler.getSete(), " "+modified, null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+			result.add(new FlowLineNode<CSFlowLineData>(new CSVariableHolderData(modified, false, squeue.GenerateNewNodeId(), smthandler.getSete(), " "+modified, null, true, true, null, squeue.GetLastHandler()), smthandler.getProb()));
 		}
 		if (modified == null)
 		{

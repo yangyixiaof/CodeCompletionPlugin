@@ -45,8 +45,8 @@ public class CodeSynthesisHelper {
 			List<FlowLineNode<CSFlowLineData>> ls = id.HandleCodeSynthesis(squeue, smthandler);
 			fin.append(" " + ls.get(0).getData().getData());
 		}
-		CCType cct = new CCType(void.class, "void");
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), fin.toString(), cct, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+		// CCType cct = new CCType(void.class, "void");
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), fin.toString(), null, false, false, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
 	}
 	
@@ -70,7 +70,7 @@ public class CodeSynthesisHelper {
 				{
 					break;
 				}
-				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), code, cct, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), code, cct, false, false, null, squeue.GetLastHandler()), smthandler.getProb()));
 			}
 		}
 		return result;
@@ -115,7 +115,7 @@ public class CodeSynthesisHelper {
 			while (clsitr.hasNext())
 			{
 				CCType cct = clsitr.next();
-				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ref + concator + member, cct, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ref + concator + member, cct, false, false, null, squeue.GetLastHandler()), smthandler.getProb()));
 			}
 		}
 		return result;
@@ -130,7 +130,7 @@ public class CodeSynthesisHelper {
 		{
 			type ttp = itr.next();
 			List<FlowLineNode<CSFlowLineData>> tmpls = ttp.HandleCodeSynthesis(squeue, smthandler);
-			ls = CSFlowLineHelper.ForwardConcate(null, ls, concator, tmpls, null, squeue, smthandler, null, null);
+			ls = CSFlowLineHelper.ForwardConcate(null, ls, concator, tmpls, null, squeue, smthandler, null);
 		}
 		return ls;
 	}
@@ -159,7 +159,7 @@ public class CodeSynthesisHelper {
 			while (rcitr.hasNext())
 			{
 				CCType rc = rcitr.next();
-				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? methodname : beforemethodexp + "." + methodname), rc, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? methodname : beforemethodexp + "." + methodname), rc, false, false, null, squeue.GetLastHandler()), smthandler.getProb()));
 			}
 			mts.put(id+"", mtsone);
 		}
@@ -270,7 +270,7 @@ public class CodeSynthesisHelper {
 					String cmped = id.getData().getData();
 					if (SimilarityHelper.ComputeTwoStringSimilarity(cmp, cmped) > PredictMetaInfo.TwoStringSimilarThreshold)
 					{
-						result.add(CSFlowLineHelper.ConcateTwoFlowLineNode(null, fln, ".", id, null, squeue, smthandler, null, null));
+						result.add(CSFlowLineHelper.ConcateTwoFlowLineNode(null, fln, ".", id, null, squeue, smthandler, null));
 					}
 				}
 			}
@@ -299,7 +299,7 @@ public class CodeSynthesisHelper {
 				TypeMember tp = tpitr.next();
 				//if (SimilarityHelper.ComputeTwoStringSimilarity(rawtype, tp.getTypeclass().getSimpleName()) > PredictMetaInfo.TwoStringSimilarThreshold)
 				//{
-				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), tp.getType(), new CCType(tp), false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), tp.getType(), new CCType(tp), false, false, null, squeue.GetLastHandler()), smthandler.getProb()));
 				//}
 			}
 		}
@@ -364,7 +364,7 @@ public class CodeSynthesisHelper {
 		List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleFieldSpecificationInfer(infermain, expectedinfer, squeue, smthandler, inferoperator);
 		if (ls.size() == 0)
 		{
-			return CSFlowLineHelper.ForwardConcate(null, infermain, inferoperator, expectedinfer, null, squeue, smthandler, null, null);
+			return CSFlowLineHelper.ForwardConcate(null, infermain, inferoperator, expectedinfer, null, squeue, smthandler, null);
 		}
 		return ls;
 	}

@@ -8,8 +8,8 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.flowline.SynthesisCodeManager;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputer;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeConflictException;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class CSFlowLineData implements CSDataStructure{
@@ -22,8 +22,7 @@ public class CSFlowLineData implements CSDataStructure{
 	
 	private boolean haspre = false;
 	private boolean hashole = false;
-	private TypeComputationKind pretck = TypeComputationKind.NoOptr;
-	private TypeComputationKind posttck = TypeComputationKind.NoOptr;
+	private TypeComputationKind tck = null;
 	
 	private CSExtraProperty csep = null;
 	private SynthesisCodeManager scm = new SynthesisCodeManager();
@@ -48,7 +47,7 @@ public class CSFlowLineData implements CSDataStructure{
 	// this boolean field should be set at some specific kind of statement.
 	private boolean isonestatementend = false;
 	
-	public CSFlowLineData(Integer id, Sentence sete, String data, CCType dcls, boolean haspre, boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
+	public CSFlowLineData(Integer id, Sentence sete, String data, CCType dcls, boolean haspre, boolean hashole, TypeComputationKind tck, SynthesisHandler handler) {
 		this.setId(id + "");
 		this.setSete(sete);
 		this.setData(data);
@@ -56,14 +55,11 @@ public class CSFlowLineData implements CSDataStructure{
 		this.setDcls(dcls);
 		this.setHaspre(haspre);
 		this.setHashole(hashole);
-		pretck = (pretck == null ? TypeComputationKind.NoOptr : pretck);
-		posttck = (posttck == null ? TypeComputationKind.NoOptr : posttck);
-		this.setPretck(pretck);
-		this.setPosttck(posttck);
+		this.setTck(tck);
 		this.setHandler(handler);
 	}
 	
-	public CSFlowLineData(String id, Sentence sete, String data, CCType dcls, boolean haspre, boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
+	public CSFlowLineData(String id, Sentence sete, String data, CCType dcls, boolean haspre, boolean hashole, TypeComputationKind tck, SynthesisHandler handler) {
 		this.setId(id + "");
 		this.setSete(sete);
 		this.setData(data);
@@ -71,14 +67,11 @@ public class CSFlowLineData implements CSDataStructure{
 		this.setDcls(dcls);
 		this.setHaspre(haspre);
 		this.setHashole(hashole);
-		pretck = (pretck == null ? TypeComputationKind.NoOptr : pretck);
-		posttck = (posttck == null ? TypeComputationKind.NoOptr : posttck);
-		this.setPretck(pretck);
-		this.setPosttck(posttck);
+		this.setTck(tck);
 		this.setHandler(handler);
 	}
 	
-	public CSFlowLineData(String id, Sentence sete, String data, CCType dcls, boolean haspre, boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler, CSExtraProperty cseppara) {
+	public CSFlowLineData(String id, Sentence sete, String data, CCType dcls, boolean haspre, boolean hashole, TypeComputationKind tck, SynthesisHandler handler, CSExtraProperty cseppara) {
 		this.setId(id + "");
 		this.setSete(sete);
 		this.setData(data);
@@ -86,10 +79,7 @@ public class CSFlowLineData implements CSDataStructure{
 		this.setDcls(dcls);
 		this.setHaspre(haspre);
 		this.setHashole(hashole);
-		pretck = (pretck == null ? TypeComputationKind.NoOptr : pretck);
-		posttck = (posttck == null ? TypeComputationKind.NoOptr : posttck);
-		this.setPretck(pretck);
-		this.setPosttck(posttck);
+		this.setTck(tck);
 		this.setHandler(handler);
 		this.setCsep(cseppara);
 	}
@@ -125,15 +115,7 @@ public class CSFlowLineData implements CSDataStructure{
 	public void setScm(SynthesisCodeManager scm) {
 		this.scm = scm;
 	}
-
-	/*public Integer getStructsignal() {
-		return structsignal;
-	}
-
-	public void setStructsignal(Integer structsignal) {
-		this.structsignal = structsignal;
-	}*/
-
+	
 	public String getId() {
 		return id;
 	}
@@ -158,22 +140,6 @@ public class CSFlowLineData implements CSDataStructure{
 		this.isonestatementend = isonestatementend;
 	}
 
-	public TypeComputationKind getPretck() {
-		return pretck;
-	}
-
-	public void setPretck(TypeComputationKind pretck) {
-		this.pretck = pretck;
-	}
-
-	public TypeComputationKind getPosttck() {
-		return posttck;
-	}
-
-	public void setPosttck(TypeComputationKind posttck) {
-		this.posttck = posttck;
-	}
-
 	public boolean isHaspre() {
 		return haspre;
 	}
@@ -189,40 +155,51 @@ public class CSFlowLineData implements CSDataStructure{
 	public void setExtraData(CSExtraData csed) {
 		this.csed = csed;
 	}
-
-	/*public boolean isShouldskip() {
-		return shouldskip;
+	
+	private boolean TCKNotOver(TypeComputationKind tckpara) throws TypeConflictException
+	{
+		return tckpara != null && !tckpara.HandleOver();
 	}
-
-	public void setShouldskip(boolean shouldskip) {
-		this.shouldskip = shouldskip;
-	}*/
 	
 	public CSFlowLineData Merge(String prefix, String concator, CSFlowLineData d2, String postfix, CSFlowLineQueue squeue,
-			CSStatementHandler smthandler, TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
-		if (oneafter == null || oneafter == TypeComputationKind.NoOptr)
+			CSStatementHandler smthandler, TypeComputationKind tck) throws CodeSynthesisException {
+		if (tck != null) {
+			if (TCKNotOver(this.getTck()) || TCKNotOver(d2.getTck()))
+			{
+				new Exception("TypeComputationKind conflict.").printStackTrace();
+				throw new CodeSynthesisException("TypeComputationKind conflict.");
+			}
+		} else {
+			if (TCKNotOver(this.getTck()) && !TCKNotOver(d2.getTck()))
+			{
+				tck = d2.getTck();
+			}
+			if (!TCKNotOver(this.getTck()) && TCKNotOver(d2.getTck()))
+			{
+				tck = getTck();
+			}
+			if (!TCKNotOver(this.getTck()) && !TCKNotOver(d2.getTck()))
+			{
+				new Exception("two all have not over tck, what the fuck?").printStackTrace();
+				throw new TypeConflictException("two all have not over tck, what the fuck?");
+			}
+		}
+		CCType clz = null;
+		if (tck != null)
 		{
-			oneafter = getPosttck();
+			tck.HandlePre(getDcls());
+			tck.HandlePost(d2.getDcls());
+			if (tck.HandleOver()) {
+				clz = tck.HandleResult();
+				tck = null;
+			}
 		}
-		if (oneafter == null) {
-			oneafter = TypeComputationKind.NoOptr;
-		}
-		if (beforetwo == null || beforetwo == TypeComputationKind.NoOptr) {
-			beforetwo = d2.getPretck();
-		}
-		if (beforetwo == null)
-		{
-			beforetwo = TypeComputationKind.NoOptr;
-		}
-		TypeComputationKind tck = TypeComputer.ChooseOne(oneafter, beforetwo);
-		CCType clz = null; // Class<?> 
-		clz = TypeComputer.ComputeType(getDcls(), d2.getDcls(), tck);
 		String str1 = getData();
 		String str2 = d2.getData();
 		String cnctcnt = (prefix == null ? "" : prefix) + str1 + (concator == null ? "" : concator) + str2
 				+ (postfix == null ? "" : postfix);
 		CSFlowLineData cf = new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), cnctcnt, clz,
-				isHaspre(), d2.isHashole(), d2.getPretck(), d2.getPosttck(), getHandler());
+				isHaspre(), d2.isHashole(), tck, getHandler());
 		// merge extra data info.
 		cf.setExtraData((CSExtraData) csed.SelfClosedMerge(d2.csed));
 		return cf;
@@ -255,6 +232,14 @@ public class CSFlowLineData implements CSDataStructure{
 
 	public void setCsep(CSExtraProperty csep) {
 		this.csep = csep;
+	}
+
+	public TypeComputationKind getTck() {
+		return tck;
+	}
+
+	public void setTck(TypeComputationKind tck) {
+		this.tck = tck;
 	}
 	
 }

@@ -46,7 +46,7 @@ public class instanceofExpressionStatement extends expressionStatement{
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
 		List<FlowLineNode<CSFlowLineData>> tpls = type.HandleCodeSynthesis(squeue, smthandler);
-		List<FlowLineNode<CSFlowLineData>> res = CSFlowLineHelper.ForwardConcate(null, rels, " instanceof ", tpls, null, squeue, smthandler, null, null);
+		List<FlowLineNode<CSFlowLineData>> res = CSFlowLineHelper.ForwardConcate(null, rels, " instanceof ", tpls, null, squeue, smthandler, null);
 		if (res == null || res.size() == 0)
 		{
 			if (res != null && res.size() > 0)

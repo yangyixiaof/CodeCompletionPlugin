@@ -8,8 +8,8 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputer;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationKind;
 
 public class postfixUnaryOperator implements OneCode{
 	
@@ -58,7 +58,7 @@ public class postfixUnaryOperator implements OneCode{
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		TypeComputationKind tc = TypeComputer.ComputeKindFromRawString(optr);
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), optr, null, true, false, tc, tc, squeue.GetLastHandler()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), optr, null, true, false, tc, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
 	}
 	

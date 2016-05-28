@@ -5,7 +5,7 @@ import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class CSVariableHolderData extends CSFlowLineData {
@@ -14,8 +14,8 @@ public class CSVariableHolderData extends CSFlowLineData {
 	private boolean needensuretype = false;
 	
 	public CSVariableHolderData(String varname, boolean needensuretype, CSFlowLineData cd) {
-		super(cd.getId(), cd.getSete(), cd.getData(), cd.getDcls(), cd.isHaspre(), cd.isHashole(), cd.getPretck(),
-				cd.getPosttck(), cd.getHandler());
+		super(cd.getId(), cd.getSete(), cd.getData(), cd.getDcls(), cd.isHaspre(), cd.isHashole(), cd.getTck(),
+				cd.getHandler());
 		this.setVarname(varname);
 		this.setNeedensuretype(needensuretype);
 		this.setCsep(cd.getCsep());
@@ -24,15 +24,15 @@ public class CSVariableHolderData extends CSFlowLineData {
 	}
 
 	public CSVariableHolderData(String varname, boolean needensuretype, Integer id, Sentence sete, String data, CCType dcls, boolean haspre,
-			boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
-		super(id, sete, data, dcls, haspre, hashole, pretck, posttck, handler);
+			boolean hashole, TypeComputationKind tck, SynthesisHandler handler) {
+		super(id, sete, data, dcls, haspre, hashole, tck, handler);
 		this.setVarname(varname);
 		this.setNeedensuretype(needensuretype);
 	}
 	
 	@Override
 	public CSFlowLineData Merge(String prefix, String concator, CSFlowLineData d2, String postfix, CSFlowLineQueue squeue,
-			CSStatementHandler smthandler, TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
+			CSStatementHandler smthandler, TypeComputationKind tck) throws CodeSynthesisException {
 		if (needensuretype && d2.getDcls() != null)
 		{
 			AddToEveryRexpParNodeExtraVariableHolderInfo(d2.getDcls());
@@ -44,7 +44,7 @@ public class CSVariableHolderData extends CSFlowLineData {
 				AddToEveryRexpParNodeExtraVariableHolderInfo(getDcls());
 			}
 		}
-		return super.Merge(prefix, concator, d2, postfix, squeue, smthandler, oneafter, beforetwo);
+		return super.Merge(prefix, concator, d2, postfix, squeue, smthandler, tck);
 	}
 	
 	public String getVarname() {

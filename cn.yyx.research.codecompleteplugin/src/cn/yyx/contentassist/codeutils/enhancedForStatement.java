@@ -85,8 +85,7 @@ public class enhancedForStatement extends statement {
 		if (classhandled) {
 			return CSFlowLineHelper.ConcateOneFlowLineList("for (" + handledclass + " et:", rels, "){\n\n}");
 		} else {
-			return CSFlowLineHelper.ForwardConcate("for (", tpls, " et: ", rels, "){\n\n}", squeue, smthandler, null,
-					null);
+			return CSFlowLineHelper.ForwardConcate("for (", tpls, " et: ", rels, "){\n\n}", squeue, smthandler, null);
 		}
 	}
 

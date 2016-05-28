@@ -96,7 +96,7 @@ public class arrayAccessStatement extends expressionStatement {
 			return null;
 		}*/
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		List<FlowLineNode<CSFlowLineData>> fmls = CSFlowLineHelper.ForwardConcate(null, rals, "[", rels, null, squeue, smthandler, null, null);
+		List<FlowLineNode<CSFlowLineData>> fmls = CSFlowLineHelper.ForwardConcate(null, rals, "[", rels, null, squeue, smthandler, null);
 		if (fmls == null || fmls.size() == 0)
 		{
 			return null;

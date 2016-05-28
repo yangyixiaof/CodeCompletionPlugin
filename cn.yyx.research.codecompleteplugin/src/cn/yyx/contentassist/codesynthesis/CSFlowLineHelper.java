@@ -10,8 +10,8 @@ import cn.yyx.contentassist.codesynthesis.data.CSExtraProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeConflictException;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationKind;
 
 public class CSFlowLineHelper {
 	
@@ -48,7 +48,7 @@ public class CSFlowLineHelper {
 		}
 	}
 	
-	public static List<FlowLineNode<CSFlowLineData>> ForwardConcate(String prefix, List<FlowLineNode<CSFlowLineData>> one, String concator, List<FlowLineNode<CSFlowLineData>> two, String postfix, CSFlowLineQueue squeue, CSStatementHandler smthandler, TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
+	public static List<FlowLineNode<CSFlowLineData>> ForwardConcate(String prefix, List<FlowLineNode<CSFlowLineData>> one, String concator, List<FlowLineNode<CSFlowLineData>> two, String postfix, CSFlowLineQueue squeue, CSStatementHandler smthandler, TypeComputationKind tck) throws CodeSynthesisException {
 		if (one == null || one.size() == 0) {
 			return null;
 		} else {
@@ -65,7 +65,7 @@ public class CSFlowLineHelper {
 						FlowLineNode<CSFlowLineData> tmp = null;
 						try {
 							tmp = ConcateTwoFlowLineNode(prefix, fln1, concator, fln2, postfix, squeue, smthandler,
-									 oneafter, beforetwo);
+									 tck);
 							ConcateBlockStart(tmp, fln1, fln2);
 							ConcateExtraProperty(tmp, fln1, fln2);
 						} catch (TypeConflictException e) {
@@ -86,10 +86,10 @@ public class CSFlowLineHelper {
 	
 	public static FlowLineNode<CSFlowLineData> ConcateTwoFlowLineNode(String prefix, FlowLineNode<CSFlowLineData> one,
 			String concator, FlowLineNode<CSFlowLineData> two, String postfix, 
-			CSFlowLineQueue squeue, CSStatementHandler smthandler, TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
+			CSFlowLineQueue squeue, CSStatementHandler smthandler, TypeComputationKind tck) throws CodeSynthesisException {
 		CSFlowLineData d1 = one.getData();
 		CSFlowLineData d2 = two.getData();
-		CSFlowLineData data = d1.Merge(prefix, concator, d2, postfix, squeue, smthandler, oneafter, beforetwo);
+		CSFlowLineData data = d1.Merge(prefix, concator, d2, postfix, squeue, smthandler, tck);
 		double cnctprob = MergeTwoDataProbability(d1.getSete(), one.getProbability(), d2.getSete(), two.getProbability());
 		FlowLineNode<CSFlowLineData> cncted = new FlowLineNode<CSFlowLineData>(data, cnctprob);
 		return cncted;

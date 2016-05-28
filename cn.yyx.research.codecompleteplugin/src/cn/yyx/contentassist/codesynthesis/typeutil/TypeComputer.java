@@ -1,11 +1,20 @@
 package cn.yyx.contentassist.codesynthesis.typeutil;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.BooleanROnlyOneBoolean;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.BooleanRTwoSideSame;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.BooleanRTwoSideSameBoolean;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.InheritLeftOrRightTwoSameSide;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.InheritLeftRightNumbetBit;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.NumberBitROneOrTwoSideSameNumberBit;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.NumberBitROnlyOneNumberBit;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.NumberBitRTwoSideSameNumberBit;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.StringNumberBitRTwoSideSameNumberBitOrOneString;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationKind;
 
 public class TypeComputer {
 	
-	// Class<?>
-	public static CCType ComputeType(CCType c1, CCType c2, TypeComputationKind tck) throws TypeConflictException
+	/*public static CCType ComputeType(CCType c1, CCType c2, TypeComputationKind tck) throws TypeConflictException
 	{
 		switch (tck) {
 		case NoOptr:
@@ -94,7 +103,7 @@ public class TypeComputer {
 			return true;
 		}
 		return false;
-	}
+	}*/
 	
 	public static TypeComputationKind ComputeKindFromRawString(String optr) throws CodeSynthesisException
 	{
@@ -105,27 +114,27 @@ public class TypeComputer {
 		case "<=":
 		case ">=":
 		case "!=":
-			return TypeComputationKind.BooleanRTwoSideSame;
+			return new BooleanRTwoSideSame();
 		case "&&":
 		case "||":
-			return TypeComputationKind.BooleanRTwoSideSameBoolean;
+			return new BooleanRTwoSideSameBoolean();
 		case "!":
 		case "~":
-			return TypeComputationKind.BooleanROnlyOneBoolean;
+			return new BooleanROnlyOneBoolean();
 		case "++":
 		case "--":
-			return TypeComputationKind.NumberBitROnlyOneNumberBit;
+			return new NumberBitROnlyOneNumberBit();
 		case "*":
 		case "/":
 		case "&":
 		case "|":
 		case "^":
 		case "%":
-			return TypeComputationKind.NumberBitRTwoSideSameNumberBit;
+			return new NumberBitRTwoSideSameNumberBit();
 		case "+":
-			return TypeComputationKind.StringNumberBitRTwoSideSameNumberBitOrOneString;
+			return new StringNumberBitRTwoSideSameNumberBitOrOneString();
 		case "-":
-			return TypeComputationKind.NumberBitROneOrTwoSideSameNumberBit;
+			return new NumberBitROneOrTwoSideSameNumberBit();
 			// return TypeComputationKind.ArithOptr;
 		case "()":
 			// this will never happen.
@@ -140,20 +149,20 @@ public class TypeComputer {
 		case "|=":
 		case "^=":
 		case "%=":
-			return TypeComputationKind.InheritLeftOrRightTwoSameSide;
+			return new InheritLeftOrRightTwoSameSide();
 		case "<<=":
 		case ">>=":
 		case ">>>=":
 		case "<<":
 		case ">>":
 		case ">>>":
-			return TypeComputationKind.InheritLeftRightNumbetBit;
+			return new InheritLeftRightNumbetBit();
 		default:
 			throw new CodeSynthesisException("Unknown optr:" + optr + ".");
 		}
 	}
 
-	public static TypeComputationKind ChooseOne(TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
+	/*public static TypeComputationKind ChooseOne(TypeComputationKind oneafter, TypeComputationKind beforetwo) throws CodeSynthesisException {
 		if (oneafter== null || oneafter == TypeComputationKind.NoOptr)
 		{
 			return beforetwo;
@@ -164,6 +173,6 @@ public class TypeComputer {
 		}
 		new Exception("Type Conflict in choose before and after types!").printStackTrace();
 		throw new CodeSynthesisException("Type Conflict in choose before and after types!");
-	}
+	}*/
 	
 }

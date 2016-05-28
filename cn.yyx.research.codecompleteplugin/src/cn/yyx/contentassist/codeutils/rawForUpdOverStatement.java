@@ -24,7 +24,7 @@ public class rawForUpdOverStatement extends statement {
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		FlowLineNode<CSFlowLineData> fln = new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId() + "", smthandler.getSete(),
-				") {\n}", null, true, true, null, null, squeue.GetLastHandler(), CSForUpdOverProperty.GetInstance()),
+				") {\n}", null, true, true, null, squeue.GetLastHandler(), CSForUpdOverProperty.GetInstance()),
 				smthandler.getProb());
 		return CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, null);
 	}

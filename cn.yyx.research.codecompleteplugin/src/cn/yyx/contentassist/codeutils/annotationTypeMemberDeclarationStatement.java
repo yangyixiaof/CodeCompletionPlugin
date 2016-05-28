@@ -83,7 +83,7 @@ public class annotationTypeMemberDeclarationStatement extends statement{
 		if (drexp != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> drs = drexp.HandleCodeSynthesis(squeue, smthandler);
-			List<FlowLineNode<CSFlowLineData>> cect = CSFlowLineHelper.ForwardConcate(null, tps, "() default", drs, null, squeue, smthandler, null, null);
+			List<FlowLineNode<CSFlowLineData>> cect = CSFlowLineHelper.ForwardConcate(null, tps, "() default", drs, null, squeue, smthandler, null);
 			return cect;
 		}
 		else

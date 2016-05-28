@@ -17,7 +17,6 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
-import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputationKind;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
@@ -68,7 +67,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 		if (start == null)
 		{
 			csdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(
-				-1, null, "", null, false, false, TypeComputationKind.NoOptr, TypeComputationKind.NoOptr, sh), 0));
+				-1, null, "", null, false, false, null, sh), 0));
 		}
 		else {
 			csdflq = new CSFlowLineQueue(start);

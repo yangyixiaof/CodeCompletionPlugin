@@ -94,7 +94,7 @@ public class wildCardType extends type{
 		else
 		{
 			List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "?", null, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "?", null, false, false, null, squeue.GetLastHandler()), smthandler.getProb()));
 			return result;
 		}
 	}
