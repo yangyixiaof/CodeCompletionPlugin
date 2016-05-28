@@ -581,7 +581,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		Integer res = visitChildren(ctx);
 		Object type = usedobj.pop();
 		Object rexp = usedobj.pop();
-		smt = new instanceofExpressionStatement(ctx.getText(), (referedExpression) rexp, (type) type);
+		smt = new instanceofExpressionStatement(ctx.getText(), ctx.type().getText(), (referedExpression) rexp, (type) type);
 		return res;
 	}
 
@@ -1409,7 +1409,7 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	public Integer visitTypeLiteral(TypeLiteralContext ctx) {
 		Integer res = visitChildren(ctx);
 		type tp = (type) usedobj.pop();
-		usedobj.push(new typeLiteral(tp));
+		usedobj.push(new typeLiteral(tp, ctx.getText().trim().substring("class.".length())));
 		return res;
 	}
 

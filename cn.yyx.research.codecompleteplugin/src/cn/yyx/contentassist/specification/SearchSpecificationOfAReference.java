@@ -122,12 +122,10 @@ public class SearchSpecificationOfAReference {
 	
 	public static List<TypeMember> SearchFieldClassMemberSpecificationByPrefix(String prefix,
 			JavaContentAssistInvocationContext javacontext) {
-		// TODO
 		CompletionProposalCollector collector = GetFieldClassMemberProposalCollector(javacontext);
 		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.typetimeout);
 		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix + ".class", javacontext, topm);
 		Iterator<ICompletionProposal> itr = proposals.iterator();
-		Queue<MemberSorter> prioriqueue = new PriorityQueue<MemberSorter>();
 		List<TypeMember> tmlist = new LinkedList<TypeMember>();
 		while (itr.hasNext()) {
 			ICompletionProposal icp = itr.next();
@@ -135,17 +133,19 @@ public class SearchSpecificationOfAReference {
 			String pstr = jcp.getDisplayString().trim();
 			if (CodeCompletionMetaInfo.DebugMode) {
 				System.err.println(pstr);
+				// System.err.println(icp.getClass());
 			}
-			String[] strs = pstr.split(":|-");
-			String fieldname = strs[0].trim();
-			String fieldtype = strs[1].trim();
-			String wheredeclared = null;
-			if (strs.length == 3) {
-				wheredeclared = strs[2].trim();
+			int classbegin = pstr.indexOf('<');
+			int classend = pstr.lastIndexOf('>');
+			String classfullname = pstr.substring(classbegin+1, classend);
+			Class<?> cls = null;
+			try {
+				cls = Class.forName(classfullname);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
 			}
-			double similarity = SimilarityHelper.ComputeTwoStringSimilarity(prefix, fieldname);
-			FieldMember fm = new FieldMember(fieldname, fieldtype, wheredeclared);
-			prioriqueue.add(new MemberSorter(similarity, fm));
+			TypeMember tm = new TypeMember(classfullname, cls);
+			tmlist.add(tm);
 		}
 		return tmlist;
 	}

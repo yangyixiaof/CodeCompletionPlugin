@@ -749,7 +749,7 @@ public class OneTypeVisitor extends Java8BaseVisitor<Integer> {
 	public Integer visitTypeLiteral(TypeLiteralContext ctx) {
 		Integer res = visitChildren(ctx);
 		type tp = (type) usedobj.pop();
-		usedobj.push(new typeLiteral(tp));
+		usedobj.push(new typeLiteral(tp, ctx.getText().trim().substring("class.".length())));
 		return res;
 	}
 	
@@ -760,7 +760,6 @@ public class OneTypeVisitor extends Java8BaseVisitor<Integer> {
 		return res;
 	}
 	
-
 	@Override
 	public Integer visitVirtualInferredType(Java8Parser.VirtualInferredTypeContext ctx) {
 		usedobj.push(new virtualInferredType());

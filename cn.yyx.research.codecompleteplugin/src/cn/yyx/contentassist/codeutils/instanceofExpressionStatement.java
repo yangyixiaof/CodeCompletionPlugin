@@ -14,9 +14,11 @@ public class instanceofExpressionStatement extends expressionStatement{
 	
 	referedExpression rexp = null;
 	type type = null;
+	String typecode = null;
 	
-	public instanceofExpressionStatement(String smtcode, referedExpression rexp, type type) {
+	public instanceofExpressionStatement(String smtcode, String typecode, referedExpression rexp, type type) {
 		super(smtcode);
+		this.typecode = typecode;
 		this.rexp = rexp;
 		this.type = type;
 	}
@@ -39,34 +41,20 @@ public class instanceofExpressionStatement extends expressionStatement{
 		return 0;
 	}
 	
-	/*@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
-		CSNode tpcs = new CSNode(CSNodeType.HalfFullExpression);
-		boolean conflict = type.HandleCodeSynthesis(squeue, expected, handler, tpcs, ai);
-		if (conflict)
-		{
-			return true;
-		}
-		tpcs.setPrefix("(");
-		tpcs.setPostfix(")");
-		squeue.add(tpcs);
-		CSNode recs = new CSNode(CSNodeType.HalfFullExpression);
-		conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, recs, ai);
-		if (conflict)
-		{
-			return true;
-		}
-		squeue.add(recs);
-		return false;
-	}*/
-
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
 		List<FlowLineNode<CSFlowLineData>> tpls = type.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ForwardConcate(null, rels, " instanceof ", tpls, null, squeue, smthandler, null, null);
+		List<FlowLineNode<CSFlowLineData>> res = CSFlowLineHelper.ForwardConcate(null, rels, " instanceof ", tpls, null, squeue, smthandler, null, null);
+		if (res == null || res.size() == 0)
+		{
+			if (res != null && res.size() > 0)
+			{
+				return CSFlowLineHelper.ConcateOneFlowLineList(null, rels, " instanceof " + typecode);
+			}
+		}
+		return res;
 	}
 
 	@Override

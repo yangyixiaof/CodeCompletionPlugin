@@ -41,9 +41,11 @@ public class CodePredictTest implements CodePredict{
 					SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix("System.class", javacontext);
 					System.err.println("===================begin class=================");
 					SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix("PrintStream.", javacontext);
-					SearchSpecificationOfAReference.SearchFieldClassMemberSpecificationByPrefix("System.", javacontext);
+					// SearchSpecificationOfAReference.SearchFieldClassMemberSpecificationByPrefix("System", javacontext);
+					SearchSpecificationOfAReference.SearchFieldClassMemberSpecificationByPrefix("System", javacontext);
 					System.err.println("===================class split=================");
-					SearchSpecificationOfAReference.SearchFieldClassMemberSpecificationByPrefix("PrintStream.", javacontext);
+					// SearchSpecificationOfAReference.SearchFieldClassMemberSpecificationByPrefix("PrintStream", javacontext);
+					SearchSpecificationOfAReference.SearchFieldClassMemberSpecificationByPrefix("PrintStream", javacontext);
 					System.err.println("===================end class=================");
 					// SearchSpecificationOfAReference.SearchTypeSpecificationByPrefix("PrintStream", javacontext, true);
 					// SearchSpecificationOfAReference.SearchTypeSpecificationByPrefix("Integer", javacontext, true);

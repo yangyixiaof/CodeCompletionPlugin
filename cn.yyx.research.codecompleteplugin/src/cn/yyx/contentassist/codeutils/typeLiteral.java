@@ -1,5 +1,6 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
@@ -13,16 +14,25 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 public class typeLiteral extends literal{
 	
 	type tp = null;
+	String typecode = null;
 	
-	public typeLiteral(type tp) {
+	public typeLiteral(type tp, String typecode) {
 		this.tp = tp;
+		this.typecode = typecode;
 	}
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateOneFlowLineList(null, tpls, ".class");
+		List<FlowLineNode<CSFlowLineData>> res = CSFlowLineHelper.ConcateOneFlowLineList(null, tpls, ".class");
+		if (res == null || res.size() == 0)
+		{
+			List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), typecode + ".class", null, false, false, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+			return result;
+		}
+		return res;
 	}
 
 	@Override

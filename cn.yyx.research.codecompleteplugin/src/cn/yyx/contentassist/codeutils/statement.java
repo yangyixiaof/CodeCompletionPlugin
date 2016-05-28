@@ -5,7 +5,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 
 public abstract class statement implements OneCode {
 	
-	String smtcode = null;
+	protected String smtcode = null;
 	
 	public statement(String smtcode) {
 		this.smtcode = smtcode;
