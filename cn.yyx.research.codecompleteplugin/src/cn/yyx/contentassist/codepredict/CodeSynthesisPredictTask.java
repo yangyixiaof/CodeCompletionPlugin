@@ -38,12 +38,12 @@ public class CodeSynthesisPredictTask implements Runnable {
 	public CodeSynthesisPredictTask(PreTryFlowLineNode<Sentence> pretrylastpara, SynthesisHandler sh, AeroLifeCycle alc,
 			CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi, int id) {
 		this.pretrylast = pretrylastpara;
+		this.pretrylastwholetrace = PrintWholeTrace(pretrylastpara, "");
 		this.sh = sh;
 		this.alc = alc;
 		this.csfl = csfl;
 		this.aoi = aoi;
 		this.pi = new PredictInfer(id);
-		this.pretrylastwholetrace = PrintWholeTrace(pretrylastpara, "");
 	}
 
 	@Override
