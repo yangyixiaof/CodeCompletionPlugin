@@ -84,15 +84,6 @@ public class TypeComputer {
 		return null;
 	}
 	
-	private static boolean CCTypeSame(CCType c1, CCType c2)
-	{
-		if (c1.getCls() == c2.getCls())
-		{
-			return true;
-		}
-		return false;
-	}
-	
 	private static boolean CCTypeNull(CCType cct)
 	{
 		if (cct == null || cct.getCls() == null)
@@ -101,6 +92,42 @@ public class TypeComputer {
 		}
 		return false;
 	}*/
+	
+	public static boolean IsStrictNumberBit(Class<?> cls)
+	{
+		if (cls == Integer.class || cls == int.class || cls == Double.class || cls == double.class || cls == Byte.class || cls == byte.class || cls == Short.class || cls == short.class || cls == Long.class || cls == long.class || cls == Float.class || cls == float.class)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean IsNumberBit(Class<?> cls)
+	{
+		if (cls == Integer.class || cls == int.class || cls == Double.class || cls == double.class || cls == Byte.class || cls == byte.class || cls == Short.class || cls == short.class || cls == Long.class || cls == long.class || cls == Float.class || cls == float.class || cls == Boolean.class || cls == boolean.class)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean NumberBitSame(CCType c1, CCType c2)
+	{
+		if (IsNumberBit(c1.getCls()) && IsNumberBit(c2.getCls()))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean CCTypeSame(CCType c1, CCType c2)
+	{
+		if (c1.getCls() == c2.getCls())
+		{
+			return true;
+		}
+		return false;
+	}
 	
 	public static TypeComputationKind ComputeKindFromRawString(String optr) throws CodeSynthesisException
 	{

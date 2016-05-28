@@ -33,6 +33,10 @@ public class TypeCheckHelper {
 		}
 		Class<?> ot = NormalizeClass(onetype.getCls());
 		Class<?> tt = NormalizeClass(twotype.getCls());
+		if (TypeComputer.IsStrictNumberBit(ot) && TypeComputer.IsStrictNumberBit(tt))
+		{
+			return true;
+		}
 		if (ot.isAssignableFrom(tt) || tt.isAssignableFrom(ot))
 		{
 			return true;
