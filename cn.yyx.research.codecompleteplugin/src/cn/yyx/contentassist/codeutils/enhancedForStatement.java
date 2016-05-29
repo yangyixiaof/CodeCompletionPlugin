@@ -44,19 +44,7 @@ public class enhancedForStatement extends statement {
 		}
 		return 0;
 	}
-
-	/*
-	 * @Override public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue,
-	 * Stack<TypeCheck> expected, SynthesisHandler handler, CSNode result,
-	 * AdditionalInfo ai) { CSNode tpcs = new
-	 * CSNode(CSNodeType.HalfFullExpression); tp.HandleCodeSynthesis(squeue,
-	 * expected, handler, tpcs, null); tpcs.setMaytypereplacer(true);
-	 * tpcs.setPrefix("for ("); tpcs.setPostfix(" et : "); CSNode rexpcs = new
-	 * CSNode(CSNodeType.HalfFullExpression); rexp.HandleCodeSynthesis(squeue,
-	 * expected, handler, rexpcs, null); rexpcs.setPrefix("");
-	 * rexpcs.setPostfix(") {\n}"); return false; }
-	 */
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
@@ -83,7 +71,7 @@ public class enhancedForStatement extends statement {
 					}
 					if (handledclass != null)
 					{
-						result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "for (" + handledclass + " et:" + cls.getClstr() + ") " + CodeSynthesisHelper.GenerateBlockCode(smthandler), null, null, squeue.GetLastHandler()), smthandler.getProb()));
+						result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "for (" + handledclass + " et:" + fln.getData().getData() + ") " + CodeSynthesisHelper.GenerateBlockCode(smthandler), null, null, squeue.GetLastHandler()), smthandler.getProb()));
 					}
 				}
 			}
