@@ -11,7 +11,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 
 public class SynthesisCodeManager {
 	
-	public final static FlowLineNode<CSFlowLineData> InternNode = new FlowLineNode<CSFlowLineData>(new CSFlowLineData(0, null, null, null, false, false, null, null), 0);
+	public final static FlowLineNode<CSFlowLineData> InternNode = new FlowLineNode<CSFlowLineData>(new CSFlowLineData(0, null, null, null, null, null), 0);
 	
 	private Map<String, FlowLineNode<CSFlowLineData>> syncodes = new TreeMap<String, FlowLineNode<CSFlowLineData>>();
 	private FlowLineNode<CSFlowLineData> blockstart = null;

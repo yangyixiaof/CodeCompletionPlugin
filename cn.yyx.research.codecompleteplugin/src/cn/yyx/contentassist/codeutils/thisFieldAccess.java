@@ -36,7 +36,7 @@ public class thisFieldAccess extends fieldAccess {
 			return CSFlowLineHelper.ConcateOneFlowLineList(null, rels, ".this");
 		}
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "this", null, false, false, null, squeue.GetLastHandler()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "this", null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
 	}
 

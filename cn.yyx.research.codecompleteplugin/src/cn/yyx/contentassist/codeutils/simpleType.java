@@ -69,7 +69,7 @@ public class simpleType extends type{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), text, null, false, false, null, squeue.GetLastHandler()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), text, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		List<FlowLineNode<CSFlowLineData>> rtls = CodeSynthesisHelper.HandleRawTypeSpecificationInfer(result, squeue, smthandler);
 		if (rtls.size() == 0)
 		{

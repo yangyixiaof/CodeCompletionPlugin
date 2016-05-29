@@ -45,7 +45,9 @@ public class codeHole extends referedExpression{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "", null, true, true, null, squeue.GetLastHandler()), smthandler.getProb()));
+		CSFlowLineData flndata = new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "", null, null, squeue.GetLastHandler());
+		flndata.setHashole(true);
+		result.add(new FlowLineNode<CSFlowLineData>(flndata, smthandler.getProb()));
 		return result;
 	}
 

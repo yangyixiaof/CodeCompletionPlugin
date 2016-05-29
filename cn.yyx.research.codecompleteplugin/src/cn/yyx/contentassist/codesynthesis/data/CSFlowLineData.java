@@ -20,7 +20,7 @@ public class CSFlowLineData implements CSDataStructure{
 	private CCType dcls = null;
 	private SynthesisHandler handler = null;
 	
-	private boolean haspre = false;
+	// private boolean haspre = false;
 	private boolean hashole = false;
 	private TypeComputationKind tck = null;
 	
@@ -47,38 +47,37 @@ public class CSFlowLineData implements CSDataStructure{
 	// this boolean field should be set at some specific kind of statement.
 	private boolean isonestatementend = false;
 	
-	public CSFlowLineData(Integer id, Sentence sete, String data, CCType dcls, boolean haspre, boolean hashole, TypeComputationKind tck, SynthesisHandler handler) {
+	public CSFlowLineData(Integer id, Sentence sete, String data, CCType dcls, TypeComputationKind tck, SynthesisHandler handler) {
 		this.setId(id + "");
 		this.setSete(sete);
 		this.setData(data);
-		// this.setStructsignal(structsignal);
 		this.setDcls(dcls);
-		this.setHaspre(haspre);
-		this.setHashole(hashole);
+		// this.setHashole(hashole);
 		this.setTck(tck);
 		this.setHandler(handler);
 	}
 	
-	public CSFlowLineData(String id, Sentence sete, String data, CCType dcls, boolean haspre, boolean hashole, TypeComputationKind tck, SynthesisHandler handler) {
+	// boolean haspre, boolean hashole, 
+	public CSFlowLineData(String id, Sentence sete, String data, CCType dcls, TypeComputationKind tck, SynthesisHandler handler) {
 		this.setId(id + "");
 		this.setSete(sete);
 		this.setData(data);
 		// this.setStructsignal(structsignal);
 		this.setDcls(dcls);
-		this.setHaspre(haspre);
-		this.setHashole(hashole);
+		// this.setHaspre(haspre);
+		// this.setHashole(hashole);
 		this.setTck(tck);
 		this.setHandler(handler);
 	}
 	
-	public CSFlowLineData(String id, Sentence sete, String data, CCType dcls, boolean haspre, boolean hashole, TypeComputationKind tck, SynthesisHandler handler, CSExtraProperty cseppara) {
+	public CSFlowLineData(String id, Sentence sete, String data, CCType dcls, TypeComputationKind tck, SynthesisHandler handler, CSExtraProperty cseppara) {
 		this.setId(id + "");
 		this.setSete(sete);
 		this.setData(data);
 		// this.setStructsignal(structsignal);
 		this.setDcls(dcls);
-		this.setHaspre(haspre);
-		this.setHashole(hashole);
+		// this.setHaspre(haspre);
+		// this.setHashole(hashole);
 		this.setTck(tck);
 		this.setHandler(handler);
 		this.setCsep(cseppara);
@@ -139,15 +138,7 @@ public class CSFlowLineData implements CSDataStructure{
 	public void setIsonestatementend(boolean isonestatementend) {
 		this.isonestatementend = isonestatementend;
 	}
-
-	public boolean isHaspre() {
-		return haspre;
-	}
-
-	public void setHaspre(boolean haspre) {
-		this.haspre = haspre;
-	}
-
+	
 	public CSExtraData getExtraData() {
 		return csed;
 	}
@@ -199,7 +190,8 @@ public class CSFlowLineData implements CSDataStructure{
 		String cnctcnt = (prefix == null ? "" : prefix) + str1 + (concator == null ? "" : concator) + str2
 				+ (postfix == null ? "" : postfix);
 		CSFlowLineData cf = new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), cnctcnt, clz,
-				isHaspre(), d2.isHashole(), tck, getHandler());
+				tck, getHandler());
+		cf.setHashole(d2.isHashole());
 		// merge extra data info.
 		cf.setExtraData((CSExtraData) csed.SelfClosedMerge(d2.csed));
 		return cf;

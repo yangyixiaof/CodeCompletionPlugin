@@ -50,7 +50,7 @@ public class variableDeclarationStatement extends statement{
 		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
 		if (tpls == null || tpls.size() == 0)
 		{
-			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), smtcode.substring("VD@".length()), null, false, false, null, squeue.GetLastHandler()), smthandler.getProb()));
+			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), smtcode.substring("VD@".length()), null, null, squeue.GetLastHandler()), smthandler.getProb()));
 			return result;
 		}
 		Iterator<FlowLineNode<CSFlowLineData>> itr = tpls.iterator();

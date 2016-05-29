@@ -7,9 +7,9 @@ import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class CSArrayInitializerStartData extends CSFlowLineData{
 
-	public CSArrayInitializerStartData(Integer id, Sentence sete, String data, CCType dcls, boolean haspre, boolean hashole,
+	public CSArrayInitializerStartData(Integer id, Sentence sete, String data, CCType dcls,
 			TypeComputationKind tck, SynthesisHandler handler) {
-		super(id, sete, data, dcls, haspre, hashole, tck, handler);
+		super(id, sete, data, dcls, tck, handler);
 	}
 	
 }

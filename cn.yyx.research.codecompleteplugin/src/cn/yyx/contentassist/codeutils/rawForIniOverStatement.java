@@ -24,7 +24,7 @@ public class rawForIniOverStatement extends statement {
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId() + "", smthandler.getSete(), ";", null, true, true, null, squeue.GetLastHandler(), CSForIniOverProperty.GetInstance()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId() + "", smthandler.getSete(), ";", null, null, squeue.GetLastHandler(), CSForIniOverProperty.GetInstance()), smthandler.getProb()));
 		return result;
 	}
 	

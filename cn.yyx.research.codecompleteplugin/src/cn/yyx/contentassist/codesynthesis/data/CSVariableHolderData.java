@@ -14,8 +14,12 @@ public class CSVariableHolderData extends CSFlowLineData {
 	private boolean needensuretype = false;
 	
 	public CSVariableHolderData(String varname, boolean needensuretype, CSFlowLineData cd) {
-		super(cd.getId(), cd.getSete(), cd.getData(), cd.getDcls(), cd.isHaspre(), cd.isHashole(), cd.getTck(),
+		super(cd.getId(), cd.getSete(), cd.getData(), cd.getDcls(), cd.getTck(),
 				cd.getHandler());
+		if (cd.isHashole())
+		{
+			this.setHashole(true);
+		}
 		this.setVarname(varname);
 		this.setNeedensuretype(needensuretype);
 		this.setCsep(cd.getCsep());
@@ -23,9 +27,9 @@ public class CSVariableHolderData extends CSFlowLineData {
 		this.setExtraData(cd.getExtraData());
 	}
 
-	public CSVariableHolderData(String varname, boolean needensuretype, Integer id, Sentence sete, String data, CCType dcls, boolean haspre,
-			boolean hashole, TypeComputationKind tck, SynthesisHandler handler) {
-		super(id, sete, data, dcls, haspre, hashole, tck, handler);
+	public CSVariableHolderData(String varname, boolean needensuretype, Integer id, Sentence sete, String data, CCType dcls, 
+			TypeComputationKind tck, SynthesisHandler handler) {
+		super(id, sete, data, dcls, tck, handler);
 		this.setVarname(varname);
 		this.setNeedensuretype(needensuretype);
 	}

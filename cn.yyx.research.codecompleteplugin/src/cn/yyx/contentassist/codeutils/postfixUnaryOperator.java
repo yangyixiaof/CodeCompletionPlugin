@@ -58,7 +58,7 @@ public class postfixUnaryOperator implements OneCode{
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		TypeComputationKind tc = TypeComputer.ComputeKindFromRawString(optr);
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), optr, null, true, false, tc, squeue.GetLastHandler()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), optr, null, tc, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
 	}
 	

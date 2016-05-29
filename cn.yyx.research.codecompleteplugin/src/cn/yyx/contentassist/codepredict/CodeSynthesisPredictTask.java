@@ -67,7 +67,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 		if (start == null)
 		{
 			csdflq = new VirtualCSFlowLineQueue(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(
-				-1, null, "", null, false, false, null, sh), 0));
+				-1, null, "", null, null, sh), 0));
 		}
 		else {
 			csdflq = new CSFlowLineQueue(start);

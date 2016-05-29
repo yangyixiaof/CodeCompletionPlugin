@@ -23,8 +23,12 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 	private String typecode = null;
 	
 	public CSVariableDeclarationData(String typecode, CSFlowLineData cd) {
-		super(cd.getId(), cd.getSete(), cd.getData(), cd.getDcls(), cd.isHaspre(), cd.isHashole(), 
+		super(cd.getId(), cd.getSete(), cd.getData(), cd.getDcls(), 
 				cd.getTck(), cd.getHandler());
+		if (cd.isHashole())
+		{
+			this.setHashole(true);
+		}
 		this.setTypecode(typecode);
 		this.setCsep(cd.getCsep());
 		this.setScm(cd.getSynthesisCodeManager());

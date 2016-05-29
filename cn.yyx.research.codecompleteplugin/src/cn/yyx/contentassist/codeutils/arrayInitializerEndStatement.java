@@ -67,7 +67,7 @@ public class arrayInitializerEndStatement extends statement{
 		if (cnode != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-			FlowLineNode<CSFlowLineData> nl = new FlowLineNode<CSFlowLineData>(new CSArrayInitializerEndData(squeue.GenerateNewNodeId(), smthandler.getSete(), "}", null, true, false, null, squeue.GetLastHandler()), smthandler.getProb());
+			FlowLineNode<CSFlowLineData> nl = new FlowLineNode<CSFlowLineData>(new CSArrayInitializerEndData(squeue.GenerateNewNodeId(), smthandler.getSete(), "}", null, null, squeue.GetLastHandler()), smthandler.getProb());
 			result.add(nl);
 			CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, nl, cnode);
 			return result;

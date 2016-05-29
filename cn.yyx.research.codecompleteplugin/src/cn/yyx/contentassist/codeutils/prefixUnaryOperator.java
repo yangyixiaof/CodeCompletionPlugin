@@ -59,7 +59,7 @@ public class prefixUnaryOperator implements OneCode{
 		// TODO this operation may cause error.
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		TypeComputationKind tc = TypeComputer.ComputeKindFromRawString(optr);
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), optr, null, false, true, tc, squeue.GetLastHandler()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), optr, null, tc, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
 	}
 	
