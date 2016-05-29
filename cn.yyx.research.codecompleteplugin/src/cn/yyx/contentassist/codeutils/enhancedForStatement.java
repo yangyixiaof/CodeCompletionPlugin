@@ -2,6 +2,7 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
@@ -10,6 +11,7 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
+import cn.yyx.contentassist.codesynthesis.statementhandler.CSInnerLevelPreHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.commonutils.StringUtil;
@@ -58,35 +60,33 @@ public class enhancedForStatement extends statement {
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
-		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		boolean classhandled = false;
-		String handledclass = null;
+		CSInnerLevelPreHandler csilp = new CSInnerLevelPreHandler("if", smthandler);
+		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, csilp);
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		if (rels != null && rels.size() > 0) {
 			Iterator<FlowLineNode<CSFlowLineData>> itr = rels.iterator();
 			while (itr.hasNext()) {
 				FlowLineNode<CSFlowLineData> fln = itr.next();
 				CCType cls = fln.getData().getDcls();
 				if (cls != null) {
-					if (cls.getCls().isAssignableFrom(Collection.class)) {
-						classhandled = true;
+					String handledclass = null;
+					if (Collection.class.isAssignableFrom(cls.getCls())) {
 						handledclass = StringUtil.ExtractParameterizedFromRawType(cls.getClstr());
-						// cls.getComponentType(); // for array specially
-						// cls.getTypeParameters();
-						break;
 					}
 					if (cls.getCls().isArray()) {
-						classhandled = true;
 						handledclass = cls.getCls().getComponentType().toString();
-						break;
+					}
+					if (handledclass != null)
+					{
+						result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "for (" + handledclass + " et:" + cls.getClstr() + "){\n\n}", null, null, squeue.GetLastHandler()), smthandler.getProb()));
 					}
 				}
 			}
-		}
-		if (classhandled) {
-			return CSFlowLineHelper.ConcateOneFlowLineList("for (" + handledclass + " et:", rels, "){\n\n}");
 		} else {
 			return CSFlowLineHelper.ForwardConcate("for (", tpls, " et: ", rels, "){\n\n}", squeue, smthandler, null);
 		}
+		return result;
+		// return CSFlowLineHelper.ConcateOneFlowLineList("for (" + handledclass + " et:", rels, "){\n\n}");
 	}
 
 	@Override

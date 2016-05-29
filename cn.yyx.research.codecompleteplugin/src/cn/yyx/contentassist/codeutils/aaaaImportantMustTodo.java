@@ -36,7 +36,7 @@ public class aaaaImportantMustTodo {
 	
 	// Solved. very important!!!!!! pre-exist. to set mostfar and nextstart are in choas. some mostfar in some situation doesn't set. nextstart start from Ps Pr or real data? what if there is some error I mean just directly to the head.
 	
-	// TODO MethodReference A::b. what is the exactly infer form, this needs to be checked.
+	// Rejected, not include java8 MethodReference A::b. what is the exactly infer form, this needs to be checked.
 	
 	// TODO Interface of ReferedExpression HandleInferredField and HandleInferredMethodReference are not handled. Mainly MethodReference and FieldAccess.
 	
