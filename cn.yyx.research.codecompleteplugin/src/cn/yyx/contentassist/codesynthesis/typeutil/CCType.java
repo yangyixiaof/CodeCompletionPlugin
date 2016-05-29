@@ -10,9 +10,6 @@ public class CCType {
 	
 	private Class<?> cls = null;
 	private String clstr = null;
-	// private List<Class<?>> clss = new LinkedList<Class<?>>();
-	// private List<String> clsstr = new LinkedList<String>();
-	// private Set<Integer> valididx = new TreeSet<Integer>();
 	
 	public CCType(Class<?> cls, String clstr) {
 		setCls(cls);
@@ -24,6 +21,15 @@ public class CCType {
 		setClstr(tm.getType());
 	}
 	
+	public boolean HasProperty(Class<?> cls)
+	{
+		if (getCls() != null && cls.isAssignableFrom(getCls()))
+		{
+			return true;
+		}
+		return false;
+	}
+	
 	public static LinkedList<CCType> CCTypeList(List<TypeMember> tmlist) {
 		LinkedList<CCType> result = new LinkedList<CCType>();
 		Iterator<TypeMember> itr = tmlist.iterator();
@@ -31,17 +37,9 @@ public class CCType {
 		{
 			TypeMember tm = itr.next();
 			result.add(new CCType(tm));
-			// clss.add(tm.getTypeclass());
-			// clsstr.add(tm.getType());
 		}
 		return result;
 	}
-
-	/*public void AddPossibleClass(Class<?> cls, String clstr)
-	{
-		getClss().add(cls);
-		getClsstr().add(clstr);
-	}*/
 
 	public Class<?> getCls() {
 		return cls;
@@ -67,29 +65,5 @@ public class CCType {
 	public String toString() {
 		return "cls:" + cls + ";clstr:" + clstr;
 	}
-	
-	/*public List<Class<?>> getClss() {
-		return clss;
-	}
-
-	public void setClss(List<Class<?>> clss) {
-		this.clss = clss;
-	}
-
-	public List<String> getClsstr() {
-		return clsstr;
-	}
-
-	public void setClsstr(List<String> clsstr) {
-		this.clsstr = clsstr;
-	}
-
-	public Set<Integer> getValididx() {
-		return valididx;
-	}
-
-	public void setValididx(Set<Integer> valididx) {
-		this.valididx = valididx;
-	}*/
 	
 }

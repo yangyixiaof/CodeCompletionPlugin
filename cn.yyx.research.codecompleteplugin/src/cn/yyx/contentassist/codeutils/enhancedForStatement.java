@@ -70,11 +70,15 @@ public class enhancedForStatement extends statement {
 				CCType cls = fln.getData().getDcls();
 				if (cls != null) {
 					String handledclass = null;
-					if (Collection.class.isAssignableFrom(cls.getCls())) {
+					if (cls.HasProperty(Collection.class)) {
 						handledclass = StringUtil.ExtractParameterizedFromRawType(cls.getClstr());
 					}
 					if (cls.getCls().isArray()) {
 						handledclass = cls.getCls().getComponentType().toString();
+						if (handledclass.startsWith("class "))
+						{
+							handledclass = handledclass.substring("class ".length());
+						}
 					}
 					if (handledclass != null)
 					{
