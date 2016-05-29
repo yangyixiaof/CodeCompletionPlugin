@@ -9,6 +9,7 @@ import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.DirectUseFirstOneSide;
 
 public class parameterizedType extends type{
 	
@@ -70,7 +71,7 @@ public class parameterizedType extends type{
 			modifiedidls = idls;
 		}
 		List<FlowLineNode<CSFlowLineData>> tpls = tas.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ForwardConcate(null, modifiedidls, "<", tpls, ">", squeue, smthandler, null);
+		return CSFlowLineHelper.ForwardConcate(null, modifiedidls, "<", tpls, ">", squeue, smthandler, new DirectUseFirstOneSide());
 	}
 	
 }
