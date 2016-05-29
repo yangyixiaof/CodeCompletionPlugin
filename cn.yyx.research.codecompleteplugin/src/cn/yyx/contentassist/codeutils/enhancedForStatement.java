@@ -60,7 +60,7 @@ public class enhancedForStatement extends statement {
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
-		CSInnerLevelPreHandler csilp = new CSInnerLevelPreHandler("if", smthandler);
+		CSInnerLevelPreHandler csilp = new CSInnerLevelPreHandler("enhanced-for", smthandler);
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, csilp);
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		if (rels != null && rels.size() > 0) {
