@@ -30,7 +30,7 @@ public class aaaaImportantMustTodo {
 	//		for (SingleVariableDeclaration svd : params)
 	//		{
 	//		}
-	// Such type infer must be handled as svd should be SingleVariableDeclaration. This needs to be fully designed.
+	// Such type infer must be handled as svd should be SingleVariableDeclaration. This needs to be tested.
 	
 	// Solved. all refered_ expression should handle different statement.
 	
@@ -40,7 +40,9 @@ public class aaaaImportantMustTodo {
 	
 	// TODO Interface of ReferedExpression HandleInferredField and HandleInferredMethodReference are not handled. Mainly MethodReference and FieldAccess.
 	
-	// TODO if while and do-while enhanced-for needs to be like for.
+	// Solved. if while and do-while enhanced-for needs to be like for.
+	
+	// TODO multiple while situation in good java file needs to be tested.
 	
 	// TODO The termination condition in pre try predict must be the same as code synthesis, whcih means HandleOverSignal returns true, the termination condition must also return true.
 	
