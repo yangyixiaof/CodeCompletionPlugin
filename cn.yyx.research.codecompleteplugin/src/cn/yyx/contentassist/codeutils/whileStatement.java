@@ -8,7 +8,10 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
+import cn.yyx.contentassist.codesynthesis.statementhandler.CSInnerLevelPreHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
+import cn.yyx.contentassist.codesynthesis.typeutil.CSFlowLineTypeCheckRefiner;
 
 public class whileStatement extends statement{
 	
@@ -37,27 +40,17 @@ public class whileStatement extends statement{
 		return 0;
 	}
 	
-	/*@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
-		CSNode ts = new CSNode(CSNodeType.TempUsed);
-		boolean conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, ts, null);
-		if (conflict)
-		{
-			return true;
-		}
-		ts.setContenttype(CSNodeType.WholeStatement);
-		ts.setPrefix("while (");
-		ts.setPostfix(") {\n\n}");
-		squeue.add(ts);
-		return false;
-	}*/
-
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateOneFlowLineList("while (", rels, ") {\n\n}");
+		CSInnerLevelPreHandler csilp = new CSInnerLevelPreHandler("while", smthandler);
+		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, csilp);
+		if (rels == null || rels.size() == 0)
+		{
+			return null;
+		}
+		return CSFlowLineTypeCheckRefiner.RetainTheFallThroughFlowLineNodes(CSFlowLineHelper.ConcateOneFlowLineList("while (", rels, ") {\n}"), new CCType(Boolean.class, "Boolean"));
+		// return CSFlowLineHelper.ConcateOneFlowLineList("while (", rels, ") {\n\n}");
 	}
 
 	@Override
