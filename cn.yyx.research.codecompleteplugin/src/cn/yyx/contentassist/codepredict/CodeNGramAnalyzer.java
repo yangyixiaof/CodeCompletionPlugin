@@ -18,7 +18,7 @@ import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class CodeNGramAnalyzer {
 
-	public static List<String> PossibleCodes(JavaContentAssistInvocationContext javacontext, char lastchar) {
+	public static List<String> PossibleCodes(JavaContentAssistInvocationContext javacontext) {
 		// TODO This whole mechanism needs to be fully tested.
 		System.err.println("HaHa Test!!!!!!!!!!!!!!");
 		ArrayList<String> list = new ArrayList<String>();
@@ -61,7 +61,7 @@ public class CodeNGramAnalyzer {
 			
 			PredictionFetch pf = new PredictionFetch();
 			// monitor this set to null.
-			return pf.FetchPrediction(javacontext, sohandler, analist, list, aoi, lastchar);
+			return pf.FetchPrediction(javacontext, sohandler, analist, list, aoi);
 
 		} catch (JavaModelException e) {
 			e.printStackTrace();

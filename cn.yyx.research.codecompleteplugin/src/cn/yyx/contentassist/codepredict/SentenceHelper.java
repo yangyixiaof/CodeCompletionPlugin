@@ -12,9 +12,9 @@ import cn.yyx.contentassist.parsehelper.ComplexParser;
 
 public class SentenceHelper {
 	
-	public static List<Sentence> TranslateStringsToSentences(List<String> analist)
+	public static LinkedList<Sentence> TranslateStringsToSentences(List<String> analist)
 	{
-		List<Sentence> result = new LinkedList<Sentence>();
+		LinkedList<Sentence> result = new LinkedList<Sentence>();
 		Iterator<String> itr = analist.iterator();
 		while (itr.hasNext())
 		{

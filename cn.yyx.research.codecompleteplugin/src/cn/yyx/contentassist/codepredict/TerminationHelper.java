@@ -1,6 +1,5 @@
 package cn.yyx.contentassist.codepredict;
 
-import cn.yyx.contentassist.codeutils.commonOverStatement;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 
@@ -14,7 +13,7 @@ public class TerminationHelper {
 		return false;
 	}
 	
-	public static boolean couldTerminate(Sentence sete, char lastchar, int currlen, int totallen, boolean isexactmatch)
+	public static boolean couldTerminate(Sentence sete, Class<?> lastkind, int currlen, int totallen, boolean isexactmatch)
 	{
 		int level = (int)(totallen*0.75);
 		statement smt = sete.getSmt();
@@ -23,7 +22,8 @@ public class TerminationHelper {
 		{
 			minilevel = currlen >= totallen;
 		}
-		if (lastchar == ';' && (ClassInstanceOfUtil.ObjectInstanceOf(smt, commonOverStatement.class)) && minilevel)
+		// lastchar == ';' && 
+		if ((ClassInstanceOfUtil.ObjectInstanceOf(smt, lastkind)) && minilevel)
 		{
 			return true;
 		}

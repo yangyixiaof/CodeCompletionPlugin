@@ -32,7 +32,7 @@ import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
 
 public class PredictionFetch {
 	
-	public List<String> FetchPrediction(JavaContentAssistInvocationContext javacontext, ScopeOffsetRefHandler handler, List<String> analist, ArrayList<String> result, ASTOffsetInfo aoi, char lastchar)
+	public List<String> FetchPrediction(JavaContentAssistInvocationContext javacontext, ScopeOffsetRefHandler handler, List<String> analist, ArrayList<String> result, ASTOffsetInfo aoi)
 	{
 		AeroLifeCycle alc = AeroLifeCycle.GetInstance();
 		//alc.Initialize();
@@ -43,12 +43,13 @@ public class PredictionFetch {
 			size = PredictMetaInfo.PrePredictWindow;
 		}
 		
-		List<Sentence> setelist = SentenceHelper.TranslateStringsToSentences(analist);
+		LinkedList<Sentence> setelist = SentenceHelper.TranslateStringsToSentences(analist);
+		final Class<?> lastkind = setelist.getLast().getSmt().getClass();
 		StatementsMIs smtmis = SentenceHelper.TranslateSentencesToStatements(setelist);
 		List<statement> smtlist = smtmis.getSmts();
 		List<statement> smilist = smtmis.getSmis();
 		PreTryFlowLines<Sentence> fls = new PreTryFlowLines<Sentence>();
-		DoPreTrySequencePredict(alc, fls, setelist, smtlist, smilist, PredictMetaInfo.PreTryNeedSize, lastchar);
+		DoPreTrySequencePredict(alc, fls, setelist, smtlist, smilist, PredictMetaInfo.PreTryNeedSize, lastkind);
 		
 		ContextHandler ch = new ContextHandler(javacontext);
 		SynthesisHandler sh = new SynthesisHandler(handler, ch);
@@ -148,7 +149,7 @@ public class PredictionFetch {
 	// split line, below are pre try predict.
 	
 	private void DoPreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, List<Sentence> setelist,
-			List<statement> smtlist, final List<statement> smtmilist, int needsize, final char lastchar) {
+			List<statement> smtlist, final List<statement> smtmilist, int needsize, final Class<?> lastkind) {
 		PredictInfer pi = new PredictInfer(AeroMetaData.codengram[0]);
 		// Map<String, Boolean> keynull = new TreeMap<String, Boolean>();
 		
@@ -156,7 +157,7 @@ public class PredictionFetch {
 		while (itr.hasNext())
 		{
 			Sentence ons = itr.next();
-			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, smtmilist, (int)(needsize), 2*needsize, lastchar, pi);
+			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, smtmilist, (int)(needsize), 2*needsize, lastkind, pi);
 		}
 		int size = fls.GetValidOveredSize();
 		// int overtailsize = fls.getOvertails().size();
@@ -164,7 +165,7 @@ public class PredictionFetch {
 		while ((size == 0) && turn < PredictMetaInfo.PreTryMaxStep)
 		{
 			turn++;
-			DoOnePreTrySequencePredict(alc, fls, null, smtlist, smtmilist, (int)((needsize-size)), 2*(needsize-size), lastchar, pi);
+			DoOnePreTrySequencePredict(alc, fls, null, smtlist, smtmilist, (int)((needsize-size)), 2*(needsize-size), lastkind, pi);
 			size = fls.GetValidOveredSize();
 		}
 		fls.TrimOverTails(needsize);
@@ -174,7 +175,7 @@ public class PredictionFetch {
 		pi = null;
 	}
 	
-	private void DoOnePreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons, final List<statement> oraclelist, final List<statement> oraclemilist, int neededsize, int maxparsize, final char lastchar, PredictInfer pi)
+	private void DoOnePreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons, final List<statement> oraclelist, final List<statement> oraclemilist, int neededsize, int maxparsize, final Class<?> lastkind, PredictInfer pi)
 	{
 		if (fls.IsEmpty())
 		{
@@ -268,7 +269,7 @@ public class PredictionFetch {
 					fls.setExactmatchtail(nf);
 				}
 				
-				boolean couldterminate = TerminationHelper.couldTerminate(nf.getData(), lastchar, nf.getParent().getLength()+1, oraclelist.size(), isexactmatch);
+				boolean couldterminate = TerminationHelper.couldTerminate(nf.getData(), lastkind, nf.getParent().getLength()+1, oraclelist.size(), isexactmatch);
 				if (couldterminate)
 				{
 					fls.AddOverFlowLineNode(nf, nf.getParent());
