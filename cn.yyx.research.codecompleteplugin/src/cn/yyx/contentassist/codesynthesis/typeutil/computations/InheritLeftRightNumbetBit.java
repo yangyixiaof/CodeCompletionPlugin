@@ -16,7 +16,7 @@ public class InheritLeftRightNumbetBit extends TypeComputationKind {
 		this.post = post;
 		if (post != null)
 		{
-			if (!TypeComputer.IsNumberBit(post.getCls()))
+			if (!TypeComputer.IsStrictNumberBit(post.getCls()))
 			{
 				throw new TypeConflictException("right of inherit not number bit.");
 			}

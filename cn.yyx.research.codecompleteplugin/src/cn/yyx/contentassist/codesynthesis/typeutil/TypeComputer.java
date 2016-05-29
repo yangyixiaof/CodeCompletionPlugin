@@ -3,6 +3,7 @@ package cn.yyx.contentassist.codesynthesis.typeutil;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.BooleanRTwoSideSame;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.BooleanRTwoSideSameBoolean;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.BooleanRTwoSideSameNumberBit;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.InheritLeftOrRightTwoSameSide;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.InheritLeftRightNumbetBit;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.NumberBitRTwoSideSameNumberBit;
@@ -134,9 +135,10 @@ public class TypeComputer {
 		switch (optr) {
 		case ">":
 		case "<":
-		case "==":
 		case "<=":
 		case ">=":
+			return new BooleanRTwoSideSameNumberBit();
+		case "==":
 		case "!=":
 			return new BooleanRTwoSideSame();
 		case "&&":
