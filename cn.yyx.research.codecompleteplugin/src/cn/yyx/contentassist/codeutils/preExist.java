@@ -70,9 +70,25 @@ public class preExist extends referedExpression{
 	
 	public List<FlowLineNode<CSFlowLineData>> CommonPreExistHandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
+		// no problem.
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		FlowLineNode<CSFlowLineData> wo = CSFlowLineBackTraceGenerationHelper.GetWholeNodeCode(squeue.getLast());
-		result.add(wo);
+		FlowLineNode<CSFlowLineData> last = squeue.getLast();
+		FlowLineNode<CSFlowLineData> end = CSFlowLineBackTraceGenerationHelper.SearchForWholeNode(last);
+		if (end == last) {
+			result.add(last);
+		} else {
+			String lid = CSFlowLineBackTraceGenerationHelper.GetConcateId(last, end);
+			FlowLineNode<CSFlowLineData> efln = end.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(lid);
+			CSFlowLineData efdata = efln.getData();
+			CSFlowLineData csfd = new CSFlowLineData(squeue.GenerateNewNodeId()+"", efdata);
+			String nid = lid + "." + csfd.getId();
+			csfd.getSynthesisCodeManager().setBlockstart(end, nid);
+			FlowLineNode<CSFlowLineData> nfln = new FlowLineNode<CSFlowLineData>(csfd, efln.getProbability());
+			end.getData().getSynthesisCodeManager().AddSynthesisCode(nid, nfln);
+			result.add(nfln);
+		}
+		// FlowLineNode<CSFlowLineData> wo = CSFlowLineBackTraceGenerationHelper.GetWholeNodeCode(squeue.getLast());
+		// result.add(wo);
 		return result;
 	}
 	

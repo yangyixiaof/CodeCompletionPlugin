@@ -153,7 +153,7 @@ public class CSFlowLineBackTraceGenerationHelper {
 		return fin;
 	}
 
-	private static FlowLineNode<CSFlowLineData> SearchForWholeNode(FlowLineNode<CSFlowLineData> tailnode) throws CodeSynthesisException {
+	public static FlowLineNode<CSFlowLineData> SearchForWholeNode(FlowLineNode<CSFlowLineData> tailnode) throws CodeSynthesisException {
 		if (tailnode == null)
 		{
 			return null;
@@ -229,13 +229,13 @@ public class CSFlowLineBackTraceGenerationHelper {
 		snode.getData().getExtraData().AddExtraData(CSDataMetaInfo.LastNode, snode);
 	}
 
-	public static FlowLineNode<CSFlowLineData> GetWholeNodeCode(FlowLineNode<CSFlowLineData> last) throws CodeSynthesisException {
+	/*public static FlowLineNode<CSFlowLineData> GetWholeNodeCode(FlowLineNode<CSFlowLineData> last) throws CodeSynthesisException {
 		FlowLineNode<CSFlowLineData> start = SearchForWholeNode(last);
 		if (start == last)
 		{
 			return last;
 		}
 		return start.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(GetConcateId(last, start));
-	}
+	}*/
 	
 }

@@ -83,6 +83,14 @@ public class CSFlowLineData implements CSDataStructure{
 		this.setCsep(cseppara);
 	}
 	
+	public CSFlowLineData(String id, CSFlowLineData dt) {
+		this(id, dt.getSete(), dt.getData(), dt.getDcls(), dt.getTck(), dt.getHandler(), dt.getCsep());
+		this.setExtraData(dt.getExtraData());
+		// this.setCsep(dt.getCsep());
+		// this.setScm(dt.getSynthesisCodeManager());
+		// the above two should not exist on the data invoke this construction.
+	}
+	
 	public String getData() {
 		return data;
 	}
