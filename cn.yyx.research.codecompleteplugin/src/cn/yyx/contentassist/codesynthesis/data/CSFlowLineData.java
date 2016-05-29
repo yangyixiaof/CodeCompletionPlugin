@@ -179,7 +179,7 @@ public class CSFlowLineData implements CSDataStructure {
 				// tck = getTck();
 				tck = d2.getTck();
 			}
-			if (!TCKNotOver(this.getTck()) && !TCKNotOver(d2.getTck()))
+			if (TCKNotOver(this.getTck()) && TCKNotOver(d2.getTck()))
 			{
 				new Exception("two all have not over tck, what the fuck?").printStackTrace();
 				throw new TypeConflictException("two all have not over tck, what the fuck?");
