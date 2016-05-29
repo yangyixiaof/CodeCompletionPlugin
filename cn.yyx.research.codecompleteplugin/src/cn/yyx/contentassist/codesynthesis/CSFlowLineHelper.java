@@ -167,12 +167,14 @@ public class CSFlowLineHelper {
 			ftmp.getData().getSynthesisCodeManager().setBlockstart(bs2, bsi2);
 			ftmp.getData().setId(d2.getId());
 			bs2.getData().getSynthesisCodeManager().AddSynthesisCode(bsi2, ftmp);
+			// do need to set tck?
 		}
 		if (bs1 != null && bs2 == null)
 		{
 			ftmp.getData().getSynthesisCodeManager().setBlockstart(bs1, bsi1);
 			ftmp.getData().setId(d1.getId());
 			bs1.getData().getSynthesisCodeManager().AddSynthesisCode(bsi1, ftmp);
+			// do need to set tck?
 		}
 	}
 	
