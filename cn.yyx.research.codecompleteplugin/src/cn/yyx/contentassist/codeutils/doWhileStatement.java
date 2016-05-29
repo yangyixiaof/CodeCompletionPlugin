@@ -8,7 +8,10 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
+import cn.yyx.contentassist.codesynthesis.statementhandler.CSInnerLevelPreHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
+import cn.yyx.contentassist.codesynthesis.typeutil.CSFlowLineTypeCheckRefiner;
 
 public class doWhileStatement extends statement{
 	
@@ -56,9 +59,15 @@ public class doWhileStatement extends statement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		CSFlowLineHelper.ConcateOneFlowLineList("do {\n\n} while (", rels, ");");
-		return null;
+		// List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+		// CSFlowLineHelper.ConcateOneFlowLineList("do {\n\n} while (", rels, ");");
+		CSInnerLevelPreHandler csilp = new CSInnerLevelPreHandler("do-while", smthandler);
+		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, csilp);
+		if (rels == null || rels.size() == 0)
+		{
+			return null;
+		}
+		return CSFlowLineTypeCheckRefiner.RetainTheFallThroughFlowLineNodes(CSFlowLineHelper.ConcateOneFlowLineList("do {\n\n} while (", rels, ");"), new CCType(Boolean.class, "Boolean"));
 	}
 
 	@Override
