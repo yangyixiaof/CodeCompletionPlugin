@@ -8,6 +8,7 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
+import cn.yyx.contentassist.codesynthesis.statementhandler.CSInnerLevelPreHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.CSFlowLineTypeCheckRefiner;
@@ -38,39 +39,12 @@ public class ifStatement extends statement{
 		}
 		return 0;
 	}
-
-	/*@Override
-	public boolean HandleOverSignal(Stack<Integer> cstack) {
-		int waitkind = cstack.peek();
-		if (waitkind == StructureSignalMetaInfo.AllKindWaitingOver)
-		{
-			cstack.pop();
-		}
-		cstack.push(StructureSignalMetaInfo.IfOver);
-		return false;
-	}
-
-	@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
-		TypeCheck tc = new TypeCheck();
-		tc.setExpreturntype("Boolean");
-		tc.setExpreturntypeclass(Boolean.class);
-		expected.add(tc);
-		
-		CSNode recs = new CSNode(CSNodeType.WholeStatement);
-		rexp.HandleCodeSynthesis(squeue, expected, handler, recs, ai);
-		recs.setPrefix("if (");
-		recs.setPostfix(") {\n}");
-		
-		expected.pop();
-		return false;
-	}*/
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+		CSInnerLevelPreHandler csilp = new CSInnerLevelPreHandler("if", smthandler);
+		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, csilp);
 		if (rels == null || rels.size() == 0)
 		{
 			return null;

@@ -15,6 +15,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSPrProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSPsProperty;
 import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.statementhandler.CSInnerLevelPreHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementFirstArgHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
@@ -46,6 +47,10 @@ public class preExist extends referedExpression{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
+		if (smthandler instanceof CSInnerLevelPreHandler)
+		{
+			return InnerLevelPreHandleCodeSynthesis(squeue, smthandler);
+		}
 		if (smthandler instanceof CSMethodStatementFirstArgHandler)
 		{
 			return FirstArgPreExistHandleCodeSynthesis(squeue, smthandler);
@@ -55,6 +60,12 @@ public class preExist extends referedExpression{
 			return MethodArgPreExistHandleCodeSynthesis(squeue, smthandler);
 		}
 		return CommonPreExistHandleCodeSynthesis(squeue, smthandler);
+	}
+	
+	public List<FlowLineNode<CSFlowLineData>> InnerLevelPreHandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler) throws CodeSynthesisException
+	{
+		List<FlowLineNode<CSFlowLineData>> result = CSFlowLineBackTraceGenerationHelper.GenerateSynthesisCode(squeue, smthandler, squeue.getLast(), null);
+		return result;
 	}
 	
 	public List<FlowLineNode<CSFlowLineData>> CommonPreExistHandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
