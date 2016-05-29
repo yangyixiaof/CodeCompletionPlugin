@@ -82,7 +82,13 @@ public class CSFlowLineBackTraceGenerationHelper {
 		}
 		else
 		{
-			result.add(thelastone.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(preid));
+			FlowLineNode<CSFlowLineData> lp = thelastone.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(preid);
+			if (lp == null)
+			{
+				System.err.println("What the fuck! synthesis code is null?");
+				System.exit(1);
+			}
+			result.add(lp);
 		}
 		return result;
 	}
@@ -95,14 +101,18 @@ public class CSFlowLineBackTraceGenerationHelper {
 		{
 			twoid = GetConcateId(twostart, two);
 		}
-		if (twostart.getData().getSynthesisCodeManager().getBlockstart() != null)
-		{
-			two = two.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(twoid);
+		FlowLineNode<CSFlowLineData> twosyn = null;
+		if (twostart.getData().getSynthesisCodeManager().getBlockstart() != null) {
+			twosyn = two.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(twoid);
+		} else {
+			twosyn = two;
 		}
 		String oneid = GetConcateId(onestart, one); // two.getPrev()
-		if (onestart.getData().getSynthesisCodeManager().getBlockstart() != null)
-		{
-			one = one.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(oneid);
+		FlowLineNode<CSFlowLineData> onesyn = null;
+		if (onestart.getData().getSynthesisCodeManager().getBlockstart() != null) {
+			onesyn = one.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(oneid);
+		} else {
+			onesyn = one;
 		}
 		
 		// debugging code, not remove.
@@ -111,7 +121,7 @@ public class CSFlowLineBackTraceGenerationHelper {
 			new Exception("two is null.").printStackTrace();
 		}
 		
-		FlowLineNode<CSFlowLineData> tres = CSFlowLineHelper.ConcateTwoFlowLineNode(null, one, null, two, null, squeue, smthandler, null);
+		FlowLineNode<CSFlowLineData> tres = CSFlowLineHelper.ConcateTwoFlowLineNode(null, onesyn, null, twosyn, null, squeue, smthandler, null);
 		String tresid = oneid + "." + twoid;
 		
 		// two.getData().getSynthesisCodeManager().setBlockstart(null, null);

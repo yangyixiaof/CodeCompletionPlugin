@@ -12,7 +12,7 @@ import cn.yyx.contentassist.codesynthesis.typeutil.TypeConflictException;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
-public class CSFlowLineData implements CSDataStructure{
+public class CSFlowLineData implements CSDataStructure {
 	
 	private String id = null;
 	private Sentence sete = null;
@@ -171,11 +171,13 @@ public class CSFlowLineData implements CSDataStructure{
 		} else {
 			if (TCKNotOver(this.getTck()) && !TCKNotOver(d2.getTck()))
 			{
-				tck = d2.getTck();
+				// tck = d2.getTck();
+				tck = getTck();
 			}
 			if (!TCKNotOver(this.getTck()) && TCKNotOver(d2.getTck()))
 			{
-				tck = getTck();
+				// tck = getTck();
+				tck = d2.getTck();
 			}
 			if (!TCKNotOver(this.getTck()) && !TCKNotOver(d2.getTck()))
 			{

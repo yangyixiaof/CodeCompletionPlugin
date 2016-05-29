@@ -74,19 +74,25 @@ public class preExist extends referedExpression{
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		FlowLineNode<CSFlowLineData> last = squeue.getLast();
 		FlowLineNode<CSFlowLineData> end = CSFlowLineBackTraceGenerationHelper.SearchForWholeNode(last);
+		FlowLineNode<CSFlowLineData> efln = null;
+		CSFlowLineData csfd = null;
+		String nid = null;
 		if (end == last) {
-			result.add(last);
+			String lid = end.getData().getId();
+			efln = last;
+			csfd = new CSFlowLineData(squeue.GenerateNewNodeId()+"", efln.getData());
+			nid = lid + "." + csfd.getId();
+			// result.add(last);
 		} else {
 			String lid = CSFlowLineBackTraceGenerationHelper.GetConcateId(last, end);
-			FlowLineNode<CSFlowLineData> efln = end.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(lid);
-			CSFlowLineData efdata = efln.getData();
-			CSFlowLineData csfd = new CSFlowLineData(squeue.GenerateNewNodeId()+"", efdata);
-			String nid = lid + "." + csfd.getId();
-			csfd.getSynthesisCodeManager().setBlockstart(end, nid);
-			FlowLineNode<CSFlowLineData> nfln = new FlowLineNode<CSFlowLineData>(csfd, efln.getProbability());
-			end.getData().getSynthesisCodeManager().AddSynthesisCode(nid, nfln);
-			result.add(nfln);
+			efln = end.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(lid);
+			csfd = new CSFlowLineData(squeue.GenerateNewNodeId()+"", efln.getData());
+			nid = lid + "." + csfd.getId();
 		}
+		csfd.getSynthesisCodeManager().setBlockstart(end, nid);
+		FlowLineNode<CSFlowLineData> nfln = new FlowLineNode<CSFlowLineData>(csfd, efln.getProbability());
+		end.getData().getSynthesisCodeManager().AddSynthesisCode(nid, nfln);
+		result.add(nfln);
 		// FlowLineNode<CSFlowLineData> wo = CSFlowLineBackTraceGenerationHelper.GetWholeNodeCode(squeue.getLast());
 		// result.add(wo);
 		return result;
