@@ -8,6 +8,7 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSForUpdOverProperty;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -61,7 +62,7 @@ public class forUpdOverStatement extends rawForUpdOverStatement implements SWrap
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<FlowLineNode<CSFlowLineData>> smtls = smt.HandleCodeSynthesis(squeue, smthandler);
-		smtls = CSFlowLineHelper.ConcateOneFlowLineList(null, smtls, ") {\n}");
+		smtls = CSFlowLineHelper.ConcateOneFlowLineList(null, smtls, ") " + CodeSynthesisHelper.GenerateBlockCode(smthandler));
 		if (smtls == null || smtls.size() == 0)
 		{
 			return null;

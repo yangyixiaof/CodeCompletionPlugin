@@ -8,6 +8,7 @@ import java.util.List;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
@@ -82,12 +83,12 @@ public class enhancedForStatement extends statement {
 					}
 					if (handledclass != null)
 					{
-						result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "for (" + handledclass + " et:" + cls.getClstr() + "){\n\n}", null, null, squeue.GetLastHandler()), smthandler.getProb()));
+						result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "for (" + handledclass + " et:" + cls.getClstr() + ") " + CodeSynthesisHelper.GenerateBlockCode(smthandler), null, null, squeue.GetLastHandler()), smthandler.getProb()));
 					}
 				}
 			}
 		} else {
-			return CSFlowLineHelper.ForwardConcate("for (", tpls, " et: ", rels, "){\n\n}", squeue, smthandler, null);
+			return CSFlowLineHelper.ForwardConcate("for (", tpls, " et: ", rels, ") " + CodeSynthesisHelper.GenerateBlockCode(smthandler), squeue, smthandler, null);
 		}
 		return result;
 		// return CSFlowLineHelper.ConcateOneFlowLineList("for (" + handledclass + " et:", rels, "){\n\n}");

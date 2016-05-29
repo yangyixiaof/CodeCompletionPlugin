@@ -5,6 +5,7 @@ import java.util.List;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
@@ -49,7 +50,7 @@ public class ifStatement extends statement{
 		{
 			return null;
 		}
-		return CSFlowLineTypeCheckRefiner.RetainTheFallThroughFlowLineNodes(CSFlowLineHelper.ConcateOneFlowLineList("if (", rels, ") {\n}"), new CCType(Boolean.class, "Boolean"));
+		return CSFlowLineTypeCheckRefiner.RetainTheFallThroughFlowLineNodes(CSFlowLineHelper.ConcateOneFlowLineList("if (", rels, ") " + CodeSynthesisHelper.GenerateBlockCode(smthandler)), new CCType(Boolean.class, "Boolean"));
 	}
 
 	@Override
