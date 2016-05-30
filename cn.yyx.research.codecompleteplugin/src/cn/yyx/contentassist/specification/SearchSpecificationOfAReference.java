@@ -87,7 +87,7 @@ public class SearchSpecificationOfAReference {
 		{
 			idx = spechint.lastIndexOf(':');
 		}
-		if (idx < 0 || idx == spechint.length()-1)
+		if (idx == spechint.length()-1)
 		{
 			return null;
 		}
@@ -169,15 +169,30 @@ public class SearchSpecificationOfAReference {
 		}
 		return tmlist;
 	}
+	
+	/*private static boolean IsEndWithNoConcreate(String scnt)
+	{
+		int idx = scnt.lastIndexOf('.');
+		if (idx < 0)
+		{
+			idx = scnt.lastIndexOf(':');
+		}
+		if (scnt.length() > 0 && idx == scnt.length()-1)
+		{
+			return true;
+		}
+		return false;
+	}*/
 
 	public static List<MethodMember> SearchMethodSpecificationByPrefix(String prefix,
 			JavaContentAssistInvocationContext javacontext) {
 		String prefixcmp = null;
-		if (prefix.trim().contains(" ")) {
-			prefixcmp = StringUtil.GetContentBehindFirstWhiteSpace(prefix);
-		} else {
-			prefixcmp = GetPrefixCmp(prefix);	
+		prefix = prefix.trim();
+		if (prefix.startsWith("new ") || prefix.contains(".new "))
+		{
+			prefixcmp = StringUtil.GetContentBehindFirstWhiteSpace(prefixcmp);
 		}
+		prefixcmp = GetPrefixCmp(prefix); 
 		CompletionProposalCollector collector = GetMethodMemberProposalCollector(javacontext);
 		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.methodtimeout);
 		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, topm);
