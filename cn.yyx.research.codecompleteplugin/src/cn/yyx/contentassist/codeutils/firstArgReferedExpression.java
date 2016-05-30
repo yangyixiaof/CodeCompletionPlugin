@@ -18,7 +18,7 @@ public class firstArgReferedExpression extends referedExpression{
 		this.rexp = rexp;
 		this.tp = tp;
 	}
-
+	
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
 		if (t instanceof firstArgReferedExpression)
@@ -40,7 +40,7 @@ public class firstArgReferedExpression extends referedExpression{
 		}
 		return false;
 	}
-
+	
 	@Override
 	public double Similarity(OneCode t) {
 		if (t instanceof firstArgReferedExpression)
@@ -56,7 +56,7 @@ public class firstArgReferedExpression extends referedExpression{
 		}
 		return 0;
 	}
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
@@ -67,13 +67,13 @@ public class firstArgReferedExpression extends referedExpression{
 			return tp.HandleCodeSynthesis(squeue, smthandler);
 		}
 	}
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue, CSStatementHandler smthandler,
 			String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
 		return CodeSynthesisHelper.HandleInferredField(HandleCodeSynthesis(squeue, smthandler), squeue, smthandler, reservedword, expectedinfer);
 	}
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
