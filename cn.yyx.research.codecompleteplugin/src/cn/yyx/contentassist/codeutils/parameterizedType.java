@@ -53,7 +53,7 @@ public class parameterizedType extends type{
 			modifiedidls = idls;
 		}
 		List<FlowLineNode<CSFlowLineData>> tpls = tas.HandleCodeSynthesis(squeue, smthandler);
-		List<FlowLineNode<CSFlowLineData>> fls = CSFlowLineHelper.ForwardConcate(null, modifiedidls, "<", tpls, ">", squeue, smthandler, new DirectUseFirstOneSide());
+		List<FlowLineNode<CSFlowLineData>> fls = CSFlowLineHelper.ForwardConcate(null, modifiedidls, null, tpls, null, squeue, smthandler, new DirectUseFirstOneSide());
 		Iterator<FlowLineNode<CSFlowLineData>> itr = fls.iterator();
 		while (itr.hasNext())
 		{

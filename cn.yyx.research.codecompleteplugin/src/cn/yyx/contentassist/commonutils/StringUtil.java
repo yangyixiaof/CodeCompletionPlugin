@@ -1,5 +1,7 @@
 package cn.yyx.contentassist.commonutils;
 
+import cn.yyx.contentassist.codecompletion.CodeCompletionMetaInfo;
+
 public class StringUtil {
 	
 	public static String GetContentBehindFirstWhiteSpace(String cnt)
@@ -32,6 +34,10 @@ public class StringUtil {
 	
 	public static String ExtractParameterizedFromRawType(String rawtype)
 	{
+		if (CodeCompletionMetaInfo.DebugMode)
+		{
+			System.err.println("rawtype:" + rawtype);
+		}
 		int lidx = rawtype.indexOf('<');
 		if (lidx < 0)
 		{
