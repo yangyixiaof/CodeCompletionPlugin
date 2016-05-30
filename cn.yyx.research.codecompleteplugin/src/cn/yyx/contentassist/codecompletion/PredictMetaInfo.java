@@ -28,9 +28,9 @@ public class PredictMetaInfo {
 	public static final int NgramMaxSize = 8;
 	
 	public static final int MaxTypeConcateSize = 2;
-	public static final int MaxTypeSpecificationSize = 2;
-	public static final int MaxFieldSpecificationSize = 2;
-	public static final int MaxMethodSpecificationSize = 4;
+	public static final int MaxTypeSpecificationSize = 6;
+	public static final int MaxFieldSpecificationSize = 6;
+	public static final int MaxMethodSpecificationSize = 6;
 	
 	public static final int OneCodeSynthesisTaskValidFinalSize = 2;
 	

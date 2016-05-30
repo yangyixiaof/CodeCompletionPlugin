@@ -114,6 +114,7 @@ public class preExist extends referedExpression{
 		{
 			throw new CodeSynthesisException("method synthesis run into error, this node should be pr but not.");
 		}
+		tmp.getData().HandleStackSignal(signals);
 		tmp = tmp.getPrev();
 		while (tmp != null)
 		{

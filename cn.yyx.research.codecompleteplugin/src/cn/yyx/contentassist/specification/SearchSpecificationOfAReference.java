@@ -79,9 +79,24 @@ public class SearchSpecificationOfAReference {
 		}
 		return tmlist;
 	}*/
+	
+	private static String GetPrefixCmp(String spechint)
+	{
+		int idx = spechint.lastIndexOf('.');
+		if (idx < 0)
+		{
+			idx = spechint.lastIndexOf(':');
+		}
+		if (idx < 0 || idx == spechint.length()-1)
+		{
+			return null;
+		}
+		return spechint.substring(idx+1);
+	}
 
 	public static List<FieldMember> SearchFieldSpecificationByPrefix(String prefix,
 			JavaContentAssistInvocationContext javacontext) {
+		String prefixcmp = GetPrefixCmp(prefix);
 		CompletionProposalCollector collector = GetFieldMemberProposalCollector(javacontext);
 		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.fieldtimeout);
 		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, topm);
@@ -101,7 +116,11 @@ public class SearchSpecificationOfAReference {
 			if (strs.length == 3) {
 				wheredeclared = strs[2].trim();
 			}
-			double similarity = SimilarityHelper.ComputeTwoStringSimilarity(prefix, fieldname);
+			double similarity = 1;
+			if (prefixcmp != null)
+			{
+				similarity = SimilarityHelper.ComputeTwoStringSimilarity(prefixcmp, fieldname);
+			}
 			FieldMember fm = new FieldMember(fieldname, fieldtype, wheredeclared);
 			prioriqueue.add(new MemberSorter(similarity, fm));
 		}
@@ -153,11 +172,12 @@ public class SearchSpecificationOfAReference {
 
 	public static List<MethodMember> SearchMethodSpecificationByPrefix(String prefix,
 			JavaContentAssistInvocationContext javacontext) {
+		String cmp = StringUtil.GetContentBehindFirstWhiteSpace(prefix);
+		String prefixcmp = GetPrefixCmp(cmp);
 		CompletionProposalCollector collector = GetMethodMemberProposalCollector(javacontext);
 		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.methodtimeout);
 		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, topm);
 		Iterator<ICompletionProposal> itr = proposals.iterator();
-		String cmp = StringUtil.GetContentBehindFirstWhiteSpace(prefix);
 		Queue<MemberSorter> prioriqueue = new PriorityQueue<MemberSorter>();
 		while (itr.hasNext()) {
 			ICompletionProposal icp = itr.next();
@@ -193,7 +213,12 @@ public class SearchSpecificationOfAReference {
 				if (strs.length == 3) {
 					wheredeclared = strs[2].trim();
 				}
-				double similarity = SimilarityHelper.ComputeTwoStringSimilarity(prefix, cmp);
+				double similarity = 1;
+				if (prefixcmp != null)
+				{
+					similarity = SimilarityHelper.ComputeTwoStringSimilarity(prefixcmp, funcname);
+				}
+				// double similarity = SimilarityHelper.ComputeTwoStringSimilarity(prefixcmp, cmp);
 				MethodMember mm = new MethodMember(funcname, returntype, wheredeclared, argnamelist, argtypelist);
 				prioriqueue.add(new MemberSorter(similarity, mm));
 			}

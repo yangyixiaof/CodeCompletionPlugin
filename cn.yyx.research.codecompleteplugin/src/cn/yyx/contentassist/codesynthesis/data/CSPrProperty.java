@@ -15,7 +15,7 @@ public class CSPrProperty extends CSExtraProperty {
 			throw new CodeSynthesisException("When handling pr, the top of stack is not MethodInvocation or MethodPs.");
 		}
 		Integer top = signals.peek();
-		if (top == null || top != DataStructureSignalMetaInfo.MethodInvocation || top != DataStructureSignalMetaInfo.MethodPs)
+		if (top == null || (top != DataStructureSignalMetaInfo.MethodInvocation && top != DataStructureSignalMetaInfo.MethodPs))
 		{
 			throw new CodeSynthesisException("When handling pr, the top of stack is not MethodInvocation or MethodPs.");
 		}
