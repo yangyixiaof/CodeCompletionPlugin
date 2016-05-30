@@ -35,26 +35,7 @@ public class classOrInterfaceType extends type{
 		}
 		return 0;
 	}
-
-	/*@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
-		Iterator<type> itr = tps.iterator();
-		while (itr.hasNext())
-		{
-			type t = itr.next();
-			CSNode ttp = new CSNode(CSNodeType.TempUsed);
-			boolean conflict = t.HandleCodeSynthesis(squeue, expected, handler, ttp, null);
-			if (conflict)
-			{
-				return true;
-			}
-			result.setDatas(CSNodeHelper.ConcatTwoNodesDatas(ttp, result, ".", -1));
-		}
-		CSNodeHelper.HandleTypeByTypeCodes(result);
-		return false;
-	}*/
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {

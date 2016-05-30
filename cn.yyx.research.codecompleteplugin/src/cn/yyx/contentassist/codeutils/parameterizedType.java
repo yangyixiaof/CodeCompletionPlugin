@@ -1,5 +1,6 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Iterator;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
@@ -41,25 +42,6 @@ public class parameterizedType extends type{
 		}
 		return 0;
 	}
-
-	/*@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
-		CSNode cs = new CSNode(CSNodeType.HalfFullExpression);
-		boolean conflict = id.HandleCodeSynthesis(squeue, expected, handler, cs, ai);
-		if (conflict)
-		{
-			return true;
-		}
-		CSNode tcs = new CSNode(CSNodeType.HalfFullExpression);
-		conflict = typelist.HandleCodeSynthesis(squeue, expected, handler, tcs, ai);
-		if (conflict)
-		{
-			return true;
-		}
-		result.AddOneData(cs.GetFirstDataWithoutTypeCheck()+"<"+tcs.GetFirstDataWithoutTypeCheck()+">", null);
-		return false;
-	}*/
 	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
@@ -71,7 +53,15 @@ public class parameterizedType extends type{
 			modifiedidls = idls;
 		}
 		List<FlowLineNode<CSFlowLineData>> tpls = tas.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ForwardConcate(null, modifiedidls, "<", tpls, ">", squeue, smthandler, new DirectUseFirstOneSide());
+		List<FlowLineNode<CSFlowLineData>> fls = CSFlowLineHelper.ForwardConcate(null, modifiedidls, "<", tpls, ">", squeue, smthandler, new DirectUseFirstOneSide());
+		Iterator<FlowLineNode<CSFlowLineData>> itr = fls.iterator();
+		while (itr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> fln = itr.next();
+			String tps = fln.getData().getData();
+			fln.getData().getDcls().setClstr(tps);
+		}
+		return fls;
 	}
 	
 }
