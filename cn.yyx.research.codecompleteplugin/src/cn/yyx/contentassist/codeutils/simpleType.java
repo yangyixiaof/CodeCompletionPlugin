@@ -41,30 +41,7 @@ public class simpleType extends type{
 		}
 		return 0;
 	}
-
-	/*@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
-		TypeCheck tc = new TypeCheck();
-		Class<?> c = null;
-		try {
-			c = Class.forName(text);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		if (c == null)
-		{
-			tc = null;
-		}
-		else
-		{
-			tc.setExpreturntype(text);
-			tc.setExpreturntypeclass(c);
-		}
-		result.AddOneData(text, tc);
-		return false;
-	}*/
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {

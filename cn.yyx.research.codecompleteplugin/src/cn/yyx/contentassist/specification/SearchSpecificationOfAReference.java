@@ -140,8 +140,9 @@ public class SearchSpecificationOfAReference {
 			String classfullname = pstr.substring(classbegin+1, classend);
 			Class<?> cls = null;
 			try {
-				cls = Class.forName(classfullname);
-			} catch (ClassNotFoundException e) {
+				// cls = Class.forName(classfullname);
+				cls = OmnipotentClassLoader.LoadClass(classfullname);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			TypeMember tm = new TypeMember(classfullname, cls);

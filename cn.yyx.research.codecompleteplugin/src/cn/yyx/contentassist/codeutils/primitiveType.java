@@ -73,23 +73,7 @@ public class primitiveType extends type{
 		}
 		return 0;
 	}
-
-	/*@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
-		TypeCheck tc = new TypeCheck();
-		tc.setExpreturntype(text);
-		try {
-			tc.setExpreturntypeclass(Class.forName(text));
-		} catch (ClassNotFoundException e) {
-			System.err.println("Unrecognized Primitive Type:" + text);
-			System.exit(1);
-			e.printStackTrace();
-		}
-		result.AddOneData(text, tc);
-		return false;
-	}*/
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
