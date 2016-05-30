@@ -267,7 +267,7 @@ public class CodeSynthesisHelper {
 			while (fitr.hasNext())
 			{
 				FieldMember fm = fitr.next();
-				String cmp = fm.getType();
+				String cmp = fm.getName();
 				Iterator<FlowLineNode<CSFlowLineData>> iditr = idls.iterator();
 				while (iditr.hasNext())
 				{
