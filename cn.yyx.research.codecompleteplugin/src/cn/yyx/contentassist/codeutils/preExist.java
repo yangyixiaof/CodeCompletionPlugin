@@ -99,8 +99,8 @@ public class preExist extends referedExpression{
 	
 	public List<FlowLineNode<CSFlowLineData>> FirstArgPreExistHandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
-		CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
+		CheckUtil.CheckStatementHandlerIsSpecialKind(smthandler, CSMethodStatementFirstArgHandler.class);
+		CSMethodStatementHandler realhandler = ((CSMethodStatementFirstArgHandler) smthandler).getCsh();
 		if (realhandler.getSignals().size() != 1)
 		{
 			throw new CodeSynthesisException("method arg handle signal run into error.");
@@ -152,7 +152,7 @@ public class preExist extends referedExpression{
 	
 	public List<FlowLineNode<CSFlowLineData>> MethodArgPreExistHandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
+		CheckUtil.CheckStatementHandlerIsSpecialKind(smthandler, CSMethodStatementHandler.class);
 		CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
 		if (realhandler.getSignals().size() != 1)
 		{

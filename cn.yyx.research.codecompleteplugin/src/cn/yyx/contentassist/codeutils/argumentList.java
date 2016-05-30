@@ -154,7 +154,7 @@ public class argumentList implements OneCode {
 
 	public List<FlowLineNode<CSFlowLineData>> HandleMethodIntegrationCodeSynthesis(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String methodname, boolean hasem) throws CodeSynthesisException {
-		CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
+		CheckUtil.CheckStatementHandlerIsSpecialKind(smthandler, CSMethodStatementHandler.class);
 		CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;
 		// realhandler.setArgsize(el.size() - 1);
 		// change to reverse order list.

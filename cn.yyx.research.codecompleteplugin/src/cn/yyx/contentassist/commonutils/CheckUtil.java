@@ -1,6 +1,5 @@
 package cn.yyx.contentassist.commonutils;
 
-import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class CheckUtil {
@@ -32,11 +31,11 @@ public class CheckUtil {
 		}
 	}
 	
-	public static void CheckStatementHandlerIsMethodStatementHandler(CSStatementHandler smthandler)
+	public static void CheckStatementHandlerIsSpecialKind(CSStatementHandler smthandler, Class<?> cls)
 	{
-		if (!(ClassInstanceOfUtil.ObjectInstanceOf(smthandler, CSMethodStatementHandler.class)))
+		if (!(ClassInstanceOfUtil.ObjectInstanceOf(smthandler, cls)))
 		{
-			System.err.println("Input handler is not the expected CSMethodStatementHandler, what the fuck?");
+			System.err.println("Input handler is not the expected " + cls.toString() + ", what the fuck?");
 			System.exit(1);
 		}
 	}
