@@ -172,8 +172,12 @@ public class SearchSpecificationOfAReference {
 
 	public static List<MethodMember> SearchMethodSpecificationByPrefix(String prefix,
 			JavaContentAssistInvocationContext javacontext) {
-		String cmp = StringUtil.GetContentBehindFirstWhiteSpace(prefix);
-		String prefixcmp = GetPrefixCmp(cmp);
+		String prefixcmp = null;
+		if (prefix.trim().contains(" ")) {
+			prefixcmp = StringUtil.GetContentBehindFirstWhiteSpace(prefix);
+		} else {
+			prefixcmp = GetPrefixCmp(prefix);	
+		}
 		CompletionProposalCollector collector = GetMethodMemberProposalCollector(javacontext);
 		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.methodtimeout);
 		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, topm);
