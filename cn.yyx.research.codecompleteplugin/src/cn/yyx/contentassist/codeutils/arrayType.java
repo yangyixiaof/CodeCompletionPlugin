@@ -44,18 +44,7 @@ public class arrayType extends type {
 		}
 		return 0;
 	}
-
-	/*@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
-		CSNode ttp = new CSNode(CSNodeType.HalfFullExpression);
-		tp.HandleCodeSynthesis(squeue, expected, handler, ttp, null);
-		
-		ttp.setPostfix(dimens);
-		squeue.add(ttp);
-		return false;
-	}*/
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
