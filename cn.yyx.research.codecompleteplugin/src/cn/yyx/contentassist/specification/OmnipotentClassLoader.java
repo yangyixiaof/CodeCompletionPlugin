@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -20,17 +21,14 @@ public class OmnipotentClassLoader {
 	private static List<IJavaProject> javaProjects = null;
 	private static List<URLClassLoader> loaders = null;
 
-	public static Class<?> LoadClass(String classfullname) throws CoreException, MalformedURLException {
+	public static Class<?> LoadClass(String classfullname) throws Exception {
 		Class<?> cls = null;
 		try {
 			cls = Class.forName(classfullname);
 		} catch (ClassNotFoundException e) {
 			try {
 				cls = ComplexLoadClass(classfullname);
-			} catch (MalformedURLException e1) {
-				e1.printStackTrace();
-				throw e1;
-			} catch (CoreException e1) {
+			} catch (Exception e1) {
 				e1.printStackTrace();
 				throw e1;
 			}
@@ -38,7 +36,7 @@ public class OmnipotentClassLoader {
 		return cls;
 	}
 
-	private static Class<?> ComplexLoadClass(String classfullname) throws MalformedURLException, CoreException {
+	private static Class<?> ComplexLoadClass(String classfullname) throws Exception {
 		FirstInitialzie();
 		return MultipleLoadClass(classfullname);
 	}
@@ -54,10 +52,10 @@ public class OmnipotentClassLoader {
 		return null;
 	}
 
-	private static void FirstInitialzie() throws MalformedURLException, CoreException {
+	private static void FirstInitialzie() throws Exception {
 		if (javaProjects == null) { // || projects.length != javaProjects.size()
+			javaProjects = new LinkedList<IJavaProject>();
 			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-			List<IJavaProject> javaProjects = new ArrayList<IJavaProject>();
 			for (IProject project : projects) {
 				try {
 					project.open(null /* IProgressMonitor */);
@@ -73,8 +71,12 @@ public class OmnipotentClassLoader {
 		}
 	}
 
-	private static void GenerateAllLoaders(boolean regenerate) throws MalformedURLException, CoreException {
+	private static void GenerateAllLoaders(boolean regenerate) throws Exception {
 		if (regenerate || loaders == null) {
+			if (javaProjects == null)
+			{
+				throw new Exception("there is no java projects in this workspace.");
+			}
 			loaders = new ArrayList<URLClassLoader>();
 			for (IJavaProject javaProject : javaProjects) {
 				loaders.add(GetProjectClassLoader(javaProject));
