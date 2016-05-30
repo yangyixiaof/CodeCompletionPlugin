@@ -13,7 +13,6 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSMethodInvocationProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSPrProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSPsProperty;
-import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSInnerLevelPreHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementFirstArgHandler;
@@ -111,35 +110,35 @@ public class preExist extends referedExpression{
 		FlowLineNode<CSFlowLineData> tmp = ns;
 		FlowLineNode<CSFlowLineData> mstart = ns;
 		FlowLineNode<CSFlowLineData> mstop = null;
+		if (!(tmp.getData().HasSpecialProperty(CSPrProperty.class)))
+		{
+			throw new CodeSynthesisException("method synthesis run into error, this node should be pr but not.");
+		}
+		tmp = tmp.getPrev();
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();
+			FlowLineNode<CSFlowLineData> tmpblockstart = tmpdata.getSynthesisCodeManager().getBlockstart();
+			if (tmpblockstart != null)
+			{
+				tmp = tmpblockstart.getPrev();
+				continue;
+			}
+			
 			if (tmpdata.HasSpecialProperty(CSEnterParamInfoProperty.class) || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class) || tmpdata.HasSpecialProperty(CSMethodInvocationProperty.class))
 			{
-				Integer preps = signals.peek();
 				tmpdata.HandleStackSignal(signals);
-				if (preps == DataStructureSignalMetaInfo.MethodInvocation)
+				if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoProperty.class) && signals.size() == 0)
 				{
-					continue;
-				}
-				if (signals.size() == 1)
-				{
-					if (tmpdata.HasSpecialProperty(CSEnterParamInfoProperty.class))
-					{
-						mstop = tmp;
-						realhandler.setNextstart(null);
-						realhandler.setMostfar(mstop);
-						break;
-					}
-					else
-					{
-						throw new CodeSynthesisException("firstArgPreExist does not has Em as very-pre?");
-					}
+					mstop = tmp;
+					realhandler.setNextstart(null);
+					realhandler.setMostfar(mstop);
+					break;
 				}
 			}
 			tmp = tmp.getPrev();
 		}
-		if (mstart == null || mstop == null || tmp == null)
+		if (mstart == null || mstop == null) //  || tmp == null
 		{
 			throw new CodeSynthesisException("No firstArg start or stop, conflict happens. CSEnterParamInfoData times < 0, conflict happens.");
 		}
