@@ -14,7 +14,9 @@ public class CSVarRefHelper {
 		{
 			vht = squeue.BackSearchForLastIthVariableHolderAndTypeDeclaration(off);
 		}
+		Map<String, String> pofield = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(vht.getHoldertype(), vht.getAllvh(), scope, off);
 		Map<String, String> po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(vht.getHoldertype(), vht.getAllvh(), scope, off);
+		po.putAll(pofield);
 		if (vht.getHoldername() != null)
 		{
 			po.put(vht.getHoldertype(), vht.getHoldername());
@@ -29,7 +31,9 @@ public class CSVarRefHelper {
 		{
 			vht = squeue.BackSearchForLastIthVariableHolderAndTypeDeclaration(off);
 		}
+		Map<String, String> povar = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(vht.getHoldertype(), vht.getAllvh(), scope, off);
 		Map<String, String> po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(vht.getHoldertype(), vht.getAllvh(), scope, off);
+		po.putAll(povar);
 		if (vht.getHoldername() != null)
 		{
 			po.put(vht.getHoldertype(), vht.getHoldername());
