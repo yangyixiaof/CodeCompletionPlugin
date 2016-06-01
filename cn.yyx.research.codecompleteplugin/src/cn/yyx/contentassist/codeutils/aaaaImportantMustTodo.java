@@ -26,7 +26,7 @@ public class aaaaImportantMustTodo {
 	
 	// Solved. argTypeList adds lastArgType, due to only last of method declaration is handled, the modifications of ScopeOffsetHandler do not need to be considered.
 	
-	// TODO List<SingleVariableDeclaration> params = node.parameters();
+	// Solved. List<SingleVariableDeclaration> params = node.parameters();
 	//		for (SingleVariableDeclaration svd : params)
 	//		{
 	//		}
@@ -38,13 +38,13 @@ public class aaaaImportantMustTodo {
 	
 	// Rejected, not include java8 MethodReference A::b. what is the exactly infer form, this needs to be checked.
 	
-	// TODO Interface of ReferedExpression HandleInferredField and HandleInferredMethodReference are not handled. Mainly MethodReference and FieldAccess.
+	// Solved. Interface of ReferedExpression HandleInferredField and HandleInferredMethodReference are not handled. Mainly MethodReference and FieldAccess.
 	
 	// Solved. if while and do-while enhanced-for needs to be like for.
 	
 	// TODO multiple while situation in good java file needs to be tested.
 	
-	// TODO The termination condition in pre try predict must be the same as code synthesis, whcih means HandleOverSignal returns true, the termination condition must also return true.
+	// Solved. The termination condition in pre try predict must be the same as code synthesis, whcih means HandleOverSignal returns true, the termination condition must also return true.
 	
 	// Solved. Complex type should be resolved one level by level. This is resolved by level. Especially, ParameterizedType as List<String> can not be resolved but List can.
 	

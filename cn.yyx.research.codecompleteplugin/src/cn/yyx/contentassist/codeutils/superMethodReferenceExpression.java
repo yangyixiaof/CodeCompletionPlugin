@@ -1,10 +1,11 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
-import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.ErrorCheck;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -26,12 +27,26 @@ public class superMethodReferenceExpression extends methodReferenceExpression{
 		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
 		if (rexp == null)
 		{
-			return CSFlowLineHelper.ConcateOneFlowLineList("super::", idls, null);
+			List<FlowLineNode<CSFlowLineData>> sups = new LinkedList<FlowLineNode<CSFlowLineData>>();
+			sups.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "super", null, null, squeue.GetLastHandler()), 0));
+			List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleFieldSpecificationInfer(sups, idls, squeue, smthandler, "::");
+			/*if (ls == null || ls.size() == 0)
+			{
+				return CSFlowLineHelper.ConcateOneFlowLineList("super::", idls, null);
+			}*/
+			return ls;
 		}
 		else
 		{
-			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-			return CSFlowLineHelper.ForwardConcate(null, rels, ".super::", idls, null, squeue, smthandler, null);
+			/*List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+			rels = CSFlowLineHelper.ConcateOneFlowLineList(null, rels, ".super");
+			List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleFieldSpecificationInfer(rels, idls, squeue, smthandler, "::");
+			if (ls == null || ls.size() == 0)
+			{
+				return CSFlowLineHelper.ForwardConcate(null, rels, "::", idls, null, squeue, smthandler, null);
+			}
+			return ls;*/
+			return rexp.HandleInferredMethodReference(squeue, smthandler, "super", idls);
 		}
 	}
 

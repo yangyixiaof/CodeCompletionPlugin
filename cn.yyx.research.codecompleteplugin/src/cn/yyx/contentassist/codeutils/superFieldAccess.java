@@ -1,5 +1,6 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
@@ -30,16 +31,25 @@ public class superFieldAccess extends fieldAccess{
 		{
 			List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
 			List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
-			return CSFlowLineHelper.ForwardConcate(null, tpls, ".super.", idls, null, squeue, smthandler, null);
+			tpls = CSFlowLineHelper.ConcateOneFlowLineList(null, tpls, ".super");
+			List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleFieldSpecificationInfer(tpls, idls, squeue, smthandler, ".");
+			// List<FlowLineNode<CSFlowLineData>> fils = fa.HandleInferredField(squeue, smthandler, null, idls);
+			// return CSFlowLineHelper.ForwardConcate(null, tpls, "", idls, null, squeue, smthandler, null);
+			return ls;
 		}
 		if (tp == null && rexp != null)
 		{
 			List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
-			List<FlowLineNode<CSFlowLineData>> rexpls = rexp.HandleCodeSynthesis(squeue, smthandler);
-			return CSFlowLineHelper.ForwardConcate(null, rexpls, ".super.", idls, null, squeue, smthandler, null);
+			// List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+			return rexp.HandleInferredField(squeue, smthandler, "super", idls);
+			// return CSFlowLineHelper.ForwardConcate(null, rexpls, ".super.", idls, null, squeue, smthandler, null);
 		}
 		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateOneFlowLineList("super.", idls, null);
+		List<FlowLineNode<CSFlowLineData>> sups = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		sups.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "super", null, null, squeue.GetLastHandler()), 0));
+		List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleFieldSpecificationInfer(sups, idls, squeue, smthandler, ".");
+		return ls;
+		// return CSFlowLineHelper.ConcateOneFlowLineList("super.", idls, null);
 	}
 
 	@Override

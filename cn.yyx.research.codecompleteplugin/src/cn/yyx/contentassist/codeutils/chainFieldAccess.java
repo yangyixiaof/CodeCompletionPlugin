@@ -3,7 +3,6 @@ package cn.yyx.contentassist.codeutils;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
-import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
@@ -24,8 +23,11 @@ public class chainFieldAccess extends fieldAccess {
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
-		List<FlowLineNode<CSFlowLineData>> fals = fa.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ForwardConcate(null, fals, ".", idls, null, squeue, smthandler, null);
+		List<FlowLineNode<CSFlowLineData>> fils = fa.HandleInferredField(squeue, smthandler, null, idls);
+		return fils;
+		// List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
+		// List<FlowLineNode<CSFlowLineData>> fals = fa.HandleCodeSynthesis(squeue, smthandler);
+		// return CSFlowLineHelper.ForwardConcate(null, fals, ".", idls, null, squeue, smthandler, null);
 	}
 	
 	@Override

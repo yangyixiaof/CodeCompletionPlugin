@@ -275,7 +275,7 @@ public class CodeSynthesisHelper {
 					String cmped = id.getData().getData();
 					if (SimilarityHelper.ComputeTwoStringSimilarity(cmp, cmped) > PredictMetaInfo.TwoStringSimilarThreshold)
 					{
-						result.add(CSFlowLineHelper.ConcateTwoFlowLineNode(null, fln, ".", id, null, squeue, smthandler, null));
+						result.add(CSFlowLineHelper.ConcateTwoFlowLineNode(null, fln, concator, id, null, squeue, smthandler, null));
 					}
 				}
 			}
@@ -364,9 +364,10 @@ public class CodeSynthesisHelper {
 		return alls;
 	}
 	
-	public static List<FlowLineNode<CSFlowLineData>> HandleInferredContent(CSFlowLineQueue squeue, CSStatementHandler smthandler, List<FlowLineNode<CSFlowLineData>> infermain, List<FlowLineNode<CSFlowLineData>> expectedinfer, String inferoperator) throws CodeSynthesisException
+	private static List<FlowLineNode<CSFlowLineData>> HandleInferredContent(CSFlowLineQueue squeue, CSStatementHandler smthandler, List<FlowLineNode<CSFlowLineData>> infermain, List<FlowLineNode<CSFlowLineData>> expectedinfer, String inferoperator) throws CodeSynthesisException
 	{
 		List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleFieldSpecificationInfer(infermain, expectedinfer, squeue, smthandler, inferoperator);
+		// TODO this may be removed to get exact result.
 		if (ls.size() == 0)
 		{
 			return CSFlowLineHelper.ForwardConcate(null, infermain, inferoperator, expectedinfer, null, squeue, smthandler, null);
