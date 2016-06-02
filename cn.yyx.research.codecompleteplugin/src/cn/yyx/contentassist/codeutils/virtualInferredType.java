@@ -10,7 +10,6 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.InferredCCType;
 import cn.yyx.contentassist.commonutils.NameConvention;
-import cn.yyx.research.language.JDTManager.GCodeMetaInfo;
 
 public class virtualInferredType extends type{
 	
@@ -46,7 +45,7 @@ public class virtualInferredType extends type{
 		String returntype = "Infer" + c;
 		String modifidedname = squeue.GetLastHandler().getScopeOffsetRefHandler().GenerateNewDeclaredVariable(NameConvention.GetAbbreviationOfType(returntype), returntype, null, smthandler.getAoi().isInFieldLevel());
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), GCodeMetaInfo.InferedType + " " + modifidedname, new InferredCCType(), null, squeue.GetLastHandler()), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), modifidedname, new InferredCCType(), null, squeue.GetLastHandler()), smthandler.getProb()));
 		return result;
 	}
 	

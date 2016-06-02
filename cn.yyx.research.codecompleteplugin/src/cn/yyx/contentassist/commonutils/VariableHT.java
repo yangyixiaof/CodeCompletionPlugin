@@ -1,47 +1,39 @@
 package cn.yyx.contentassist.commonutils;
 
+import java.util.Map;
+
 public class VariableHT {
 	
-	private String holdertype = null;
-	private String holdername = null;
-	private int allvh = 0;
+	// private String holdertype = null;
+	// private String holdername = null;
+	// private int allvh = 0;
+	private Map<String, String> tpvarname = null;
+	private Map<String, Integer> tpremains = null;
 	
-	public VariableHT(String holdertype, String holdername, int allvh) {
-		this.setHoldertype(holdertype);
-		this.setHoldername(holdername);
-		this.setAllvh(allvh);
-	}
-
-	public VariableHT() {
-	}
-
-	public String getHoldertype() {
-		return holdertype;
-	}
-
-	public void setHoldertype(String holdertype) {
-		this.holdertype = holdertype;
-	}
-
-	public String getHoldername() {
-		return holdername;
-	}
-
-	public void setHoldername(String holdername) {
-		this.holdername = holdername;
+	public VariableHT(Map<String, String> tpvarname, Map<String, Integer> tpremains) {
+		this.setTpvarname(tpvarname);
+		this.setTpremains(tpremains);
 	}
 	
 	@Override
 	public String toString() {
-		return "holdertype:" + holdertype + ";holdername:" + holdername;
+		return getTpvarname().toString();
 	}
 
-	public int getAllvh() {
-		return allvh;
+	public Map<String, String> getTpvarname() {
+		return tpvarname;
 	}
 
-	public void setAllvh(int allvh) {
-		this.allvh = allvh;
+	public void setTpvarname(Map<String, String> tpvarname) {
+		this.tpvarname = tpvarname;
+	}
+
+	public Map<String, Integer> getTpremains() {
+		return tpremains;
+	}
+
+	public void setTpremains(Map<String, Integer> tpremains) {
+		this.tpremains = tpremains;
 	}
 	
 }

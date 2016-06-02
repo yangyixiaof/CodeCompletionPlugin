@@ -1,12 +1,17 @@
 package cn.yyx.contentassist.codesynthesis;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
+import java.util.TreeMap;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.data.CSCommonOverProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSForIniOverProperty;
+import cn.yyx.contentassist.codesynthesis.data.CSLambdaData;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableDeclarationData;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableHolderData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -149,8 +154,82 @@ public class CSFlowLineQueue {
 		return null;
 	}
 	
-	public VariableHT BackSearchForLastIthVariableHolderAndTypeDeclaration(int off) {
-		String vhtp = null;
+	private String SearchForVarableDeclarationType(FlowLineNode<CSFlowLineData> tfln)
+	{
+		FlowLineNode<CSFlowLineData> tmp = tfln;
+		while (tmp != null)
+		{
+			CSFlowLineData tmpdata = tmp.getData();
+			if (tmpdata instanceof CSVariableDeclarationData)
+			{
+				return ((CSVariableDeclarationData)tmpdata).getTypecode();
+			}
+			FlowLineNode<CSFlowLineData> bs = tmpdata.getSynthesisCodeManager().getBlockstart();
+			if (bs != null)
+			{
+				tmp = bs;
+			}
+			tmp = tmp.getPrev();
+		}
+		new Exception("There is no variable declaration data before variableHolder?").printStackTrace();
+		System.exit(1);
+		return null;
+	}
+	
+	private void HandleVarNameRms(String tp, String varname, Map<String, String> tpvarname, Map<String, Integer> tpremains, final int off)
+	{
+		if (!tpremains.containsKey(tp))
+		{
+			tpremains.put(tp, off);
+		}
+		int tpoff = tpremains.get(tp);
+		if (tpoff == 0)
+		{
+			tpvarname.put(tp, varname);
+		}
+		tpoff--;
+		tpremains.put(tp, tpoff);
+	}
+	
+	public VariableHT BackSearchForLastIthVariableHolderAndTypeDeclaration(int scope, int off) {
+		
+		Map<String, String> tpvarname = new TreeMap<String, String>();
+		Map<String, Integer> tpremains = new TreeMap<String, Integer>();
+		
+		FlowLineNode<CSFlowLineData> tmp = last;
+		boolean vhbarrierdestroy = false;
+		while (scope >= 0 && tmp != null)
+		{
+			CSFlowLineData tmpdata = tmp.getData();
+			if (tmpdata.HasSpecialProperty(CSForIniOverProperty.class) || tmpdata.HasSpecialProperty(CSCommonOverProperty.class))
+			{
+				vhbarrierdestroy = true;
+			}
+			if (tmpdata instanceof CSVariableHolderData && vhbarrierdestroy)
+			{
+				String tp = SearchForVarableDeclarationType(tmp);
+				String varname = ((CSVariableHolderData)tmpdata).getVarname();
+				HandleVarNameRms(tp, varname, tpvarname, tpremains, off);
+			}
+			if (tmpdata instanceof CSVariableHolderData && !vhbarrierdestroy)
+			{
+				vhbarrierdestroy = true;
+			}
+			if (tmpdata instanceof CSLambdaData)
+			{
+				List<String> tps = ((CSLambdaData)tmpdata).getDeclares();
+				Iterator<String> itr = tps.iterator();
+				while (itr.hasNext())
+				{
+					String ttp = itr.next();
+					String[] tpss = ttp.split(" ");
+					HandleVarNameRms(tpss[0], tpss[1], tpvarname, tpremains, off);
+				}
+				scope--;
+			}
+			tmp = tmp.getPrev();
+		}
+		/*String vhtp = null;
 		String vhne = null;
 		FlowLineNode<CSFlowLineData> tmp = last;
 		String recentvhne = null;
@@ -204,8 +283,8 @@ public class CSFlowLineQueue {
 		//if ((vhtp == null && vhne != null) || (vhtp != null && vhne == null))
 		//{
 		//	throw new Error("Strange, has declarations but no holders or has holders but no declarations.");
-		//}
-		return new VariableHT();
+		//}*/
+		return new VariableHT(tpvarname, tpremains);
 	}
 	
 	/*public FlowLineNode<CSFlowLineData> BackSearchForStructureSignal(int signal) {

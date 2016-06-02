@@ -11,10 +11,10 @@ public class CSVarRefHelper {
 	
 	public static Map<String, String> GetAllTypeVariablePair(CSFlowLineQueue squeue, CSStatementHandler smthandler, int scope, int off) throws CodeSynthesisException
 	{
-		VariableHT vht = new VariableHT();
-		if (scope == 0 && !(smthandler.getAoi().isInFieldLevel()))
+		VariableHT vht = null;
+		if (!(smthandler.getAoi().isInFieldLevel())) // scope == 0 && 
 		{
-			vht = squeue.BackSearchForLastIthVariableHolderAndTypeDeclaration(off);
+			vht = squeue.BackSearchForLastIthVariableHolderAndTypeDeclaration(scope, off);
 		}
 		Map<String, String> pofield = null;
 		Map<String, String> po = null;
@@ -26,19 +26,16 @@ public class CSVarRefHelper {
 			throw new CodeSynthesisException(e.getMessage());
 		}
 		po.putAll(pofield);
-		if (vht.getHoldername() != null)
-		{
-			po.put(vht.getHoldertype(), vht.getHoldername());
-		}
+		po.putAll(vht.getOhs());
 		return po;
 	}
 	
 	public static Map<String, String> GetAllFieldTypeVariablePair(CSFlowLineQueue squeue, CSStatementHandler smthandler, int scope, int off) throws CodeSynthesisException
 	{
-		VariableHT vht = new VariableHT();
-		if (scope == 0 && smthandler.getAoi().isInFieldLevel())
+		VariableHT vht = null;
+		if (smthandler.getAoi().isInFieldLevel()) // scope == 0 && 
 		{
-			vht = squeue.BackSearchForLastIthVariableHolderAndTypeDeclaration(off);
+			vht = squeue.BackSearchForLastIthVariableHolderAndTypeDeclaration(scope, off);
 		}
 		Map<String, String> povar = null;
 		Map<String, String> po = null;

@@ -8,10 +8,12 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.data.CSCommonOverProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.commonutils.ListHelper;
 
 public class commonOverStatement extends statement implements SWrapper{
 	
@@ -38,6 +40,7 @@ public class commonOverStatement extends statement implements SWrapper{
 			FlowLineNode<CSFlowLineData> fln = ritr.next();
 			result.addAll(CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, null));
 		}
+		ListHelper.AddExtraPropertyToAllListNodes(result, new CSCommonOverProperty(null));
 		return result;
 	}
 

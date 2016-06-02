@@ -1,10 +1,12 @@
 package cn.yyx.contentassist.codesynthesis.data;
 
+import java.util.List;
+
 public class CSLambdaData extends CSFlowLineData {
 	
-	private String[] declares = null;
+	private List<String> declares = null;
 	
-	public CSLambdaData(String[] declares, CSFlowLineData fld) {
+	public CSLambdaData(List<String> declares, CSFlowLineData fld) {
 		super(fld.getId(), fld.getSete(), fld.getData(), fld.getDcls(), fld.getTck(), fld.getHandler());
 		if (fld.isHashole())
 		{
@@ -17,11 +19,11 @@ public class CSLambdaData extends CSFlowLineData {
 		this.setExtraData(fld.getExtraData());
 	}
 
-	public String[] getDeclares() {
+	public List<String> getDeclares() {
 		return declares;
 	}
 
-	public void setDeclares(String[] declares) {
+	public void setDeclares(List<String> declares) {
 		this.declares = declares;
 	}
 	

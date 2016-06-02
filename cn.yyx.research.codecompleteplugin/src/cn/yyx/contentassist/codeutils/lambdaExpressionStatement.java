@@ -8,6 +8,7 @@ import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.data.CSArgTypeListData;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSLambdaData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -122,12 +123,12 @@ public class lambdaExpressionStatement extends statement{
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
-			result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(GetDeclares(fln.getData().getData()), fln.getData()), fln.getProbability()));
+			result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(((CSArgTypeListData)fln.getData()).getTpandnames(), fln.getData()), fln.getProbability()));
 		}
 		return result;
 	}
 	
-	private String[] GetDeclares(String data)
+	/*private String[] GetDeclares(String data)
 	{
 		data = data.substring(1, data.indexOf(")->"));
 		String[] sts = data.split(",");
@@ -137,7 +138,7 @@ public class lambdaExpressionStatement extends statement{
 			sts[i] = sts[i].trim();
 		}
 		return sts;
-	}
+	}*/
 	
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {

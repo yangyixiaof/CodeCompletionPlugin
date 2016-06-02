@@ -35,9 +35,18 @@ public class CSFlowLineData implements CSDataStructure {
 		{
 			return true;
 		} else {
-			if (csep != null && csep.getClass().equals(cls)) {
-				return true;
+			CSExtraProperty tmp = csep;
+			while (tmp != null)
+			{
+				if (tmp.getClass().equals(cls))
+				{
+					return true;
+				}
+				tmp = tmp.getCsepnext();
 			}
+			//if (csep != null && csep.getClass().equals(cls)) {
+			//	return true;
+			//}
 		}
 		return false;
 	}
