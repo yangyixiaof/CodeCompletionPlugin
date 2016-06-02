@@ -12,6 +12,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSCommonOverProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSForIniOverProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSLambdaData;
+import cn.yyx.contentassist.codesynthesis.data.CSLambdaEndProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableDeclarationData;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableHolderData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -191,10 +192,80 @@ public class CSFlowLineQueue {
 		tpremains.put(tp, tpoff);
 	}
 	
-	public VariableHT BackSearchForLastIthVariableHolderAndTypeDeclaration(int scope, int off) {
-		
+	/**
+	 * return value is the level outer should handle.
+	 * @param scope
+	 * @return
+	 */
+	public VariableHT BackSearchHandleLambdaScope(int scope, int off)
+	{
 		Map<String, String> tpvarname = new TreeMap<String, String>();
 		Map<String, Integer> tpremains = new TreeMap<String, Integer>();
+		
+		boolean vhbarrierdestroy = false;
+		
+		FlowLineNode<CSFlowLineData> tmp = last;
+		while (tmp != null)
+		{
+			boolean shouldoperate = false;
+			if (scope == 0)
+			{
+				shouldoperate = true;
+			}
+			CSFlowLineData tmpdata = tmp.getData();
+			if (tmpdata.HasSpecialProperty(CSLambdaData.class))
+			{
+				scope--;
+				if (scope < 0)
+				{
+					break;
+					// return new VariableHT(scope, tmp);
+				}
+			}
+			if (tmpdata.HasSpecialProperty(CSLambdaEndProperty.class))
+			{
+				FlowLineNode<CSFlowLineData> bs = tmpdata.getSynthesisCodeManager().getBlockstart();
+				if (bs != null) {
+					tmp = bs;
+				}
+			}
+			if (shouldoperate)
+			{
+				// only use tmpdata.
+				if (tmpdata.HasSpecialProperty(CSForIniOverProperty.class) || tmpdata.HasSpecialProperty(CSCommonOverProperty.class))
+				{
+					vhbarrierdestroy = true;
+				}
+				if (tmpdata instanceof CSVariableHolderData && vhbarrierdestroy)
+				{
+					String tp = SearchForVarableDeclarationType(tmp);
+					String varname = ((CSVariableHolderData)tmpdata).getVarname();
+					HandleVarNameRms(tp, varname, tpvarname, tpremains, off);
+				}
+				if (tmpdata instanceof CSVariableHolderData && !vhbarrierdestroy)
+				{
+					vhbarrierdestroy = true;
+				}
+				if (tmpdata instanceof CSLambdaData)
+				{
+					List<String> tps = ((CSLambdaData)tmpdata).getDeclares();
+					Iterator<String> itr = tps.iterator();
+					while (itr.hasNext())
+					{
+						String ttp = itr.next();
+						String[] tpss = ttp.split(" ");
+						HandleVarNameRms(tpss[0], tpss[1], tpvarname, tpremains, off);
+					}
+					scope--;
+				}
+			}
+			tmp = tmp.getPrev();
+		}
+		return new VariableHT(tpvarname, tpremains, scope);
+	}
+	
+	/*public VariableHT BackSearchForLastIthVariableHolderAndTypeDeclaration(int scope, int off) {
+		
 		
 		FlowLineNode<CSFlowLineData> tmp = last;
 		boolean vhbarrierdestroy = false;
@@ -229,7 +300,7 @@ public class CSFlowLineQueue {
 			}
 			tmp = tmp.getPrev();
 		}
-		/*String vhtp = null;
+		String vhtp = null;
 		String vhne = null;
 		FlowLineNode<CSFlowLineData> tmp = last;
 		String recentvhne = null;
@@ -283,9 +354,9 @@ public class CSFlowLineQueue {
 		//if ((vhtp == null && vhne != null) || (vhtp != null && vhne == null))
 		//{
 		//	throw new Error("Strange, has declarations but no holders or has holders but no declarations.");
-		//}*/
+		//}
 		return new VariableHT(tpvarname, tpremains);
-	}
+	}*/
 	
 	/*public FlowLineNode<CSFlowLineData> BackSearchForStructureSignal(int signal) {
 		FlowLineNode<CSFlowLineData> tmp = last;

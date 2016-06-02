@@ -12,7 +12,6 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeResolver;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
-import cn.yyx.research.language.JDTManager.GCodeMetaInfo;
 
 public class classRef extends type {
 	
@@ -51,7 +50,7 @@ public class classRef extends type {
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		String tp = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleTypeRef(GCodeMetaInfo.HackedNoType, 0, off);
+		String tp = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleTypeRef(off);
 		if (tp == null)
 		{
 			return null;

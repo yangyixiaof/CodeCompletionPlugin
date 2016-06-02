@@ -14,19 +14,18 @@ public class CSVarRefHelper {
 		VariableHT vht = null;
 		if (!(smthandler.getAoi().isInFieldLevel())) // scope == 0 && 
 		{
-			vht = squeue.BackSearchForLastIthVariableHolderAndTypeDeclaration(scope, off);
+			vht = squeue.BackSearchHandleLambdaScope(scope, off);
 		}
 		Map<String, String> pofield = null;
 		Map<String, String> po = null;
 		try {
-			pofield = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(vht.getHoldertype(), vht.getAllvh(), scope, off);
-			po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(vht.getHoldertype(), vht.getAllvh(), scope, off);
+			pofield = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(null, null, -1, scope, off);
+			po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(vht.getTpvarname(), vht.getTpremains(), vht.getTrimedscope(), scope, off);
 		} catch (OffsetOutOfScopeException e) {
 			// e.printStackTrace();
 			throw new CodeSynthesisException(e.getMessage());
 		}
 		po.putAll(pofield);
-		po.putAll(vht.getOhs());
 		return po;
 	}
 	
@@ -35,22 +34,22 @@ public class CSVarRefHelper {
 		VariableHT vht = null;
 		if (smthandler.getAoi().isInFieldLevel()) // scope == 0 && 
 		{
-			vht = squeue.BackSearchForLastIthVariableHolderAndTypeDeclaration(scope, off);
+			vht = squeue.BackSearchHandleLambdaScope(scope, off);
 		}
 		Map<String, String> povar = null;
 		Map<String, String> po = null;
 		try {
-			povar = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(vht.getHoldertype(), vht.getAllvh(), scope, off);
-			po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(vht.getHoldertype(), vht.getAllvh(), scope, off);
+			povar = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(null, null, -1, scope, off);
+			po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(vht.getTpvarname(), vht.getTpremains(), vht.getTrimedscope(), scope, off);
 		} catch (OffsetOutOfScopeException e) {
 			// e.printStackTrace();
 			throw new CodeSynthesisException(e.getMessage());
 		}
 		po.putAll(povar);
-		if (vht.getHoldername() != null)
+		/*if (vht.getHoldername() != null)
 		{
 			po.put(vht.getHoldertype(), vht.getHoldername());
-		}
+		}*/
 		return po;
 	}
 	

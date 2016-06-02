@@ -9,10 +9,12 @@ public class VariableHT {
 	// private int allvh = 0;
 	private Map<String, String> tpvarname = null;
 	private Map<String, Integer> tpremains = null;
+	private int trimedscope = 0;
 	
-	public VariableHT(Map<String, String> tpvarname, Map<String, Integer> tpremains) {
+	public VariableHT(Map<String, String> tpvarname, Map<String, Integer> tpremains, int trimedscope) {
 		this.setTpvarname(tpvarname);
 		this.setTpremains(tpremains);
+		this.setTrimedscope(trimedscope);
 	}
 	
 	@Override
@@ -34,6 +36,14 @@ public class VariableHT {
 
 	public void setTpremains(Map<String, Integer> tpremains) {
 		this.tpremains = tpremains;
+	}
+
+	public int getTrimedscope() {
+		return trimedscope;
+	}
+
+	public void setTrimedscope(int trimedscope) {
+		this.trimedscope = trimedscope;
 	}
 	
 }
