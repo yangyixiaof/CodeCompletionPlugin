@@ -73,7 +73,7 @@ public class SpecificationHelper {
 		return result;
 	}
 	
-	public static RefAndModifiedMember GetMostLikelyRef(ContextHandler ch, Set<String> codes, String hint, boolean hintismethod, String concator)
+	/*public static RefAndModifiedMember GetMostLikelyRef(ContextHandler ch, Set<String> codes, String hint, boolean hintismethod, String concator)
 	{
 		String maxRef = null;
 		String maxMember = null;
@@ -131,6 +131,6 @@ public class SpecificationHelper {
 		}
 		RefAndModifiedMember result = new RefAndModifiedMember(maxRef, maxMember, maxMemberType, maxMm);
 		return result;
-	}
+	}*/
 	
 }

@@ -1,6 +1,7 @@
 package cn.yyx.contentassist.codesynthesis.typeutil.computations;
 
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
+import cn.yyx.contentassist.codesynthesis.typeutil.InferredCCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeConflictException;
 
@@ -21,6 +22,10 @@ public class LeftOrRightCast extends TypeComputationKind {
 		if (TypeCheckHelper.CanBeMutualCast(pre, post))
 		{
 			return pre;
+		}
+		if (pre instanceof InferredCCType || post instanceof InferredCCType)
+		{
+			return new InferredCCType();
 		}
 		throw new TypeConflictException("two types can not be casted.");
 	}

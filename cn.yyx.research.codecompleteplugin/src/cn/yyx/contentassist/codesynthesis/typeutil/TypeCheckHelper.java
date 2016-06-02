@@ -3,6 +3,8 @@ package cn.yyx.contentassist.codesynthesis.typeutil;
 import java.util.Iterator;
 import java.util.List;
 
+import cn.yyx.research.language.JDTManager.GCodeMetaInfo;
+
 public class TypeCheckHelper {
 	
 	/*public static boolean CanBeMutualCast(TypeCheck one, TypeCheck two)
@@ -11,6 +13,24 @@ public class TypeCheckHelper {
 		Class<?> twotype = two.getExpreturntypeclass();
 		return CanBeMutualCast(onetype, twotype);
 	}*/
+	
+	public static boolean IsInferredType(CCType cct)
+	{
+		if (cct instanceof InferredCCType)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean IsInferredType(String it)
+	{
+		if (it.equals(GCodeMetaInfo.InferedType))
+		{
+			return true;
+		}
+		return false;
+	}
 	
 	public static boolean CanBeMutualCast(List<CCType> cs, CCType rtclass) {
 		Iterator<CCType> itr = cs.iterator();
@@ -28,6 +48,10 @@ public class TypeCheckHelper {
 	public static boolean CanBeMutualCast(CCType onetype, CCType twotype)
 	{
 		if (onetype == null || twotype == null)
+		{
+			return true;
+		}
+		if (onetype instanceof InferredCCType || twotype instanceof InferredCCType)
 		{
 			return true;
 		}

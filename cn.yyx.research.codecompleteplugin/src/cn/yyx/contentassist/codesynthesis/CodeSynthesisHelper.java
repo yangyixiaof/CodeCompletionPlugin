@@ -16,7 +16,9 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
+import cn.yyx.contentassist.codesynthesis.typeutil.InferredCCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeResolver;
 import cn.yyx.contentassist.codeutils.OneCode;
 import cn.yyx.contentassist.codeutils.argumentList;
@@ -94,6 +96,7 @@ public class CodeSynthesisHelper {
 	private static List<FlowLineNode<CSFlowLineData>> HandleVarRefInferredContent(Map<String, String> po, CSFlowLineQueue squeue, CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer, String concator, boolean ismethod)
 	{
 		// this function doesn't need to handle CSMethodStatementHandler, CSMethodStatementHandler has been handled in method invocation.
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		if (reservedword != null && !reservedword.equals(""))
 		{
 			Map<String, String> npo = new TreeMap<String, String>();
@@ -101,14 +104,18 @@ public class CodeSynthesisHelper {
 			Iterator<String> citr = pokeys.iterator();
 			while (citr.hasNext())
 			{
-				String code = citr.next();
-				String type = po.get(code);
+				String type = citr.next();
+				String code = po.get(type);
+				if (TypeCheckHelper.IsInferredType(type))
+				{
+					result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), code + "." + reservedword + concator + expectedinfer.get(0).getData().getData(), new InferredCCType(), null, squeue.GetLastHandler()), smthandler.getProb()));
+					continue;
+				}
 				code += "." + reservedword;
-				npo.put(code, type);
+				npo.put(type, code);
 			}
 			po = npo;
 		}
-		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		RefAndModifiedMember ramm = SpecificationHelper.GetMostLikelyRef(squeue.GetLastHandler().getContextHandler(), po, expectedinfer.get(0).getData().getData(), ismethod, concator);
 		if (ramm != null)
 		{
@@ -140,7 +147,7 @@ public class CodeSynthesisHelper {
 		return ls;
 	}
 	
-	public static List<FlowLineNode<CSFlowLineData>> HandleMethodSpecificationInfer(CSFlowLineQueue squeue,
+	private static List<FlowLineNode<CSFlowLineData>> HandleMethodSpecificationInfer(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String spechint, String beforemethodexp, Map<String, MethodTypeSignature> mts) {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		
@@ -207,54 +214,6 @@ public class CodeSynthesisHelper {
 		}
 	}
 	
-	/*public static boolean HandleMethodSpecificationInfer(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai, String spechint)
-	{
-		MembersOfAReference res = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(spechint, handler.getContextHandler().getJavacontext(), null);
-		List<MethodMember> mms = res.getMmlist();
-		Iterator<MethodMember> itr = mms.iterator();
-		String cmp = StringUtil.GetContentBehindFirstWhiteSpace(spechint);
-		while (itr.hasNext())
-		{
-			MethodMember mm = itr.next();
-			String methodname = mm.getName();
-			double sim = SimilarityHelper.ComputeTwoStringSimilarity(cmp, methodname);
-			if (sim > 0.8)
-			{
-				result.AddOneData(spechint, TypeCheckHelper.TranslateMethodMember(mm, handler.getContextHandler().getJavacontext()));
-			}
-		}
-		return false;
-	}*/
-	
-	/*public static List<FlowLineNode<CSFlowLineData>> HandleTypeSpecificationInfer(List<FlowLineNode<CSFlowLineData>> tmp, List<FlowLineNode<CSFlowLineData>> tpls, CSFlowLineQueue squeue, CSStatementHandler smthandler) throws CodeSynthesisException
-	{
-		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		Iterator<FlowLineNode<CSFlowLineData>> itr = tmp.iterator();
-		while (itr.hasNext())
-		{
-			FlowLineNode<CSFlowLineData> fln = itr.next();
-			List<TypeMember> tmm = SearchSpecificationOfAReference.SearchTypeSpecificationByPrefix(fln.getData().getData() + ".", squeue.GetLastHandler().getContextHandler().getJavacontext());
-			Iterator<TypeMember> titr = tmm.iterator();
-			while (titr.hasNext())
-			{
-				TypeMember tm = titr.next();
-				String cmp = tm.getType();
-				Iterator<FlowLineNode<CSFlowLineData>> tpitr = tpls.iterator();
-				while (tpitr.hasNext())
-				{
-					FlowLineNode<CSFlowLineData> tp = tpitr.next();
-					String cmped = tp.getData().getData();
-					if (SimilarityHelper.ComputeTwoStringSimilarity(cmp, cmped) > PredictMetaInfo.TwoStringSimilarThreshold)
-					{
-						result.add(CSFlowLineHelper.ConcateTwoFlowLineNode(null, fln, ".", tp, null, squeue, smthandler, null, null));
-					}
-				}
-			}
-		}
-		return result;
-	}*/
-	
 	public static List<FlowLineNode<CSFlowLineData>> HandleFieldSpecificationInfer(List<FlowLineNode<CSFlowLineData>> tmp, List<FlowLineNode<CSFlowLineData>> idls, CSFlowLineQueue squeue, CSStatementHandler smthandler, String concator) throws CodeSynthesisException
 	{
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
@@ -262,6 +221,12 @@ public class CodeSynthesisHelper {
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
+			CSFlowLineData flndata = fln.getData();
+			if (TypeCheckHelper.IsInferredType(flndata.getDcls()))
+			{
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), flndata.getData() + concator + idls.get(0).getData().getData(), new InferredCCType(), null, squeue.GetLastHandler()), fln.getProbability()));
+				continue;
+			}
 			List<FieldMember> fmm = SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix(fln.getData().getData() + concator, squeue.GetLastHandler().getContextHandler().getJavacontext());
 			Iterator<FieldMember> fitr = fmm.iterator();
 			while (fitr.hasNext())
@@ -367,11 +332,11 @@ public class CodeSynthesisHelper {
 	private static List<FlowLineNode<CSFlowLineData>> HandleInferredContent(CSFlowLineQueue squeue, CSStatementHandler smthandler, List<FlowLineNode<CSFlowLineData>> infermain, List<FlowLineNode<CSFlowLineData>> expectedinfer, String inferoperator) throws CodeSynthesisException
 	{
 		List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleFieldSpecificationInfer(infermain, expectedinfer, squeue, smthandler, inferoperator);
-		// TODO this may be removed to get exact result.
-		if (ls.size() == 0)
+		// Remaining. this may be removed to get exact result.
+		/*if (ls.size() == 0)
 		{
 			return CSFlowLineHelper.ForwardConcate(null, infermain, inferoperator, expectedinfer, null, squeue, smthandler, null);
-		}
+		}*/
 		return ls;
 	}
 	

@@ -1,6 +1,7 @@
 package cn.yyx.contentassist.codesynthesis.typeutil.computations;
 
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
+import cn.yyx.contentassist.codesynthesis.typeutil.InferredCCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputer;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeConflictException;
 
@@ -21,6 +22,10 @@ public class InheritLeftOrRightTwoSameSide extends TypeComputationKind {
 		if (pre == null || post == null)
 		{
 			throw new TypeConflictException("pre and post are null in InheritLeftOrRightTwoSameSide.");
+		}
+		if (pre instanceof InferredCCType || post instanceof InferredCCType)
+		{
+			return new InferredCCType();
 		}
 		if (TypeComputer.CCTypeSame(pre, post))
 		{

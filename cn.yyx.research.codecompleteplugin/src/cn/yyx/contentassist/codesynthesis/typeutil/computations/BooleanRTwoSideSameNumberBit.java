@@ -1,6 +1,7 @@
 package cn.yyx.contentassist.codesynthesis.typeutil.computations;
 
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
+import cn.yyx.contentassist.codesynthesis.typeutil.InferredCCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputer;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeConflictException;
 
@@ -11,7 +12,7 @@ public class BooleanRTwoSideSameNumberBit extends TypeComputationKind {
 		this.pre = pre;
 		if (pre != null)
 		{
-			if (!TypeComputer.IsStrictNumberBit(pre.getCls()))
+			if (!TypeComputer.IsStrictNumberBit(pre.getCls()) && !(pre instanceof InferredCCType))
 			{
 				throw new TypeConflictException("left of BooleanRTwoSideSameNumberBit not number bit.");
 			}
@@ -23,7 +24,7 @@ public class BooleanRTwoSideSameNumberBit extends TypeComputationKind {
 		this.post = post;
 		if (post != null)
 		{
-			if (!TypeComputer.IsStrictNumberBit(post.getCls()))
+			if (!TypeComputer.IsStrictNumberBit(post.getCls()) && !(post instanceof InferredCCType))
 			{
 				throw new TypeConflictException("right of inBooleanRTwoSideSameNumberBitherit not number bit.");
 			}
@@ -32,6 +33,10 @@ public class BooleanRTwoSideSameNumberBit extends TypeComputationKind {
 	
 	@Override
 	public CCType HandleResult() throws TypeConflictException {
+		if (pre instanceof InferredCCType || post instanceof InferredCCType)
+		{
+			return new InferredCCType();
+		}
 		return new CCType(boolean.class, "boolean");
 	}
 	
