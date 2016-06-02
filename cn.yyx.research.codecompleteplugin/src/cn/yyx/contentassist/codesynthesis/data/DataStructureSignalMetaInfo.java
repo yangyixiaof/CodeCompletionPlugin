@@ -21,5 +21,6 @@ public class DataStructureSignalMetaInfo {
 	public static final int ConditionExpressionQuestion = 13;
 	public static final int ConditionExpressionColon = 14;
 	// public static final int IfOver = 12;
+	public static final int LambdaExpression = 15;
 
 }

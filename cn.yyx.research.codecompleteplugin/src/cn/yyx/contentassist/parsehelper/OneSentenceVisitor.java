@@ -49,6 +49,7 @@ import cn.yyx.parse.szparse8java.Java8Parser.IncPostfixExpressionStatementContex
 import cn.yyx.parse.szparse8java.Java8Parser.IncPrefixExpressionStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.IntersectionFirstTypeContext;
 import cn.yyx.parse.szparse8java.Java8Parser.IntersectionSecondTypeContext;
+import cn.yyx.parse.szparse8java.Java8Parser.LambdaEndStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.LastArgTypeContext;
 import cn.yyx.parse.szparse8java.Java8Parser.LeInfixExpressionStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.LshiftInfixExpressionStatementContext;
@@ -168,9 +169,18 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		return res;
 	}
 	
-	// rawForExpOverStatement
-
-	// rawForUpdOverStatement
+	@Override
+	public Integer visitLambdaEndStatement(LambdaEndStatementContext ctx) {
+		Integer res = visitChildren(ctx);
+		// smt = new rawForUpdOverStatement(ctx.getText());
+		if (!(smt instanceof expressionStatement))
+		{
+			System.err.println("what the fuck? smt is not expressionStatement in LambdaEndStatement?");
+			System.exit(1);
+		}
+		smt = new lambdaEndStatement(smt, ctx.getText());
+		return res;
+	}
 
 	@Override
 	public Integer visitExpressionStatement(Java8Parser.ExpressionStatementContext ctx) {
