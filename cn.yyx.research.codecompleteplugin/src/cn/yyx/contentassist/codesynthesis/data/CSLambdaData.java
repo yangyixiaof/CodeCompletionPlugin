@@ -12,6 +12,7 @@ public class CSLambdaData extends CSFlowLineData {
 		}
 		this.setDeclares(declares);
 		this.setCsep(fld.getCsep());
+		this.setCsep(new CSLambdaProperty(null));
 		this.setScm(fld.getSynthesisCodeManager());
 		this.setExtraData(fld.getExtraData());
 	}

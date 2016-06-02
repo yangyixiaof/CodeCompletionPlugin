@@ -109,7 +109,7 @@ public class arrayAccessStatement extends expressionStatement {
 				// do nothing.
 			} else {
 				// result.add(new FlowLineNode<CSFlowLineData>(new CSArrayAccessStartData(fln.getData()), fln.getProbability()));
-				fln.getData().setCsep(new CSArrayAccessStartProperty());
+				fln.getData().setCsep(new CSArrayAccessStartProperty(null));
 			}
 			result.add(fln);
 		}

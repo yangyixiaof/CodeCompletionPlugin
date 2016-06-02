@@ -8,7 +8,8 @@ public class CSMethodInvocationProperty extends CSExtraProperty {
 	
 	private boolean hasem = false;
 	 
-	public CSMethodInvocationProperty(boolean hasem) {
+	public CSMethodInvocationProperty(boolean hasem, CSExtraProperty csepnext) {
+		super(csepnext);
 		this.setHasem(hasem);
 	}
 	
@@ -21,7 +22,7 @@ public class CSMethodInvocationProperty extends CSExtraProperty {
 	}
 	
 	@Override
-	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
+	public void HandleStackSignalDetail(Stack<Integer> signals) throws CodeSynthesisException {
 		signals.push(DataStructureSignalMetaInfo.MethodInvocation);
 	}
 	

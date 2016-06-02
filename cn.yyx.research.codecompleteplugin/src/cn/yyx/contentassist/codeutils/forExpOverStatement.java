@@ -71,7 +71,7 @@ public class forExpOverStatement extends rawForExpOverStatement implements SWrap
 		{
 			FlowLineNode<CSFlowLineData> smtln = itr.next();
 			CSFlowLineData smtdata = smtln.getData();
-			smtdata.setCsep(CSForExpOverProperty.GetInstance());
+			smtdata.setCsep(new CSForExpOverProperty(null));
 		}
 		// result.add(new FlowLineNode<CSFlowLineData>(new CSForExpOverData(squeue.GenerateNewNodeId(), smthandler.getSete(), ";", null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return smtls;

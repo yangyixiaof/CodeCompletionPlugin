@@ -6,8 +6,12 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 
 public class CSCondExpBeginProperty extends CSExtraProperty {
 	
+	public CSCondExpBeginProperty(CSExtraProperty csepnext) {
+		super(csepnext);
+	}
+
 	@Override
-	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
+	public void HandleStackSignalDetail(Stack<Integer> signals) throws CodeSynthesisException {
 		if (signals.size() == 0)
 		{
 			throw new CodeSynthesisException("cond exp begin does not have common for prefixed.");

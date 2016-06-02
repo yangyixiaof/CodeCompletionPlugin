@@ -42,35 +42,11 @@ public class rightParentheseStatement extends statement{
 		return 0;
 	}
 	
-	/*@Override
-	public boolean HandleOverSignal(Stack<Integer> cstack) {
-		Integer hint = cstack.peek();
-		if (hint == null)
-		{
-			return true;
-		}
-		ComplicatedSignal cs = ComplicatedSignal.ParseComplicatedSignal(hint);
-		if (cs == null || cs.getSign() == StructureSignalMetaInfo.ParentheseBlock || times > cs.getCount())
-		{
-			return true;
-		}
-		int remaincounts = cs.getCount() - times;
-		if (remaincounts == 0)
-		{
-			cstack.pop();
-		}
-		else
-		{
-			cs.setCount(remaincounts);
-		}
-		return false;
-	}*/
-	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		CSFlowLineData cr = new CSFlowLineData(squeue.GenerateNewNodeId() + "", smthandler.getSete(), StringUtil.GenerateDuplicates(")", times), null, null, squeue.GetLastHandler(), new CSRightParenInfoProperty(times));
+		CSFlowLineData cr = new CSFlowLineData(squeue.GenerateNewNodeId() + "", smthandler.getSete(), StringUtil.GenerateDuplicates(")", times), null, null, squeue.GetLastHandler(), new CSRightParenInfoProperty(times, null));
 		FlowLineNode<CSFlowLineData> fln = new FlowLineNode<CSFlowLineData>(cr, smthandler.getProb());
 		result.add(fln);
 		Stack<Integer> signals = new Stack<Integer>();

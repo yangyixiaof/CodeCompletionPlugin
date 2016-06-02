@@ -106,7 +106,7 @@ public class arrayAccessEndStatement extends statement{
 						if (icls != null && (icls.getCls() == int.class || icls.getCls() == Integer.class))
 						{
 							CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, aastart);
-							fln.getData().setCsep(new CSArrayAccessEndProperty(ertime));
+							fln.getData().setCsep(new CSArrayAccessEndProperty(ertime, null));
 							result.add(fln);
 							// result.add(new FlowLineNode<CSFlowLineData>(new CSArrayAccessEndData(ertime, fln.getData()), fln.getProbability()));
 						}

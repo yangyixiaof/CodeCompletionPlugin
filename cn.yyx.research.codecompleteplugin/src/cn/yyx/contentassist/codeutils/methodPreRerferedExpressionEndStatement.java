@@ -33,7 +33,7 @@ public class methodPreRerferedExpressionEndStatement extends statement implement
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
 			CSFlowLineData fldata = fln.getData();
-			fldata.setCsep(CSPrProperty.GetInstance());
+			fldata.setCsep(new CSPrProperty(null));
 		}
 		return smtls;
 	}

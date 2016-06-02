@@ -9,12 +9,13 @@ public class CSLeftParenInfoProperty extends CSExtraProperty {
 	
 	int times = 0;
 	
-	public CSLeftParenInfoProperty(int times) {
+	public CSLeftParenInfoProperty(int times, CSExtraProperty csepnext) {
+		super(csepnext);
 		this.times = times;
 	}
 	
 	@Override
-	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
+	public void HandleStackSignalDetail(Stack<Integer> signals) throws CodeSynthesisException {
 		boolean couldstop = false;
 		int usetimes = times;
 		while (!couldstop)

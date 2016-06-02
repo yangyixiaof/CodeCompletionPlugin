@@ -6,10 +6,12 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 
 public class CSForIniOverProperty extends CSExtraProperty {
 	
-	private static CSExtraProperty cd = new CSForIniOverProperty();
+	public CSForIniOverProperty(CSExtraProperty csepnext) {
+		super(csepnext);
+	}
 	
 	@Override
-	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
+	public void HandleStackSignalDetail(Stack<Integer> signals) throws CodeSynthesisException {
 		if (signals.size() == 0)
 		{
 			throw new CodeSynthesisException("for ini over does not have common for prefixed.");
@@ -21,11 +23,6 @@ public class CSForIniOverProperty extends CSExtraProperty {
 		}
 		signals.pop();
 		signals.push(DataStructureSignalMetaInfo.CommonForInitWaitingOver);
-	}
-	
-	public static CSExtraProperty GetInstance()
-	{
-		return cd;
 	}
 
 }

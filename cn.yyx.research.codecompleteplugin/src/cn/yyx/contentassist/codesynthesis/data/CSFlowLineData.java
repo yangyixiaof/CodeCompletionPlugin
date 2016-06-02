@@ -231,8 +231,25 @@ public class CSFlowLineData implements CSDataStructure {
 		return csep;
 	}
 
-	public void setCsep(CSExtraProperty csep) {
-		this.csep = csep;
+	public void setCsep(CSExtraProperty cseppara) {
+		if (csep == null) {
+			csep = cseppara;
+		} else {
+			CSExtraProperty cseptmppre = null;
+			CSExtraProperty cseptmp = csep;
+			while (cseptmp != null)
+			{
+				cseptmppre = cseptmp;
+				cseptmp = cseptmp.getCsepnext();
+			}
+			if (cseptmppre == null)
+			{
+				System.err.println("cseptmppre is null. logic error.");
+				new Exception("cseptmppre is null. logic error.").printStackTrace();
+				System.exit(1);
+			}
+			cseptmppre.setCsepnext(cseppara);
+		}
 	}
 
 	public TypeComputationKind getTck() {

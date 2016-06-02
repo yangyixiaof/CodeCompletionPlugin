@@ -6,10 +6,12 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 
 public class CSPrProperty extends CSExtraProperty {
 	
-	private static CSExtraProperty cd = new CSPrProperty();
+	public CSPrProperty(CSExtraProperty csepnext) {
+		super(csepnext);
+	}
 	
 	@Override
-	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
+	public void HandleStackSignalDetail(Stack<Integer> signals) throws CodeSynthesisException {
 		if (signals.size() == 0)
 		{
 			throw new CodeSynthesisException("When handling pr, the top of stack is not MethodInvocation or MethodPs.");
@@ -21,11 +23,6 @@ public class CSPrProperty extends CSExtraProperty {
 		}
 		signals.pop();
 		signals.push(DataStructureSignalMetaInfo.MethodPr);
-	}
-	
-	public static CSExtraProperty GetInstance()
-	{
-		return cd;
 	}
 	
 }

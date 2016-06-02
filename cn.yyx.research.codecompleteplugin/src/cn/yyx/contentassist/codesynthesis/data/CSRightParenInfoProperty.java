@@ -9,7 +9,8 @@ public class CSRightParenInfoProperty extends CSExtraProperty {
 	
 	private int times = 0;
 	
-	public CSRightParenInfoProperty(int times) {
+	public CSRightParenInfoProperty(int times, CSExtraProperty csepnext) {
+		super(csepnext);
 		this.setTimes(times);
 	}
 
@@ -22,7 +23,7 @@ public class CSRightParenInfoProperty extends CSExtraProperty {
 	}
 	
 	@Override
-	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException{
+	public void HandleStackSignalDetail(Stack<Integer> signals) throws CodeSynthesisException{
 		signals.push(ComplicatedSignal.GenerateComplicatedSignal(DataStructureSignalMetaInfo.ParentheseBlock, times));
 	}
 	

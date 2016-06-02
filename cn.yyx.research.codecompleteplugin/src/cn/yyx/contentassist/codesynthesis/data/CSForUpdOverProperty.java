@@ -6,16 +6,13 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 
 public class CSForUpdOverProperty extends CSExtraProperty {
 	
-	private static CSExtraProperty cd = new CSForUpdOverProperty();
+	public CSForUpdOverProperty(CSExtraProperty csepnext) {
+		super(csepnext);
+	}
 	
 	@Override
-	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
+	public void HandleStackSignalDetail(Stack<Integer> signals) throws CodeSynthesisException {
 		signals.push(DataStructureSignalMetaInfo.CommonForUpdWaitingOver);
-	}
-
-	public static CSExtraProperty GetInstance()
-	{
-		return cd;
 	}
 	
 }

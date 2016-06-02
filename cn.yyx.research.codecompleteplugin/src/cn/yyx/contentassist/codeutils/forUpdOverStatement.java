@@ -72,7 +72,7 @@ public class forUpdOverStatement extends rawForUpdOverStatement implements SWrap
 		{
 			FlowLineNode<CSFlowLineData> smtln = smtitr.next();
 			CSFlowLineData smtdata = smtln.getData();
-			smtdata.setCsep(CSForUpdOverProperty.GetInstance());
+			smtdata.setCsep(new CSForUpdOverProperty(null));
 		}
 		Iterator<FlowLineNode<CSFlowLineData>> ritr = smtls.iterator();
 		while (ritr.hasNext())

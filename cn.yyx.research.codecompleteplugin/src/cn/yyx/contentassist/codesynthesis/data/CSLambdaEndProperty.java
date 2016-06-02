@@ -4,15 +4,15 @@ import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 
-public class CSCondExpColonMarkProperty extends CSExtraProperty {
-	
-	public CSCondExpColonMarkProperty(CSExtraProperty csepnext) {
+public class CSLambdaEndProperty extends CSExtraProperty {
+
+	public CSLambdaEndProperty(CSExtraProperty csepnext) {
 		super(csepnext);
 	}
 
 	@Override
 	public void HandleStackSignalDetail(Stack<Integer> signals) throws CodeSynthesisException {
-		signals.push(DataStructureSignalMetaInfo.ConditionExpressionColon);
+		signals.push(DataStructureSignalMetaInfo.LambdaExpression);
 	}
-	
+
 }

@@ -33,7 +33,7 @@ public class methodArgumentEndStatement extends statement implements SWrapper{
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
 			CSFlowLineData fldata = fln.getData();
-			fldata.setCsep(CSPsProperty.GetInstance());
+			fldata.setCsep(new CSPsProperty(null));
 		}
 		return smtls;
 	}

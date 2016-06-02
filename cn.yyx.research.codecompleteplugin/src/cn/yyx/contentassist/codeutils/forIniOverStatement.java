@@ -69,7 +69,7 @@ public class forIniOverStatement extends rawForIniOverStatement implements SWrap
 		{
 			FlowLineNode<CSFlowLineData> smtln = itr.next();
 			CSFlowLineData smtdata = smtln.getData();
-			smtdata.setCsep(CSForIniOverProperty.GetInstance());
+			smtdata.setCsep(new CSForIniOverProperty(null));
 		}
 		return smtls;
 	}

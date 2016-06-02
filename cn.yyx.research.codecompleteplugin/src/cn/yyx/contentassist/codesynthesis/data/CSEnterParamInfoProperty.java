@@ -8,7 +8,8 @@ public class CSEnterParamInfoProperty extends CSExtraProperty{
 	
 	private int times = -1;
 	
-	public CSEnterParamInfoProperty(int times) {
+	public CSEnterParamInfoProperty(int times, CSExtraProperty csepnext) {
+		super(csepnext);
 		this.times = times;
 	}
 	
@@ -21,7 +22,7 @@ public class CSEnterParamInfoProperty extends CSExtraProperty{
 	}
 	
 	@Override
-	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
+	public void HandleStackSignalDetail(Stack<Integer> signals) throws CodeSynthesisException {
 		int tttimes = times;
 		while (!signals.isEmpty() && tttimes > 0)
 		{

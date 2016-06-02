@@ -32,6 +32,7 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 		this.setTypecode(typecode);
 		this.setCsep(cd.getCsep());
 		this.setScm(cd.getSynthesisCodeManager());
+		this.setExtraData(cd.getExtraData());
 	}
 	
 	@SuppressWarnings("unchecked")

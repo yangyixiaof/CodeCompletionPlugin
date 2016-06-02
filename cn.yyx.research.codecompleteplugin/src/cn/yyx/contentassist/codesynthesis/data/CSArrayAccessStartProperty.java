@@ -7,8 +7,12 @@ import cn.yyx.contentassist.commonutils.ComplicatedSignal;
 
 public class CSArrayAccessStartProperty extends CSExtraProperty {
 	
+	public CSArrayAccessStartProperty(CSExtraProperty csepnext) {
+		super(csepnext);
+	}
+
 	@Override
-	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException{
+	public void HandleStackSignalDetail(Stack<Integer> signals) throws CodeSynthesisException{
 		if (signals.size() == 0)
 		{
 			throw new CodeSynthesisException("array access does not in right block.");

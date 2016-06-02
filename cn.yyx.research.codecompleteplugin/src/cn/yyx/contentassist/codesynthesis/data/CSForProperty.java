@@ -6,8 +6,12 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 
 public class CSForProperty extends CSExtraProperty {
 	
+	public CSForProperty(CSExtraProperty csepnext) {
+		super(csepnext);
+	}
+
 	@Override
-	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException {
+	public void HandleStackSignalDetail(Stack<Integer> signals) throws CodeSynthesisException {
 		if (signals.size() == 0)
 		{
 			throw new CodeSynthesisException("for ini over does not have common for prefixed.");

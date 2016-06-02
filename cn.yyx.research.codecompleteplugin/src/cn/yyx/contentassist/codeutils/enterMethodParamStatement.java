@@ -50,7 +50,7 @@ public class enterMethodParamStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId()+"", smthandler.getSete(), "", null, null, squeue.GetLastHandler(), new CSEnterParamInfoProperty(times)), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId()+"", smthandler.getSete(), "", null, null, squeue.GetLastHandler(), new CSEnterParamInfoProperty(times, null)), smthandler.getProb()));
 		return result;
 	}
 

@@ -9,7 +9,8 @@ public class CSArrayAccessEndProperty extends CSExtraProperty {
 	
 	private int times = -1;
 	
-	public CSArrayAccessEndProperty(int times) {
+	public CSArrayAccessEndProperty(int times, CSExtraProperty csepnext) {
+		super(csepnext);
 		this.times = times;
 	}
 	
@@ -19,7 +20,7 @@ public class CSArrayAccessEndProperty extends CSExtraProperty {
 	}*/
 	
 	@Override
-	public void HandleStackSignal(Stack<Integer> signals) throws CodeSynthesisException{
+	public void HandleStackSignalDetail(Stack<Integer> signals) throws CodeSynthesisException{
 		ComplicatedSignal cs = new ComplicatedSignal(DataStructureSignalMetaInfo.ArrayAccessBlcok, times);
 		signals.push(cs.GetSignal());
 	}
