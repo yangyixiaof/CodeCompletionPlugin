@@ -92,6 +92,18 @@ public class lambdaExpressionStatement extends statement{
 			//{
 			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
 			fres = CSFlowLineHelper.ConcateOneFlowLineList("()->", rels, null);
+			if (fres == null || fres.size() == 0)
+			{
+				return null;
+			}
+			Iterator<FlowLineNode<CSFlowLineData>> itr = fres.iterator();
+			while (itr.hasNext())
+			{
+				FlowLineNode<CSFlowLineData> fln = itr.next();
+				// ((CSArgTypeListData)fln.getData()).getTpandnames()
+				result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(null, fln.getData()), fln.getProbability()));
+			}
+			return result;
 			/*}
 			else
 			{
@@ -107,6 +119,17 @@ public class lambdaExpressionStatement extends statement{
 			List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
 			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
 			fres = CSFlowLineHelper.ForwardConcate("(", tpls, ")->", rels, null, squeue, smthandler, null);
+			if (fres == null || fres.size() == 0)
+			{
+				return null;
+			}
+			Iterator<FlowLineNode<CSFlowLineData>> itr = fres.iterator();
+			while (itr.hasNext())
+			{
+				FlowLineNode<CSFlowLineData> fln = itr.next();
+				result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(((CSArgTypeListData)fln.getData()).getTpandnames(), fln.getData()), fln.getProbability()));
+			}
+			return result;
 			/*}
 			else
 			{
@@ -115,17 +138,6 @@ public class lambdaExpressionStatement extends statement{
 			}*/
 		}
 		// return ListHelper.AddExtraPropertyToAllListNodes(fres, new CSLambdaProperty());
-		if (fres == null || fres.size() == 0)
-		{
-			return null;
-		}
-		Iterator<FlowLineNode<CSFlowLineData>> itr = fres.iterator();
-		while (itr.hasNext())
-		{
-			FlowLineNode<CSFlowLineData> fln = itr.next();
-			result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(((CSArgTypeListData)fln.getData()).getTpandnames(), fln.getData()), fln.getProbability()));
-		}
-		return result;
 	}
 	
 	/*private String[] GetDeclares(String data)
@@ -142,8 +154,8 @@ public class lambdaExpressionStatement extends statement{
 	
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
-		cstack.EnsureAllSignalNull();
-		return true;
+		// cstack.EnsureAllSignalNull();
+		return false;
 	}
 	
 }

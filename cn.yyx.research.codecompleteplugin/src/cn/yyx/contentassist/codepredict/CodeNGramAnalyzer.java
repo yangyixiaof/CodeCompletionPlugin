@@ -51,7 +51,7 @@ public class CodeNGramAnalyzer {
 			PartialProcessVisitor ppv = new PartialProcessVisitor(offset, aoi);
 			cu.accept(ppv);
 			ArrayList<String> analist = ppv.GetMainAnalyseList(aoi.isInAnonymousClass());
-			TrimRightBrace(analist);
+			// TrimRightBrace(analist);
 			
 			// debugging.
 			PrintUtil.PrintList(analist, "analysis list");
@@ -68,7 +68,7 @@ public class CodeNGramAnalyzer {
 		return list;
 	}
 
-	private static void TrimRightBrace(ArrayList<String> analist) {
+	/*private static void TrimRightBrace(ArrayList<String> analist) {
 		int len = analist.size();
 		for (int i = len - 1; i >= 0; i--) {
 			String str = analist.get(i);
@@ -78,7 +78,7 @@ public class CodeNGramAnalyzer {
 				break;
 			}
 		}
-	}
+	}*/
 
 	private static String GetIndent(String document, int invokeoffset) {
 		char[] doccs = document.toCharArray();

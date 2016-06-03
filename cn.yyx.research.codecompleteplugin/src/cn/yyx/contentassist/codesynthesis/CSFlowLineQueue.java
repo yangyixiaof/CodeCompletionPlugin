@@ -249,12 +249,15 @@ public class CSFlowLineQueue {
 				if (tmpdata instanceof CSLambdaData)
 				{
 					List<String> tps = ((CSLambdaData)tmpdata).getDeclares();
-					Iterator<String> itr = tps.iterator();
-					while (itr.hasNext())
+					if (tps != null && tps.size() > 0)
 					{
-						String ttp = itr.next();
-						String[] tpss = ttp.split(" ");
-						HandleVarNameRms(tpss[0], tpss[1], tpvarname, tpremains, off);
+						Iterator<String> itr = tps.iterator();
+						while (itr.hasNext())
+						{
+							String ttp = itr.next();
+							String[] tpss = ttp.split(" ");
+							HandleVarNameRms(tpss[0], tpss[1], tpvarname, tpremains, off);
+						}
 					}
 					scope--;
 				}

@@ -23,6 +23,7 @@ public class lambdaEndStatement extends statement implements SWrapper{
 	
 	public lambdaEndStatement(statement smt, String smtcode) {
 		super(smtcode);
+		this.smt = smt;
 	}
 
 	@Override
