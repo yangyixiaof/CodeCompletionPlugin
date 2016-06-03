@@ -190,9 +190,10 @@ public class SearchSpecificationOfAReference {
 		prefix = prefix.trim();
 		if (prefix.startsWith("new ") || prefix.contains(".new "))
 		{
-			prefixcmp = StringUtil.GetContentBehindFirstWhiteSpace(prefixcmp);
+			prefixcmp = StringUtil.GetContentBehindFirstWhiteSpace(prefix);
+		} else {
+			prefixcmp = GetPrefixCmp(prefix);
 		}
-		prefixcmp = GetPrefixCmp(prefix); 
 		CompletionProposalCollector collector = GetMethodMemberProposalCollector(javacontext);
 		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.methodtimeout);
 		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, topm);
