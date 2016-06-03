@@ -10,13 +10,20 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class anonymousClassPreStatement extends statement{
+public class anonymousClassPreOverStatement extends statement {
 	
 	identifier id = null;
 	
-	public anonymousClassPreStatement(String smtcode, identifier id) {
+	public anonymousClassPreOverStatement(String smtcode, identifier id) {
 		super(smtcode);
 		this.id = id;
+	}
+
+	@Override
+	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
+			throws CodeSynthesisException {
+		ErrorCheck.NoGenerationCheck("anonymousClassPreStatement");
+		return null;
 	}
 
 	@Override
@@ -52,15 +59,8 @@ public class anonymousClassPreStatement extends statement{
 	}
 
 	@Override
-	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
-			throws CodeSynthesisException {
-		ErrorCheck.NoGenerationCheck("anonymousClassPreStatement");
-		return null;
-	}
-
-	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		return false;
 	}
-	
+
 }

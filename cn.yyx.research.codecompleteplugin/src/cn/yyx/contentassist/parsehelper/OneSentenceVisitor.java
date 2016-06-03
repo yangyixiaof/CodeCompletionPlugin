@@ -16,6 +16,7 @@ import cn.yyx.parse.szparse8java.Java8Parser.AddPrefixExpressionStatementContext
 import cn.yyx.parse.szparse8java.Java8Parser.AddassignAssignmentStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.AndInfixExpressionStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.AndassignAssignmentStatementContext;
+import cn.yyx.parse.szparse8java.Java8Parser.AnonymousClassPreOverStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.ArgTypeContext;
 import cn.yyx.parse.szparse8java.Java8Parser.ArgTypeListContext;
 import cn.yyx.parse.szparse8java.Java8Parser.AssignAssignmentStatementContext;
@@ -786,6 +787,14 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 		Integer res = visitChildren(ctx);
 		identifier id = (identifier) usedobj.pop();
 		smt = new anonymousClassPreStatement(ctx.getText(), id);
+		return res;
+	}
+	
+	@Override
+	public Integer visitAnonymousClassPreOverStatement(AnonymousClassPreOverStatementContext ctx) {
+		Integer res = visitChildren(ctx);
+		identifier id = (identifier) usedobj.pop();
+		smt = new anonymousClassPreOverStatement(ctx.getText(), id);
 		return res;
 	}
 
