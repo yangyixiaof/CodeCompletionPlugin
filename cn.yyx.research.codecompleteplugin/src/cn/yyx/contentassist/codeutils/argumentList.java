@@ -86,7 +86,7 @@ public class argumentList implements OneCode {
 		// realhandler.setArgsize(el.size() - 1);
 		// change to reverse order list.
 		List<referedExpression> reverseel = new ListDynamicHeper<referedExpression>().ReverseList(el);
-		List<List<FlowLineNode<CSFlowLineData>>> positiveargs = new LinkedList<List<FlowLineNode<CSFlowLineData>>>();
+		LinkedList<List<FlowLineNode<CSFlowLineData>>> positiveargs = new LinkedList<List<FlowLineNode<CSFlowLineData>>>();
 		Iterator<referedExpression> ritr = reverseel.iterator();
 		Map<String, MethodTypeSignature> mts = new TreeMap<String, MethodTypeSignature>();
 		while (ritr.hasNext()) {
@@ -129,14 +129,38 @@ public class argumentList implements OneCode {
 				// List<Boolean> usedparams =
 				// ListHelper.InitialBooleanArray(positiveargs.size());
 				List<LinkedList<CCType>> tps = msig.getArgtypes();
-				if (tps.size() != positiveargs.size()) {
+				if (tps.size() != positiveargs.size() && !msig.isLastHasVarArg()) {
 					continue;
 				}
 				Iterator<LinkedList<CCType>> tpitr = tps.iterator();
 				Iterator<List<FlowLineNode<CSFlowLineData>>> pitr = positiveargs.iterator();
 				sb.append("(");
 				try {
-					while (tpitr.hasNext()) {
+					LinkedList<CCType> lastc = null;
+					while (pitr.hasNext()) {
+						LinkedList<CCType> c = null;
+						if (tpitr.hasNext()) {
+							c  = tpitr.next();
+						} else {
+							c = lastc;
+						}
+						if (!tpitr.hasNext())
+						{
+							lastc = c;
+						}
+						if (c == null)
+						{
+							new Exception("Logic error of program writer.").printStackTrace();
+							System.exit(1);
+						}
+						List<FlowLineNode<CSFlowLineData>> parg = pitr.next();
+						String ct = HandleOneParam(c, parg);
+						sb.append(ct);
+						if (tpitr.hasNext()) {
+							sb.append(",");
+						}
+					}
+					/*while (tpitr.hasNext()) {
 						LinkedList<CCType> c = tpitr.next();
 						List<FlowLineNode<CSFlowLineData>> parg = pitr.next();
 						// String ct = HandleOneClassParamNodes(c, positiveargs,
@@ -146,7 +170,7 @@ public class argumentList implements OneCode {
 						if (tpitr.hasNext()) {
 							sb.append(",");
 						}
-					}
+					}*/
 				} catch (CodeSynthesisException e) {
 					continue;
 				}

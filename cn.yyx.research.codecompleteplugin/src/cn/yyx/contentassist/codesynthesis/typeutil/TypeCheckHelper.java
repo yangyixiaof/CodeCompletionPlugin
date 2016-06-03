@@ -75,6 +75,18 @@ public class TypeCheckHelper {
 		}
 		Class<?> ot = NormalizeClass(onetype.getCls());
 		Class<?> tt = NormalizeClass(twotype.getCls());
+		if (onetype instanceof VarArgCCType)
+		{
+			ot = NormalizeClass(((VarArgCCType) onetype).getCompocls());
+		}
+		if (twotype instanceof VarArgCCType)
+		{
+			tt = NormalizeClass(((VarArgCCType) twotype).getCompocls());
+		}
+		if (ot == null || tt == null)
+		{
+			return true;
+		}
 		if (TypeComputer.IsStrictNumberBit(ot) && TypeComputer.IsStrictNumberBit(tt))
 		{
 			return true;
@@ -88,6 +100,10 @@ public class TypeCheckHelper {
 	
 	public static Class<?> NormalizeClass(Class<?> onetype)
 	{
+		if (onetype == null)
+		{
+			return null;
+		}
 		if (onetype.equals(int.class))
 		{
 			onetype = Integer.class;

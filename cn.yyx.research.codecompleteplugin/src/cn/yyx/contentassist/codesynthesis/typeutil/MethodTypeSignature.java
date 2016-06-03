@@ -13,25 +13,12 @@ public class MethodTypeSignature {
 	private List<CCType> returntype = null;
 	private List<LinkedList<CCType>> argtypes = null;
 	
-	// private Class<?> returntype = null;
-	// private List<Class<?>> argtypes = null;
-	
-	public static MethodTypeSignature GenerateMethodTypeSignature(MethodMember mm, CSFlowLineQueue squeue,
-			CSStatementHandler smthandler)
-	{
-		if (mm != null)
-		{
-			LinkedList<CCType> rt = TypeResolver.ResolveType(mm.getReturntype(), squeue, smthandler);
-			List<LinkedList<CCType>> arts = TypeResolver.ResolveType(mm.getArgtypelist(), squeue, smthandler);
-			return new MethodTypeSignature(rt, arts);
-		}
-		return null;
-	}
-	
+	private boolean lastHasVarArg = false;
 
 	public static MethodTypeSignature TranslateMethodMember(MethodMember mm, CSFlowLineQueue squeue,
 			CSStatementHandler smthandler)
 	{
+		boolean hasvararg = false;
 		String rttype = mm.getReturntype();
 		// tc.setExpreturntype(rttype);
 		LinkedList<CCType> c = TypeResolver.ResolveType(rttype, squeue, smthandler);
@@ -43,6 +30,10 @@ public class MethodTypeSignature {
 		while (itr.hasNext())
 		{
 			String tp = itr.next().trim();
+			if (tp.trim().endsWith("..."))
+			{
+				hasvararg = true;
+			}
 			// boolean handlevararg = false;
 			/*if (tp.endsWith("..."))
 			{
@@ -63,13 +54,14 @@ public class MethodTypeSignature {
 			tpclist.add(tpc);
 		}
 		// tc.setExpargstypesclasses(tpclist);
-		MethodTypeSignature tc = new MethodTypeSignature(c, tpclist);
+		MethodTypeSignature tc = new MethodTypeSignature(hasvararg, c, tpclist);
 		return tc;
 	}
 	
-	public MethodTypeSignature(List<CCType> returntype, List<LinkedList<CCType>> argtypes) {
+	public MethodTypeSignature(boolean lastHasVarArg, List<CCType> returntype, List<LinkedList<CCType>> argtypes) {
 		this.setReturntype(returntype);
 		this.setArgtypes(argtypes);
+		this.setLastHasVarArg(lastHasVarArg);
 	}
 
 	public List<CCType> getReturntype() {
@@ -86,6 +78,16 @@ public class MethodTypeSignature {
 
 	public void setArgtypes(List<LinkedList<CCType>> argtypes) {
 		this.argtypes = argtypes;
+	}
+
+
+	public boolean isLastHasVarArg() {
+		return lastHasVarArg;
+	}
+
+
+	public void setLastHasVarArg(boolean lastHasVarArg) {
+		this.lastHasVarArg = lastHasVarArg;
 	}
 	
 }
