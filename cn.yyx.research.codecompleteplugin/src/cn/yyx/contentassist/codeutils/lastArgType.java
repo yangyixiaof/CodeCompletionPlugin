@@ -1,5 +1,6 @@
 package cn.yyx.contentassist.codeutils;
 
+import java.util.Iterator;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
@@ -8,6 +9,8 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
+import cn.yyx.contentassist.codesynthesis.typeutil.VarArgCCType;
 
 public class lastArgType extends type {
 	
@@ -43,7 +46,16 @@ public class lastArgType extends type {
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> tpls = tp.HandleCodeSynthesis(squeue, smthandler);
-		return CSFlowLineHelper.ConcateOneFlowLineList(null, tpls, "...");
+		List<FlowLineNode<CSFlowLineData>> ls = CSFlowLineHelper.ConcateOneFlowLineList(null, tpls, "...");
+		Iterator<FlowLineNode<CSFlowLineData>> itr = ls.iterator();
+		while (itr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> lli = itr.next();
+			CSFlowLineData llidata = lli.getData();
+			CCType dcls = llidata.getDcls();
+			llidata.setDcls(new VarArgCCType(dcls.getCls(), dcls.getClstr()));
+		}
+		return ls;
 	}
 
 }

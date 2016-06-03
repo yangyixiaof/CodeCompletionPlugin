@@ -41,8 +41,9 @@ public class LambdaTest {
 		double bill = costBeforeTax2.stream().map((cost) -> cost + .12 * cost).reduce((sum, cost) -> sum + cost).get();
 		System.out.println("Total : " + bill);
 		// case 7.
+		final int ip = 2;
 		List<String> strList = Arrays.asList("Java", "Scala", "C++", "Haskell", "Lisp");
-		List<String> filtered = strList.stream().filter(x -> x.length() > 2).collect(Collectors.toList());
+		List<String> filtered = strList.stream().filter(x -> x.length() > ip).collect(Collectors.toList());
 		System.out.printf("Original List : %s, filtered list : %s %n", strList, filtered);
 		// case 8.
 		List<String> G7 = Arrays.asList("USA", "Japan", "France", "Germany", "Italy", "U.K.", "Canada");

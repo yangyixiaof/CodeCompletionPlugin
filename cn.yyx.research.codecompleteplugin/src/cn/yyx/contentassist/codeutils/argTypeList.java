@@ -20,10 +20,10 @@ import cn.yyx.research.language.JDTManager.GCodeMetaInfo;
 public class argTypeList implements OneCode {
 	
 	List<argType> tps = new LinkedList<argType>();
-	// lastArgType lat = null;
+	lastArgType lat = null; // warning lat could be null.
 	
 	public argTypeList(lastArgType lat) {
-		// this.lat = lat;
+		this.lat = lat;
 	}
 	
 	public void AddToFirst(argType re)
@@ -34,10 +34,10 @@ public class argTypeList implements OneCode {
 	public int Size()
 	{
 		int allsize = 0;
-		/*if (lat != null)
+		if (lat != null)
 		{
 			allsize++;
-		}*/
+		}
 		allsize += tps.size();
 		return allsize;
 	}
@@ -58,15 +58,15 @@ public class argTypeList implements OneCode {
 	public double Similarity(OneCode t) {
 		if (t instanceof argTypeList)
 		{
-			/*if (lat != null)
+			if (lat != null)
 			{
 				double latpriority = 1/(1+tps.size());
 				return (1-latpriority)*(LCSComparison.LCSSimilarityArgType(tps, ((argTypeList) t).tps)) + latpriority*(lat.Similarity(((argTypeList) t).lat));
 			}
 			else
-			{*/
+			{
 				return LCSComparison.LCSSimilarityArgType(tps, ((argTypeList) t).tps);
-			//}
+			}
 		}
 		return 0;
 	}
@@ -75,11 +75,12 @@ public class argTypeList implements OneCode {
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> ntpls = null;
-		/*if (lat != null)
+		List<LinkedList<String>> llls = null;
+		if (lat != null)
 		{
 			ntpls = lat.HandleCodeSynthesis(squeue, smthandler);
-		}*/
-		List<LinkedList<String>> llls = null;
+			ArgTypeRefinedList(ntpls, llls);
+		}
 		Iterator<argType> itr = tps.iterator();
 		char seed = 'A';
 		while (itr.hasNext())

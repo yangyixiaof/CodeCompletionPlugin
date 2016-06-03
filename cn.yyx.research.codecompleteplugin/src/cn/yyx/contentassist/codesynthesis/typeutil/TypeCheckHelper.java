@@ -55,6 +55,24 @@ public class TypeCheckHelper {
 		{
 			return true;
 		}
+		if (onetype.getCls() != null && twotype.getCls() != null)
+		{
+			if (onetype.getCls().isArray() && twotype.getCls().isArray())
+			{
+				if (onetype.getCls().getComponentType().isAssignableFrom(twotype.getCls().getComponentType()))
+				{
+					return true;
+				}
+				if (twotype.getCls().getComponentType().isAssignableFrom(onetype.getCls().getComponentType()))
+				{
+					return true;
+				}
+				if (NormalizeClass(twotype.getCls().getComponentType()) == NormalizeClass(onetype.getCls().getComponentType()))
+				{
+					return true;
+				}
+			}
+		}
 		Class<?> ot = NormalizeClass(onetype.getCls());
 		Class<?> tt = NormalizeClass(twotype.getCls());
 		if (TypeComputer.IsStrictNumberBit(ot) && TypeComputer.IsStrictNumberBit(tt))

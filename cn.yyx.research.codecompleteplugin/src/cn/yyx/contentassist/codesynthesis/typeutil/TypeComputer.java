@@ -1,5 +1,7 @@
 package cn.yyx.contentassist.codesynthesis.typeutil;
 
+import java.lang.reflect.Array;
+
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.BooleanRTwoSideSame;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.BooleanRTwoSideSameBoolean;
@@ -12,87 +14,19 @@ import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationK
 
 public class TypeComputer {
 	
-	/*public static CCType ComputeType(CCType c1, CCType c2, TypeComputationKind tck) throws TypeConflictException
+	public static CCType CreateArrayType(CCType ct, int count, String dimens)
 	{
-		switch (tck) {
-		case NoOptr:
-			if (!CCTypeNull(c1) && CCTypeNull(c2))
-			{
-				return c1;
-			}
-			if (CCTypeNull(c1) && !CCTypeNull(c2))
-			{
-				return c2;
-			}
-			return c1;
-			//if (c1 == null || c2 == null)
-			//{
-			//	return null;
-			//}
-			//throw new TypeConflictException("This Noptr but two class all have resolved class.");
-		case BooleanRTwoSideSame:
-			if (!CCTypeNull(c1) && CCTypeNull(c2))
-			{
-				return c1;
-			}
-			if (CCTypeNull(c1) && !CCTypeNull(c2))
-			{
-				return c2;
-			}
-			if (CCTypeNull(c1) && CCTypeNull(c2))
-			{
-				return new CCType(boolean.class, "boolean");
-			}
-			if (CCTypeSame(c1, c2))
-			{
-				return new CCType(boolean.class, "boolean");
-			}
-			throw new TypeConflictException("These two sides are not same.");
-		case BooleanRTwoSideSameBoolean:
-			
-		case BooleanROnlyOneBoolean:
-		case NumberBitROnlyOneNumberBit:
-		case NumberBitRTwoSideSameNumberBit:
-		case StringNumberBitRTwoSideSameNumberBitOrOneString:
-		case NumberBitROneOrTwoSideSameNumberBit:
-		case InheritLeftOrRightTwoSameSide:
-		case InheritLeftRightNumbetBit:
-		case DirectUniqueUseFirstTypeOptr:
-			return c1;
-		case DirectUniqueUseSecondTypeOptr:
-			return c2;
-		case LeftOrRightCast:
-			if (c1 == null)
-			{
-				return c2;
-			}
-			if (c2 == null)
-			{
-				return c1;
-			}
-			if (c2.isAssignableFrom(c1))
-			{
-				return c1;
-			}
-			if (c1.isAssignableFrom(c2))
-			{
-				return c2;
-			}
-			throw new TypeConflictException(c1 + " can not be casted to " + c2 + ". Wrong cast optr.");
-		default:
-			break;
-		}
-		return null;
-	}
-	
-	private static boolean CCTypeNull(CCType cct)
-	{
-		if (cct == null || cct.getCls() == null)
+		int[] x = new int[count];
+		for (int i=0;i<count;i++)
 		{
-			return true;
+			x[i] = 0;
 		}
-		return false;
-	}*/
+		if (ct.getCls() != null) {
+			ct.setCls(Array.newInstance(ct.getCls(), x).getClass());
+		}
+		ct.setClstr(ct.getClstr() + dimens);
+		return ct;
+	}
 	
 	public static boolean IsStrictNumberBit(Class<?> cls)
 	{
