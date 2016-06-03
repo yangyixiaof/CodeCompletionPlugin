@@ -9,6 +9,8 @@ import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.codesynthesis.data.CSExtraProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeSameJudger;
 
 public class ListHelper {
 	
@@ -27,6 +29,23 @@ public class ListHelper {
 			result.add(fln);
 		}
 		return result;
+	}
+	
+	public static boolean DetailContains(List<FlowLineNode<CSFlowLineData>> results, CSFlowLineData data)
+	{
+		Iterator<FlowLineNode<CSFlowLineData>> itr = results.iterator();
+		while (itr.hasNext())
+		{
+			FlowLineNode<CSFlowLineData> fln = itr.next();
+			CSFlowLineData dt = fln.getData();
+			String dtcnt = dt.getData();
+			CCType dtcct = dt.getDcls();
+			if (dtcnt.equals(data.getData()) && TypeSameJudger.TwoTypesSame(dtcct, data.getDcls()))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public static List<Boolean> InitialBooleanArray(int size)

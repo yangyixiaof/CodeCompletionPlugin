@@ -22,6 +22,7 @@ import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
 import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.commonutils.ListDynamicHeper;
+import cn.yyx.contentassist.commonutils.ListHelper;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 
 public class argumentList implements OneCode {
@@ -177,8 +178,12 @@ public class argumentList implements OneCode {
 				sb.append(")");
 			}
 			data.setData(sb.toString());
-			results.add(new FlowLineNode<CSFlowLineData>(data, fln.getProbability()));
-
+			
+			if (!ListHelper.DetailContains(results, data))
+			{
+				results.add(new FlowLineNode<CSFlowLineData>(data, fln.getProbability()));
+			}
+			
 			// Stack<Integer> signals = new Stack<Integer>();
 			// signals.add(DataStructureSignalMetaInfo.MethodInvocation);
 			FlowLineNode<CSFlowLineData> mf = realhandler.getMostfar();

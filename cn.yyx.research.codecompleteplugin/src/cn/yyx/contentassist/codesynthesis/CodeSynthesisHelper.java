@@ -160,7 +160,7 @@ public class CodeSynthesisHelper {
 		// debugging code.
 		if (CodeCompletionMetaInfo.DebugMode)
 		{
-			SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(spechint, squeue.GetLastHandler().getContextHandler().getJavacontext());
+		//	SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(spechint, squeue.GetLastHandler().getContextHandler().getJavacontext());
 		}
 		
 		List<MethodMember> res = SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix(spechint, squeue.GetLastHandler().getContextHandler().getJavacontext());
