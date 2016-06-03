@@ -15,11 +15,11 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class lambdaExpressionStatement extends statement{
-	
-	argTypeList typelist = null; //warning: typelist could be null.
-	referedExpression rexp = null; //warning: rexp could be null.
-	
+public class lambdaExpressionStatement extends statement {
+
+	argTypeList typelist = null; // warning: typelist could be null.
+	referedExpression rexp = null; // warning: rexp could be null.
+
 	public lambdaExpressionStatement(String smtcode, argTypeList tlist, referedExpression rexp) {
 		super(smtcode);
 		this.typelist = tlist;
@@ -28,10 +28,8 @@ public class lambdaExpressionStatement extends statement{
 
 	@Override
 	public boolean CouldThoughtSame(OneCode t) {
-		if (t instanceof lambdaExpressionStatement)
-		{
-			if (Similarity(t) > PredictMetaInfo.SequenceSimilarThreshold)
-			{
+		if (t instanceof lambdaExpressionStatement) {
+			if (Similarity(t) > PredictMetaInfo.SequenceSimilarThreshold) {
 				return true;
 			}
 		}
@@ -40,77 +38,89 @@ public class lambdaExpressionStatement extends statement{
 
 	@Override
 	public double Similarity(OneCode t) {
-		if (t instanceof lambdaExpressionStatement)
-		{
+		if (t instanceof lambdaExpressionStatement) {
 			int count = 0;
-			if (typelist != null)
-			{
+			if (typelist != null) {
 				count = typelist.Size();
 			}
 			int tcount = 0;
-			if (((lambdaExpressionStatement) t).typelist != null)
-			{
+			if (((lambdaExpressionStatement) t).typelist != null) {
 				tcount = ((lambdaExpressionStatement) t).typelist.Size();
 			}
-			int div = Math.max(count+1, tcount+1);
-			int dvi = Math.min(count+1, tcount+1);
-			return (dvi*1.0)/(div*1.0);
+			int div = Math.max(count + 1, tcount + 1);
+			int dvi = Math.min(count + 1, tcount + 1);
+			return (dvi * 1.0) / (div * 1.0);
 		}
 		return 0;
 	}
-	
+
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		if (typelist == null)
-		{
-			List<FlowLineNode<CSFlowLineData>> fres = null;
-			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-			fres = CSFlowLineHelper.ConcateOneFlowLineList("()->", rels, null);
-			if (fres == null || fres.size() == 0)
-			{
-				return null;
-			}
-			Iterator<FlowLineNode<CSFlowLineData>> itr = fres.iterator();
-			while (itr.hasNext())
-			{
-				FlowLineNode<CSFlowLineData> fln = itr.next();
-				result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(null, fln.getData()), fln.getProbability()));
+		if (typelist == null) {
+			if (rexp == null) {
+				result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(squeue.GenerateNewNodeId(),
+						smthandler.getSete(), "()->{}", null, null, squeue.GetLastHandler()), smthandler.getProb()));
+			} else {
+				List<FlowLineNode<CSFlowLineData>> fres = null;
+				List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+				fres = CSFlowLineHelper.ConcateOneFlowLineList("()->", rels, null);
+				if (fres == null || fres.size() == 0) {
+					return null;
+				}
+				Iterator<FlowLineNode<CSFlowLineData>> itr = fres.iterator();
+				while (itr.hasNext()) {
+					FlowLineNode<CSFlowLineData> fln = itr.next();
+					result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(null, fln.getData()),
+							fln.getProbability()));
+				}
 			}
 			return result;
-		}
-		else
-		{
-			List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
-			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-			if ((tpls == null || tpls.size() == 0) || (rels == null || rels.size() == 0))
-			{
-				return null;
-			}
-			Iterator<FlowLineNode<CSFlowLineData>> tpitr = tpls.iterator();
-			while (tpitr.hasNext())
-			{
-				FlowLineNode<CSFlowLineData> tpfln = tpitr.next();
-				List<FlowLineNode<CSFlowLineData>> tres = new LinkedList<FlowLineNode<CSFlowLineData>>();
-				tres.add(tpfln);
-				List<String> tadnames = ((CSArgTypeListData)tpfln.getData()).getTpandnames();
-				List<FlowLineNode<CSFlowLineData>> tts = CSFlowLineHelper.ForwardConcate("(", tres, ")->", rels, null, squeue, smthandler, null);
-				Iterator<FlowLineNode<CSFlowLineData>> itr = tts.iterator();
-				while (itr.hasNext())
-				{
-					FlowLineNode<CSFlowLineData> fln = itr.next();
-					result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(tadnames, fln.getData()), fln.getProbability()));
+		} else {
+			if (rexp == null) {
+				List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
+				if ((tpls == null || tpls.size() == 0)) {
+					return null;
+				}
+				tpls = CSFlowLineHelper.ConcateOneFlowLineList("(", tpls, ")->{}");
+				Iterator<FlowLineNode<CSFlowLineData>> tpitr = tpls.iterator();
+				while (tpitr.hasNext()) {
+					FlowLineNode<CSFlowLineData> tpfln = tpitr.next();
+					List<String> tadnames = ((CSArgTypeListData) tpfln.getData()).getTpandnames();
+					result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(tadnames, tpfln.getData()),
+							tpfln.getProbability()));
+				}
+			} else {
+				List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
+				List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+				if ((tpls == null || tpls.size() == 0) || (rels == null || rels.size() == 0)) {
+					return null;
+				}
+				Iterator<FlowLineNode<CSFlowLineData>> tpitr = tpls.iterator();
+				while (tpitr.hasNext()) {
+					FlowLineNode<CSFlowLineData> tpfln = tpitr.next();
+					List<FlowLineNode<CSFlowLineData>> tres = new LinkedList<FlowLineNode<CSFlowLineData>>();
+					tres.add(tpfln);
+					List<String> tadnames = ((CSArgTypeListData) tpfln.getData()).getTpandnames();
+					List<FlowLineNode<CSFlowLineData>> tts = CSFlowLineHelper.ForwardConcate("(", tres, ")->", rels,
+							null, squeue, smthandler, null);
+					Iterator<FlowLineNode<CSFlowLineData>> itr = tts.iterator();
+					while (itr.hasNext()) {
+						FlowLineNode<CSFlowLineData> fln = itr.next();
+						result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(tadnames, fln.getData()),
+								fln.getProbability()));
+					}
 				}
 			}
 			return result;
 		}
 	}
-	
+
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
 		// cstack.EnsureAllSignalNull();
 		return false;
 	}
-	
+
 }
