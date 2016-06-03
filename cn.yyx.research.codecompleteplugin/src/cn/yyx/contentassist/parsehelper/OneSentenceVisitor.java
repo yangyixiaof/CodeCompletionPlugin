@@ -785,14 +785,14 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	@Override
 	public Integer visitAnonymousClassPreStatement(Java8Parser.AnonymousClassPreStatementContext ctx) {
 		// identifier id = (identifier) usedobj.pop();
-		smt = new anonymousClassPreStatement(ctx.getText(), new identifier(ctx.kid().getText()));
+		smt = new anonymousClassPreStatement(ctx.getText(), new identifier(ctx.identifier().getText()));
 		return visitChildren(ctx);
 	}
 	
 	@Override
 	public Integer visitAnonymousClassPreOverStatement(AnonymousClassPreOverStatementContext ctx) {
 		// identifier id = (identifier) usedobj.pop();
-		smt = new anonymousClassPreOverStatement(ctx.getText(),  new identifier(ctx.kid().getText()));
+		smt = new anonymousClassPreOverStatement(ctx.getText(),  new identifier(ctx.identifier().getText()));
 		return visitChildren(ctx);
 	}
 
