@@ -8,8 +8,42 @@ import java.util.Set;
 import cn.yyx.contentassist.commonutils.ContextHandler;
 import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
+import cn.yyx.contentassist.commonutils.StringUtil;
 
 public class SpecificationHelper {
+	
+	public static String GetPrefixCmp(String prefix)
+	{
+		if (prefix.endsWith(".") || prefix.endsWith("::")) {
+			return null;
+		} else {
+			prefix = StringUtil.GetContentBehindFirstWhiteSpace(prefix);
+			int dotidx = prefix.lastIndexOf('.');
+			if (dotidx < 0) {
+				return prefix;
+			} else {
+				return prefix.substring(dotidx+1);
+			}
+		}
+	}
+	
+	public static String GetAdditionInfo(String spechint)
+	{
+		String addition = "";
+		if (spechint.startsWith("new ") || spechint.contains(".new "))
+		{
+			addition = "new ";
+		}
+		if (spechint.startsWith("super.") || spechint.contains(".super."))
+		{
+			addition = "super.";
+		}
+		if (spechint.startsWith("this.") || spechint.contains(".this."))
+		{
+			addition = "this.";
+		}
+		return addition;
+	}
 	
 	public static RefAndModifiedMember GetMostLikelyRef(ContextHandler ch, Map<String, String> po, String hint, boolean hintismethod, String concator)
 	{

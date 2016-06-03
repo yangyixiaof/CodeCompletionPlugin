@@ -103,6 +103,11 @@ public class preExist extends referedExpression{
 		while (tmp != null && tmp != stop)
 		{
 			tmp.getData().HandleStackSignal(signals);
+			tmp = tmp.getPrev();
+		}
+		if (stop != null)
+		{
+			stop.getData().HandleStackSignal(signals);
 		}
 	}
 	

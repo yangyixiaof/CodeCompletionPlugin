@@ -29,7 +29,6 @@ import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codehelper.MyCompilationUnit;
 import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
-import cn.yyx.contentassist.commonutils.StringUtil;
 import cn.yyx.contentassist.commonutils.TimeOutProgressMonitor;
 
 @SuppressWarnings("restriction")
@@ -80,7 +79,7 @@ public class SearchSpecificationOfAReference {
 		return tmlist;
 	}*/
 	
-	private static String GetPrefixCmp(String spechint)
+	/*private static String GetPrefixCmp(String spechint)
 	{
 		int idx = spechint.lastIndexOf('.');
 		if (idx < 0)
@@ -92,11 +91,11 @@ public class SearchSpecificationOfAReference {
 			return null;
 		}
 		return spechint.substring(idx+1);
-	}
+	}*/
 
 	public static List<FieldMember> SearchFieldSpecificationByPrefix(String prefix,
 			JavaContentAssistInvocationContext javacontext) {
-		String prefixcmp = GetPrefixCmp(prefix);
+		String prefixcmp = SpecificationHelper.GetPrefixCmp(prefix);
 		CompletionProposalCollector collector = GetFieldMemberProposalCollector(javacontext);
 		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.fieldtimeout);
 		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, topm);
@@ -186,14 +185,14 @@ public class SearchSpecificationOfAReference {
 
 	public static List<MethodMember> SearchMethodSpecificationByPrefix(String prefix,
 			JavaContentAssistInvocationContext javacontext) {
-		String prefixcmp = null;
 		prefix = prefix.trim();
-		if (prefix.startsWith("new ") || prefix.contains(".new "))
+		String prefixcmp = SpecificationHelper.GetPrefixCmp(prefix);
+		/*if (prefix.startsWith("new ") || prefix.contains(".new "))
 		{
 			prefixcmp = StringUtil.GetContentBehindFirstWhiteSpace(prefix);
 		} else {
 			prefixcmp = GetPrefixCmp(prefix);
-		}
+		}*/
 		CompletionProposalCollector collector = GetMethodMemberProposalCollector(javacontext);
 		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.methodtimeout);
 		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, topm);

@@ -149,11 +149,7 @@ public class CodeSynthesisHelper {
 	
 	private static List<FlowLineNode<CSFlowLineData>> HandleMethodSpecificationInfer(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String spechint, String beforemethodexp, Map<String, MethodTypeSignature> mts) {
-		String addition = "";
-		if (spechint.startsWith("new ") || spechint.contains(".new "))
-		{
-			addition = "new ";
-		}
+		String addition = SpecificationHelper.GetAdditionInfo(spechint);
 		
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		
