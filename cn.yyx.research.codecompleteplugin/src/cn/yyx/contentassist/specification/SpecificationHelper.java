@@ -27,7 +27,7 @@ public class SpecificationHelper {
 		}
 	}
 	
-	public static String GetAdditionInfo(String spechint)
+	/*public static String GetAdditionInfo(String spechint)
 	{
 		String addition = "";
 		if (spechint.startsWith("new ") || spechint.contains(".new "))
@@ -43,7 +43,7 @@ public class SpecificationHelper {
 			addition = "this.";
 		}
 		return addition;
-	}
+	}*/
 	
 	public static RefAndModifiedMember GetMostLikelyRef(ContextHandler ch, Map<String, String> po, String hint, boolean hintismethod, String concator)
 	{

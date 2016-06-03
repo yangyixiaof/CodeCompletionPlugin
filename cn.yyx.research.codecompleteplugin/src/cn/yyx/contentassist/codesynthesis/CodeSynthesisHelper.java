@@ -148,8 +148,8 @@ public class CodeSynthesisHelper {
 	}
 	
 	private static List<FlowLineNode<CSFlowLineData>> HandleMethodSpecificationInfer(CSFlowLineQueue squeue,
-			CSStatementHandler smthandler, String spechint, String beforemethodexp, Map<String, MethodTypeSignature> mts) {
-		String addition = SpecificationHelper.GetAdditionInfo(spechint);
+			CSStatementHandler smthandler, String spechint, String beforemethodexp, String keywordfull, Map<String, MethodTypeSignature> mts) {
+		String addition = keywordfull == null ? "" : keywordfull;
 		
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		
@@ -204,7 +204,7 @@ public class CodeSynthesisHelper {
 				if (!rexpcode.equals(rexpcodepre))
 				{
 					String mcode = rexpcode + "." + mcodelater;
-					result.addAll(CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, smthandler, mcode, rexpcode, mts));
+					result.addAll(CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, smthandler, mcode, rexpcode, between, mts));
 				}
 				rexpcodepre = rexpcode;
 			}
@@ -212,7 +212,7 @@ public class CodeSynthesisHelper {
 		}
 		else
 		{
-			return CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, smthandler, mcodelater, null, mts);
+			return CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, smthandler, mcodelater, null, between, mts);
 		}
 	}
 	
