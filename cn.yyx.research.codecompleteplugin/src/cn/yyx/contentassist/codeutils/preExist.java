@@ -125,10 +125,9 @@ public class preExist extends referedExpression{
 				tmp = tmpblockstart.getPrev();
 				continue;
 			}
-			
+			tmpdata.HandleStackSignal(signals);
 			if (tmpdata.HasSpecialProperty(CSEnterParamInfoProperty.class) || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class) || tmpdata.HasSpecialProperty(CSMethodInvocationProperty.class))
 			{
-				tmpdata.HandleStackSignal(signals);
 				if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoProperty.class) && signals.size() == 0)
 				{
 					mstop = tmp;
@@ -177,10 +176,10 @@ public class preExist extends referedExpression{
 				continue;
 			}
 			
+			tmpdata.HandleStackSignal(signals);
+			
 			if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoProperty.class) || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class))
 			{
-				tmpdata.HandleStackSignal(signals);
-				
 				if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoProperty.class) && signals.size() == 0)
 				{
 					mstop = tmp;
