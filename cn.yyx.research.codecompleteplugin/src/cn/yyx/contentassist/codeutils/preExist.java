@@ -97,6 +97,15 @@ public class preExist extends referedExpression{
 		return result;
 	}
 	
+	private void SequenceRunMethodSignals(FlowLineNode<CSFlowLineData> start, FlowLineNode<CSFlowLineData> stop, Stack<Integer> signals) throws CodeSynthesisException
+	{
+		FlowLineNode<CSFlowLineData> tmp = start;
+		while (tmp != null && tmp != stop)
+		{
+			tmp.getData().HandleStackSignal(signals);
+		}
+	}
+	
 	public List<FlowLineNode<CSFlowLineData>> FirstArgPreExistHandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		CheckUtil.CheckStatementHandlerIsSpecialKind(smthandler, CSMethodStatementFirstArgHandler.class);
@@ -114,36 +123,49 @@ public class preExist extends referedExpression{
 		{
 			throw new CodeSynthesisException("method synthesis run into error, this node should be pr but not.");
 		}
-		tmp.getData().HandleStackSignal(signals);
-		tmp = tmp.getPrev();
-		while (tmp != null)
+		
+		// tmp.getData().HandleStackSignal(signals);
+		FlowLineNode<CSFlowLineData> bs = tmp.getData().getSynthesisCodeManager().getBlockstart();
+		if (bs != null) {
+			SequenceRunMethodSignals(tmp, bs, signals);
+			tmp = bs;
+		} else {
+			SequenceRunMethodSignals(tmp, tmp, signals);
+		}
+		if (ClassInstanceOfUtil.ObjectInstanceOf(tmp.getData(), CSEnterParamInfoProperty.class) && signals.size() == 0)
 		{
-			CSFlowLineData tmpdata = tmp.getData();
-			FlowLineNode<CSFlowLineData> tmpblockstart = tmpdata.getSynthesisCodeManager().getBlockstart();
-			if (tmpblockstart != null)
-			{
-				tmp = tmpblockstart.getPrev();
-				continue;
-			}
-			tmpdata.HandleStackSignal(signals);
-			if (tmpdata.HasSpecialProperty(CSEnterParamInfoProperty.class) || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class) || tmpdata.HasSpecialProperty(CSMethodInvocationProperty.class))
-			{
-				if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoProperty.class) && signals.size() == 0)
-				{
-					mstop = tmp;
-					realhandler.setNextstart(null);
-					realhandler.setMostfar(mstop);
-					break;
-				}
-			}
+			mstop = tmp;
+			realhandler.setNextstart(null);
+			realhandler.setMostfar(mstop);
+		} else {
 			tmp = tmp.getPrev();
+			while (tmp != null)
+			{
+				CSFlowLineData tmpdata = tmp.getData();
+				FlowLineNode<CSFlowLineData> tmpblockstart = tmpdata.getSynthesisCodeManager().getBlockstart();
+				if (tmpblockstart != null)
+				{
+					tmp = tmpblockstart.getPrev();
+					continue;
+				}
+				tmpdata.HandleStackSignal(signals);
+				if (tmpdata.HasSpecialProperty(CSEnterParamInfoProperty.class) || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class) || tmpdata.HasSpecialProperty(CSMethodInvocationProperty.class))
+				{
+					if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoProperty.class) && signals.size() == 0)
+					{
+						mstop = tmp;
+						realhandler.setNextstart(null);
+						realhandler.setMostfar(mstop);
+						break;
+					}
+				}
+				tmp = tmp.getPrev();
+			}
 		}
 		if (mstart == null || mstop == null) //  || tmp == null
 		{
 			throw new CodeSynthesisException("No firstArg start or stop, conflict happens. CSEnterParamInfoData times < 0, conflict happens.");
 		}
-		// mstart.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
-		// mstop.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
 		List<FlowLineNode<CSFlowLineData>> result = CSFlowLineBackTraceGenerationHelper.GenerateSynthesisCode(squeue, realhandler, mstart, mstop);
 		tmpcache = result;
 		return result;
@@ -162,75 +184,77 @@ public class preExist extends referedExpression{
 		FlowLineNode<CSFlowLineData> tmp = ns;
 		FlowLineNode<CSFlowLineData> mstart = ns;
 		FlowLineNode<CSFlowLineData> mstop = null;
+		
+		FlowLineNode<CSFlowLineData> bs = tmp.getData().getSynthesisCodeManager().getBlockstart();
+		if (bs != null) {
+			SequenceRunMethodSignals(tmp, bs, signals);
+			tmp = bs;
+		} else {
+			SequenceRunMethodSignals(tmp, tmp, signals);
+		}
 		FlowLineNode<CSFlowLineData> tmpnext = tmp;
-		tmp.getData().HandleStackSignal(signals);
-		tmp = tmp.getPrev();
-		while (tmp != null)
+		boolean handled = false;
+		if (ClassInstanceOfUtil.ObjectInstanceOf(tmp.getData(), CSEnterParamInfoProperty.class) && signals.size() == 0)
 		{
-			CSFlowLineData tmpdata = tmp.getData();
-			FlowLineNode<CSFlowLineData> tmpblockstart = tmpdata.getSynthesisCodeManager().getBlockstart();
-			if (tmpblockstart != null)
+			mstop = tmp;
+			realhandler.setNextstart(null);
+			realhandler.setMostfar(mstop);
+			handled = true;
+		}
+		if (!handled && tmp.getPrev() == null)
+		{
+			new Exception("tmp pre is null? what the fuck?").printStackTrace();
+			System.exit(1);
+		}
+		if (!handled && (tmp.getPrev().getData().HasSpecialProperty(CSPsProperty.class) || tmp.getPrev().getData().HasSpecialProperty(CSPrProperty.class)) && signals.size() == 1)
+		{
+			mstop = tmpnext;
+			realhandler.setNextstart(tmp);
+			realhandler.setMostfar(mstop);
+			handled = true;
+		}
+		if (!handled)
+		{
+			tmp = tmp.getPrev();
+			while (tmp != null)
 			{
-				tmpnext = tmpblockstart;
-				tmp = tmpblockstart.getPrev();
-				continue;
-			}
-			
-			tmpdata.HandleStackSignal(signals);
-			
-			if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoProperty.class) || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class))
-			{
-				if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoProperty.class) && signals.size() == 0)
+				CSFlowLineData tmpdata = tmp.getData();
+				FlowLineNode<CSFlowLineData> tmpblockstart = tmpdata.getSynthesisCodeManager().getBlockstart();
+				if (tmpblockstart != null)
 				{
-					mstop = tmp;
-					realhandler.setNextstart(null);
-					realhandler.setMostfar(mstop);
-					break;
+					tmpnext = tmpblockstart;
+					tmp = tmpblockstart.getPrev();
+					continue;
 				}
 				
-				if ((tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class)) && signals.size() == 1)
-				{
-					mstop = tmpnext;
-					realhandler.setNextstart(tmp);
-					realhandler.setMostfar(mstop);
-					break;
-				}
-			}
-			/*if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoData.class) || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class))
-			{   //  || ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSMethodInvocationData.class)
-				// Integer preps = signals.peek();
 				tmpdata.HandleStackSignal(signals);
-				//if (preps == DataStructureSignalMetaInfo.MethodInvocation)
-				//{
-				//	continue;
-				//}
-				if ((!(tmpdata instanceof CSMethodInvocationData)) && signals.size() == 1)
+				
+				if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoProperty.class) || tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class))
 				{
-					mstop = tmpnext;
-					if (mstop == null)
-					{
-						// only one. tmpnext is not set yet.
-						mstop = tmp;
-					}
-					realhandler.setNextstart(mstop.getPrev());
-					if (tmpdata instanceof CSEnterParamInfoData)
+					if (ClassInstanceOfUtil.ObjectInstanceOf(tmpdata, CSEnterParamInfoProperty.class) && signals.size() == 0)
 					{
 						mstop = tmp;
 						realhandler.setNextstart(null);
 						realhandler.setMostfar(mstop);
+						break;
 					}
-					break;
+					
+					if ((tmpdata.HasSpecialProperty(CSPsProperty.class) || tmpdata.HasSpecialProperty(CSPrProperty.class)) && signals.size() == 1)
+					{
+						mstop = tmpnext;
+						realhandler.setNextstart(tmp);
+						realhandler.setMostfar(mstop);
+						break;
+					}
 				}
-			}*/
-			tmpnext = tmp;
-			tmp = tmp.getPrev();
+				tmpnext = tmp;
+				tmp = tmp.getPrev();
+			}
 		}
 		if (mstart == null || mstop == null)
 		{
 			throw new CodeSynthesisException("No firstArg start or stop, conflict happens.");
 		}
-		// mstart.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
-		// mstop.getData().getSynthesisCodeManager().SetBlockStartToInternNode();
 		List<FlowLineNode<CSFlowLineData>> result = CSFlowLineBackTraceGenerationHelper.GenerateSynthesisCode(squeue, realhandler, mstart, mstop);
 		tmpcache = result;
 		return result;
