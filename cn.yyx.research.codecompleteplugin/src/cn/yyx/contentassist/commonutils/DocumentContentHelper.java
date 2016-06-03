@@ -13,4 +13,23 @@ public class DocumentContentHelper {
 		return lastchar;
 	}
 	
+	public static boolean NewLineBegin(IDocument doc, int offset) throws BadLocationException
+	{
+		boolean newlinebegin = true;
+		String precontentraw = doc.get(0, offset);
+		int lbkidx = precontentraw.lastIndexOf('\n');
+		for (int i=lbkidx+1;i<offset;i++)
+		{
+			char c = precontentraw.charAt(i);
+			if (c == ' ' || c == '\t')
+			{
+				continue;
+			} else {
+				newlinebegin = false;
+				break;
+			}
+		}
+		return newlinebegin;
+	}
+	
 }

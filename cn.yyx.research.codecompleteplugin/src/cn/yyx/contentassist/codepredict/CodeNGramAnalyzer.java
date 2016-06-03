@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.IDocument;
@@ -63,7 +62,7 @@ public class CodeNGramAnalyzer {
 			// monitor this set to null.
 			return pf.FetchPrediction(javacontext, sohandler, analist, list, aoi);
 
-		} catch (JavaModelException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return list;
