@@ -53,7 +53,7 @@ public class lastArgType extends type {
 			FlowLineNode<CSFlowLineData> lli = itr.next();
 			CSFlowLineData llidata = lli.getData();
 			CCType dcls = llidata.getDcls();
-			llidata.setDcls(new VarArgCCType(dcls.getCls(), dcls.getClstr()));
+			llidata.setDcls(new VarArgCCType(dcls));
 		}
 		return ls;
 	}
