@@ -149,6 +149,12 @@ public class CodeSynthesisHelper {
 	
 	private static List<FlowLineNode<CSFlowLineData>> HandleMethodSpecificationInfer(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String spechint, String beforemethodexp, Map<String, MethodTypeSignature> mts) {
+		String addition = "";
+		if (spechint.startsWith("new ") || spechint.contains(".new "))
+		{
+			addition = "new ";
+		}
+		
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		
 		// debugging code.
@@ -171,7 +177,7 @@ public class CodeSynthesisHelper {
 			while (rcitr.hasNext())
 			{
 				CCType rc = rcitr.next();
-				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? methodname : beforemethodexp + "." + methodname), rc, null, squeue.GetLastHandler()), smthandler.getProb()));
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? addition + methodname : beforemethodexp + "." + addition + methodname), rc, null, squeue.GetLastHandler()), smthandler.getProb()));
 			}
 			mts.put(id+"", mtsone);
 		}
