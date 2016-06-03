@@ -42,11 +42,11 @@ public class anonymousClassPreStatement extends statement{
 	public double Similarity(OneCode t) {
 		if (t instanceof anonymousClassPreStatement)
 		{
-			return 0.4 + 0.6*(id.Similarity(((anonymousClassPreStatement) t).id));
+			return 0.2 + 0.8*(id.Similarity(((anonymousClassPreStatement) t).id));
 		}
 		if (t instanceof anonymousClassPreOverStatement)
 		{
-			return 0.4 + 0.6*(id.Similarity(((anonymousClassPreOverStatement) t).id));
+			return 0.2 + 0.8*(id.Similarity(((anonymousClassPreOverStatement) t).id));
 		}
 		return 0;
 	}
