@@ -643,8 +643,9 @@ public class OneTypeVisitor extends Java8BaseVisitor<Integer> {
 	@Override
 	public Integer visitLastArgType(LastArgTypeContext ctx) {
 		Integer res = visitChildren(ctx);
-		type tp = (type) usedobj.pop();
-		usedobj.add(new lastArgType(tp));
+		type tpa = (type) usedobj.pop();
+		usedobj.add(new lastArgType(tpa));
+		tp = (type) usedobj.peek();
 		return res;
 	}
 

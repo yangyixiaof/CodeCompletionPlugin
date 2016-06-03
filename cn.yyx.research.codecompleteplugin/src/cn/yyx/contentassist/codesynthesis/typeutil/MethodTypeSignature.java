@@ -42,8 +42,24 @@ public class MethodTypeSignature {
 		Iterator<String> itr = tplist.iterator();
 		while (itr.hasNext())
 		{
-			String tp = itr.next();
+			String tp = itr.next().trim();
+			// boolean handlevararg = false;
+			/*if (tp.endsWith("..."))
+			{
+				handlevararg = true;
+				tp = tp.substring(0, tp.indexOf("...")).trim();
+			}*/
 			LinkedList<CCType> tpc = TypeResolver.ResolveType(tp, squeue, smthandler);
+			/*LinkedList<CCType> result = tpc;
+			if (handlevararg) {
+				result = new LinkedList<CCType>();
+				Iterator<CCType> tpcitr = tpc.iterator();
+				while (tpcitr.hasNext())
+				{
+					CCType cct = tpcitr.next();
+					result.add(new VarArgCCType(cct));
+				}
+			}*/
 			tpclist.add(tpc);
 		}
 		// tc.setExpargstypesclasses(tpclist);
