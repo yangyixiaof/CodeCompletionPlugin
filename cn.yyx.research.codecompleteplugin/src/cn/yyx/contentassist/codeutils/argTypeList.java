@@ -138,6 +138,7 @@ public class argTypeList implements OneCode {
 				}
 			} else {
 				LinkedList<String> nl = new LinkedList<String>();
+				GenerateOneTL(fln, nl);
 				tpandnames.add(nl);
 			}
 		}

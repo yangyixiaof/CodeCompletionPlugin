@@ -59,37 +59,13 @@ public class lambdaExpressionStatement extends statement{
 		return 0;
 	}
 	
-	/*@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
-		CSNode cs = new CSNode(CSNodeType.HalfFullExpression);
-		if (typelist == null)
-		{
-			cs.AddOneData("()->", null);
-		}
-		else
-		{
-			boolean conflict = typelist.HandleCodeSynthesis(squeue, expected, handler, cs, ai);
-			if (conflict)
-			{
-				return true;
-			}
-			cs.setPrefix("(");
-			cs.setPostfix(")->");
-		}
-		squeue.add(cs);
-		return false;
-	}*/
-
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		List<FlowLineNode<CSFlowLineData>> fres = null;
 		if (typelist == null)
 		{
-			//if (rexp != null)
-			//{
+			List<FlowLineNode<CSFlowLineData>> fres = null;
 			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
 			fres = CSFlowLineHelper.ConcateOneFlowLineList("()->", rels, null);
 			if (fres == null || fres.size() == 0)
@@ -100,57 +76,36 @@ public class lambdaExpressionStatement extends statement{
 			while (itr.hasNext())
 			{
 				FlowLineNode<CSFlowLineData> fln = itr.next();
-				// ((CSArgTypeListData)fln.getData()).getTpandnames()
 				result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(null, fln.getData()), fln.getProbability()));
 			}
 			return result;
-			/*}
-			else
-			{
-				List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "()->", null, null, squeue.GetLastHandler()), smthandler.getProb()));
-				fres = result;
-			}*/
 		}
 		else
 		{
-			//if (rexp != null)
-			//{
 			List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
 			List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-			fres = CSFlowLineHelper.ForwardConcate("(", tpls, ")->", rels, null, squeue, smthandler, null);
-			if (fres == null || fres.size() == 0)
+			if ((tpls == null || tpls.size() == 0) || (rels == null || rels.size() == 0))
 			{
 				return null;
 			}
-			Iterator<FlowLineNode<CSFlowLineData>> itr = fres.iterator();
-			while (itr.hasNext())
+			Iterator<FlowLineNode<CSFlowLineData>> tpitr = tpls.iterator();
+			while (tpitr.hasNext())
 			{
-				FlowLineNode<CSFlowLineData> fln = itr.next();
-				result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(((CSArgTypeListData)fln.getData()).getTpandnames(), fln.getData()), fln.getProbability()));
+				FlowLineNode<CSFlowLineData> tpfln = tpitr.next();
+				List<FlowLineNode<CSFlowLineData>> tres = new LinkedList<FlowLineNode<CSFlowLineData>>();
+				tres.add(tpfln);
+				List<String> tadnames = ((CSArgTypeListData)tpfln.getData()).getTpandnames();
+				List<FlowLineNode<CSFlowLineData>> tts = CSFlowLineHelper.ForwardConcate("(", tres, ")->", rels, null, squeue, smthandler, null);
+				Iterator<FlowLineNode<CSFlowLineData>> itr = tts.iterator();
+				while (itr.hasNext())
+				{
+					FlowLineNode<CSFlowLineData> fln = itr.next();
+					result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(tadnames, fln.getData()), fln.getProbability()));
+				}
 			}
 			return result;
-			/*}
-			else
-			{
-				List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
-				fres = CSFlowLineHelper.ConcateOneFlowLineList("(", tpls, ")->{\n\n}");
-			}*/
 		}
-		// return ListHelper.AddExtraPropertyToAllListNodes(fres, new CSLambdaProperty());
 	}
-	
-	/*private String[] GetDeclares(String data)
-	{
-		data = data.substring(1, data.indexOf(")->"));
-		String[] sts = data.split(",");
-		int len = sts.length;
-		for (int i=0;i<len;i++)
-		{
-			sts[i] = sts[i].trim();
-		}
-		return sts;
-	}*/
 	
 	@Override
 	public boolean HandleOverSignal(FlowLineStack cstack) throws CodeSynthesisException {
