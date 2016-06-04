@@ -17,8 +17,7 @@ public class CSLambdaProperty extends CSExtraProperty {
 	public void HandleStackSignalDetail(Stack<Integer> signals) throws CodeSynthesisException {
 		if (overed)
 		{
-			// TODO
-			// return;
+			return;
 		}
 		if (signals.size() == 0)
 		{
