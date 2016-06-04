@@ -95,7 +95,7 @@ public class CSFlowLineData implements CSDataStructure {
 	public CSFlowLineData(String id, CSFlowLineData dt) {
 		this(id, dt.getSete(), dt.getData(), dt.getDcls(), dt.getTck(), dt.getHandler(), dt.getCsep());
 		this.setExtraData(dt.getExtraData());
-		this.setCsep(dt.getCsep());
+		// this.setCsep(dt.getCsep());
 		this.setScm(dt.getSynthesisCodeManager());
 	}
 	
@@ -241,6 +241,11 @@ public class CSFlowLineData implements CSDataStructure {
 	}
 
 	public void setCsep(CSExtraProperty cseppara) {
+		// debug code, not remove.
+		if (cseppara instanceof CSRightParenInfoProperty)
+		{
+			System.err.println("csright info property.");
+		}
 		if (csep == null) {
 			csep = cseppara;
 		} else {
