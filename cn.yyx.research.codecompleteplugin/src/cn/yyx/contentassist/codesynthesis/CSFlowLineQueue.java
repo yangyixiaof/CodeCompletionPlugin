@@ -215,15 +215,11 @@ public class CSFlowLineQueue {
 				shouldoperate = true;
 			}
 			CSFlowLineData tmpdata = tmp.getData();
-			if (tmpdata.HasSpecialProperty(CSLambdaData.class))
+			/*if (tmpdata.HasSpecialProperty(CSLambdaData.class))
 			{
 				scope--;
-				if (scope < 0)
-				{
-					break;
-					// return new VariableHT(scope, tmp);
-				}
-			}
+				
+			}*/
 			if (tmpdata.HasSpecialProperty(CSLambdaEndProperty.class))
 			{
 				FlowLineNode<CSFlowLineData> bs = tmpdata.getSynthesisCodeManager().getBlockstart();
@@ -262,6 +258,10 @@ public class CSFlowLineQueue {
 						}
 					}
 					scope--;
+					if (scope < 0)
+					{
+						break;
+					}
 				}
 			}
 			tmp = tmp.getPrev();

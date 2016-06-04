@@ -1,6 +1,7 @@
 package cn.yyx.contentassist.codesynthesis;
 
 import java.util.Map;
+import java.util.TreeMap;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
@@ -17,11 +18,12 @@ public class CSVarRefHelper {
 			vht = squeue.BackSearchHandleLambdaScope(scope, off);
 		}
 		Map<String, String> pofield = null;
+		Map<String, String> pores = new TreeMap<String, String>();
 		Map<String, String> po = null;
 		try {
 			pofield = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(null, null, -1, scope, off);
 			if (vht != null) {
-				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(vht.getTpvarname(), vht.getTpremains(), vht.getTrimedscope(), scope, off);
+				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(vht.getTpvarname(), vht.getTpremains(), vht.getTrimedscope(), vht.getTrimedscope(), off);
 			} else {
 				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(null, null, -1, scope, off);
 			}
@@ -29,8 +31,16 @@ public class CSVarRefHelper {
 			// e.printStackTrace();
 			throw new CodeSynthesisException(e.getMessage());
 		}
-		po.putAll(pofield);
-		return po;
+		if (pofield != null)
+		{
+			pores.putAll(pofield);
+		}
+		if (po != null)
+		{
+			pores.putAll(po);
+		}
+		// po.putAll(pofield);
+		return pores;
 	}
 	
 	public static Map<String, String> GetAllFieldTypeVariablePair(CSFlowLineQueue squeue, CSStatementHandler smthandler, int scope, int off) throws CodeSynthesisException
@@ -41,11 +51,12 @@ public class CSVarRefHelper {
 			vht = squeue.BackSearchHandleLambdaScope(scope, off);
 		}
 		Map<String, String> povar = null;
+		Map<String, String> pores = new TreeMap<String, String>();
 		Map<String, String> po = null;
 		try {
 			povar = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(null, null, -1, scope, off);
 			if (vht != null) {
-				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(vht.getTpvarname(), vht.getTpremains(), vht.getTrimedscope(), scope, off);
+				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(vht.getTpvarname(), vht.getTpremains(), vht.getTrimedscope(), vht.getTrimedscope(), off);
 			} else {
 				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(null, null, -1, scope, off);
 			}
@@ -53,12 +64,20 @@ public class CSVarRefHelper {
 			// e.printStackTrace();
 			throw new CodeSynthesisException(e.getMessage());
 		}
-		po.putAll(povar);
+		if (povar != null)
+		{
+			pores.putAll(povar);
+		}
+		if (po != null)
+		{
+			pores.putAll(po);
+		}
+		// po.putAll(povar);
 		/*if (vht.getHoldername() != null)
 		{
 			po.put(vht.getHoldertype(), vht.getHoldername());
 		}*/
-		return po;
+		return pores;
 	}
 	
 }
