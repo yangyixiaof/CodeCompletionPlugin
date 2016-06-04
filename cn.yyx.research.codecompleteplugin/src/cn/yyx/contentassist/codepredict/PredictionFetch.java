@@ -157,6 +157,11 @@ public class PredictionFetch {
 		while (itr.hasNext())
 		{
 			Sentence ons = itr.next();
+			// debug code, not remove.
+			if (ons.getSentence().equals("VH@=2;"))
+			{
+				System.err.println("strange vh=2;");
+			}
 			DoOnePreTrySequencePredict(alc, fls, ons, smtlist, smtmilist, (int)(needsize), 2*needsize, lastkind, pi);
 		}
 		int size = fls.GetValidOveredSize();
