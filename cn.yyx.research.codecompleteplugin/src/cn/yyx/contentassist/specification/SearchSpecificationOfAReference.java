@@ -214,7 +214,7 @@ public class SearchSpecificationOfAReference {
 			}
 			if (pstr != null) {
 				String[] strs = pstr.split(":|-");
-				String[] funs = strs[0].trim().split("\\(|\\)|,");
+				String[] funs = strs[0].trim().split("\\(|\\)|(, )");
 				String funcname = (funs[0].trim());
 				LinkedList<String> argtypelist = new LinkedList<String>();
 				LinkedList<String> argnamelist = new LinkedList<String>();

@@ -23,6 +23,11 @@ public class OmnipotentClassLoader {
 
 	public static Class<?> LoadClass(String classfullname) throws Exception {
 		Class<?> cls = null;
+		cls = LoadPrimitiveClass(classfullname);
+		if (cls != null)
+		{
+			return cls;
+		}
 		try {
 			cls = Class.forName(classfullname);
 		} catch (ClassNotFoundException e) {
@@ -34,6 +39,43 @@ public class OmnipotentClassLoader {
 			}
 		}
 		return cls;
+	}
+	
+	private static Class<?> LoadPrimitiveClass(String clsname)
+	{
+		if (clsname.equals("float"))
+		{
+			return float.class;
+		}
+		if (clsname.equals("double"))
+		{
+			return double.class;
+		}
+		if (clsname.equals("boolean"))
+		{
+			return boolean.class;
+		}
+		if (clsname.equals("byte"))
+		{
+			return byte.class;
+		}
+		if (clsname.equals("short"))
+		{
+			return short.class;
+		}
+		if (clsname.equals("int"))
+		{
+			return int.class;
+		}
+		if (clsname.equals("long"))
+		{
+			return long.class;
+		}
+		if (clsname.equals("char"))
+		{
+			return char.class;
+		}
+		return null;
 	}
 
 	private static Class<?> ComplexLoadClass(String classfullname) throws Exception {

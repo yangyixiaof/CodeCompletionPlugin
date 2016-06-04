@@ -7,6 +7,7 @@ import java.util.List;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.specification.MethodMember;
+import cn.yyx.contentassist.specification.OmnipotentClassLoader;
 
 public class MethodTypeSignature {
 	
@@ -21,7 +22,15 @@ public class MethodTypeSignature {
 		boolean hasvararg = false;
 		String rttype = mm.getReturntype();
 		// tc.setExpreturntype(rttype);
-		LinkedList<CCType> c = TypeResolver.ResolveType(rttype, squeue, smthandler);
+		LinkedList<CCType> c = new LinkedList<CCType>();
+		try {
+			c.add(new CCType(OmnipotentClassLoader.LoadClass(rttype), rttype));
+		} catch (Exception e) {
+			System.err.println("Internal type will has errors? Serious error, the system will exit.");
+			e.printStackTrace();
+			System.exit(1);
+		}
+		// TypeResolver.ResolveType(rttype, squeue, smthandler);
 		// tc.setExpreturntypeclass(c);
 		LinkedList<String> tplist = mm.getArgtypelist();
 		// tc.setExpargstypes(tplist);
@@ -79,13 +88,11 @@ public class MethodTypeSignature {
 	public void setArgtypes(List<LinkedList<CCType>> argtypes) {
 		this.argtypes = argtypes;
 	}
-
-
+	
 	public boolean isLastHasVarArg() {
 		return lastHasVarArg;
 	}
-
-
+	
 	public void setLastHasVarArg(boolean lastHasVarArg) {
 		this.lastHasVarArg = lastHasVarArg;
 	}
