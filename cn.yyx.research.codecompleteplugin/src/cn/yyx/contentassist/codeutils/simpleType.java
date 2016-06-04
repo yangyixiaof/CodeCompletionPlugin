@@ -10,6 +10,7 @@ import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 
 public class simpleType extends type{
@@ -46,13 +47,17 @@ public class simpleType extends type{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), text, null, null, squeue.GetLastHandler()), smthandler.getProb()));
-		List<FlowLineNode<CSFlowLineData>> rtls = CodeSynthesisHelper.HandleRawTypeSpecificationInfer(result, squeue, smthandler);
-		if (rtls.size() == 0)
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "Object", new CCType(Object.class, "Object"), null, squeue.GetLastHandler()), smthandler.getProb()));
+		List<FlowLineNode<CSFlowLineData>> idls = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		idls.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), text, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+		List<FlowLineNode<CSFlowLineData>> stps = CodeSynthesisHelper.HandleRawTypeSpecificationInfer(idls, squeue, smthandler);
+		// result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), text, null, null, squeue.GetLastHandler()), smthandler.getProb()));
+		// List<FlowLineNode<CSFlowLineData>> rtls = CodeSynthesisHelper.HandleRawTypeSpecificationInfer(result, squeue, smthandler);
+		if (stps == null || stps.size() == 0)
 		{
 			return result;
 		}
-		return rtls;
+		return stps;
 	}
 	
 }

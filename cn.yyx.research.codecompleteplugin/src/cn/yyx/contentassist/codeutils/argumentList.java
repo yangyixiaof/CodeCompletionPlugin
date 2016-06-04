@@ -161,7 +161,7 @@ public class argumentList implements OneCode {
 						List<FlowLineNode<CSFlowLineData>> parg = pitr.next();
 						String ct = HandleOneParam(c, parg);
 						sb.append(ct);
-						if (tpitr.hasNext()) {
+						if (pitr.hasNext()) {
 							sb.append(",");
 						}
 					}
