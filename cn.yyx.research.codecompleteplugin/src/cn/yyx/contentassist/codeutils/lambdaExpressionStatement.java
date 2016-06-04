@@ -64,6 +64,7 @@ public class lambdaExpressionStatement extends statement {
 				result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(true, squeue.GenerateNewNodeId(),
 						smthandler.getSete(), "()->{}", null, null, squeue.GetLastHandler()), smthandler.getProb()));
 			} else {
+				boolean over = !(rexp instanceof codeHole);
 				List<FlowLineNode<CSFlowLineData>> fres = null;
 				List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
 				fres = CSFlowLineHelper.ConcateOneFlowLineList("()->", rels, null);
@@ -73,7 +74,7 @@ public class lambdaExpressionStatement extends statement {
 				Iterator<FlowLineNode<CSFlowLineData>> itr = fres.iterator();
 				while (itr.hasNext()) {
 					FlowLineNode<CSFlowLineData> fln = itr.next();
-					result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(false, null, fln.getData()),
+					result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(over, null, fln.getData()),
 							fln.getProbability()));
 				}
 			}
@@ -93,6 +94,7 @@ public class lambdaExpressionStatement extends statement {
 							tpfln.getProbability()));
 				}
 			} else {
+				boolean over = !(rexp instanceof codeHole);
 				List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
 				if ((tpls == null || tpls.size() == 0)) {
 					return null;
@@ -106,7 +108,7 @@ public class lambdaExpressionStatement extends statement {
 					
 					List<FlowLineNode<CSFlowLineData>> rels = null;
 					CSDirectLambdaHandler cdlh = new CSDirectLambdaHandler(tadnames, smthandler);
-					if (rexp instanceof commonVarRef) {
+					if (rexp instanceof commonVarRef || rexp instanceof commonFieldRef) {
 						rels = rexp.HandleCodeSynthesis(squeue, cdlh);
 					} else {
 						rels = rexp.HandleCodeSynthesis(squeue, smthandler);
@@ -121,7 +123,7 @@ public class lambdaExpressionStatement extends statement {
 					Iterator<FlowLineNode<CSFlowLineData>> itr = tts.iterator();
 					while (itr.hasNext()) {
 						FlowLineNode<CSFlowLineData> fln = itr.next();
-						result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(false, tadnames, fln.getData()),
+						result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(over, tadnames, fln.getData()),
 								fln.getProbability()));
 					}
 				}
