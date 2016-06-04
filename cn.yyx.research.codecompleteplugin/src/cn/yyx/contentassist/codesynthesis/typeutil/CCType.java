@@ -1,9 +1,5 @@
 package cn.yyx.contentassist.codesynthesis.typeutil;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import cn.yyx.contentassist.specification.TypeMember;
 
 public class CCType {
@@ -30,7 +26,7 @@ public class CCType {
 		return false;
 	}
 	
-	public static LinkedList<CCType> CCTypeList(List<TypeMember> tmlist) {
+	/*public static LinkedList<CCType> CCTypeList(List<TypeMember> tmlist) {
 		LinkedList<CCType> result = new LinkedList<CCType>();
 		Iterator<TypeMember> itr = tmlist.iterator();
 		while (itr.hasNext())
@@ -39,7 +35,7 @@ public class CCType {
 			result.add(new CCType(tm));
 		}
 		return result;
-	}
+	}*/
 
 	public Class<?> getCls() {
 		return cls;
@@ -63,7 +59,7 @@ public class CCType {
 	
 	@Override
 	public String toString() {
-		return "cls:" + cls + ";clstr:" + clstr;
+		return clstr;
 	}
 	
 }
