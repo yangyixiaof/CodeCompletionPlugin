@@ -13,6 +13,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSRightParenInfoProperty;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.DirectUseFirstOneSide;
 import cn.yyx.research.language.Utility.StringUtil;
 
 public class rightParentheseStatement extends statement{
@@ -46,7 +47,7 @@ public class rightParentheseStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		CSFlowLineData cr = new CSFlowLineData(squeue.GenerateNewNodeId() + "", smthandler.getSete(), StringUtil.GenerateDuplicates(")", times), null, null, squeue.GetLastHandler(), new CSRightParenInfoProperty(times, null));
+		CSFlowLineData cr = new CSFlowLineData(squeue.GenerateNewNodeId() + "", smthandler.getSete(), StringUtil.GenerateDuplicates(")", times), null, new DirectUseFirstOneSide(), squeue.GetLastHandler(), new CSRightParenInfoProperty(times, null));
 		FlowLineNode<CSFlowLineData> fln = new FlowLineNode<CSFlowLineData>(cr, smthandler.getProb());
 		result.add(fln);
 		Stack<Integer> signals = new Stack<Integer>();

@@ -10,6 +10,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSLeftParenInfoProperty;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.DirectUseSecondOneSide;
 import cn.yyx.contentassist.commonutils.StringUtil;
 
 public class leftParentheseStatement extends statement{
@@ -57,7 +58,7 @@ public class leftParentheseStatement extends statement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId() + "", smthandler.getSete(), StringUtil.GenerateDuplicates("(", times), null, null, squeue.GetLastHandler(), new CSLeftParenInfoProperty(times, null)), smthandler.getProb()));
+		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId() + "", smthandler.getSete(), StringUtil.GenerateDuplicates("(", times), null, new DirectUseSecondOneSide(), squeue.GetLastHandler(), new CSLeftParenInfoProperty(times, null)), smthandler.getProb()));
 		return result;
 	}
 
