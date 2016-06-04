@@ -204,7 +204,15 @@ public class CodeSynthesisHelper {
 				if (!rexpcode.equals(rexpcodepre))
 				{
 					String mcode = rexpcode + "." + mcodelater;
-					result.addAll(CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, smthandler, mcode, rexpcode, between, mts));
+					List<FlowLineNode<CSFlowLineData>> ts = CodeSynthesisHelper.HandleMethodSpecificationInfer(squeue, smthandler, mcode, rexpcode, between, mts);
+					if (ts == null || ts.size() == 0) {
+						if (fln.getData().getDcls() instanceof InferredCCType)
+						{
+							result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), mcode, new InferredCCType(), null, squeue.GetLastHandler()), smthandler.getProb()));
+						}
+					} else {
+						result.addAll(ts);
+					}
 				}
 				rexpcodepre = rexpcode;
 			}

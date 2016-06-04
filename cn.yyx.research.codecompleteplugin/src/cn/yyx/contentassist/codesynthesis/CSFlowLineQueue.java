@@ -199,7 +199,6 @@ public class CSFlowLineQueue {
 	 */
 	public VariableHT BackSearchHandleLambdaScope(int scope, int off)
 	{
-		// TODO
 		
 		Map<String, String> tpvarname = new TreeMap<String, String>();
 		Map<String, Integer> tpremains = new TreeMap<String, Integer>();
@@ -207,7 +206,7 @@ public class CSFlowLineQueue {
 		boolean vhbarrierdestroy = false;
 		
 		FlowLineNode<CSFlowLineData> tmp = last;
-		while (tmp != null)
+		while (tmp != null && scope >= 0)
 		{
 			boolean shouldoperate = false;
 			if (scope == 0)
@@ -215,11 +214,10 @@ public class CSFlowLineQueue {
 				shouldoperate = true;
 			}
 			CSFlowLineData tmpdata = tmp.getData();
-			/*if (tmpdata.HasSpecialProperty(CSLambdaData.class))
+			if (tmpdata.HasSpecialProperty(CSLambdaData.class))
 			{
 				scope--;
-				
-			}*/
+			}
 			if (tmpdata.HasSpecialProperty(CSLambdaEndProperty.class))
 			{
 				FlowLineNode<CSFlowLineData> bs = tmpdata.getSynthesisCodeManager().getBlockstart();
@@ -257,11 +255,11 @@ public class CSFlowLineQueue {
 							HandleVarNameRms(tpss[0], tpss[1], tpvarname, tpremains, off);
 						}
 					}
-					scope--;
+					/*scope--;
 					if (scope < 0)
 					{
 						break;
-					}
+					}*/
 				}
 			}
 			tmp = tmp.getPrev();

@@ -22,6 +22,11 @@ public class CSVarRefHelper {
 		Map<String, String> po = null;
 		try {
 			pofield = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(null, -1, scope, off);
+		} catch (OffsetOutOfScopeException e) {
+			// e.printStackTrace();
+			// throw new CodeSynthesisException(e.getMessage());
+		}
+		try {
 			if (vht != null) {
 				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(vht.getTpremains(), vht.getTrimedscope(), vht.getTrimedscope(), off);
 			} else {
@@ -29,7 +34,7 @@ public class CSVarRefHelper {
 			}
 		} catch (OffsetOutOfScopeException e) {
 			// e.printStackTrace();
-			throw new CodeSynthesisException(e.getMessage());
+			// throw new CodeSynthesisException(e.getMessage());
 		}
 		if (pofield != null)
 		{
@@ -59,6 +64,11 @@ public class CSVarRefHelper {
 		Map<String, String> po = null;
 		try {
 			povar = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(null, -1, scope, off);
+		} catch (OffsetOutOfScopeException e) {
+			// e.printStackTrace();
+			// throw new CodeSynthesisException(e.getMessage());
+		}
+		try {
 			if (vht != null) {
 				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(vht.getTpremains(), vht.getTrimedscope(), vht.getTrimedscope(), off);
 			} else {
@@ -66,7 +76,7 @@ public class CSVarRefHelper {
 			}
 		} catch (OffsetOutOfScopeException e) {
 			// e.printStackTrace();
-			throw new CodeSynthesisException(e.getMessage());
+			// throw new CodeSynthesisException(e.getMessage());
 		}
 		if (povar != null)
 		{
