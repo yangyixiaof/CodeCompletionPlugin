@@ -21,11 +21,11 @@ public class CSVarRefHelper {
 		Map<String, String> pores = new TreeMap<String, String>();
 		Map<String, String> po = null;
 		try {
-			pofield = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(null, null, -1, scope, off);
+			pofield = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(null, -1, scope, off);
 			if (vht != null) {
-				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(vht.getTpvarname(), vht.getTpremains(), vht.getTrimedscope(), vht.getTrimedscope(), off);
+				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(vht.getTpremains(), vht.getTrimedscope(), vht.getTrimedscope(), off);
 			} else {
-				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(null, null, -1, scope, off);
+				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(null, -1, scope, off);
 			}
 		} catch (OffsetOutOfScopeException e) {
 			// e.printStackTrace();
@@ -38,6 +38,10 @@ public class CSVarRefHelper {
 		if (po != null)
 		{
 			pores.putAll(po);
+		}
+		if (vht != null)
+		{
+			pores.putAll(vht.getTpvarname());
 		}
 		// po.putAll(pofield);
 		return pores;
@@ -54,11 +58,11 @@ public class CSVarRefHelper {
 		Map<String, String> pores = new TreeMap<String, String>();
 		Map<String, String> po = null;
 		try {
-			povar = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(null, null, -1, scope, off);
+			povar = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(null, -1, scope, off);
 			if (vht != null) {
-				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(vht.getTpvarname(), vht.getTpremains(), vht.getTrimedscope(), vht.getTrimedscope(), off);
+				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(vht.getTpremains(), vht.getTrimedscope(), vht.getTrimedscope(), off);
 			} else {
-				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(null, null, -1, scope, off);
+				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(null, -1, scope, off);
 			}
 		} catch (OffsetOutOfScopeException e) {
 			// e.printStackTrace();
@@ -71,6 +75,11 @@ public class CSVarRefHelper {
 		if (po != null)
 		{
 			pores.putAll(po);
+		}
+		if (vht != null)
+		{
+			// vht.getTpvarname(), 
+			pores.putAll(vht.getTpvarname());
 		}
 		// po.putAll(povar);
 		/*if (vht.getHoldername() != null)
