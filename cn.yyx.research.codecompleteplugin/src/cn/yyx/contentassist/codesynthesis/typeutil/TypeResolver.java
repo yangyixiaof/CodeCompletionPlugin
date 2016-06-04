@@ -10,6 +10,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codeutils.type;
+import cn.yyx.contentassist.codeutils.virtualInferredType;
 import cn.yyx.contentassist.commonutils.YJCache;
 import cn.yyx.contentassist.parsehelper.ComplexParser;
 
@@ -18,6 +19,8 @@ public class TypeResolver {
 	public static final int MaxTryTimes = 3;
 	
 	public static YJCache<LinkedList<CCType>> classcache = new YJCache<LinkedList<CCType>>();
+	
+	public static char seed = 'A';
 	
 	/**
 	 * this could return an empty list.
@@ -40,7 +43,16 @@ public class TypeResolver {
 		LinkedList<CCType> res = new LinkedList<CCType>();
 		List<FlowLineNode<CSFlowLineData>> tpls = null;
 		try {
-			tpls = tp.HandleCodeSynthesis(squeue, smthandler);
+			if (tp instanceof virtualInferredType) {
+				tpls = ((virtualInferredType) tp).HandleVirtualInferredTypeCodeSynthesis(squeue, smthandler, seed);
+				seed++;
+				if (seed > 'Z')
+				{
+					seed = 'A';
+				}
+			} else {
+				tpls = tp.HandleCodeSynthesis(squeue, smthandler);
+			}
 		} catch (CodeSynthesisException e) {
 			e.printStackTrace();
 			System.exit(1);

@@ -19,13 +19,13 @@ public class LeftOrRightCast extends TypeComputationKind {
 	
 	@Override
 	public CCType HandleResult() throws TypeConflictException {
-		if (TypeCheckHelper.CanBeMutualCast(pre, post))
-		{
-			return pre;
-		}
 		if (pre instanceof InferredCCType || post instanceof InferredCCType)
 		{
 			return new InferredCCType();
+		}
+		if (TypeCheckHelper.CanBeMutualCast(pre, post))
+		{
+			return pre;
 		}
 		throw new TypeConflictException("two types can not be casted.");
 	}
