@@ -9,6 +9,7 @@ public class DirectUseFirstOneSide extends TypeComputationKind {
 	@Override
 	public void HandlePre(CCType pre) throws TypeConflictException {
 		this.pre = pre;
+		this.post = pre;
 	}
 	
 	@Override

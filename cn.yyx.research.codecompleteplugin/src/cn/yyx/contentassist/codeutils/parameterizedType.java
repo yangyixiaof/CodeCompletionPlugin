@@ -50,10 +50,19 @@ public class parameterizedType extends type{
 		List<FlowLineNode<CSFlowLineData>> modifiedidls = CodeSynthesisHelper.HandleRawTypeSpecificationInfer(idls, squeue, smthandler);
 		if (modifiedidls == null || modifiedidls.size() == 0)
 		{
-			modifiedidls = idls;
+			return null;
+			// modifiedidls = idls;
 		}
 		List<FlowLineNode<CSFlowLineData>> tpls = tas.HandleCodeSynthesis(squeue, smthandler);
+		if (tpls == null || tpls.size() == 0)
+		{
+			return null;
+		}
 		List<FlowLineNode<CSFlowLineData>> fls = CSFlowLineHelper.ForwardConcate(null, modifiedidls, null, tpls, null, squeue, smthandler, new DirectUseFirstOneSide());
+		if (fls == null || fls.size() == 0)
+		{
+			return null;
+		}
 		Iterator<FlowLineNode<CSFlowLineData>> itr = fls.iterator();
 		while (itr.hasNext())
 		{
