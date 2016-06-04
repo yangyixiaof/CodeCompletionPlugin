@@ -9,6 +9,7 @@ import cn.yyx.contentassist.commonutils.ContextHandler;
 import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.StringUtil;
+import cn.yyx.research.language.JDTManager.GCodeMetaInfo;
 
 public class SpecificationHelper {
 	
@@ -102,6 +103,10 @@ public class SpecificationHelper {
 		if (maxRef == null || maxMember == null || maxMemberType == null)
 		{
 			return null;
+		}
+		if (concator.equals("::"))
+		{
+			maxMemberType = GCodeMetaInfo.InferedType;
 		}
 		RefAndModifiedMember result = new RefAndModifiedMember(maxRef, maxMember, maxMemberType); // , maxMm
 		return result;
