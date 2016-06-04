@@ -16,6 +16,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSLambdaEndProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableDeclarationData;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableHolderData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.statementhandler.CSDirectLambdaHandler;
 import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.VariableHT;
@@ -190,6 +191,28 @@ public class CSFlowLineQueue {
 		}
 		tpoff--;
 		tpremains.put(tp, tpoff);
+	}
+	
+	public VariableHT DirectHandleLambdaScope(CSDirectLambdaHandler csdlh, int scope, int off)
+	{
+		Map<String, String> tpvarname = new TreeMap<String, String>();
+		Map<String, Integer> tpremains = new TreeMap<String, Integer>();
+		
+		if (scope == 0)
+		{
+			List<String> tps = csdlh.getTadnames();
+			if (tps != null && tps.size() > 0)
+			{
+				Iterator<String> itr = tps.iterator();
+				while (itr.hasNext())
+				{
+					String ttp = itr.next();
+					String[] tpss = ttp.split(" ");
+					HandleVarNameRms(tpss[0], tpss[1], tpvarname, tpremains, off);
+				}
+			}
+		}
+		return new VariableHT(tpvarname, tpremains, scope);
 	}
 	
 	/**

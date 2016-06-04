@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.statementhandler.CSDirectLambdaHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.commonutils.VariableHT;
 import cn.yyx.research.language.simplified.JDTManager.OffsetOutOfScopeException;
@@ -13,6 +14,12 @@ public class CSVarRefHelper {
 	public static Map<String, String> GetAllTypeVariablePair(CSFlowLineQueue squeue, CSStatementHandler smthandler, int scope, int off) throws CodeSynthesisException
 	{
 		VariableHT vht = null;
+		VariableHT directvht = null;
+		if (smthandler instanceof CSDirectLambdaHandler)
+		{
+			directvht = squeue.DirectHandleLambdaScope((CSDirectLambdaHandler)smthandler, scope, off);
+			scope--;
+		}
 		if (!(smthandler.getAoi().isInFieldLevel())) // scope == 0 && 
 		{
 			vht = squeue.BackSearchHandleLambdaScope(scope, off);
@@ -48,6 +55,10 @@ public class CSVarRefHelper {
 		{
 			pores.putAll(vht.getTpvarname());
 		}
+		if (directvht != null)
+		{
+			pores.putAll(directvht.getTpvarname());
+		}
 		// po.putAll(pofield);
 		return pores;
 	}
@@ -55,6 +66,12 @@ public class CSVarRefHelper {
 	public static Map<String, String> GetAllFieldTypeVariablePair(CSFlowLineQueue squeue, CSStatementHandler smthandler, int scope, int off) throws CodeSynthesisException
 	{
 		VariableHT vht = null;
+		VariableHT directvht = null;
+		if (smthandler instanceof CSDirectLambdaHandler)
+		{
+			directvht = squeue.DirectHandleLambdaScope((CSDirectLambdaHandler)smthandler, scope, off);
+			scope--;
+		}
 		if (smthandler.getAoi().isInFieldLevel()) // scope == 0 && 
 		{
 			vht = squeue.BackSearchHandleLambdaScope(scope, off);
@@ -90,6 +107,10 @@ public class CSVarRefHelper {
 		{
 			// vht.getTpvarname(), 
 			pores.putAll(vht.getTpvarname());
+		}
+		if (directvht != null)
+		{
+			pores.putAll(directvht.getTpvarname());
 		}
 		// po.putAll(povar);
 		/*if (vht.getHoldername() != null)

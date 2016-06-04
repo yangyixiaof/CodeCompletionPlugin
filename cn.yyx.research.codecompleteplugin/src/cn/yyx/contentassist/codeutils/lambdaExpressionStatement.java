@@ -13,6 +13,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSLambdaData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
+import cn.yyx.contentassist.codesynthesis.statementhandler.CSDirectLambdaHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
 public class lambdaExpressionStatement extends statement {
@@ -93,8 +94,7 @@ public class lambdaExpressionStatement extends statement {
 				}
 			} else {
 				List<FlowLineNode<CSFlowLineData>> tpls = typelist.HandleCodeSynthesis(squeue, smthandler);
-				List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-				if ((tpls == null || tpls.size() == 0) || (rels == null || rels.size() == 0)) {
+				if ((tpls == null || tpls.size() == 0)) {
 					return null;
 				}
 				Iterator<FlowLineNode<CSFlowLineData>> tpitr = tpls.iterator();
@@ -103,6 +103,19 @@ public class lambdaExpressionStatement extends statement {
 					List<FlowLineNode<CSFlowLineData>> tres = new LinkedList<FlowLineNode<CSFlowLineData>>();
 					tres.add(tpfln);
 					List<String> tadnames = ((CSArgTypeListData) tpfln.getData()).getTpandnames();
+					
+					List<FlowLineNode<CSFlowLineData>> rels = null;
+					CSDirectLambdaHandler cdlh = new CSDirectLambdaHandler(tadnames, smthandler);
+					if (rexp instanceof commonVarRef) {
+						rels = rexp.HandleCodeSynthesis(squeue, cdlh);
+					} else {
+						rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+					}
+					if ((rels == null || rels.size() == 0))
+					{
+						continue;
+					}
+					
 					List<FlowLineNode<CSFlowLineData>> tts = CSFlowLineHelper.ForwardConcate("(", tres, ")->", rels,
 							null, squeue, smthandler, null);
 					Iterator<FlowLineNode<CSFlowLineData>> itr = tts.iterator();
