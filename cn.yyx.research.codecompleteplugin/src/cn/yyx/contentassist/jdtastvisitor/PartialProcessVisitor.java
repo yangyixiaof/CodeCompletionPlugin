@@ -71,6 +71,15 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 			}
 		}
 	}
+
+	@Override
+	protected void ExitCodeSwitchScope(ASTNode node)
+	{
+		if (!IsEnclosed(node))
+		{
+			super.ExitCodeSwitchScope(node);
+		}
+	}
 	
 	private void RecordCouldContinue(ASTNode node, boolean couldcontinue)
 	{
