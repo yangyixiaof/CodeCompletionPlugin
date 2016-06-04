@@ -249,6 +249,11 @@ public class CSFlowLineData implements CSDataStructure {
 		if (csep == null) {
 			csep = cseppara;
 		} else {
+			if (csep == cseppara)
+			{
+				System.err.println("two scep same? could cause infinite loop.");
+				System.exit(1);
+			}
 			CSExtraProperty cseptmppre = null;
 			CSExtraProperty cseptmp = csep;
 			while (cseptmp != null)
