@@ -105,6 +105,10 @@ public class argumentList implements OneCode {
 		List<FlowLineNode<CSFlowLineData>> results = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<FlowLineNode<CSFlowLineData>> invokers = fa.HandleClassOrMethodInvoke(squeue,
 				new CSMethodStatementFirstArgHandler(realhandler), methodname, mts);
+		if (invokers == null || invokers.size() == 0)
+		{
+			return null;
+		}
 		Iterator<FlowLineNode<CSFlowLineData>> itr = invokers.iterator();
 		while (itr.hasNext()) {
 			FlowLineNode<CSFlowLineData> fln = itr.next();
