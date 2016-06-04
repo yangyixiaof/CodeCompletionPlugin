@@ -213,8 +213,8 @@ public class preExist extends referedExpression{
 		}
 		if (!handled && (tmp.getPrev().getData().HasSpecialProperty(CSPsProperty.class) || tmp.getPrev().getData().HasSpecialProperty(CSPrProperty.class)) && signals.size() == 1)
 		{
-			mstop = tmpnext;
-			realhandler.setNextstart(tmp);
+			mstop = tmp; // tmpnext
+			realhandler.setNextstart(tmp.getPrev());
 			realhandler.setMostfar(mstop);
 			handled = true;
 		}

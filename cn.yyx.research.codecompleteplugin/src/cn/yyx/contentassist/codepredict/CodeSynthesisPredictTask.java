@@ -17,6 +17,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationKind;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
@@ -97,6 +98,16 @@ public class CodeSynthesisPredictTask implements Runnable {
 		int keylen = 0;
 		while (pitr.hasNext())
 		{
+			// clear tck.
+			if (start != null)
+			{
+				TypeComputationKind tck = start.getData().getTck();
+				if (tck != null)
+				{
+					tck.ClearPost();
+				}
+			}
+			
 			if (level == 0)
 			{
 				totalsuccess = 0;

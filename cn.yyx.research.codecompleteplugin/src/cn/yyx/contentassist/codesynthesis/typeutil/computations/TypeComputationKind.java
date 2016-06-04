@@ -12,6 +12,11 @@ public abstract class TypeComputationKind {
 	public abstract void HandlePost(CCType post) throws TypeConflictException;
 	public abstract CCType HandleResult() throws TypeConflictException;
 	
+	public void ClearPost()
+	{
+		post = null;
+	}
+	
 	public boolean HandleOver() throws TypeConflictException {
 		if (pre != null && post != null)
 		{
