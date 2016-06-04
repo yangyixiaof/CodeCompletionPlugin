@@ -223,9 +223,9 @@ public class SearchSpecificationOfAReference {
 					String arg = funs[i].trim();
 					// System.out.println("arg:" + arg + ",pstr:"+pstr +
 					// ",funs:" + strs[0] + "#");
-					String[] as = arg.split(" ");
-					argtypelist.add(as[0]);
-					argnamelist.add(as[1]);
+					int wsidx = arg.lastIndexOf(' ');
+					argtypelist.add(arg.substring(0, wsidx));
+					argnamelist.add(arg.substring(wsidx+1));
 				}
 				String returntype = (strs[1].trim());
 				String wheredeclared = null;

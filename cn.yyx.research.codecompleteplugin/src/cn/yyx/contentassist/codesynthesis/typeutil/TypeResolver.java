@@ -27,6 +27,11 @@ public class TypeResolver {
 	 * @return
 	 */
 	public static LinkedList<CCType> ResolveType(String type, CSFlowLineQueue squeue, CSStatementHandler smthandler) {
+		// debugging code, not remove.
+		if (type.startsWith("Map<?"))
+		{
+			System.err.println("debug:is at Map<?.");
+		}
 		type tp = ComplexParser.GetType(type);
 		LinkedList<CCType> clss = classcache.GetCachedContent(type);
 		if (clss != null) {

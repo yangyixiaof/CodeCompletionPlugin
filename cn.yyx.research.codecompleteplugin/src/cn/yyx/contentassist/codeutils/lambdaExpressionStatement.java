@@ -60,7 +60,7 @@ public class lambdaExpressionStatement extends statement {
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		if (typelist == null) {
 			if (rexp == null) {
-				result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(squeue.GenerateNewNodeId(),
+				result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(true, squeue.GenerateNewNodeId(),
 						smthandler.getSete(), "()->{}", null, null, squeue.GetLastHandler()), smthandler.getProb()));
 			} else {
 				List<FlowLineNode<CSFlowLineData>> fres = null;
@@ -72,7 +72,7 @@ public class lambdaExpressionStatement extends statement {
 				Iterator<FlowLineNode<CSFlowLineData>> itr = fres.iterator();
 				while (itr.hasNext()) {
 					FlowLineNode<CSFlowLineData> fln = itr.next();
-					result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(null, fln.getData()),
+					result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(false, null, fln.getData()),
 							fln.getProbability()));
 				}
 			}
@@ -88,7 +88,7 @@ public class lambdaExpressionStatement extends statement {
 				while (tpitr.hasNext()) {
 					FlowLineNode<CSFlowLineData> tpfln = tpitr.next();
 					List<String> tadnames = ((CSArgTypeListData) tpfln.getData()).getTpandnames();
-					result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(tadnames, tpfln.getData()),
+					result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(true, tadnames, tpfln.getData()),
 							tpfln.getProbability()));
 				}
 			} else {
@@ -108,7 +108,7 @@ public class lambdaExpressionStatement extends statement {
 					Iterator<FlowLineNode<CSFlowLineData>> itr = tts.iterator();
 					while (itr.hasNext()) {
 						FlowLineNode<CSFlowLineData> fln = itr.next();
-						result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(tadnames, fln.getData()),
+						result.add(new FlowLineNode<CSFlowLineData>(new CSLambdaData(false, tadnames, fln.getData()),
 								fln.getProbability()));
 					}
 				}

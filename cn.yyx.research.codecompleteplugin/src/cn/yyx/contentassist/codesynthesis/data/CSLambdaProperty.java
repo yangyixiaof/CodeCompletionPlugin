@@ -6,12 +6,20 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 
 public class CSLambdaProperty extends CSExtraProperty {
 	
-	public CSLambdaProperty(CSExtraProperty csepnext) {
+	boolean overed = false;
+	
+	public CSLambdaProperty(boolean overed, CSExtraProperty csepnext) {
 		super(csepnext);
+		this.overed = overed;
 	}
 
 	@Override
 	public void HandleStackSignalDetail(Stack<Integer> signals) throws CodeSynthesisException {
+		if (overed)
+		{
+			// TODO
+			// return;
+		}
 		if (signals.size() == 0)
 		{
 			throw new CodeSynthesisException("Lambda block error.");

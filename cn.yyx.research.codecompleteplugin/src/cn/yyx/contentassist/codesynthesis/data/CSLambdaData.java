@@ -11,11 +11,11 @@ public class CSLambdaData extends CSFlowLineData {
 	
 	private List<String> declares = null;
 	
-	public CSLambdaData(Integer id, Sentence sete, String data, CCType dcls, TypeComputationKind tck, SynthesisHandler handler) {
+	public CSLambdaData(boolean overed, Integer id, Sentence sete, String data, CCType dcls, TypeComputationKind tck, SynthesisHandler handler) {
 		super(id, sete, data, dcls, tck, handler);
 	}
 	
-	public CSLambdaData(List<String> declares, CSFlowLineData fld) {
+	public CSLambdaData(boolean overed, List<String> declares, CSFlowLineData fld) {
 		super(fld.getId(), fld.getSete(), fld.getData(), fld.getDcls(), fld.getTck(), fld.getHandler());
 		if (fld.isHashole())
 		{
@@ -23,7 +23,7 @@ public class CSLambdaData extends CSFlowLineData {
 		}
 		this.setDeclares(declares);
 		this.setCsep(fld.getCsep());
-		this.setCsep(new CSLambdaProperty(null));
+		this.setCsep(new CSLambdaProperty(overed, null));
 		this.setScm(fld.getSynthesisCodeManager());
 		this.setExtraData(fld.getExtraData());
 	}
