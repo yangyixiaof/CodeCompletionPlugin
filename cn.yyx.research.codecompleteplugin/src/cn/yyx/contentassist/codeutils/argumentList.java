@@ -93,13 +93,13 @@ public class argumentList implements OneCode {
 		while (ritr.hasNext()) {
 			referedExpression re = ritr.next();
 			// List<FlowLineNode<CSFlowLineData>> oneargpospossibles = ;
-			if (!ritr.hasNext()) {
+			// if (!ritr.hasNext()) {
 				List<FlowLineNode<CSFlowLineData>> rels = re.HandleCodeSynthesis(squeue, smthandler);
 				if (rels == null || rels.size() == 0) {
 					return null;
 				}
-				positiveargs.add(rels);
-			}
+				positiveargs.add(0, rels);
+			// }
 		}
 		// handle invoker.
 		List<FlowLineNode<CSFlowLineData>> results = new LinkedList<FlowLineNode<CSFlowLineData>>();

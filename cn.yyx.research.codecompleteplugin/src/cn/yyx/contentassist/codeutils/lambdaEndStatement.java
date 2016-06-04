@@ -28,13 +28,6 @@ public class lambdaEndStatement extends statement implements SWrapper{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		Stack<Integer> signals = new Stack<Integer>();
-		signals.push(DataStructureSignalMetaInfo.LambdaExpression);
-		FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForSpecialClass(CSLambdaData.class, signals);
-		if (cnode == null)
-		{
-			throw new CodeSynthesisException("lambda block check runs into error.");
-		}
 		// List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<FlowLineNode<CSFlowLineData>> smtls = smt.HandleCodeSynthesis(squeue, smthandler);
 		if (smtls == null)
@@ -45,6 +38,14 @@ public class lambdaEndStatement extends statement implements SWrapper{
 		while (ritr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = ritr.next();
+			Stack<Integer> signals = new Stack<Integer>();
+			signals.push(DataStructureSignalMetaInfo.LambdaExpression);
+			fln.getData().HandleStackSignal(signals);
+			FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForSpecialClass(CSLambdaData.class, signals);
+			if (cnode == null)
+			{
+				throw new CodeSynthesisException("lambda block check runs into error.");
+			}
 			CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, cnode);
 			// result.addAll();
 		}

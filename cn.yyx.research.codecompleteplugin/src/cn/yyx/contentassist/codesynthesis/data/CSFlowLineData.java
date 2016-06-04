@@ -196,8 +196,14 @@ public class CSFlowLineData implements CSDataStructure {
 		CCType clz = null;
 		if (tck != null)
 		{
-			tck.HandlePre(getDcls());
-			tck.HandlePost(d2.getDcls());
+			if (!tck.PreIsHandled())
+			{
+				tck.HandlePre(getDcls());
+			}
+			if (!tck.PostIsHandled())
+			{
+				tck.HandlePost(d2.getDcls());
+			}
 			if (tck.HandleOver()) {
 				clz = tck.HandleResult();
 				tck = null;

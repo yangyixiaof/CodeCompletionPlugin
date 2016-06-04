@@ -37,7 +37,11 @@ public class CSEnterParamInfoProperty extends CSExtraProperty{
 		// pred check : tttimes > 0
 		if (!signals.isEmpty())
 		{
-			throw new CodeSynthesisException("EnterParam doesn't consumed totally and left can not consume, so it is an error.");
+			int sig = signals.peek();
+			if (sig != DataStructureSignalMetaInfo.MethodPs && sig != DataStructureSignalMetaInfo.MethodPr && sig != DataStructureSignalMetaInfo.MethodInvocation) {
+			} else {
+				throw new CodeSynthesisException("EnterParam doesn't consumed totally and left can not consume, so it is an error.");
+			}
 		}
 	}
 	
