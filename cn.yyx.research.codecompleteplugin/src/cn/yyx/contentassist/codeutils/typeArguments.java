@@ -13,7 +13,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class typeArguments implements OneCode{
+public class typeArguments implements OneCode {
 	
 	List<typeArgument> tas = new LinkedList<typeArgument>();
 	

@@ -149,6 +149,10 @@ public class SearchSpecificationOfAReference {
 			ICompletionProposal icp = itr.next();
 			JavaCompletionProposal jcp = (JavaCompletionProposal) icp;
 			String pstr = jcp.getDisplayString().trim();
+			if (!pstr.startsWith("class "))
+			{
+				continue;
+			}
 			if (CodeCompletionMetaInfo.DebugMode) {
 				System.err.println(pstr);
 				// System.err.println(icp.getClass());

@@ -8,7 +8,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
-public class typeArgument implements OneCode{
+public class typeArgument implements OneCode {
 	
 	type tp = null;
     wildCardType wct = null; // tp and wct can not both be unnull

@@ -806,8 +806,18 @@ public class OneTypeVisitor extends Java8BaseVisitor<Integer> {
 		typeArguments tas = new typeArguments();
 		while (itr.hasNext())
 		{
-			itr.next();
-			typeArgument ta = (typeArgument) usedobj.pop();
+			itr.next(); // TypeArgumentContext tac = 
+			Object taobj = usedobj.pop();
+			
+			/*System.err.println("tas:" + ctx.getText());
+			System.err.println("tacs:" + tac.getText());
+			System.err.println("taobj:" + taobj.getClass());
+			if (taobj instanceof identifier)
+			{
+				System.out.println("taid:"+(((identifier) taobj).getValue()));
+			}*/
+			
+			typeArgument ta = (typeArgument) taobj;
 			tas.AddToFirst(ta);
 		}
 		usedobj.push(tas);
@@ -864,18 +874,19 @@ public class OneTypeVisitor extends Java8BaseVisitor<Integer> {
 	@Override
 	public Integer visitWildCardType(Java8Parser.WildCardTypeContext ctx) {
 		Integer res = visitChildren(ctx);
+		Object tppara = null;
 		WildcardBoundsContext wb = ctx.wildcardBounds();
-		Object tp = usedobj.pop();
 		boolean extended = false;
 		if (wb != null)
 		{
+			tppara = usedobj.pop();
 			ExtendBoundContext eb = wb.extendBound();
 			if (eb != null)
 			{
 				extended = true;
 			}
 		}
-		usedobj.push(new wildCardType(extended, (type)tp));
+		usedobj.push(new wildCardType(extended, (type)tppara));
 		return res;
 	}
 
