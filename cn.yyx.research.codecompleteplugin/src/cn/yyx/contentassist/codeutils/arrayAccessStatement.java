@@ -14,6 +14,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.CSFlowLineTypeCheckRefiner;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.ChooseArrayComponentCheckIdxInteger;
 
 public class arrayAccessStatement extends expressionStatement {
 	
@@ -62,7 +63,7 @@ public class arrayAccessStatement extends expressionStatement {
 			return null;
 		}
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		List<FlowLineNode<CSFlowLineData>> fmls = CSFlowLineHelper.ForwardConcate(null, rals, "[", rels, null, squeue, smthandler, null);
+		List<FlowLineNode<CSFlowLineData>> fmls = CSFlowLineHelper.ForwardConcate(null, rals, "[", rels, null, squeue, smthandler, new ChooseArrayComponentCheckIdxInteger());
 		if (fmls == null || fmls.size() == 0)
 		{
 			return null;
