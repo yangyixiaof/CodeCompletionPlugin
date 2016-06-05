@@ -8,7 +8,7 @@ public class BooleanRTwoSideSameBoolean extends TypeComputationKind {
 	
 	@Override
 	public void HandlePre(CCType pre) throws TypeConflictException {
-		this.pre = pre;
+		this.setPre(pre);
 		if (pre != null)
 		{
 			if (pre.getCls() != boolean.class && !(pre instanceof InferredCCType))
@@ -20,7 +20,7 @@ public class BooleanRTwoSideSameBoolean extends TypeComputationKind {
 
 	@Override
 	public void HandlePost(CCType post) throws TypeConflictException {
-		this.post = post;
+		this.setPost(post);
 		if (post != null)
 		{
 			if (post.getCls() != boolean.class && !(post instanceof InferredCCType))
@@ -32,11 +32,19 @@ public class BooleanRTwoSideSameBoolean extends TypeComputationKind {
 	
 	@Override
 	public CCType HandleResult() throws TypeConflictException {
-		if (pre instanceof InferredCCType || post instanceof InferredCCType)
+		if (getPre() instanceof InferredCCType || getPost() instanceof InferredCCType)
 		{
 			return new InferredCCType();
 		}
 		return new CCType(boolean.class, "boolean");
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		BooleanRTwoSideSameBoolean brtssb = new BooleanRTwoSideSameBoolean();
+		brtssb.setPost((CCType) post.clone());
+		brtssb.setPre((CCType) pre.clone());
+		return brtssb;
 	}
 
 }

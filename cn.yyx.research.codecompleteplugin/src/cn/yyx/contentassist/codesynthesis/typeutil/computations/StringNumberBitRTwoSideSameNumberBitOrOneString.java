@@ -9,7 +9,7 @@ public class StringNumberBitRTwoSideSameNumberBitOrOneString extends TypeComputa
 
 	@Override
 	public void HandlePre(CCType pre) throws TypeConflictException {
-		this.pre = pre;
+		this.setPre(pre);
 		if (pre != null)
 		{
 			if (!TypeComputer.IsNumberBit(pre.getCls()) && pre.getCls() != String.class && !(pre instanceof InferredCCType))
@@ -21,7 +21,7 @@ public class StringNumberBitRTwoSideSameNumberBitOrOneString extends TypeComputa
 
 	@Override
 	public void HandlePost(CCType post) throws TypeConflictException {
-		this.post = post;
+		this.setPost(post);
 		if (post != null)
 		{
 			if (!TypeComputer.IsNumberBit(post.getCls()) && post.getCls() != String.class && !(post instanceof InferredCCType))
@@ -33,15 +33,23 @@ public class StringNumberBitRTwoSideSameNumberBitOrOneString extends TypeComputa
 	
 	@Override
 	public CCType HandleResult() throws TypeConflictException {
-		if (pre instanceof InferredCCType || post instanceof InferredCCType)
+		if (getPre() instanceof InferredCCType || getPost() instanceof InferredCCType)
 		{
 			return new InferredCCType();
 		}
-		if (pre.getCls() == String.class || post.getCls() == String.class)
+		if (getPre().getCls() == String.class || getPost().getCls() == String.class)
 		{
 			return new CCType(String.class, "String");
 		}
-		return post;
+		return getPost();
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		StringNumberBitRTwoSideSameNumberBitOrOneString brtssnb = new StringNumberBitRTwoSideSameNumberBitOrOneString();
+		brtssnb.setPost((CCType) post.clone());
+		brtssnb.setPre((CCType) pre.clone());
+		return brtssnb;
 	}
 	
 }

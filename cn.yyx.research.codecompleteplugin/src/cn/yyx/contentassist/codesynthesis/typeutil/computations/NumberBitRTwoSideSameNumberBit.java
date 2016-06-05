@@ -9,7 +9,7 @@ public class NumberBitRTwoSideSameNumberBit extends TypeComputationKind {
 
 	@Override
 	public void HandlePre(CCType pre) throws TypeConflictException {
-		this.pre = pre;
+		this.setPre(pre);
 		if (pre != null)
 		{
 			if (!TypeComputer.IsNumberBit(pre.getCls()) && !(pre instanceof InferredCCType))
@@ -21,7 +21,7 @@ public class NumberBitRTwoSideSameNumberBit extends TypeComputationKind {
 	
 	@Override
 	public void HandlePost(CCType post) throws TypeConflictException {
-		this.post = post;
+		this.setPost(post);
 		if (post != null)
 		{
 			if (!TypeComputer.IsNumberBit(post.getCls()) && !(post instanceof InferredCCType))
@@ -33,11 +33,19 @@ public class NumberBitRTwoSideSameNumberBit extends TypeComputationKind {
 	
 	@Override
 	public CCType HandleResult() throws TypeConflictException {
-		if (pre instanceof InferredCCType || post instanceof InferredCCType)
+		if (getPre() instanceof InferredCCType || getPost() instanceof InferredCCType)
 		{
 			return new InferredCCType();
 		}
-		return post;
+		return getPost();
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		NumberBitRTwoSideSameNumberBit brtssnb = new NumberBitRTwoSideSameNumberBit();
+		brtssnb.setPost((CCType) post.clone());
+		brtssnb.setPre((CCType) pre.clone());
+		return brtssnb;
 	}
 	
 }

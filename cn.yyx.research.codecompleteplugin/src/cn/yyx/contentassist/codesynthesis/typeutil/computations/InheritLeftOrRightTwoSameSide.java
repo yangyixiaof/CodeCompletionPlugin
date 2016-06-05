@@ -9,36 +9,44 @@ public class InheritLeftOrRightTwoSameSide extends TypeComputationKind {
 
 	@Override
 	public void HandlePre(CCType pre) throws TypeConflictException {
-		this.pre = pre;
+		this.setPre(pre);
 	}
 
 	@Override
 	public void HandlePost(CCType post) throws TypeConflictException {
-		this.post = post;
+		this.setPost(post);
 	}
 	
 	@Override
 	public CCType HandleResult() throws TypeConflictException {
-		if (pre == null || post == null)
+		if (getPre() == null || getPost() == null)
 		{
 			throw new TypeConflictException("pre and post are null in InheritLeftOrRightTwoSameSide.");
 		}
-		if (pre instanceof InferredCCType || post instanceof InferredCCType)
+		if (getPre() instanceof InferredCCType || getPost() instanceof InferredCCType)
 		{
 			return new InferredCCType();
 		}
-		if (TypeComputer.CCTypeSame(pre, post))
+		if (TypeComputer.CCTypeSame(getPre(), getPost()))
 		{
-			if (post.getCls() != null)
+			if (getPost().getCls() != null)
 			{
-				return post;
+				return getPost();
 			}
-			if (pre.getCls() != null)
+			if (getPre().getCls() != null)
 			{
-				return pre;
+				return getPre();
 			}
-			return pre;
+			return getPre();
 		}
 		throw new TypeConflictException("pre and post are not same in InheritLeftOrRightTwoSameSide.");
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		InheritLeftOrRightTwoSameSide brtssnb = new InheritLeftOrRightTwoSameSide();
+		brtssnb.setPost((CCType) post.clone());
+		brtssnb.setPre((CCType) pre.clone());
+		return brtssnb;
 	}
 }

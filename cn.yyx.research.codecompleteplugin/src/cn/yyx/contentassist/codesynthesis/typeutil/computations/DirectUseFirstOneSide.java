@@ -8,22 +8,30 @@ public class DirectUseFirstOneSide extends TypeComputationKind {
 	
 	@Override
 	public void HandlePre(CCType pre) throws TypeConflictException {
-		this.pre = pre;
-		this.post = pre;
+		this.setPre(pre);
+		this.setPost(pre);
 	}
 	
 	@Override
 	public void HandlePost(CCType post) throws TypeConflictException {
-		this.post = pre;
+		this.setPost(getPre());
 	}
 	
 	@Override
 	public CCType HandleResult() throws TypeConflictException {
-		if (pre instanceof InferredCCType || post instanceof InferredCCType)
+		if (getPre() instanceof InferredCCType || getPost() instanceof InferredCCType)
 		{
 			return new InferredCCType();
 		}
-		return pre;
+		return getPre();
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		DirectUseFirstOneSide brtssnb = new DirectUseFirstOneSide();
+		brtssnb.setPost((CCType) post.clone());
+		brtssnb.setPre((CCType) pre.clone());
+		return brtssnb;
 	}
 	
 }

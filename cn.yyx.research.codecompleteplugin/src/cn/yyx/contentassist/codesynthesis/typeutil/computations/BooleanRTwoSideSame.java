@@ -9,17 +9,17 @@ public class BooleanRTwoSideSame extends TypeComputationKind {
 	
 	@Override
 	public void HandlePre(CCType pre) throws TypeConflictException {
-		this.pre = pre;
+		this.setPre(pre);
 	}
 
 	@Override
 	public void HandlePost(CCType post) throws TypeConflictException {
-		this.post = post;
+		this.setPost(post);
 	}
 	
 	@Override
 	public boolean HandleOver() throws TypeConflictException {
-		if (pre != null && post != null)
+		if (getPre() != null && getPost() != null)
 		{
 			return true;
 		}
@@ -28,15 +28,23 @@ public class BooleanRTwoSideSame extends TypeComputationKind {
 
 	@Override
 	public CCType HandleResult() throws TypeConflictException {
-		if (pre instanceof InferredCCType || post instanceof InferredCCType)
+		if (getPre() instanceof InferredCCType || getPost() instanceof InferredCCType)
 		{
 			return new InferredCCType();
 		}
-		if (TypeComputer.CCTypeSame(pre, post))
+		if (TypeComputer.CCTypeSame(getPre(), getPost()))
 		{
 			return new CCType(boolean.class, "boolean");
 		}
 		throw new TypeConflictException("pre and post are not same in BooleanRTwoSideSame.");
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		BooleanRTwoSideSame brtss = new BooleanRTwoSideSame();
+		brtss.setPost((CCType) post.clone());
+		brtss.setPre((CCType) pre.clone());
+		return brtss;
 	}
 	
 }

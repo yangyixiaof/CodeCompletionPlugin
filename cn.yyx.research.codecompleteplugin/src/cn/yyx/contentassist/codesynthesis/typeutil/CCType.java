@@ -2,10 +2,15 @@ package cn.yyx.contentassist.codesynthesis.typeutil;
 
 import cn.yyx.contentassist.specification.TypeMember;
 
-public class CCType {
+public class CCType implements Cloneable {
 	
 	private Class<?> cls = null;
 	private String clstr = null;
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return new CCType(getCls(), getClstr());
+	}
 	
 	public CCType(Class<?> cls, String clstr) {
 		setCls(cls);

@@ -9,25 +9,33 @@ public class LeftOrRightCast extends TypeComputationKind {
 
 	@Override
 	public void HandlePre(CCType pre) throws TypeConflictException {
-		this.pre = pre;
+		this.setPre(pre);
 	}
 
 	@Override
 	public void HandlePost(CCType post) throws TypeConflictException {
-		this.post = post;
+		this.setPost(post);
 	}
 	
 	@Override
 	public CCType HandleResult() throws TypeConflictException {
-		if (pre instanceof InferredCCType || post instanceof InferredCCType)
+		if (getPre() instanceof InferredCCType || getPost() instanceof InferredCCType)
 		{
 			return new InferredCCType();
 		}
-		if (TypeCheckHelper.CanBeMutualCast(pre, post))
+		if (TypeCheckHelper.CanBeMutualCast(getPre(), getPost()))
 		{
-			return pre;
+			return getPre();
 		}
 		throw new TypeConflictException("two types can not be casted.");
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		LeftOrRightCast brtssnb = new LeftOrRightCast();
+		brtssnb.setPost((CCType) post.clone());
+		brtssnb.setPre((CCType) pre.clone());
+		return brtssnb;
 	}
 	
 }

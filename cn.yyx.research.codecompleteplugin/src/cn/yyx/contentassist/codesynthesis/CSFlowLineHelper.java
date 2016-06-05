@@ -65,13 +65,16 @@ public class CSFlowLineHelper {
 						FlowLineNode<CSFlowLineData> tmp = null;
 						try {
 							tmp = ConcateTwoFlowLineNode(prefix, fln1, concator, fln2, postfix, squeue, smthandler,
-									 tck);
+									 (TypeComputationKind)tck.clone());
 							ConcateBlockStart(tmp, fln1, fln2);
 							ConcateExtraProperty(tmp, fln1, fln2);
 						} catch (TypeConflictException e) {
 							// e.printStackTrace();
 							System.err.println(e.getMessage());
 							continue;
+						} catch (CloneNotSupportedException e) {
+							e.printStackTrace();
+							System.exit(1);
 						}
 						result.add(tmp);
 					}
