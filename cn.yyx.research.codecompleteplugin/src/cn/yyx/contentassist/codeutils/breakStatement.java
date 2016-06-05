@@ -32,7 +32,15 @@ public class breakStatement extends statement{
 	public double Similarity(OneCode t) {
 		if (t instanceof breakStatement)
 		{
-			return 0.6 + 0.4*(id.Similarity(((breakStatement) t).id));
+			if ((id != null && ((breakStatement) t).id == null) || (id == null && ((breakStatement) t).id != null))
+			{
+				return 0.7;
+			}
+			if (id == null && ((breakStatement) t).id == null)
+			{
+				return 1;
+			}
+			return 0.7 + 0.3*(id.Similarity(((breakStatement) t).id));
 		}
 		return 0;
 	}

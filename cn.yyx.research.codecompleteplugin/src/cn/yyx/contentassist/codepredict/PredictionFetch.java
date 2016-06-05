@@ -193,7 +193,6 @@ public class PredictionFetch {
 		}
 		else {
 			fls.BeginOperation();
-			pi.BeginOperation();
 			
 			Queue<PreTryFlowLineNode<Sentence>> pppqueue = new PriorityQueue<PreTryFlowLineNode<Sentence>>();
 			
@@ -209,7 +208,11 @@ public class PredictionFetch {
 			while (itr.hasNext())
 			{
 				PreTryFlowLineNode<Sentence> fln = (PreTryFlowLineNode<Sentence>) itr.next();
+				
+				pi.BeginOperation();
 				List<PredictProbPair> pps = pi.InferNextGeneration(alc, sizeitr.next(), fln, null);
+				pi.EndOperation();
+				
 				Iterator<PredictProbPair> ppsitr = pps.iterator();
 				StatementsMIs smtmis = FlowLineHelper.LastToFirstStatementQueueWithMethodInvocationExtracted(fln);
 				List<statement> triedcmp = smtmis.getSmts();
@@ -308,7 +311,6 @@ public class PredictionFetch {
 			}
 			
 			fls.EndOperation();
-			pi.EndOperation();
 		}
 	}
 	

@@ -48,19 +48,21 @@ public class CodeSynthesisPredictTask implements Runnable {
 
 	@Override
 	public void run() {
-		RecursiveCodePredictAndSynthesis(0, null, false, null);
+		RecursiveCodePredictAndSynthesis(0, null, false); // , null
 	}
 	
-	@SuppressWarnings("unchecked")
-	private List<PredictProbPair> RecursiveCodePredictAndSynthesis(int level, FlowLineNode<CSFlowLineData> start, boolean hassilb, List<PredictProbPair> lastsilbppps)
+	@SuppressWarnings("unchecked") // List<PredictProbPair> // , List<PredictProbPair> lastsilbppps
+	private void RecursiveCodePredictAndSynthesis(int level, FlowLineNode<CSFlowLineData> start, boolean hassilb)
 	{
 		if (level >= PredictMetaInfo.MaxExtendLength)
 		{
-			return null;
+			// return null;
+			return;
 		}
 		if (TotalStopCondition())
 		{
-			return null;
+			// return null;
+			return;
 		}
 		List<PredictProbPair> pps = null;
 		TypeComputationKind starttck = null;
@@ -83,21 +85,25 @@ public class CodeSynthesisPredictTask implements Runnable {
 		{
 			expectsize = PredictMetaInfo.OneExtendFirstMaxSequence;
 			fln = pretrylast;
-			if (lastsilbppps != null)
-			{
-				pps = lastsilbppps;
-			} else {
-				pps = pi.InferNextGeneration(alc, expectsize, fln, null);
-			}
+			//if (lastsilbppps != null)
+			//{
+			//	pps = lastsilbppps;
+			//} else {
+			pi.BeginOperation();
+			pps = pi.InferNextGeneration(alc, expectsize, fln, null);
+			pi.EndOperation();
+			//}
 		}
 		else
 		{
-			if (lastsilbppps != null)
-			{
-				pps = lastsilbppps;
-			} else {
-				pps = pi.InferNextGeneration(alc, expectsize, fln, pretrylast);
-			}
+			//if (lastsilbppps != null)
+			//{
+			//	pps = lastsilbppps;
+			//} else {
+			pi.BeginOperation();
+			pps = pi.InferNextGeneration(alc, expectsize, fln, pretrylast);
+			pi.EndOperation();
+			//}
 		}
 		Iterator<PredictProbPair> pitr = pps.iterator();
 		int keylen = 0;
@@ -149,7 +155,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 				totalstep++;
 				
 				if (addnodes != null && addnodes.size() > 0) {
-					List<PredictProbPair> ppps = null;
+					// List<PredictProbPair> ppps = null;
 					Iterator<FlowLineNode<CSFlowLineData>> aitr = addnodes.iterator();
 					while (aitr.hasNext()) {
 						if (TotalStopCondition())
@@ -195,7 +201,8 @@ public class CodeSynthesisPredictTask implements Runnable {
 							} else {
 								csfl.AddToNextLevel(addnode, (FlowLineNode<CSFlowLineData>) fln);
 							}
-							ppps = RecursiveCodePredictAndSynthesis(level+1, addnode, aitr.hasNext(), ppps);
+							// TODO aitr.hasNext() changes to hassilb || aitr.hasNext().
+							RecursiveCodePredictAndSynthesis(level+1, addnode, hassilb || aitr.hasNext()); // ppps =  // , ppps
 						}
 					}
 				}
@@ -213,7 +220,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 				System.exit(1);
 			}
 		}
-		return pps;
+		// return pps;
 	}
 	
 	private String PrintWholeTrace(FlowLineNode<?> lastone, String mlast) {

@@ -32,12 +32,15 @@ public class continueStatement extends statement{
 	public double Similarity(OneCode t) {
 		if (t instanceof continueStatement)
 		{
-			double prob = 1;
-			if (id != null)
+			if ((id != null && ((continueStatement) t).id == null) || (id == null && ((continueStatement) t).id != null))
 			{
-				prob = id.Similarity(((continueStatement) t).id);
+				return 0.7;
 			}
-			return 0.6 + 0.4*(prob);
+			if (id == null && ((continueStatement) t).id == null)
+			{
+				return 1;
+			}
+			return 0.7 + 0.3*(id.Similarity(((continueStatement) t).id));
 		}
 		return 0;
 	}

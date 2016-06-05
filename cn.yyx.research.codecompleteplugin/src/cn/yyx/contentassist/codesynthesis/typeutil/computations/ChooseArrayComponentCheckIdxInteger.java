@@ -22,7 +22,7 @@ public class ChooseArrayComponentCheckIdxInteger extends TypeComputationKind {
 		this.post = post;
 		if (post != null)
 		{
-			if (pre.getCls() == null || !(pre.getCls() == int.class || pre.getCls() == Integer.class))
+			if (post.getCls() == null || !(post.getCls() == int.class || post.getCls() == Integer.class))
 			{
 				throw new TypeConflictException("type idx not int.");
 			}
