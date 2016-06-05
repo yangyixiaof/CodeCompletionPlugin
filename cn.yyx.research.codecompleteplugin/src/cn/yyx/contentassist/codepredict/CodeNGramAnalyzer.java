@@ -82,7 +82,7 @@ public class CodeNGramAnalyzer {
 
 	private static String GetIndent(String document, int invokeoffset) {
 		char[] doccs = document.toCharArray();
-		int i = invokeoffset;
+		int i = invokeoffset-1;
 		while (i >= 0) {
 			char c = doccs[i];
 			if (c == '\n') {
@@ -97,13 +97,14 @@ public class CodeNGramAnalyzer {
 					String indent = document.substring(start, j);
 					if (CodeCompletionMetaInfo.DebugMode) {
 						System.err.println("indent:" + indent);
-						System.err.println("before:" + document.substring(0, start));
-						System.err.println("after:" + document.substring(j));
+						System.err.println("before:" + document.substring(0, invokeoffset));
+						System.err.println("after:" + document.substring(invokeoffset));
 						char[] cs = indent.toCharArray();
 						int klen = cs.length;
 						for (int k = 0; k < klen; k++) {
 							System.err.println("one char:" + cs[k]);
 						}
+						// System.exit(1);
 					}
 					return indent;
 				}
