@@ -36,6 +36,20 @@ public class CSFlowLineData implements CSDataStructure, Cloneable {
 		return fldata;
 	}
 	
+	public CSExtraProperty GetSpecialProperty(Class<?> cls)
+	{
+		CSExtraProperty tmp = csep;
+		while (tmp != null)
+		{
+			if (tmp.getClass().equals(cls))
+			{
+				return tmp;
+			}
+			tmp = tmp.getCsepnext();
+		}
+		return null;
+	}
+	
 	public boolean HasSpecialProperty(Class<?> cls)
 	{
 		if (getClass().equals(cls))

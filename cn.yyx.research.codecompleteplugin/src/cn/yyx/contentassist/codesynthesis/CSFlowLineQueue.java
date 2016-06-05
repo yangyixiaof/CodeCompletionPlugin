@@ -9,10 +9,12 @@ import java.util.TreeMap;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.data.CSCommonOverProperty;
+import cn.yyx.contentassist.codesynthesis.data.CSExtraProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSForIniOverProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSLambdaData;
 import cn.yyx.contentassist.codesynthesis.data.CSLambdaEndProperty;
+import cn.yyx.contentassist.codesynthesis.data.CSLambdaProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableDeclarationData;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableHolderData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -239,7 +241,11 @@ public class CSFlowLineQueue {
 			CSFlowLineData tmpdata = tmp.getData();
 			if (tmpdata.HasSpecialProperty(CSLambdaData.class))
 			{
-				scope--;
+				CSExtraProperty prp = tmpdata.GetSpecialProperty(CSLambdaProperty.class);
+				if (!((CSLambdaProperty)prp).isOvered())
+				{
+					scope--;
+				}
 			}
 			if (tmpdata.HasSpecialProperty(CSLambdaEndProperty.class))
 			{
@@ -267,22 +273,21 @@ public class CSFlowLineQueue {
 				}
 				if (tmpdata instanceof CSLambdaData)
 				{
-					List<String> tps = ((CSLambdaData)tmpdata).getDeclares();
-					if (tps != null && tps.size() > 0)
+					CSExtraProperty prp = tmpdata.GetSpecialProperty(CSLambdaProperty.class);
+					if (!((CSLambdaProperty)prp).isOvered())
 					{
-						Iterator<String> itr = tps.iterator();
-						while (itr.hasNext())
+						List<String> tps = ((CSLambdaData)tmpdata).getDeclares();
+						if (tps != null && tps.size() > 0)
 						{
-							String ttp = itr.next();
-							String[] tpss = ttp.split(" ");
-							HandleVarNameRms(tpss[0], tpss[1], tpvarname, tpremains, off);
+							Iterator<String> itr = tps.iterator();
+							while (itr.hasNext())
+							{
+								String ttp = itr.next();
+								String[] tpss = ttp.split(" ");
+								HandleVarNameRms(tpss[0], tpss[1], tpvarname, tpremains, off);
+							}
 						}
 					}
-					/*scope--;
-					if (scope < 0)
-					{
-						break;
-					}*/
 				}
 			}
 			tmp = tmp.getPrev();

@@ -13,6 +13,7 @@ public class CSLambdaData extends CSFlowLineData {
 	
 	public CSLambdaData(boolean overed, Integer id, Sentence sete, String data, CCType dcls, TypeComputationKind tck, SynthesisHandler handler) {
 		super(id, sete, data, dcls, tck, handler);
+		this.setCsep(new CSLambdaProperty(overed, null));
 	}
 	
 	public CSLambdaData(boolean overed, List<String> declares, CSFlowLineData fld) {

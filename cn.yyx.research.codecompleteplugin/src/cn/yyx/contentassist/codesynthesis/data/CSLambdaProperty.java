@@ -6,16 +6,16 @@ import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 
 public class CSLambdaProperty extends CSExtraProperty {
 	
-	boolean overed = false;
+	private boolean overed = false;
 	
 	public CSLambdaProperty(boolean overed, CSExtraProperty csepnext) {
 		super(csepnext);
-		this.overed = overed;
+		this.setOvered(overed);
 	}
 
 	@Override
 	public void HandleStackSignalDetail(Stack<Integer> signals) throws CodeSynthesisException {
-		if (overed)
+		if (isOvered())
 		{
 			return;
 		}
@@ -29,6 +29,14 @@ public class CSLambdaProperty extends CSExtraProperty {
 			throw new CodeSynthesisException("Lambda block error.");
 		}
 		signals.pop();
+	}
+
+	public boolean isOvered() {
+		return overed;
+	}
+
+	public void setOvered(boolean overed) {
+		this.overed = overed;
 	}
 	
 }
