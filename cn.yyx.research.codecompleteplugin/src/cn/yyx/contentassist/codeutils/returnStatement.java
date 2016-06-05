@@ -68,7 +68,7 @@ public class returnStatement extends statement{
 		else
 		{
 			List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "return;", null, null, squeue.GetLastHandler()), smthandler.getProb()));
+			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "return", null, null, squeue.GetLastHandler()), smthandler.getProb()));
 			return result;
 		}
 	}
