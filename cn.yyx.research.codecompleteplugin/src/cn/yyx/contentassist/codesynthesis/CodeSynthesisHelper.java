@@ -39,7 +39,7 @@ public class CodeSynthesisHelper {
 	
 	public static String GenerateBlockCode(CSStatementHandler smthandler)
 	{
-		return "{\n"+smthandler.getAoi().getIndent()+"	\n"+smthandler.getAoi().getIndent()+"}";
+		return "{\n"+smthandler.getAoi().getIndent()+"\t\n"+smthandler.getAoi().getIndent()+"}";
 	}
 	
 	public static List<FlowLineNode<CSFlowLineData>> HandleBreakContinueCodeSynthesis(identifier id, CSFlowLineQueue squeue, CSStatementHandler smthandler,
