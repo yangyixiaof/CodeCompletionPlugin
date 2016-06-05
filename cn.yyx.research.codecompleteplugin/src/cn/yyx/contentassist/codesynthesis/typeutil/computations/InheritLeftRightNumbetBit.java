@@ -19,7 +19,7 @@ public class InheritLeftRightNumbetBit extends TypeComputationKind {
 		{
 			if (!TypeComputer.IsStrictNumberBit(post.getCls()) && !(post instanceof InferredCCType))
 			{
-				throw new TypeConflictException("right of inherit not number bit.");
+				throw new TypeConflictException("right of inherit not number bit. is:" + post);
 			}
 		}
 	}
@@ -35,10 +35,12 @@ public class InheritLeftRightNumbetBit extends TypeComputationKind {
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		InheritLeftRightNumbetBit brtssnb = new InheritLeftRightNumbetBit();
-		brtssnb.setPost((CCType) post.clone());
-		brtssnb.setPre((CCType) pre.clone());
-		return brtssnb;
+		InheritLeftRightNumbetBit tcmp = new InheritLeftRightNumbetBit();
+		CCType postc = post == null ? null : (CCType) post.clone();
+		CCType prec = pre == null ? null : (CCType) pre.clone();
+		tcmp.setPost(postc);
+		tcmp.setPre(prec);
+		return tcmp;
 	}
 
 }

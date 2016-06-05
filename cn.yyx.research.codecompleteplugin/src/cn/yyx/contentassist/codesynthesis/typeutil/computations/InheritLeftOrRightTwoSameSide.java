@@ -21,7 +21,7 @@ public class InheritLeftOrRightTwoSameSide extends TypeComputationKind {
 	public CCType HandleResult() throws TypeConflictException {
 		if (getPre() == null || getPost() == null)
 		{
-			throw new TypeConflictException("pre and post are null in InheritLeftOrRightTwoSameSide.");
+			throw new TypeConflictException("pre:" + pre + " and post:" + post + " are not same in InheritLeftOrRightTwoSameSide.");
 		}
 		if (getPre() instanceof InferredCCType || getPost() instanceof InferredCCType)
 		{
@@ -39,14 +39,16 @@ public class InheritLeftOrRightTwoSameSide extends TypeComputationKind {
 			}
 			return getPre();
 		}
-		throw new TypeConflictException("pre and post are not same in InheritLeftOrRightTwoSameSide.");
+		throw new TypeConflictException("pre:" + pre + " and post:" + post + " are not same in InheritLeftOrRightTwoSameSide.");
 	}
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		InheritLeftOrRightTwoSameSide brtssnb = new InheritLeftOrRightTwoSameSide();
-		brtssnb.setPost((CCType) post.clone());
-		brtssnb.setPre((CCType) pre.clone());
-		return brtssnb;
+		InheritLeftOrRightTwoSameSide tcmp = new InheritLeftOrRightTwoSameSide();
+		CCType postc = post == null ? null : (CCType) post.clone();
+		CCType prec = pre == null ? null : (CCType) pre.clone();
+		tcmp.setPost(postc);
+		tcmp.setPre(prec);
+		return tcmp;
 	}
 }

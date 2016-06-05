@@ -28,10 +28,12 @@ public class DirectUseSecondOneSide extends TypeComputationKind {
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		DirectUseSecondOneSide brtssnb = new DirectUseSecondOneSide();
-		brtssnb.setPost((CCType) post.clone());
-		brtssnb.setPre((CCType) pre.clone());
-		return brtssnb;
+		DirectUseSecondOneSide tcmp = new DirectUseSecondOneSide();
+		CCType postc = post == null ? null : (CCType) post.clone();
+		CCType prec = pre == null ? null : (CCType) pre.clone();
+		tcmp.setPost(postc);
+		tcmp.setPre(prec);
+		return tcmp;
 	}
 	
 }

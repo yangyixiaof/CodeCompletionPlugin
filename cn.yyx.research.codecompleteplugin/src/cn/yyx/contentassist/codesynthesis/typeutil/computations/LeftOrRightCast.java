@@ -27,15 +27,17 @@ public class LeftOrRightCast extends TypeComputationKind {
 		{
 			return getPre();
 		}
-		throw new TypeConflictException("two types can not be casted.");
+		throw new TypeConflictException("two types can not be casted. pre is:" + pre + ";post is:" + post);
 	}
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		LeftOrRightCast brtssnb = new LeftOrRightCast();
-		brtssnb.setPost((CCType) post.clone());
-		brtssnb.setPre((CCType) pre.clone());
-		return brtssnb;
+		LeftOrRightCast tcmp = new LeftOrRightCast();
+		CCType postc = post == null ? null : (CCType) post.clone();
+		CCType prec = pre == null ? null : (CCType) pre.clone();
+		tcmp.setPost(postc);
+		tcmp.setPre(prec);
+		return tcmp;
 	}
 	
 }

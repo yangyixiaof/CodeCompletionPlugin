@@ -14,7 +14,7 @@ public class NumberBitRTwoSideSameNumberBit extends TypeComputationKind {
 		{
 			if (!TypeComputer.IsNumberBit(pre.getCls()) && !(pre instanceof InferredCCType))
 			{
-				throw new TypeConflictException("left of NumberBitRTwoSideSameNumberBit is not number bit.");
+				throw new TypeConflictException("left of NumberBitRTwoSideSameNumberBit is not number bit. left is:" + pre);
 			}
 		}
 	}
@@ -26,7 +26,7 @@ public class NumberBitRTwoSideSameNumberBit extends TypeComputationKind {
 		{
 			if (!TypeComputer.IsNumberBit(post.getCls()) && !(post instanceof InferredCCType))
 			{
-				throw new TypeConflictException("right of NumberBitRTwoSideSameNumberBit is not number bit.");
+				throw new TypeConflictException("right of NumberBitRTwoSideSameNumberBit is not number bit. right is:" + post);
 			}
 		}
 	}
@@ -42,10 +42,12 @@ public class NumberBitRTwoSideSameNumberBit extends TypeComputationKind {
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		NumberBitRTwoSideSameNumberBit brtssnb = new NumberBitRTwoSideSameNumberBit();
-		brtssnb.setPost((CCType) post.clone());
-		brtssnb.setPre((CCType) pre.clone());
-		return brtssnb;
+		NumberBitRTwoSideSameNumberBit tcmp = new NumberBitRTwoSideSameNumberBit();
+		CCType postc = post == null ? null : (CCType) post.clone();
+		CCType prec = pre == null ? null : (CCType) pre.clone();
+		tcmp.setPost(postc);
+		tcmp.setPre(prec);
+		return tcmp;
 	}
 	
 }

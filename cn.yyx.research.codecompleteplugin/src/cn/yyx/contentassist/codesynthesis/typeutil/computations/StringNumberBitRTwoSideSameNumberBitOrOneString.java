@@ -14,7 +14,7 @@ public class StringNumberBitRTwoSideSameNumberBitOrOneString extends TypeComputa
 		{
 			if (!TypeComputer.IsNumberBit(pre.getCls()) && pre.getCls() != String.class && !(pre instanceof InferredCCType))
 			{
-				throw new TypeConflictException("left of StringNumberBitRTwoSideSameNumberBitOrOneString is not number bit or string.");
+				throw new TypeConflictException("left of StringNumberBitRTwoSideSameNumberBitOrOneString is not number bit or string. left is:" + pre);
 			}
 		}
 	}
@@ -26,7 +26,7 @@ public class StringNumberBitRTwoSideSameNumberBitOrOneString extends TypeComputa
 		{
 			if (!TypeComputer.IsNumberBit(post.getCls()) && post.getCls() != String.class && !(post instanceof InferredCCType))
 			{
-				throw new TypeConflictException("right of StringNumberBitRTwoSideSameNumberBitOrOneString is not number bit or string.");
+				throw new TypeConflictException("right of StringNumberBitRTwoSideSameNumberBitOrOneString is not number bit or string. post is:" + post);
 			}
 		}
 	}
@@ -46,10 +46,12 @@ public class StringNumberBitRTwoSideSameNumberBitOrOneString extends TypeComputa
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		StringNumberBitRTwoSideSameNumberBitOrOneString brtssnb = new StringNumberBitRTwoSideSameNumberBitOrOneString();
-		brtssnb.setPost((CCType) post.clone());
-		brtssnb.setPre((CCType) pre.clone());
-		return brtssnb;
+		StringNumberBitRTwoSideSameNumberBitOrOneString tcmp = new StringNumberBitRTwoSideSameNumberBitOrOneString();
+		CCType postc = post == null ? null : (CCType) post.clone();
+		CCType prec = pre == null ? null : (CCType) pre.clone();
+		tcmp.setPost(postc);
+		tcmp.setPre(prec);
+		return tcmp;
 	}
 	
 }

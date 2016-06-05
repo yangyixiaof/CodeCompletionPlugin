@@ -14,7 +14,7 @@ public class BooleanRTwoSideSameNumberBit extends TypeComputationKind {
 		{
 			if (!TypeComputer.IsStrictNumberBit(pre.getCls()) && !(pre instanceof InferredCCType))
 			{
-				throw new TypeConflictException("left of BooleanRTwoSideSameNumberBit not number bit.");
+				throw new TypeConflictException("left of BooleanRTwoSideSameNumberBit not number bit. is:" + pre);
 			}
 		}
 	}
@@ -26,7 +26,7 @@ public class BooleanRTwoSideSameNumberBit extends TypeComputationKind {
 		{
 			if (!TypeComputer.IsStrictNumberBit(post.getCls()) && !(post instanceof InferredCCType))
 			{
-				throw new TypeConflictException("right of inBooleanRTwoSideSameNumberBitherit not number bit.");
+				throw new TypeConflictException("right of inBooleanRTwoSideSameNumberBitherit not number bit. is:" + post);
 			}
 		}
 	}
@@ -42,10 +42,12 @@ public class BooleanRTwoSideSameNumberBit extends TypeComputationKind {
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		BooleanRTwoSideSameNumberBit brtssnb = new BooleanRTwoSideSameNumberBit();
-		brtssnb.setPost((CCType) post.clone());
-		brtssnb.setPre((CCType) pre.clone());
-		return brtssnb;
+		BooleanRTwoSideSameNumberBit tcmp = new BooleanRTwoSideSameNumberBit();
+		CCType postc = post == null ? null : (CCType) post.clone();
+		CCType prec = pre == null ? null : (CCType) pre.clone();
+		tcmp.setPost(postc);
+		tcmp.setPre(prec);
+		return tcmp;
 	}
 	
 }

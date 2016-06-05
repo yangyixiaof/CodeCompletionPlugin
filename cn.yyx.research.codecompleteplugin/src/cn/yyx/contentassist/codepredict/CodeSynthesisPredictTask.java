@@ -63,6 +63,11 @@ public class CodeSynthesisPredictTask implements Runnable {
 			return null;
 		}
 		List<PredictProbPair> pps = null;
+		TypeComputationKind starttck = null;
+		if (start != null)
+		{
+			starttck = start.getData().getTck();
+		}
 		FlowLineNode<?> fln = start;
 		CSFlowLineQueue csdflq = null;
 		if (start == null)
@@ -101,11 +106,22 @@ public class CodeSynthesisPredictTask implements Runnable {
 			// clear tck.
 			if (start != null)
 			{
-				TypeComputationKind tck = start.getData().getTck();
+				if (starttck != null) {
+					try {
+						start.getData().setTck((TypeComputationKind) starttck.clone());
+					} catch (CloneNotSupportedException e) {
+						System.err.println("Clone error? What the fuck!");
+						e.printStackTrace();
+						System.exit(1);
+					}
+				} else {
+					start.getData().setTck(null);
+				}
+				/*TypeComputationKind tck = start.getData().getTck();
 				if (tck != null)
 				{
 					tck.ClearPost();
-				}
+				}*/
 			}
 			
 			if (level == 0)
