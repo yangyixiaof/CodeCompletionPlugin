@@ -1,6 +1,8 @@
 package cn.yyx.contentassist.codesynthesis;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
@@ -58,11 +60,13 @@ public class CSVarRefHelper {
 		}
 		if (vht != null)
 		{
-			pores1.putAll(vht.getTpvarname());
+			// pores1.putAll(vht.getTpvarname());
+			IteratePutOrdInPores1AndPutNullInPores2(vht.getTpvarname(), pores1, pores2);
 		}
 		if (directvht != null)
 		{
-			pores1.putAll(directvht.getTpvarname());
+			// pores1.putAll(directvht.getTpvarname());
+			IteratePutOrdInPores1AndPutNullInPores2(directvht.getTpvarname(), pores1, pores2);
 		}
 		// po.putAll(pofield);
 		return new ScopeOffsetResult(pores1, pores2);
@@ -115,11 +119,13 @@ public class CSVarRefHelper {
 		if (vht != null)
 		{
 			// vht.getTpvarname(), 
-			pores1.putAll(vht.getTpvarname());
+			// pores1.putAll(vht.getTpvarname());
+			IteratePutOrdInPores1AndPutNullInPores2(vht.getTpvarname(), pores1, pores2);
 		}
 		if (directvht != null)
 		{
-			pores1.putAll(directvht.getTpvarname());
+			// pores1.putAll(directvht.getTpvarname());
+			IteratePutOrdInPores1AndPutNullInPores2(directvht.getTpvarname(), pores1, pores2);
 		}
 		// po.putAll(povar);
 		/*if (vht.getHoldername() != null)
@@ -127,6 +133,19 @@ public class CSVarRefHelper {
 			po.put(vht.getHoldertype(), vht.getHoldername());
 		}*/
 		return new ScopeOffsetResult(pores1, pores2);
+	}
+	
+	private static void IteratePutOrdInPores1AndPutNullInPores2(Map<String, String> tpvarname, Map<String, String> pores1,
+			Map<String, Long> pores2) {
+		Set<String> keys = tpvarname.keySet();
+		Iterator<String> kitr = keys.iterator();
+		while (kitr.hasNext())
+		{
+			String tp = kitr.next();
+			String var = tpvarname.get(tp);
+			pores1.put(tp, var);
+			pores2.put(tp, null);
+		}
 	}
 	
 }

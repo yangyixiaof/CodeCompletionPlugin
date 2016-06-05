@@ -19,13 +19,13 @@ public class arrayAccessStatement extends expressionStatement {
 	
 	referedExpression rarr = null;
 	referedExpression rexp = null;
-	boolean accessEnd = false;
+	private boolean accessEnd = false;
 	
 	public arrayAccessStatement(String smtcode, referedExpression rarr, referedExpression rexp, boolean accessEnd) {
 		super(smtcode);
 		this.rarr = rarr;
 		this.rexp = rexp;
-		this.accessEnd = accessEnd;
+		this.setAccessEnd(accessEnd);
 	}
 	
 	@Override
@@ -85,16 +85,17 @@ public class arrayAccessStatement extends expressionStatement {
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		List<FlowLineNode<CSFlowLineData>> rals = rarr.HandleCodeSynthesis(squeue, smthandler);
-		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
 		rals = CSFlowLineTypeCheckRefiner.RetainTheArrayFlowLineNodes(rals);
-		if (accessEnd)
+		
+		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
+		if (isAccessEnd())
 		{
 			rels = CSFlowLineTypeCheckRefiner.RetainTheFallThroughFlowLineNodes(rels, new CCType(int.class, "int"));
 		}
-		/*if (rals == null || rals.size() == 0 || rels == null || rels.size() == 0)
+		if ((rals == null || rals.size() == 0) || (rels == null || rels.size() == 0))
 		{
 			return null;
-		}*/
+		}
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<FlowLineNode<CSFlowLineData>> fmls = CSFlowLineHelper.ForwardConcate(null, rals, "[", rels, null, squeue, smthandler, null);
 		if (fmls == null || fmls.size() == 0)
@@ -105,7 +106,7 @@ public class arrayAccessStatement extends expressionStatement {
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
-			if (accessEnd) {
+			if (isAccessEnd()) {
 				// do nothing.
 			} else {
 				// result.add(new FlowLineNode<CSFlowLineData>(new CSArrayAccessStartData(fln.getData()), fln.getProbability()));
@@ -124,6 +125,14 @@ public class arrayAccessStatement extends expressionStatement {
 			cstack.SetLastStructureSignal(DataStructureSignalMetaInfo.ArrayAccessBlcok);
 		}*/
 		return false;
+	}
+
+	public boolean isAccessEnd() {
+		return accessEnd;
+	}
+
+	public void setAccessEnd(boolean accessEnd) {
+		this.accessEnd = accessEnd;
 	}
 	
 }
