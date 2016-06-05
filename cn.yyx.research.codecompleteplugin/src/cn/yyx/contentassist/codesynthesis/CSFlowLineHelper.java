@@ -12,6 +12,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeConflictException;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationKind;
+import cn.yyx.contentassist.commonutils.StringUtil;
 
 public class CSFlowLineHelper {
 	
@@ -168,16 +169,22 @@ public class CSFlowLineHelper {
 		}
 		if (bs1 == null && bs2 != null)
 		{
-			ftmp.getData().getSynthesisCodeManager().setBlockstart(bs2, bsi2);
-			ftmp.getData().setId(d2.getId());
-			bs2.getData().getSynthesisCodeManager().AddSynthesisCode(bsi2, ftmp);
+			String newid = StringUtil.GetCntPreDot(bsi2);
+			newid += ftmp.getData().getId();
+			bs2.getData().getSynthesisCodeManager().DeleteSynthesisCode(bsi2); // bsi2
+			ftmp.getData().getSynthesisCodeManager().setBlockstart(bs2, newid); // bsi2
+			// ftmp.getData().setId(d2.getId());
+			bs2.getData().getSynthesisCodeManager().AddSynthesisCode(newid, ftmp); // bsi2
 			// do need to set tck?
 		}
 		if (bs1 != null && bs2 == null)
 		{
-			ftmp.getData().getSynthesisCodeManager().setBlockstart(bs1, bsi1);
-			ftmp.getData().setId(d1.getId());
-			bs1.getData().getSynthesisCodeManager().AddSynthesisCode(bsi1, ftmp);
+			String newid = StringUtil.GetCntPreDot(bsi1);
+			newid += ftmp.getData().getId();
+			bs1.getData().getSynthesisCodeManager().DeleteSynthesisCode(bsi1); // bsi2
+			ftmp.getData().getSynthesisCodeManager().setBlockstart(bs1, newid); // bsi1
+			// ftmp.getData().setId(d1.getId());
+			bs1.getData().getSynthesisCodeManager().AddSynthesisCode(newid, ftmp); // bsi1
 			// do need to set tck?
 		}
 	}

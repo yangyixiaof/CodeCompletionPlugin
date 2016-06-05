@@ -36,4 +36,9 @@ public class CSLambdaData extends CSFlowLineData {
 		this.declares = declares;
 	}
 	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+	
 }

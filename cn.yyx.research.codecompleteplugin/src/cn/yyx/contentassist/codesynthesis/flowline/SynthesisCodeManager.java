@@ -37,6 +37,11 @@ public class SynthesisCodeManager {
 		getSyncodes().put(id, sc);
 	}
 	
+	public void DeleteSynthesisCode(String id)
+	{
+		getSyncodes().remove(id);
+	}
+	
 	public Map<String, FlowLineNode<CSFlowLineData>> getSyncodes() {
 		return syncodes;
 	}

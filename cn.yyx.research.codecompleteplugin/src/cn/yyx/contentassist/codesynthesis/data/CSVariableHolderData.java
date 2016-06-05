@@ -13,6 +13,11 @@ public class CSVariableHolderData extends CSFlowLineData {
 	private String varname = null;
 	private boolean needensuretype = false;
 	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+	
 	public CSVariableHolderData(String varname, boolean needensuretype, CSFlowLineData cd) {
 		super(cd.getId(), cd.getSete(), cd.getData(), cd.getDcls(), cd.getTck(),
 				cd.getHandler());

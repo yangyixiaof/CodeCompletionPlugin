@@ -60,4 +60,14 @@ public class StringUtil {
 		return sb.toString();
 	}
 	
+	public static String GetCntPreDot(String bsi)
+	{
+		int dotidx = bsi.lastIndexOf('.');
+		if (dotidx < 0)
+		{
+			return "";
+		}
+		return bsi.substring(0, dotidx+1);
+	}
+	
 }

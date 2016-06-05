@@ -3,7 +3,7 @@ package cn.yyx.contentassist.codepredict;
 import cn.yyx.contentassist.codeutils.CodeSimilarity;
 import cn.yyx.contentassist.codeutils.statement;
 
-public class Sentence implements Comparable<Sentence>, CodeSimilarity<Sentence> {
+public class Sentence implements Comparable<Sentence>, CodeSimilarity<Sentence>, Cloneable {
 	
 	private String sentence = "";
 	private statement smt = null;
@@ -11,6 +11,11 @@ public class Sentence implements Comparable<Sentence>, CodeSimilarity<Sentence> 
 	public Sentence(String sentence, statement smt) {
 		this.setSentence(sentence);
 		this.setSmt(smt);
+	}
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return new Sentence(sentence, smt);
 	}
 	
 	@Override

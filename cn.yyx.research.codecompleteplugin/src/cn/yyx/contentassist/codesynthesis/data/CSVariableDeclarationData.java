@@ -22,6 +22,11 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 	
 	private String typecode = null;
 	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+	
 	public CSVariableDeclarationData(String typecode, CSFlowLineData cd) {
 		super(cd.getId(), cd.getSete(), cd.getData(), cd.getDcls(), 
 				cd.getTck(), cd.getHandler());
