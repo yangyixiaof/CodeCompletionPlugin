@@ -41,10 +41,14 @@ public class BooleanRTwoSideSame extends TypeComputationKind {
 	
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		BooleanRTwoSideSame brtss = new BooleanRTwoSideSame();
-		brtss.setPost((CCType) post.clone());
-		brtss.setPre((CCType) pre.clone());
-		return brtss;
+		BooleanRTwoSideSame tcmp = new BooleanRTwoSideSame();
+		CCType postc = post == null ? null : (CCType) post.clone();
+		CCType prec = pre == null ? null : (CCType) pre.clone();
+		tcmp.setPost(postc);
+		tcmp.setPre(prec);
+		// brtss.setPost((CCType) post.clone());
+		// brtss.setPre((CCType) pre.clone());
+		return tcmp;
 	}
 	
 }

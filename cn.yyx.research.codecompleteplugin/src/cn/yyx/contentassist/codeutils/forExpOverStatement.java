@@ -63,6 +63,7 @@ public class forExpOverStatement extends rawForExpOverStatement implements SWrap
 		if (smtls == null)
 		{
 			System.err.println("smtls is null.");
+			return null;
 		}
 		
 		smtls = CSFlowLineHelper.ConcateOneFlowLineList(null, smtls, ";");
