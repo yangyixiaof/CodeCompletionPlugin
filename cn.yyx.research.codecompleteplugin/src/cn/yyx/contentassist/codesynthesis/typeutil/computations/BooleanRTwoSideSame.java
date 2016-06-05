@@ -46,8 +46,6 @@ public class BooleanRTwoSideSame extends TypeComputationKind {
 		CCType prec = pre == null ? null : (CCType) pre.clone();
 		tcmp.setPost(postc);
 		tcmp.setPre(prec);
-		// brtss.setPost((CCType) post.clone());
-		// brtss.setPre((CCType) pre.clone());
 		return tcmp;
 	}
 	
