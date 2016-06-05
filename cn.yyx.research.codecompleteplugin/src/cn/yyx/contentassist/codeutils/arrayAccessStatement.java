@@ -45,42 +45,7 @@ public class arrayAccessStatement extends expressionStatement {
 		}
 		return 0;
 	}
-
-	/*@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
-		CSNode smt = new CSNode(CSNodeType.ReferedExpression);
-		boolean conflict = false;
-		CSNode csarr = new CSNode(CSNodeType.TempUsed);
-		conflict = rarr.HandleCodeSynthesis(squeue, expected, handler, csarr, null);
-		if (conflict)
-		{
-			return true;
-		}
-		
-		TypeCheck iit = new TypeCheck();
-		iit.setExpreturntype("java.lang.Integer");
-		iit.setExpreturntypeclass(Integer.class);
-		
-		expected.push(iit);
-		CSNode cidx = new CSNode(CSNodeType.TempUsed);
-		cidx.setPrefix("[");
-		conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, cidx, null);
-		if (conflict)
-		{
-			return true;
-		}
-		if (accessEnd)
-		{
-			cidx.setPostfix("]");
-		}
-		
-		smt.setDatas(CSNodeHelper.ConcatTwoNodesDatas(csarr, cidx, null, -1));
-		squeue.add(smt);
-		expected.pop();
-		return false;
-	}*/
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {

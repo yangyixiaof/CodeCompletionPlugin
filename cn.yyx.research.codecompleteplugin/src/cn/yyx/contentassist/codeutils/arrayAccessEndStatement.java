@@ -52,6 +52,7 @@ public class arrayAccessEndStatement extends statement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
+		// TODO the later of codes need to be tested carefully. Check whether array str is has [][] so on.
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		
 		String endrcode = StringUtil.GenerateDuplicates("]", endrtimes);
@@ -67,7 +68,7 @@ public class arrayAccessEndStatement extends statement{
 		int ertime = endrtimes;
 		if (es instanceof arrayAccessStatement)
 		{
-			if (endrtimes > 1)
+			if (endrtimes > 0)
 			{
 				ertime = endrtimes-1;
 			}

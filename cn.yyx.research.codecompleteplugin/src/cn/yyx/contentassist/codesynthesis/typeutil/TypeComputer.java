@@ -57,7 +57,7 @@ public class TypeComputer {
 	
 	public static boolean CCTypeSame(CCType c1, CCType c2)
 	{
-		if (c1.getCls() == c2.getCls())
+		if (TypeCheckHelper.NormalizeClass(c1.getCls()) == TypeCheckHelper.NormalizeClass(c2.getCls()))
 		{
 			return true;
 		}
