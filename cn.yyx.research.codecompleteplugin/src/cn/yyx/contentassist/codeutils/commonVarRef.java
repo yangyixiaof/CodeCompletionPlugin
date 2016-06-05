@@ -1,7 +1,6 @@
 package cn.yyx.contentassist.codeutils;
 
 import java.util.List;
-import java.util.Map;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
@@ -11,6 +10,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetResult;
 
 public class commonVarRef extends referedExpression{
 	
@@ -43,14 +43,15 @@ public class commonVarRef extends referedExpression{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		Map<String, String> po = CSVarRefHelper.GetAllTypeVariablePair(squeue, smthandler, scope, off);
+		// Map<String, String> 
+		ScopeOffsetResult po = CSVarRefHelper.GetAllTypeVariablePair(squeue, smthandler, scope, off);
 		return CodeSynthesisHelper.HandleVarRefCodeSynthesis(po, squeue, smthandler);
 	}
 	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue, CSStatementHandler smthandler,
 			String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
-		Map<String, String> po = CSVarRefHelper.GetAllTypeVariablePair(squeue, smthandler, scope, off);
+		ScopeOffsetResult po = CSVarRefHelper.GetAllTypeVariablePair(squeue, smthandler, scope, off);
 		return CodeSynthesisHelper.HandleVarRefInferredField(po, squeue, smthandler, reservedword, expectedinfer);
 	}
 	
@@ -58,7 +59,7 @@ public class commonVarRef extends referedExpression{
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
 			throws CodeSynthesisException {
-		Map<String, String> po = CSVarRefHelper.GetAllTypeVariablePair(squeue, smthandler, scope, off);
+		ScopeOffsetResult po = CSVarRefHelper.GetAllTypeVariablePair(squeue, smthandler, scope, off);
 		return CodeSynthesisHelper.HandleVarRefInferredMethodReference(po, squeue, smthandler, reservedword, expectedinfer);
 	}
 	

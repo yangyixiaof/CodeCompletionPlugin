@@ -4,8 +4,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 import cn.yyx.contentassist.codecompletion.CodeCompletionMetaInfo;
 import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
@@ -34,6 +32,8 @@ import cn.yyx.contentassist.specification.MethodMember;
 import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;
 import cn.yyx.contentassist.specification.SpecificationHelper;
 import cn.yyx.contentassist.specification.TypeMember;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetResult;
+import cn.yyx.research.language.simplified.JDTManager.TypeVar;
 
 public class CodeSynthesisHelper {
 	
@@ -57,15 +57,18 @@ public class CodeSynthesisHelper {
 		return result;
 	}
 	
-	public static List<FlowLineNode<CSFlowLineData>> HandleVarRefCodeSynthesis(Map<String, String> po, CSFlowLineQueue squeue, CSStatementHandler smthandler)
+	// Map<String, String>
+	public static List<FlowLineNode<CSFlowLineData>> HandleVarRefCodeSynthesis(ScopeOffsetResult po, CSFlowLineQueue squeue, CSStatementHandler smthandler)
 	{
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		Set<String> types = po.keySet();
-		Iterator<String> titr = types.iterator();
-		while (titr.hasNext())
+		po.BeginIterate();
+		// Set<String> types = po.keySet();
+		// Iterator<String> titr = types.iterator();
+		while (po.HasNext()) // titr.hasNext()
 		{
-			String type = titr.next();
-			String code = po.get(type);
+			TypeVar tv = po.Next();
+			String type = tv.getType(); // titr.next();
+			String code = tv.getName(); // po.get(type);
 			LinkedList<CCType> cls = TypeResolver.ResolveType(type, squeue, smthandler);
 			Iterator<CCType> clsitr = cls.iterator();
 			int total = 0;
@@ -83,38 +86,46 @@ public class CodeSynthesisHelper {
 		return result;
 	}
 	
-	public static List<FlowLineNode<CSFlowLineData>> HandleVarRefInferredMethodReference(Map<String, String> po, CSFlowLineQueue squeue, CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
+	// Map<String, String>
+	public static List<FlowLineNode<CSFlowLineData>> HandleVarRefInferredMethodReference(ScopeOffsetResult po, CSFlowLineQueue squeue, CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
 	{
 		return HandleVarRefInferredContent(po, squeue, smthandler, reservedword, expectedinfer, "::", true);
 	}
 	
-	public static List<FlowLineNode<CSFlowLineData>> HandleVarRefInferredField(Map<String, String> po, CSFlowLineQueue squeue, CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
+	// Map<String, String>
+	public static List<FlowLineNode<CSFlowLineData>> HandleVarRefInferredField(ScopeOffsetResult po, CSFlowLineQueue squeue, CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
 	{
 		return HandleVarRefInferredContent(po, squeue, smthandler, reservedword, expectedinfer, ".", false);
 	}
 	
-	private static List<FlowLineNode<CSFlowLineData>> HandleVarRefInferredContent(Map<String, String> po, CSFlowLineQueue squeue, CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer, String concator, boolean ismethod)
+	// Map<String, String>
+	private static List<FlowLineNode<CSFlowLineData>> HandleVarRefInferredContent(ScopeOffsetResult po, CSFlowLineQueue squeue, CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer, String concator, boolean ismethod)
 	{
 		// this function doesn't need to handle CSMethodStatementHandler, CSMethodStatementHandler has been handled in method invocation.
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		if (reservedword != null && !reservedword.equals(""))
 		{
-			Map<String, String> npo = new TreeMap<String, String>();
-			Set<String> pokeys = po.keySet();
-			Iterator<String> citr = pokeys.iterator();
-			while (citr.hasNext())
+			// Map<String, String> npo = new TreeMap<String, String>();
+			po.BeginIterate();
+			// Set<String> pokeys = po.keySet();
+			// Iterator<String> citr = pokeys.iterator();
+			while (po.HasNext()) // citr.hasNext()
 			{
-				String type = citr.next();
-				String code = po.get(type);
+				TypeVar tv = po.Next();
+				String type = tv.getType(); // titr.next();
+				String code = tv.getName(); // po.get(type);
+				// String type = citr.next();
+				// String code = po.get(type);
 				if (TypeCheckHelper.IsInferredType(type))
 				{
 					result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), code + "." + reservedword + concator + expectedinfer.get(0).getData().getData(), new InferredCCType(), null, squeue.GetLastHandler()), smthandler.getProb()));
 					continue;
 				}
 				code += "." + reservedword;
-				npo.put(type, code);
+				po.SetModifiedVarName(type, code);
+				// npo.put(type, code);
 			}
-			po = npo;
+			// po = npo;
 		}
 		RefAndModifiedMember ramm = SpecificationHelper.GetMostLikelyRef(squeue.GetLastHandler().getContextHandler(), po, expectedinfer.get(0).getData().getData(), ismethod, concator);
 		if (ramm != null)

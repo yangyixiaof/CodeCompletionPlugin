@@ -8,10 +8,12 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSDirectLambdaHandler
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.commonutils.VariableHT;
 import cn.yyx.research.language.simplified.JDTManager.OffsetOutOfScopeException;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetResult;
 
 public class CSVarRefHelper {
 	
-	public static Map<String, String> GetAllTypeVariablePair(CSFlowLineQueue squeue, CSStatementHandler smthandler, int scope, int off) throws CodeSynthesisException
+	// Map<String, String>
+	public static ScopeOffsetResult GetAllTypeVariablePair(CSFlowLineQueue squeue, CSStatementHandler smthandler, int scope, int off) throws CodeSynthesisException
 	{
 		VariableHT vht = null;
 		VariableHT directvht = null;
@@ -24,9 +26,10 @@ public class CSVarRefHelper {
 		{
 			vht = squeue.BackSearchHandleLambdaScope(scope, off);
 		}
-		Map<String, String> pofield = null;
-		Map<String, String> pores = new TreeMap<String, String>();
-		Map<String, String> po = null;
+		Map<String, String> pores1 = new TreeMap<String, String>();
+		Map<String, Long> pores2 = new TreeMap<String, Long>();
+		ScopeOffsetResult pofield = null;
+		ScopeOffsetResult po = null;
 		try {
 			pofield = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(null, -1, scope, off);
 		} catch (OffsetOutOfScopeException e) {
@@ -45,25 +48,28 @@ public class CSVarRefHelper {
 		}
 		if (pofield != null)
 		{
-			pores.putAll(pofield);
+			pores1.putAll(pofield.getSor());
+			pores2.putAll(pofield.getSol());
 		}
 		if (po != null)
 		{
-			pores.putAll(po);
+			pores1.putAll(po.getSor());
+			pores2.putAll(po.getSol());
 		}
 		if (vht != null)
 		{
-			pores.putAll(vht.getTpvarname());
+			pores1.putAll(vht.getTpvarname());
 		}
 		if (directvht != null)
 		{
-			pores.putAll(directvht.getTpvarname());
+			pores1.putAll(directvht.getTpvarname());
 		}
 		// po.putAll(pofield);
-		return pores;
+		return new ScopeOffsetResult(pores1, pores2);
 	}
 	
-	public static Map<String, String> GetAllFieldTypeVariablePair(CSFlowLineQueue squeue, CSStatementHandler smthandler, int scope, int off) throws CodeSynthesisException
+	// Map<String, String>
+	public static ScopeOffsetResult GetAllFieldTypeVariablePair(CSFlowLineQueue squeue, CSStatementHandler smthandler, int scope, int off) throws CodeSynthesisException
 	{
 		VariableHT vht = null;
 		VariableHT directvht = null;
@@ -76,9 +82,10 @@ public class CSVarRefHelper {
 		{
 			vht = squeue.BackSearchHandleLambdaScope(scope, off);
 		}
-		Map<String, String> povar = null;
-		Map<String, String> pores = new TreeMap<String, String>();
-		Map<String, String> po = null;
+		Map<String, String> pores1 = new TreeMap<String, String>();
+		Map<String, Long> pores2 = new TreeMap<String, Long>();
+		ScopeOffsetResult povar = null;
+		ScopeOffsetResult po = null;
 		try {
 			povar = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(null, -1, scope, off);
 		} catch (OffsetOutOfScopeException e) {
@@ -97,27 +104,29 @@ public class CSVarRefHelper {
 		}
 		if (povar != null)
 		{
-			pores.putAll(povar);
+			pores1.putAll(povar.getSor());
+			pores2.putAll(povar.getSol());
 		}
 		if (po != null)
 		{
-			pores.putAll(po);
+			pores1.putAll(po.getSor());
+			pores2.putAll(po.getSol());
 		}
 		if (vht != null)
 		{
 			// vht.getTpvarname(), 
-			pores.putAll(vht.getTpvarname());
+			pores1.putAll(vht.getTpvarname());
 		}
 		if (directvht != null)
 		{
-			pores.putAll(directvht.getTpvarname());
+			pores1.putAll(directvht.getTpvarname());
 		}
 		// po.putAll(povar);
 		/*if (vht.getHoldername() != null)
 		{
 			po.put(vht.getHoldertype(), vht.getHoldername());
 		}*/
-		return pores;
+		return new ScopeOffsetResult(pores1, pores2);
 	}
 	
 }

@@ -2,14 +2,14 @@ package cn.yyx.contentassist.specification;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import cn.yyx.contentassist.commonutils.ContextHandler;
 import cn.yyx.contentassist.commonutils.RefAndModifiedMember;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.StringUtil;
 import cn.yyx.research.language.JDTManager.GCodeMetaInfo;
+import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetResult;
+import cn.yyx.research.language.simplified.JDTManager.TypeVar;
 
 public class SpecificationHelper {
 	
@@ -46,19 +46,22 @@ public class SpecificationHelper {
 		return addition;
 	}*/
 	
-	public static RefAndModifiedMember GetMostLikelyRef(ContextHandler ch, Map<String, String> po, String hint, boolean hintismethod, String concator)
+	// Map<String, String> 
+	public static RefAndModifiedMember GetMostLikelyRef(ContextHandler ch, ScopeOffsetResult po, String hint, boolean hintismethod, String concator)
 	{
 		String maxRef = null;
 		String maxMember = null;
 		String maxMemberType = null;
 		// MethodMember maxMm = null;
 		double maxsimilar = 0;
-		Set<String> keys = po.keySet();
-		Iterator<String> itr = keys.iterator();
-		while (itr.hasNext())
+		po.BeginIterate();
+		// Set<String> keys = po.keySet();
+		// Iterator<String> itr = keys.iterator();
+		while (po.HasNext()) // itr.hasNext()
 		{
-			String type = itr.next();
-			String refname = po.get(type);
+			TypeVar tv = po.Next();
+			// String type = tv.getType(); // itr.next();
+			String refname = tv.getName(); // po.get(type);
 			// MembersOfAReference members = SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix(refname + concator, ch.getJavacontext(), ch.getMonitor());
 			if (hintismethod)
 			{
