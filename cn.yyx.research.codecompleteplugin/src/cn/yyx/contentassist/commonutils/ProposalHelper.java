@@ -12,7 +12,7 @@ import org.eclipse.swt.graphics.ImageData;
 
 public class ProposalHelper {
 	
-	private static Image image = null;
+	private static final Image image;
 	
 	static {
 		InputStream stream = ProposalHelper.class.getClassLoader().getResourceAsStream("/cn/yyx/contentassist/commonutils/cc.png");
@@ -27,9 +27,8 @@ public class ProposalHelper {
 		while (itr.hasNext())
 		{
 			String pol = itr.next();
-			proposals.add(new CompletionProposal(pol, 0, pol.length(), 0, image, pol.replace('\n', ' '), null, null));
-			
-			// (pol, context.getInvocationOffset(), 0, pol.length())
+			proposals.add(new CompletionProposal(pol, context.getInvocationOffset(), 0, pol.length(), image, pol.replace('\n', ' '), null, null));
+			// new CompletionProposal(pol, context.getInvocationOffset(), 0, pol.length())
 		}
 	}
 	
