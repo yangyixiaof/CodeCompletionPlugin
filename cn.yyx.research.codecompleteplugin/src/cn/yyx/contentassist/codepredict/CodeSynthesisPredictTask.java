@@ -188,8 +188,12 @@ public class CodeSynthesisPredictTask implements Runnable {
 							}
 							over = predsmt.HandleOverSignal(new FlowLineStack(lastone, signals));
 							addnode.setCouldextend(!over);
-							if (over && addnode.getSynthesisdata() != null) {
-								csfl.AddCodeSynthesisOver(new FlowLineNode<CSFlowLineData>(addnode.getSynthesisdata(), addnode.getProbability()), pred);
+							if (over) {
+								if (addnode.getSynthesisdata() != null) {
+									csfl.AddCodeSynthesisOver(new FlowLineNode<CSFlowLineData>(addnode.getSynthesisdata(), addnode.getProbability()), pred);
+								} else {
+									csfl.AddCodeSynthesisOver(addnode, pred);
+								}
 								totalsuccess++;
 							} else {
 								if (ClassInstanceOfUtil.ObjectInstanceOf(csdflq, VirtualCSFlowLineQueue.class)) {
@@ -201,7 +205,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 								// TODO aitr.hasNext() changes to hassilb ||
 								// aitr.hasNext().
 								EmergencyBack eb = RecursiveCodePredictAndSynthesis(level + 1, addnode,
-										hassilb || (i == len - 1), gennodes);
+										hassilb || (i < len - 1), gennodes);
 								if (eb != null && eb.getNeedlevel() < level) {
 									return eb;
 								}
