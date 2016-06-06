@@ -15,7 +15,7 @@ public class ProposalHelper {
 	private static final Image image;
 	
 	static {
-		InputStream stream = ProposalHelper.class.getClassLoader().getResourceAsStream("/cn/yyx/contentassist/commonutils/cc.png");
+		InputStream stream = ProposalHelper.class.getClassLoader().getResourceAsStream("/cn/yyx/contentassist/commonutils/small-cc.png");
 		ImageData id = new ImageData(stream);
 		image = new Image(null, id);
 		// image = ImageIO.read(new File("icons/cc.png"));
