@@ -2,13 +2,30 @@ package cn.yyx.contentassist.codesynthesis.typeutil;
 
 public class AssignTypeConflictException extends TypeConflictException {
 	
-	public AssignTypeConflictException(String info) {
+	private static final long serialVersionUID = 1L;
+	
+	private int prelength = -1;
+	private CCType needclass = null;
+	
+	public AssignTypeConflictException(String info, CCType ndcls) {
 		super(info);
+		this.setNeedclass(ndcls);
 	}
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	public int getPrelength() {
+		return prelength;
+	}
 
+	public void setPrelength(int prelength) {
+		this.prelength = prelength;
+	}
+
+	public CCType getNeedclass() {
+		return needclass;
+	}
+
+	public void setNeedclass(CCType needclass) {
+		this.needclass = needclass;
+	}
+	
 }

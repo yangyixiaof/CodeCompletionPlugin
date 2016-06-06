@@ -9,6 +9,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.SynthesisCodeManager;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.AssignTypeConflictException;
 
 public class CSFlowLineBackTraceGenerationHelper {
 
@@ -125,7 +126,16 @@ public class CSFlowLineBackTraceGenerationHelper {
 			new Exception("two is null.").printStackTrace();
 		}
 		
-		FlowLineNode<CSFlowLineData> tres = CSFlowLineHelper.ConcateTwoFlowLineNode(null, onesyn, null, twosyn, null, squeue, smthandler, null);
+		FlowLineNode<CSFlowLineData> tres = null;
+		try {
+			tres = CSFlowLineHelper.ConcateTwoFlowLineNode(null, onesyn, null, twosyn, null, squeue, smthandler, null);
+		} catch (CodeSynthesisException e) {
+			if (e instanceof AssignTypeConflictException)
+			{
+				((AssignTypeConflictException) e).setPrelength(onestart.getLength());
+			}
+			throw e;
+		}
 		String tresid = oneid + "." + twoid;
 		
 		// two.getData().getSynthesisCodeManager().setBlockstart(null, null);

@@ -33,7 +33,7 @@ public class Assignment extends TypeComputationKind {
 			// TODO do number type compute.
 			return getPre();
 		}
-		throw new AssignTypeConflictException("assign type check error. pre:" + pre + ";post:" + post);
+		throw new AssignTypeConflictException("assign type check error. pre:" + pre + ";post:" + post, post);
 	}
 
 	@Override
