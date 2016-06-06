@@ -22,18 +22,21 @@ public class MethodTypeSignature {
 		boolean hasvararg = false;
 		LinkedList<CCType> c = null;
 		String rttype = mm.getReturntype();
-		if (mm.getWhereDeclared() == null)
+		if (rttype != null)
 		{
-			c = new LinkedList<CCType>();
-			try {
-				c.add(new CCType(OmnipotentClassLoader.LoadClass(rttype), rttype));
-			} catch (Exception e) {
-				System.err.println("Internal type will has errors? Serious error, the system will exit.");
-				e.printStackTrace();
-				System.exit(1);
+			if (mm.getWhereDeclared() == null)
+			{
+				c = new LinkedList<CCType>();
+				try {
+					c.add(new CCType(OmnipotentClassLoader.LoadClass(rttype), rttype));
+				} catch (Exception e) {
+					System.err.println("Internal type will has errors? Serious error, the system will exit.");
+					e.printStackTrace();
+					System.exit(1);
+				}
+			} else {
+				c = TypeResolver.ResolveType(rttype, squeue, smthandler);
 			}
-		} else {
-			c = TypeResolver.ResolveType(rttype, squeue, smthandler);
 		}
 		// tc.setExpreturntype(rttype);
 		// tc.setExpreturntypeclass(c);

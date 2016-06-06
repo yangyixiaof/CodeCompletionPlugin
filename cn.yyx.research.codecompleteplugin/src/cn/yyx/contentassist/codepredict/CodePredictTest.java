@@ -35,7 +35,7 @@ public class CodePredictTest implements CodePredict{
 				if (lastchar == ';' || lastchar == '}' || lastchar == ',' || lastchar == '{' || lastchar == '(' || lastchar == ':')
 				{
 					SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("new StringBuffer", javacontext);
-					SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix("System.out::", javacontext);
+					SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("System.out::", javacontext);
 					System.err.println("===================split line=================");
 					SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("keys.iterator", javacontext);
 					SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix("System.class", javacontext);
