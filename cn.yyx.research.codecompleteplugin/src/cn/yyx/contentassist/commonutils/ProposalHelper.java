@@ -3,6 +3,8 @@ package cn.yyx.contentassist.commonutils;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
@@ -23,11 +25,16 @@ public class ProposalHelper {
 	
 	public static void ProposalContentToFormalFormat(JavaContentAssistInvocationContext context, List<String> proposalcnt, List<ICompletionProposal> proposals)
 	{
+		Map<String, Boolean> unique = new TreeMap<String, Boolean>();
 		Iterator<String> itr = proposalcnt.iterator();
 		while (itr.hasNext())
 		{
 			String pol = itr.next();
-			proposals.add(new CompletionProposal(pol, context.getInvocationOffset(), 0, pol.length(), image, pol.replace('\n', ' '), null, null));
+			if (!unique.containsKey(pol))
+			{
+				unique.put(pol, true);
+				proposals.add(new CompletionProposal(pol, context.getInvocationOffset(), 0, pol.length(), image, pol.replace('\n', ' '), null, null));
+			}
 			// new CompletionProposal(pol, context.getInvocationOffset(), 0, pol.length())
 		}
 	}
