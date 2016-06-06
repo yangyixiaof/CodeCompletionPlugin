@@ -41,7 +41,9 @@ public class commonOverStatement extends statement implements SWrapper{
 			List<FlowLineNode<CSFlowLineData>> rls = CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, null);
 			if (rls != null && rls.size() > 0)
 			{
-				fln.setSynthesisdata(rls.get(0).getData());
+				CSFlowLineData dt = rls.get(0).getData();
+				dt.setData(dt.getData() + ";");
+				fln.setSynthesisdata(dt);
 			}
 		}
 		ListHelper.AddExtraPropertyToAllListNodes(smtls, new CSCommonOverProperty(null)); // result
