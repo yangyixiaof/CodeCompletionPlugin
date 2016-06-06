@@ -3,10 +3,13 @@ package cn.yyx.contentassist.codesynthesis.typeutil;
 import java.lang.reflect.Array;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.Assignment;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.BooleanR;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.BooleanRTwoSideSame;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.BooleanRTwoSideSameBoolean;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.BooleanRTwoSideSameNumberBit;
-import cn.yyx.contentassist.codesynthesis.typeutil.computations.InheritLeftOrRightTwoSameSide;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.NumberOpAssign;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.PlusAssign;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.InheritLeftRightNumbetBit;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.NumberBitRTwoSideSameNumberBit;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.StringNumberBitRTwoSideSameNumberBitOrOneString;
@@ -73,8 +76,9 @@ public class TypeComputer {
 		case ">=":
 			return new BooleanRTwoSideSameNumberBit();
 		case "==":
-		case "!=":
 			return new BooleanRTwoSideSame();
+		case "!=":
+			return new BooleanR();
 		case "&&":
 		case "||":
 			return new BooleanRTwoSideSameBoolean();
@@ -103,7 +107,9 @@ public class TypeComputer {
 			throw new CodeSynthesisException("CastOptr just handle it, not let this function do this.");
 			// return TypeComputationKind.CastOptr;
 		case "=":
+			return new Assignment();
 		case "+=":
+			return new PlusAssign();
 		case "-=":
 		case "*=":
 		case "/=":
@@ -111,7 +117,7 @@ public class TypeComputer {
 		case "|=":
 		case "^=":
 		case "%=":
-			return new InheritLeftOrRightTwoSameSide();
+			return new NumberOpAssign();
 		case "<<=":
 		case ">>=":
 		case ">>>=":
