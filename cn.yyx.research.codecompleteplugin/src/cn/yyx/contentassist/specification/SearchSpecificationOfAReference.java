@@ -133,7 +133,7 @@ public class SearchSpecificationOfAReference {
 					|| (total > 0 && ms.getSimilarity() <= PredictMetaInfo.TwoFieldStringSimilarThreshold)) {
 				break;
 			}
-			fmlist.add(0, (FieldMember) ms.getMember());
+			fmlist.add((FieldMember) ms.getMember());
 		}
 		return fmlist;
 	}
@@ -256,7 +256,7 @@ public class SearchSpecificationOfAReference {
 					|| (total > 0 && ms.getSimilarity() <= PredictMetaInfo.TwoMethodStringSimilarityThreshold)) {
 				break;
 			}
-			mmlist.add(0, (MethodMember) ms.getMember());
+			mmlist.add((MethodMember) ms.getMember());
 		}
 		return mmlist;
 	}
