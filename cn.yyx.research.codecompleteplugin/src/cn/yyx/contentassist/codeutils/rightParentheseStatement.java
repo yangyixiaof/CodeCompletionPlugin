@@ -46,7 +46,7 @@ public class rightParentheseStatement extends statement{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		/*List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		CSFlowLineData cr = new CSFlowLineData(squeue.GenerateNewNodeId() + "", smthandler.getSete(), StringUtil.GenerateDuplicates(")", times), null, new DirectUseFirstOneSide(), squeue.GetLastHandler(), new CSRightParenInfoProperty(times, null));
 		FlowLineNode<CSFlowLineData> fln = new FlowLineNode<CSFlowLineData>(cr, smthandler.getProb());
 		result.add(fln);
@@ -55,6 +55,20 @@ public class rightParentheseStatement extends statement{
 		FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForSpecialClass(CSLeftParenInfoProperty.class, signals);
 		CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, cnode);
 		// CSFlowLineBackTraceGenerationHelper.SearchAndModifyLeftParentheseNode(squeue, smthandler, cr, times);
+		return result;*/
+		
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		CSFlowLineData cr = new CSFlowLineData(squeue.GenerateNewNodeId() + "", smthandler.getSete(), StringUtil.GenerateDuplicates(")", times), null, new DirectUseFirstOneSide(), squeue.GetLastHandler(), new CSRightParenInfoProperty(times, null));
+		FlowLineNode<CSFlowLineData> fln = new FlowLineNode<CSFlowLineData>(cr, smthandler.getProb());
+		result.add(fln);
+		Stack<Integer> signals = new Stack<Integer>();
+		cr.HandleStackSignal(signals);
+		FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForSpecialClass(CSLeftParenInfoProperty.class, signals);
+		List<FlowLineNode<CSFlowLineData>> rls = CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, cnode);
+		if (rls != null && rls.size() > 0)
+		{
+			fln.setSynthesisdata(rls.get(0).getData());
+		}
 		return result;
 	}
 	

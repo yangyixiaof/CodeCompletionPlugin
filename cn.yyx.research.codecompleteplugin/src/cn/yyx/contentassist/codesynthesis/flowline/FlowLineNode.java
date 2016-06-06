@@ -2,6 +2,8 @@ package cn.yyx.contentassist.codesynthesis.flowline;
 
 public class FlowLineNode<T> implements Comparable<FlowLineNode<T>>{
 	
+	protected T synthesisdata = null;
+	
 	protected T data = null;
 	protected double probability = 0;// probability of the data T. Used in all the execution flow of the framework. So put it in here not in data T.
 	protected FlowLineNode<T> prev = null;
@@ -103,6 +105,14 @@ public class FlowLineNode<T> implements Comparable<FlowLineNode<T>>{
 	
 	public String rawString() {
 		return "data:" + data.toString() + ";couldextend:" + couldextend + ";length:" + length + ";prob:" + probability;
+	}
+
+	public T getSynthesisdata() {
+		return synthesisdata;
+	}
+
+	public void setSynthesisdata(T synthesisdata) {
+		this.synthesisdata = synthesisdata;
 	}
 	
 }

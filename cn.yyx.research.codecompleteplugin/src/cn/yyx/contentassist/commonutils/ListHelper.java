@@ -14,21 +14,22 @@ import cn.yyx.contentassist.codesynthesis.typeutil.TypeSameJudger;
 
 public class ListHelper {
 	
-	public static List<FlowLineNode<CSFlowLineData>> AddExtraPropertyToAllListNodes(List<FlowLineNode<CSFlowLineData>> alls, CSExtraProperty csep)
+	// List<FlowLineNode<CSFlowLineData>>
+	public static void AddExtraPropertyToAllListNodes(List<FlowLineNode<CSFlowLineData>> alls, CSExtraProperty csep)
 	{
-		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		// List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		if (alls == null || alls.size() == 0)
 		{
-			return result;
+			return;
 		}
 		Iterator<FlowLineNode<CSFlowLineData>> itr = alls.iterator();
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = itr.next();
 			fln.getData().setCsep(csep);
-			result.add(fln);
+			// result.add(fln);
 		}
-		return result;
+		// return alls;
 	}
 	
 	public static boolean DetailContains(List<FlowLineNode<CSFlowLineData>> results, CSFlowLineData data)

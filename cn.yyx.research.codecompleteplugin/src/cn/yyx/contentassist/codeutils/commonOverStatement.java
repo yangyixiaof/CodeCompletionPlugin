@@ -1,7 +1,6 @@
 package cn.yyx.contentassist.codeutils;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
@@ -27,7 +26,7 @@ public class commonOverStatement extends statement implements SWrapper{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		// List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<FlowLineNode<CSFlowLineData>> smtls = smt.HandleCodeSynthesis(squeue, smthandler);
 		smtls = CSFlowLineHelper.ConcateOneFlowLineList(null, smtls, ";");
 		if (smtls == null)
@@ -38,10 +37,16 @@ public class commonOverStatement extends statement implements SWrapper{
 		while (ritr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = ritr.next();
-			result.addAll(CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, null));
+			// result.addAll(CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, null));
+			List<FlowLineNode<CSFlowLineData>> rls = CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, null);
+			if (rls != null && rls.size() > 0)
+			{
+				fln.setSynthesisdata(rls.get(0).getData());
+			}
 		}
-		ListHelper.AddExtraPropertyToAllListNodes(result, new CSCommonOverProperty(null));
-		return result;
+		ListHelper.AddExtraPropertyToAllListNodes(smtls, new CSCommonOverProperty(null)); // result
+		return smtls;
+		// return result;
 	}
 
 	@Override

@@ -188,8 +188,8 @@ public class CodeSynthesisPredictTask implements Runnable {
 							}
 							over = predsmt.HandleOverSignal(new FlowLineStack(lastone, signals));
 							addnode.setCouldextend(!over);
-							if (over) {
-								csfl.AddCodeSynthesisOver(addnode, pred);
+							if (over && addnode.getSynthesisdata() != null) {
+								csfl.AddCodeSynthesisOver(new FlowLineNode<CSFlowLineData>(addnode.getSynthesisdata(), addnode.getProbability()), pred);
 								totalsuccess++;
 							} else {
 								if (ClassInstanceOfUtil.ObjectInstanceOf(csdflq, VirtualCSFlowLineQueue.class)) {
