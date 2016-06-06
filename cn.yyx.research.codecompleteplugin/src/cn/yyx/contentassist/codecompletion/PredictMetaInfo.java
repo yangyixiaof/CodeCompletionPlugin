@@ -13,7 +13,7 @@ public class PredictMetaInfo {
 	public static final double TwoMethodStringSimilarityThreshold = 0.75;
 	
 	// public static final int PredictMaxSequence = 15;
-	public static final int PrePredictWindow = 10;
+	public static final int PrePredictWindow = 9;
 	public static final int PreTryMaxStep = 4;
 	public static final int PreTryNeedSize = 2;
 	
