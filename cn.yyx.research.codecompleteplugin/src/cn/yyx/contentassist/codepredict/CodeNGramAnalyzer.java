@@ -53,19 +53,7 @@ public class CodeNGramAnalyzer {
 		}
 		return list;
 	}
-
-	/*private static void TrimRightBrace(ArrayList<String> analist) {
-		int len = analist.size();
-		for (int i = len - 1; i >= 0; i--) {
-			String str = analist.get(i);
-			if (str.startsWith("DH@}")) {
-				analist.remove(i);
-			} else {
-				break;
-			}
-		}
-	}*/
-
+	
 	private static String GetIndent(String document, int invokeoffset) {
 		char[] doccs = document.toCharArray();
 		int i = invokeoffset-1;
