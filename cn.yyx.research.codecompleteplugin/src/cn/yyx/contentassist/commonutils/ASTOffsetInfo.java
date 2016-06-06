@@ -1,10 +1,17 @@
 package cn.yyx.contentassist.commonutils;
 
+import java.util.LinkedList;
+
+import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
+
 public class ASTOffsetInfo {
 	
 	private boolean isInAnonymousClass = false;
 	private boolean isInFieldLevel = false;
 	private String indent = null;
+	private String methodDeclarationReturnType = null;
+	private LinkedList<CCType> methodReturnResolvedType = null;
+	private boolean methodReturnResolved = false;
 	
 	public ASTOffsetInfo() {
 	}
@@ -36,6 +43,30 @@ public class ASTOffsetInfo {
 	@Override
 	public String toString() {
 		return "isInAnonymousClass:" + isInAnonymousClass + ";isInFieldLevel:" + isInFieldLevel + ";indent:" + indent;
+	}
+
+	public String getMethodDeclarationReturnType() {
+		return methodDeclarationReturnType;
+	}
+
+	public void setMethodDeclarationReturnType(String methodDeclarationReturnType) {
+		this.methodDeclarationReturnType = methodDeclarationReturnType;
+	}
+
+	public LinkedList<CCType> getMethodReturnResolvedType() {
+		return methodReturnResolvedType;
+	}
+
+	public void setMethodReturnResolvedType(LinkedList<CCType> methodReturnResolvedType) {
+		this.methodReturnResolvedType = methodReturnResolvedType;
+	}
+
+	public boolean isMethodReturnResolved() {
+		return methodReturnResolved;
+	}
+
+	public void setMethodReturnResolved(boolean methodReturnResolved) {
+		this.methodReturnResolved = methodReturnResolved;
 	}
 	
 }

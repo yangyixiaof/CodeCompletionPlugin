@@ -33,6 +33,14 @@ public class TypeCheckHelper {
 	}
 	
 	public static boolean CanBeMutualCast(List<CCType> cs, CCType rtclass) {
+		if (cs == null)
+		{
+			if (rtclass == null || rtclass.getCls() == null)
+			{
+				return true;
+			}
+			return false;
+		}
 		Iterator<CCType> itr = cs.iterator();
 		while (itr.hasNext())
 		{

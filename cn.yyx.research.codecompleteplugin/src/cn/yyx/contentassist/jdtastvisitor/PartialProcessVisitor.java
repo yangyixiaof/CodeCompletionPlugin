@@ -10,11 +10,15 @@ import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.LambdaExpression;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Type;
 
 import cn.yyx.contentassist.codecompletion.CodeCompletionMetaInfo;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
+import cn.yyx.research.language.Utility.StringUtil;
 import cn.yyx.research.language.simplified.JDTHelper.SimplifiedCodeGenerateASTVisitor;
 import cn.yyx.research.language.simplified.JDTHelper.SimplifiedFieldProcessASTVisitor;
+import cn.yyx.research.language.simplified.JDTManager.TypeUtil;
 
 public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 	
@@ -51,6 +55,23 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 			{
 				SimpleBodysHelper.JudgeIfInFieldLevel((AbstractTypeDeclaration)node, offset, aoi);
 			}
+		}
+		if (node instanceof MethodDeclaration && couldcontinue)
+		{
+			Type rt2 = ((MethodDeclaration)node).getReturnType2();
+			if (rt2 != null)
+			{
+				String rtcode = TypeUtil.TypeCode(rt2, true);
+				int ednum = ((MethodDeclaration)node).getExtraDimensions();
+				if (ednum > 0) {
+					rtcode += StringUtil.GenerateDuplicates("[]", ednum);
+				}
+				aoi.setMethodDeclarationReturnType(rtcode);
+			}
+		}
+		if (node instanceof LambdaExpression && couldcontinue)
+		{
+			aoi.setMethodDeclarationReturnType(null);
 		}
 		return couldcontinue;
 	}

@@ -7,10 +7,15 @@ import java.util.List;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
+import cn.yyx.contentassist.codesynthesis.VirtualCSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeResolver;
+import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 
 public class returnStatement extends statement{
 	
@@ -63,11 +68,20 @@ public class returnStatement extends statement{
 			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), "return", null, null, squeue.GetLastHandler()), smthandler.getProb()));
 			// return result;
 		}
-		return SpecialCheckAndFilterReturnStatement(squeue, result);
+		return SpecialCheckAndFilterReturnStatement(squeue, smthandler, result);
 	}
 	
-	private List<FlowLineNode<CSFlowLineData>> SpecialCheckAndFilterReturnStatement(CSFlowLineQueue squeue, List<FlowLineNode<CSFlowLineData>> cstmp) throws CodeSynthesisException
+	private List<FlowLineNode<CSFlowLineData>> SpecialCheckAndFilterReturnStatement(CSFlowLineQueue squeue, CSStatementHandler smthandler, List<FlowLineNode<CSFlowLineData>> cstmp) throws CodeSynthesisException
 	{
+		ASTOffsetInfo aoi = smthandler.getAoi();
+		String rtcode = aoi.getMethodDeclarationReturnType();
+		if (rtcode != null && !aoi.isMethodReturnResolved())
+		{
+			LinkedList<CCType> rtls = TypeResolver.ResolveType(rtcode, squeue, smthandler);
+			aoi.setMethodReturnResolvedType(rtls);
+			aoi.setMethodReturnResolved(true);
+		}
+		LinkedList<CCType> rtrs = aoi.getMethodReturnResolvedType();
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		if (cstmp != null)
 		{
@@ -76,7 +90,7 @@ public class returnStatement extends statement{
 			{
 				FlowLineNode<CSFlowLineData> fln = itr.next();
 				FlowLineNode<CSFlowLineData> bs = fln.getData().getSynthesisCodeManager().getBlockstart();
-				if (bs == null && squeue.getLast() != null)
+				if (bs == null && !(squeue instanceof VirtualCSFlowLineQueue))
 				{
 					// throw new CodeSynthesisException("return statement has no blockstart but there is something before it?");
 					continue;
@@ -86,7 +100,11 @@ public class returnStatement extends statement{
 					continue;
 					// throw new CodeSynthesisException("return statement has blockstart but there is something before blockstart?");
 				}
-				result.add(fln);
+				CCType flndcls = fln.getData().getDcls();
+				if (TypeCheckHelper.CanBeMutualCast(rtrs, flndcls))
+				{
+					result.add(fln);
+				}
 			}
 		}
 		return result;
