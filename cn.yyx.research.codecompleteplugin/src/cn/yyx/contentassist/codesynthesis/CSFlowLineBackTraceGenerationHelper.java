@@ -134,8 +134,9 @@ public class CSFlowLineBackTraceGenerationHelper {
 		
 		one.getData().getSynthesisCodeManager().AddSynthesisCode(tresid, tres);
 		twostart.getData().getSynthesisCodeManager().setBlockstart(one, tresid);
-		tres.getData().setCsep(twostart.getData().getCsep());
-		tres.getData().setTck(twostart.getData().getTck());
+		// TODO should not set csep.
+		// tres.getData().setCsep(twostart.getData().getCsep());
+		// tres.getData().setTck(twostart.getData().getTck());
 		
 		return tresid;
 	}

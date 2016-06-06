@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 
 public class CSExtraData implements CSSelfClosedMergable{
@@ -73,7 +74,13 @@ public class CSExtraData implements CSSelfClosedMergable{
 				}
 				else
 				{
-					throw new CodeSynthesisException("the corresponding tv can not be merged.");
+					if (tv instanceof FlowLineNode)
+					{
+						// directly add the later.
+						result.AddExtraData(key, tv);
+					} else {
+						throw new CodeSynthesisException("the corresponding tv can not be merged. tv class:" + tv.getClass());
+					}
 				}
 			}
 			else
