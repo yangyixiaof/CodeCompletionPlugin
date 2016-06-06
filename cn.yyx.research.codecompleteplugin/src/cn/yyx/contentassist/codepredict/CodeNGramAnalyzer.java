@@ -34,20 +34,6 @@ public class CodeNGramAnalyzer {
 			String indent = GetIndent(doc.get(), offset);
 			aoi.setIndent(indent);
 
-			/*
-			 * AbstractTypeDeclaration atype =
-			 * ASTTreeReducer.GetSimplifiedContent(cu.types(), offset, aoi); if
-			 * (atype == null) { return list; }
-			 * 
-			 * // System.err.println("Document:" + doc.get()); //
-			 * System.err.println(
-			 * "========================== =========================="); //
-			 * System.err.println("RetainedDocument:" + atype.toString());
-			 * 
-			 * SimplifiedCodeGenerateASTVisitor fmastv = new
-			 * SimplifiedCodeGenerateASTVisitor(); atype.accept(fmastv);
-			 */
-
 			PartialProcessVisitor ppv = new PartialProcessVisitor(offset, aoi);
 			cu.accept(ppv);
 			ArrayList<String> analist = ppv.GetMainAnalyseList(aoi.isInAnonymousClass());
