@@ -126,12 +126,13 @@ public class CSFlowLineQueue {
 	
 	public FlowLineNode<CSFlowLineData> BackSearchForSpecialClass(Class<?> cls,
 			Stack<Integer> signals) throws CodeSynthesisException {
+		int inisize = signals.size();
 		FlowLineNode<CSFlowLineData> tmp = last;
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();
 			tmpdata.HandleStackSignal(signals);
-			if (tmpdata.HasSpecialProperty(cls) && signals.isEmpty())
+			if (tmpdata.HasSpecialProperty(cls) && signals.size() <= inisize) // signals.isEmpty()
 			{
 				return tmp;
 			}
@@ -142,13 +143,14 @@ public class CSFlowLineQueue {
 	
 	public FlowLineNode<CSFlowLineData> BackSearchForTheNextOfSpecialClass(Class<?> cls,
 			Stack<Integer> signals) throws CodeSynthesisException {
+		int inisize = signals.size();
 		FlowLineNode<CSFlowLineData> tmp = last;
 		FlowLineNode<CSFlowLineData> tmpnext = null;
 		while (tmp != null)
 		{
 			CSFlowLineData tmpdata = tmp.getData();
 			tmpdata.HandleStackSignal(signals);
-			if (tmpdata.HasSpecialProperty(cls) && signals.isEmpty())
+			if (tmpdata.HasSpecialProperty(cls) && signals.size() <= inisize) // signals.isEmpty()
 			{
 				return tmpnext;
 			}

@@ -78,6 +78,11 @@ public class CSFlowLineBackTraceGenerationHelper {
 		{
 			// the content from startnode to mergestart.
 			result.add(startnode);
+			startnode.getData().getSynthesisCodeManager().AddSynthesisCode(startnode.getData().getId(), startnode);
+			startnode.getData().getSynthesisCodeManager().setBlockstart(startnode, startnode.getData().getId());
+			// do not need to do the following two codes.
+			// tres.getData().setCsep(twostart.getData().getCsep());
+			// tres.getData().setTck(twostart.getData().getTck());
 		}
 		else
 		{
