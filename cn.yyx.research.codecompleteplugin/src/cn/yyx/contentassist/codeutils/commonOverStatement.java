@@ -5,7 +5,6 @@ import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
-import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSCommonOverProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
@@ -28,7 +27,7 @@ public class commonOverStatement extends statement implements SWrapper{
 			throws CodeSynthesisException {
 		// List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<FlowLineNode<CSFlowLineData>> smtls = smt.HandleCodeSynthesis(squeue, smthandler);
-		smtls = CSFlowLineHelper.ConcateOneFlowLineList(null, smtls, ";");
+		// smtls = CSFlowLineHelper.ConcateOneFlowLineList(null, smtls, ";");
 		if (smtls == null)
 		{
 			return null;
