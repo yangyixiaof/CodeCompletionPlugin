@@ -121,7 +121,7 @@ public class SearchSpecificationOfAReference {
 				similarity = SimilarityHelper.ComputeTwoStringSimilarity(prefixcmp, fieldname);
 			}
 			FieldMember fm = new FieldMember(fieldname, fieldtype, wheredeclared);
-			prioriqueue.add(new MemberSorter(similarity, fm));
+			prioriqueue.add(new MemberSorter(similarity, pstr, fm));
 		}
 
 		List<FieldMember> fmlist = new LinkedList<FieldMember>();
@@ -243,7 +243,7 @@ public class SearchSpecificationOfAReference {
 				}
 				// double similarity = SimilarityHelper.ComputeTwoStringSimilarity(prefixcmp, cmp);
 				MethodMember mm = new MethodMember(funcname, returntype, wheredeclared, argnamelist, argtypelist);
-				prioriqueue.add(new MemberSorter(similarity, mm));
+				prioriqueue.add(new MemberSorter(similarity, pstr, mm));
 			}
 		}
 
