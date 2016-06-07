@@ -18,7 +18,8 @@ public class PredictMetaInfo {
 	public static final int PreTryNeedSize = 2;
 	
 	public static final int OneExtendFirstTotalStep = 30;
-	public static final int OneFirstMaxTotalSuccess = 1;
+	public static final int OneFirstMaxTotalSuccess = 3;
+	public static final int OneFlowLineMaxTotalSuccess = 1;
 	public static final int OneExtendFirstMaxSequence = 2;
 	public static final int OneExtendMaxSequence = 4;
 	public static final int OneLevelExtendMaxSequence = 1; // must be the power of 2.
