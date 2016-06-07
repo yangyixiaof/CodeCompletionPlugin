@@ -130,9 +130,6 @@ public class argumentList implements OneCode {
 				}
 			} else {
 				// msig != null.
-				// check and add argument.
-				// List<Boolean> usedparams =
-				// ListHelper.InitialBooleanArray(positiveargs.size());
 				List<LinkedList<CCType>> tps = msig.getArgtypes();
 				if (tps.size() != positiveargs.size() && !msig.isLastHasVarArg()) {
 					continue;

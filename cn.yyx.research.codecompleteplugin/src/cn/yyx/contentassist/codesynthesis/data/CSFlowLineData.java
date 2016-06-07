@@ -229,6 +229,15 @@ public class CSFlowLineData implements CSDataStructure, Cloneable {
 				clz = tck.HandleResult();
 				tck = null;
 			}
+		} else {
+			if (getDcls() == null && d2.getDcls() != null)
+			{
+				clz = d2.getDcls();
+			}
+			if (getDcls() != null && d2.getDcls() == null)
+			{
+				clz = getDcls();
+			}
 		}
 		String str1 = getData();
 		String str2 = d2.getData();
