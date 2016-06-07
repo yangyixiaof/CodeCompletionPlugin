@@ -45,24 +45,6 @@ public class commonMethodInvocationStatement extends methodInvocationStatement{
 		return 0;
 	}
 	
-	/*@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
-		CSNode nacs = new CSNode(CSNodeType.ReferedExpression);
-		boolean conflict = name.HandleCodeSynthesis(squeue, expected, handler, nacs, ai);
-		if (conflict)
-		{
-			return true;
-		}
-		AdditionalInfo nai = new AdditionalInfo();
-		nai.setDirectlyMemberHint(nacs.GetFirstDataWithoutTypeCheck());
-		nai.setDirectlyMemberIsMethod(true);
-		CSNode fcs = new CSNode(CSNodeType.WholeStatement);
-		argList.HandleCodeSynthesis(squeue, expected, handler, fcs, nai);
-		squeue.add(fcs);
-		return false;
-	}*/
-
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
