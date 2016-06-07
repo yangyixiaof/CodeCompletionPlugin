@@ -54,12 +54,12 @@ public class CodeSynthesisPredictTask implements Runnable {
 
 	@Override
 	public void run() {
-		RecursiveCodePredictAndSynthesis(0, null, false, new LinkedList<GenBlock>(), 0);
+		RecursiveCodePredictAndSynthesis(0, null, false, new LinkedList<GenBlock>());
 	}
 
 	@SuppressWarnings("unchecked")
 	private EmergencyBack RecursiveCodePredictAndSynthesis(int level, FlowLineNode<CSFlowLineData> start,
-			boolean hassilb, List<GenBlock> gennodes, int startsuccess) {
+			boolean hassilb, List<GenBlock> gennodes) {
 		if (level >= PredictMetaInfo.MaxExtendLength) {
 			// return null;
 			return null;
@@ -68,7 +68,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 			// return null;
 			return null;
 		}
-		int tmpstartsuccess = startsuccess;
+		// int tmpstartsuccess = 0;
 		List<PredictProbPair> pps = null;
 		TypeComputationKind starttck = null;
 		if (start != null) {
@@ -190,12 +190,12 @@ public class CodeSynthesisPredictTask implements Runnable {
 								} else {
 									csfl.AddCodeSynthesisOver(addnode, pred);
 								}
-								tmpstartsuccess++;
 								totalsuccess++;
+								/*tmpstartsuccess++;
 								if (tmpstartsuccess >= PredictMetaInfo.OneFlowLineMaxTotalSuccess)
 								{
 									return null;
-								}
+								}*/
 							} else {
 								if (ClassInstanceOfUtil.ObjectInstanceOf(csdflq, VirtualCSFlowLineQueue.class)) {
 									// means first infer level.
@@ -206,7 +206,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 								// Solved. aitr.hasNext() changes to hassilb ||
 								// aitr.hasNext().
 								EmergencyBack eb = RecursiveCodePredictAndSynthesis(level + 1, addnode,
-										hassilb || (i < len - 1), gennodes, tmpstartsuccess);
+										hassilb || (i < len - 1), gennodes);
 								if (eb != null && eb.getNeedlevel() < level) {
 									return eb;
 								}
