@@ -79,13 +79,13 @@ public class preExist extends referedExpression{
 		if (end == last) {
 			String lid = end.getData().getId();
 			efln = last;
-			csfd = new CSFlowLineData(squeue.GenerateNewNodeId()+"", efln.getData());
+			csfd = new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), efln.getData());
 			nid = lid + "." + csfd.getId();
 			// result.add(last);
 		} else {
 			String lid = CSFlowLineBackTraceGenerationHelper.GetConcateId(last, end);
 			efln = end.getData().getSynthesisCodeManager().GetSynthesisCodeByKey(lid);
-			csfd = new CSFlowLineData(squeue.GenerateNewNodeId()+"", efln.getData());
+			csfd = new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), efln.getData());
 			nid = lid + "." + csfd.getId();
 		}
 		csfd.getSynthesisCodeManager().setBlockstart(end, nid);

@@ -100,6 +100,19 @@ public class CSFlowLineData implements CSDataStructure, Cloneable {
 		this.setHandler(handler);
 	}
 	
+	public CSFlowLineData(Integer id, Sentence sete, String data, CCType dcls, TypeComputationKind tck, SynthesisHandler handler, CSExtraProperty cseppara) {
+		this.setId(id + "");
+		this.setSete(sete);
+		this.setData(data);
+		// this.setStructsignal(structsignal);
+		this.setDcls(dcls);
+		// this.setHaspre(haspre);
+		// this.setHashole(hashole);
+		this.setTck(tck);
+		this.setHandler(handler);
+		this.setCsep(cseppara);
+	}
+	
 	public CSFlowLineData(String id, Sentence sete, String data, CCType dcls, TypeComputationKind tck, SynthesisHandler handler, CSExtraProperty cseppara) {
 		this.setId(id + "");
 		this.setSete(sete);
@@ -113,11 +126,18 @@ public class CSFlowLineData implements CSDataStructure, Cloneable {
 		this.setCsep(cseppara);
 	}
 	
-	public CSFlowLineData(String id, CSFlowLineData dt) {
-		this(id, dt.getSete(), dt.getData(), dt.getDcls(), dt.getTck(), dt.getHandler(), dt.getCsep());
-		this.setExtraData(dt.getExtraData());
+	public CSFlowLineData(String id, Sentence sete, CSFlowLineData dt) {
+		this(id, sete, dt.getData(), dt.getDcls(), dt.getTck(), dt.getHandler()); // , dt.getCsep()
+		// this.setExtraData(dt.getExtraData());
 		// this.setCsep(dt.getCsep());
-		this.setScm(dt.getSynthesisCodeManager());
+		// this.setScm(dt.getSynthesisCodeManager());
+	}
+	
+	public CSFlowLineData(Integer id, Sentence sete, CSFlowLineData dt) {
+		this(id, sete, dt.getData(), dt.getDcls(), dt.getTck(), dt.getHandler()); // , dt.getCsep()
+		// this.setExtraData(dt.getExtraData());
+		// this.setCsep(dt.getCsep());
+		// this.setScm(dt.getSynthesisCodeManager());
 	}
 	
 	public String getData() {

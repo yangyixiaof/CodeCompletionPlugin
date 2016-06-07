@@ -13,10 +13,10 @@ public class CSArgTypeListData extends CSFlowLineData {
 		{
 			this.setHashole(true);
 		}
-		this.setCsep(cd.getCsep());
-		this.setScm(cd.getSynthesisCodeManager());
-		this.setExtraData(cd.getExtraData());
 		this.setTpandnames(tpandnamespara);
+		// this.setCsep(cd.getCsep());
+		// this.setScm(cd.getSynthesisCodeManager());
+		// this.setExtraData(cd.getExtraData());
 	}
 
 	public List<String> getTpandnames() {
