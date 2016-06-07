@@ -49,27 +49,6 @@ public class commonMethodInvocationStatement extends methodInvocationStatement{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		return CodeSynthesisHelper.HandleMethodInvocation(squeue, smthandler, arglist, null, id, SignalHelper.HasEmBeforeMethod(squeue));
-		/*CSFlowLineData tlast = squeue.getLast().getData();
-		boolean hasem = false;
-		if ((tlast instanceof CSPsData) || (tlast instanceof CSPrData))
-		{
-			hasem = true;
-		}
-		CSMethodSignalHandleResult csmshr = squeue.BackSearchForMethodRelatedSignal();
-		List<FlowLineNode<CSFlowLineData>> nls = id.HandleCodeSynthesis(squeue, smthandler);
-		String methodname = nls.get(0).getData().getData();
-		CSMethodStatementHandler csmsh = new CSMethodStatementHandler(methodname, smthandler);
-		csmsh.setNextstart(squeue.getLast());
-		List<FlowLineNode<CSFlowLineData>> alls = arglist.HandleCodeSynthesis(squeue, csmsh);
-		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		Iterator<FlowLineNode<CSFlowLineData>> itr = alls.iterator();
-		while (itr.hasNext())
-		{
-			FlowLineNode<CSFlowLineData> fln = itr.next();
-			CSMethodInvocationData dt = new CSMethodInvocationData(csmshr.getFarem(), csmshr.getFaremused(), hasem, fln.getData());
-			result.add(new FlowLineNode<CSFlowLineData>(dt, fln.getProbability()));
-		}
-		return result;*/
 	}
 
 	@Override

@@ -32,6 +32,37 @@ public class TypeCheckHelper {
 		return false;
 	}
 	
+	public static boolean CanBeMutualCastInMethodParam(List<CCType> cs, CCType rtclass)
+	{
+		if (cs == null)
+		{
+			if (rtclass == null || rtclass.getCls() == null)
+			{
+				return true;
+			}
+			return false;
+		}
+		Iterator<CCType> itr = cs.iterator();
+		while (itr.hasNext())
+		{
+			CCType cct = itr.next();
+			if (CanBeMutualCastInMethodParam(cct, rtclass))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private static boolean CanBeMutualCastInMethodParam(CCType onetype, CCType twotype)
+	{
+		if (onetype != null && twotype != null && onetype.getCls() == String.class && (twotype.getCls() == char.class || twotype.getCls() == Character.class))
+		{
+			return true;
+		}
+		return CanBeMutualCast(onetype, twotype);
+	}
+	
 	public static boolean CanBeMutualCast(List<CCType> cs, CCType rtclass) {
 		if (cs == null)
 		{

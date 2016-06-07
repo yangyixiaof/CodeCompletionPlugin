@@ -210,7 +210,7 @@ public class argumentList implements OneCode {
 		while (pitr.hasNext()) {
 			FlowLineNode<CSFlowLineData> fln = pitr.next();
 			CSFlowLineData flndata = fln.getData();
-			if (TypeCheckHelper.CanBeMutualCast(c, flndata.getDcls())) {
+			if (TypeCheckHelper.CanBeMutualCastInMethodParam(c, flndata.getDcls())) {
 				return flndata.getData();
 			}
 		}

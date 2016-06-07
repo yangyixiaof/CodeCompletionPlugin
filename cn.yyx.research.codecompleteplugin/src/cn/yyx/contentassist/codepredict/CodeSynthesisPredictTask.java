@@ -54,12 +54,10 @@ public class CodeSynthesisPredictTask implements Runnable {
 
 	@Override
 	public void run() {
-		RecursiveCodePredictAndSynthesis(0, null, false, new LinkedList<GenBlock>()); // ,
-																						// null
+		RecursiveCodePredictAndSynthesis(0, null, false, new LinkedList<GenBlock>());
 	}
 
-	@SuppressWarnings("unchecked") // List<PredictProbPair> // ,
-									// List<PredictProbPair> lastsilbppps
+	@SuppressWarnings("unchecked")
 	private EmergencyBack RecursiveCodePredictAndSynthesis(int level, FlowLineNode<CSFlowLineData> start,
 			boolean hassilb, List<GenBlock> gennodes) {
 		if (level >= PredictMetaInfo.MaxExtendLength) {
@@ -87,23 +85,13 @@ public class CodeSynthesisPredictTask implements Runnable {
 		if (level == 0) {
 			expectsize = PredictMetaInfo.OneExtendFirstMaxSequence;
 			fln = pretrylast;
-			// if (lastsilbppps != null)
-			// {
-			// pps = lastsilbppps;
-			// } else {
 			pi.BeginOperation();
 			pps = pi.InferNextGeneration(alc, expectsize, fln, null);
 			pi.EndOperation();
-			// }
 		} else {
-			// if (lastsilbppps != null)
-			// {
-			// pps = lastsilbppps;
-			// } else {
 			pi.BeginOperation();
 			pps = pi.InferNextGeneration(alc, expectsize, fln, pretrylast);
 			pi.EndOperation();
-			// }
 		}
 		Iterator<PredictProbPair> pitr = pps.iterator();
 		int keylen = 0;
@@ -121,10 +109,6 @@ public class CodeSynthesisPredictTask implements Runnable {
 				} else {
 					start.getData().setTck(null);
 				}
-				/*
-				 * TypeComputationKind tck = start.getData().getTck(); if (tck
-				 * != null) { tck.ClearPost(); }
-				 */
 			}
 
 			if (level == 0) {
@@ -166,10 +150,6 @@ public class CodeSynthesisPredictTask implements Runnable {
 					int i = 0;
 					int len = addnodes.size();
 					for (i = 0; i < len; i++) {
-						// }
-						// Iterator<FlowLineNode<CSFlowLineData>> aitr =
-						// addnodes.iterator();
-						// while (aitr.hasNext()) {
 						if (TotalStopCondition()) {
 							break;
 						}
