@@ -13,12 +13,14 @@ import cn.yyx.contentassist.commonutils.PrintUtil;
 import cn.yyx.contentassist.jdtastvisitor.PartialProcessVisitor;
 import cn.yyx.research.language.JDTHelper.ASTTraversal;
 import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
+import cn.yyx.research.language.simplified.JDTManager.UniqueOrder;
 
 public class CodeNGramAnalyzer {
 
 	public static List<String> PossibleCodes(JavaContentAssistInvocationContext javacontext) {
 		// TODO This whole mechanism needs to be fully tested.
 		System.err.println("HaHa Test!!!!!!!!!!!!!!");
+		UniqueOrder.Reset();
 		ArrayList<String> list = new ArrayList<String>();
 		try {
 			int offset = javacontext.getInvocationOffset();
