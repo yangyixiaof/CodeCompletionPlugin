@@ -15,6 +15,7 @@ import org.eclipse.jdt.internal.codeassist.CompletionEngine;
 import org.eclipse.jdt.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jdt.internal.core.SearchableEnvironment;
+import org.eclipse.jdt.internal.ui.text.java.AnonymousTypeCompletionProposal;
 import org.eclipse.jdt.internal.ui.text.java.FillArgumentNamesCompletionProposalCollector;
 import org.eclipse.jdt.internal.ui.text.java.JavaCompletionProposal;
 import org.eclipse.jdt.internal.ui.text.java.JavaMethodCompletionProposal;
@@ -178,6 +179,12 @@ public class SearchSpecificationOfAReference {
 		while (itr.hasNext()) {
 			ICompletionProposal icp = itr.next();
 			String pstr = null;
+			boolean anonymous = false;
+			if (ClassInstanceOfUtil.ObjectInstanceOf(icp, AnonymousTypeCompletionProposal.class)) {
+				AnonymousTypeCompletionProposal atcp = (AnonymousTypeCompletionProposal) icp;
+				pstr = atcp.getDisplayString();
+				anonymous = true;
+			}
 			if (ClassInstanceOfUtil.ObjectInstanceOf(icp, JavaMethodCompletionProposal.class)) {
 				JavaMethodCompletionProposal jmip = (JavaMethodCompletionProposal) icp;
 				pstr = jmip.getDisplayString();
@@ -186,6 +193,7 @@ public class SearchSpecificationOfAReference {
 				ParameterGuessingProposal jmip = (ParameterGuessingProposal) icp;
 				pstr = jmip.getDisplayString();
 			}
+			
 			if (CodeCompletionMetaInfo.DebugMode) {
 				System.err.println(pstr);
 			}
@@ -196,9 +204,15 @@ public class SearchSpecificationOfAReference {
 				LinkedList<String> argnamelist = new LinkedList<String>();
 				String returntype = null;
 				String wheredeclared = null;
-				if (methodref) {
-					String[] strs = pstr.split(":|-");
-					String[] funs = strs[0].trim().split("\\(|\\)|(, )");
+				if (anonymous) {
+					int idx = pstr.indexOf("Anonymous Inner Type");
+					if (idx < 0)
+					{
+						System.err.println("Not Anonymous Inner Type? A new Type? Unkown type is:" + pstr);
+						System.exit(1);
+					}
+					String function = pstr.substring(0, idx).trim();
+					String[] funs = function.split("\\(|\\)|(, )");
 					funcname = (funs[0].trim());
 					int flen = funs.length;
 					for (int i = 1; i < flen; i++) {
@@ -206,33 +220,46 @@ public class SearchSpecificationOfAReference {
 						argtypelist.add(arg);
 						argnamelist.add("@Unknown");
 					}
-					if (strs.length >= 2) {
-						returntype = strs[1].trim();
-						wheredeclared = strs[2].trim();
-					}
+					String packinfo = pstr.substring(idx);
+					String[] pis = packinfo.split("-");
+					returntype = pis[1].trim() + "." + funcname;
 				} else {
-					String[] strs = pstr.split(":|-");
-					String[] funs = strs[0].trim().split("\\(|\\)|(, )");
-					funcname = (funs[0].trim());
-					int flen = funs.length;
-					for (int i = 1; i < flen; i++) {
-						String arg = funs[i].trim();
-						int wsidx = arg.lastIndexOf(' ');
-						argtypelist.add(arg.substring(0, wsidx));
-						argnamelist.add(arg.substring(wsidx + 1));
-					}
-					returntype = (strs[1].trim());
-					wheredeclared = null;
-					if (strs.length == 3) {
-						wheredeclared = strs[2].trim();
+					if (methodref) {
+						String[] strs = pstr.split(":|-");
+						String[] funs = strs[0].trim().split("\\(|\\)|(, )");
+						funcname = (funs[0].trim());
+						int flen = funs.length;
+						for (int i = 1; i < flen; i++) {
+							String arg = funs[i].trim();
+							argtypelist.add(arg);
+							argnamelist.add("@Unknown");
+						}
+						if (strs.length >= 2) {
+							returntype = strs[1].trim();
+							wheredeclared = strs[2].trim();
+						}
+					} else {
+						String[] strs = pstr.split(":|-");
+						String[] funs = strs[0].trim().split("\\(|\\)|(, )");
+						funcname = (funs[0].trim());
+						int flen = funs.length;
+						for (int i = 1; i < flen; i++) {
+							String arg = funs[i].trim();
+							int wsidx = arg.lastIndexOf(' ');
+							argtypelist.add(arg.substring(0, wsidx));
+							argnamelist.add(arg.substring(wsidx + 1));
+						}
+						returntype = (strs[1].trim());
+						wheredeclared = null;
+						if (strs.length == 3) {
+							wheredeclared = strs[2].trim();
+						}
 					}
 				}
 				double similarity = 1;
 				if (prefixcmp != null) {
 					similarity = SimilarityHelper.ComputeTwoStringSimilarity(prefixcmp, funcname);
 				}
-				// double similarity =
-				// SimilarityHelper.ComputeTwoStringSimilarity(prefixcmp, cmp);
 				MethodMember mm = new MethodMember(funcname, returntype, wheredeclared, argnamelist, argtypelist);
 				prioriqueue.add(new MemberSorter(similarity, pstr, mm));
 			}
