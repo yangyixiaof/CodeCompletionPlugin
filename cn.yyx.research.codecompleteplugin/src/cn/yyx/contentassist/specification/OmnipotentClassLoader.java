@@ -23,7 +23,7 @@ public class OmnipotentClassLoader {
 
 	public static Class<?> LoadClass(String classfullname) throws Exception {
 		Class<?> cls = null;
-		cls = LoadPrimitiveClass(classfullname);
+		cls = LoadPrimitiveClassAndVoidClass(classfullname);
 		if (cls != null)
 		{
 			return cls;
@@ -41,8 +41,12 @@ public class OmnipotentClassLoader {
 		return cls;
 	}
 	
-	private static Class<?> LoadPrimitiveClass(String clsname)
+	private static Class<?> LoadPrimitiveClassAndVoidClass(String clsname)
 	{
+		if (clsname.equals("void"))
+		{
+			return void.class;
+		}
 		if (clsname.equals("float"))
 		{
 			return float.class;
