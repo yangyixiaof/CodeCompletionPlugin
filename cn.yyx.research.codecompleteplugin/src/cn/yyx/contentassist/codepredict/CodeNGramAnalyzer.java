@@ -22,17 +22,17 @@ public class CodeNGramAnalyzer {
 		ArrayList<String> list = new ArrayList<String>();
 		try {
 			int offset = javacontext.getInvocationOffset();
-
+			
 			ICompilationUnit icu = javacontext.getCompilationUnit();
 			String javaname = icu.getCorrespondingResource().getName();
-
+			
 			IDocument doc = javacontext.getDocument();
 			ASTTraversal astmdf = new ASTTraversal(javaname, doc.get());
 			CompilationUnit cu = astmdf.getCompilationUnit();
 			ASTOffsetInfo aoi = new ASTOffsetInfo();
 			String indent = GetIndent(doc.get(), offset);
 			aoi.setIndent(indent);
-
+			
 			PartialProcessVisitor ppv = new PartialProcessVisitor(offset, aoi);
 			cu.accept(ppv);
 			
