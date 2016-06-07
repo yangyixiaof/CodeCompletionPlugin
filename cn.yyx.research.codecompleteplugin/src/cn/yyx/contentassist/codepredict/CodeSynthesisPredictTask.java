@@ -144,7 +144,13 @@ public class CodeSynthesisPredictTask implements Runnable {
 			CSStatementHandler csh = new CSStatementHandler(pred, ppp.getProb(), aoi);
 			statement predsmt = pred.getSmt();
 			try {
-
+				
+				// debug code, not remove.
+				if (predsmt.toString().contains("println"))
+				{
+					System.err.println("println catched.");
+				}
+				
 				List<FlowLineNode<CSFlowLineData>> addnodes = predsmt.HandleCodeSynthesis(csdflq, csh);
 				totalstep++;
 

@@ -52,6 +52,7 @@ import cn.yyx.contentassist.codeutils.typeArguments;
 import cn.yyx.contentassist.codeutils.typeLiteral;
 import cn.yyx.contentassist.codeutils.unionType;
 import cn.yyx.contentassist.codeutils.virtualInferredType;
+import cn.yyx.contentassist.codeutils.voidType;
 import cn.yyx.contentassist.codeutils.wildCardType;
 import cn.yyx.parse.szparse8java.Java8BaseVisitor;
 import cn.yyx.parse.szparse8java.Java8Parser;
@@ -113,6 +114,7 @@ import cn.yyx.parse.szparse8java.Java8Parser.UnionFirstTypeContext;
 import cn.yyx.parse.szparse8java.Java8Parser.UnionSecondTypeContext;
 import cn.yyx.parse.szparse8java.Java8Parser.UrshiftInfixExpressionStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.UrshiftassignAssignmentStatementContext;
+import cn.yyx.parse.szparse8java.Java8Parser.VoidTypeContext;
 import cn.yyx.parse.szparse8java.Java8Parser.WildcardBoundsContext;
 import cn.yyx.parse.szparse8java.Java8Parser.XorassignAssignmentStatementContext;
 
@@ -759,6 +761,12 @@ public class OneTypeVisitor extends Java8BaseVisitor<Integer> {
 		Integer res = visitChildren(ctx);
 		tp = (type) usedobj.peek();
 		return res;
+	}
+	
+	@Override
+	public Integer visitVoidType(VoidTypeContext ctx) {
+		usedobj.push(new voidType());
+		return super.visitVoidType(ctx);
 	}
 	
 	@Override

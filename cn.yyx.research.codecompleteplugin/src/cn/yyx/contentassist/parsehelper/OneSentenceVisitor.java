@@ -92,6 +92,7 @@ import cn.yyx.parse.szparse8java.Java8Parser.UnionSecondTypeContext;
 import cn.yyx.parse.szparse8java.Java8Parser.UrshiftInfixExpressionStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.UrshiftassignAssignmentStatementContext;
 import cn.yyx.parse.szparse8java.Java8Parser.VarRefNameStatementContext;
+import cn.yyx.parse.szparse8java.Java8Parser.VoidTypeContext;
 import cn.yyx.parse.szparse8java.Java8Parser.WildcardBoundsContext;
 import cn.yyx.parse.szparse8java.Java8Parser.XorassignAssignmentStatementContext;
 
@@ -1437,6 +1438,12 @@ public class OneSentenceVisitor extends Java8BaseVisitor<Integer> {
 	@Override
 	public Integer visitType(Java8Parser.TypeContext ctx) {
 		return visitChildren(ctx);
+	}
+	
+	@Override
+	public Integer visitVoidType(VoidTypeContext ctx) {
+		usedobj.push(new voidType());
+		return super.visitVoidType(ctx);
 	}
 
 	@Override
