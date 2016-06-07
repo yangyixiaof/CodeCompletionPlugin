@@ -44,14 +44,14 @@ public class commonVarRef extends referedExpression{
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
 		// Map<String, String> 
-		ScopeOffsetResult po = CSVarRefHelper.GetAllTypeVariablePair(squeue, smthandler, scope, off);
+		ScopeOffsetResult po = CSVarRefHelper.GetAllCommonTypeVariablePair(squeue, smthandler, scope, off);
 		return CodeSynthesisHelper.HandleVarRefCodeSynthesis(po, squeue, smthandler);
 	}
 	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredField(CSFlowLineQueue squeue, CSStatementHandler smthandler,
 			String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer) throws CodeSynthesisException {
-		ScopeOffsetResult po = CSVarRefHelper.GetAllTypeVariablePair(squeue, smthandler, scope, off);
+		ScopeOffsetResult po = CSVarRefHelper.GetAllCommonTypeVariablePair(squeue, smthandler, scope, off);
 		return CodeSynthesisHelper.HandleVarRefInferredField(po, squeue, smthandler, reservedword, expectedinfer);
 	}
 	
@@ -59,7 +59,7 @@ public class commonVarRef extends referedExpression{
 	public List<FlowLineNode<CSFlowLineData>> HandleInferredMethodReference(CSFlowLineQueue squeue,
 			CSStatementHandler smthandler, String reservedword, List<FlowLineNode<CSFlowLineData>> expectedinfer)
 			throws CodeSynthesisException {
-		ScopeOffsetResult po = CSVarRefHelper.GetAllTypeVariablePair(squeue, smthandler, scope, off);
+		ScopeOffsetResult po = CSVarRefHelper.GetAllCommonTypeVariablePair(squeue, smthandler, scope, off);
 		return CodeSynthesisHelper.HandleVarRefInferredMethodReference(po, squeue, smthandler, reservedword, expectedinfer);
 	}
 	

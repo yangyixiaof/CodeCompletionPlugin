@@ -11,11 +11,12 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.commonutils.VariableHT;
 import cn.yyx.research.language.simplified.JDTManager.OffsetOutOfScopeException;
 import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetResult;
+import cn.yyx.research.language.simplified.JDTManager.UniqueOrder;
 
 public class CSVarRefHelper {
 	
 	// Map<String, String>
-	public static ScopeOffsetResult GetAllTypeVariablePair(CSFlowLineQueue squeue, CSStatementHandler smthandler, int scope, int off) throws CodeSynthesisException
+	public static ScopeOffsetResult GetAllCommonTypeVariablePair(CSFlowLineQueue squeue, CSStatementHandler smthandler, int scope, int off) throws CodeSynthesisException
 	{
 		VariableHT vht = null;
 		VariableHT directvht = null;
@@ -55,20 +56,18 @@ public class CSVarRefHelper {
 		}
 		if (po != null)
 		{
+			po.IncreaseOrder(UniqueOrder.CurrentOrder()/2);
 			pores1.putAll(po.getSor());
 			pores2.putAll(po.getSol());
 		}
 		if (vht != null)
 		{
-			// pores1.putAll(vht.getTpvarname());
 			IteratePutOrdInPores1AndPutNullInPores2(vht.getTpvarname(), pores1, pores2);
 		}
 		if (directvht != null)
 		{
-			// pores1.putAll(directvht.getTpvarname());
 			IteratePutOrdInPores1AndPutNullInPores2(directvht.getTpvarname(), pores1, pores2);
 		}
-		// po.putAll(pofield);
 		return new ScopeOffsetResult(pores1, pores2);
 	}
 	
@@ -113,25 +112,18 @@ public class CSVarRefHelper {
 		}
 		if (po != null)
 		{
+			po.IncreaseOrder(UniqueOrder.CurrentOrder()/2);
 			pores1.putAll(po.getSor());
 			pores2.putAll(po.getSol());
 		}
 		if (vht != null)
 		{
-			// vht.getTpvarname(), 
-			// pores1.putAll(vht.getTpvarname());
 			IteratePutOrdInPores1AndPutNullInPores2(vht.getTpvarname(), pores1, pores2);
 		}
 		if (directvht != null)
 		{
-			// pores1.putAll(directvht.getTpvarname());
 			IteratePutOrdInPores1AndPutNullInPores2(directvht.getTpvarname(), pores1, pores2);
 		}
-		// po.putAll(povar);
-		/*if (vht.getHoldername() != null)
-		{
-			po.put(vht.getHoldertype(), vht.getHoldername());
-		}*/
 		return new ScopeOffsetResult(pores1, pores2);
 	}
 	
