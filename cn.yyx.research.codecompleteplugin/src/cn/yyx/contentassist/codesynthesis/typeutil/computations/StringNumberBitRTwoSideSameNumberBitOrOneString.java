@@ -41,7 +41,8 @@ public class StringNumberBitRTwoSideSameNumberBitOrOneString extends TypeComputa
 		{
 			return new CCType(String.class, "String");
 		}
-		return getPost();
+		return TypeComputer.NumberBitComputation(pre, post);
+		// return getPost();
 	}
 
 	@Override

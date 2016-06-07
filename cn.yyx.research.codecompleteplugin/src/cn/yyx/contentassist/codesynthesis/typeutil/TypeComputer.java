@@ -17,6 +17,23 @@ import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationK
 
 public class TypeComputer {
 	
+	public static Class<?>[] NumberClassInOrder = {Double.class, Float.class, Long.class, Integer.class, Short.class, Byte.class, Boolean.class};
+	
+	public static int GetNumberBitClassIndex(Class<?> cls)
+	{
+		int i = 0;
+		int len = NumberClassInOrder.length;
+		for (i = 0;i < len;i++)
+		{
+			Class<?> cc = NumberClassInOrder[i];
+			if (cc == cls)
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+	
 	public static CCType CreateArrayType(CCType ct, int count, String dimens)
 	{
 		int[] x = new int[count];
@@ -29,6 +46,23 @@ public class TypeComputer {
 		}
 		ct.setClstr(ct.getClstr() + dimens);
 		return ct;
+	}
+	
+	public static CCType NumberBitComputation(CCType cls1, CCType cls2) throws TypeConflictException
+	{
+		Class<?> nc1 = TypeCheckHelper.NormalizeClass(cls1.getCls());
+		Class<?> nc2 = TypeCheckHelper.NormalizeClass(cls2.getCls());
+		int i1 = GetNumberBitClassIndex(nc1);
+		int i2 = GetNumberBitClassIndex(nc2);
+		if (i1 < 0 || i2 < 0)
+		{
+			throw new TypeConflictException("Not Number Bit?");
+		}
+		if (i1 < i2) {
+			return cls1;
+		} else {
+			return cls2;
+		}
 	}
 	
 	public static boolean IsStrictNumberBit(Class<?> cls)

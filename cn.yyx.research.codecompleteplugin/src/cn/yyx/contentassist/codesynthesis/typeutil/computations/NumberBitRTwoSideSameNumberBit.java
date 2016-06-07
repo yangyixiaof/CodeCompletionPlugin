@@ -37,7 +37,7 @@ public class NumberBitRTwoSideSameNumberBit extends TypeComputationKind {
 		{
 			return new InferredCCType();
 		}
-		return getPost();
+		return TypeComputer.NumberBitComputation(pre, post);
 	}
 
 	@Override
