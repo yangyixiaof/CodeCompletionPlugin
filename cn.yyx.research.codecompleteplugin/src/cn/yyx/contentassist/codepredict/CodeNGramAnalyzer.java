@@ -8,7 +8,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.IDocument;
 
-import cn.yyx.contentassist.codecompletion.CodeCompletionMetaInfo;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.contentassist.commonutils.PrintUtil;
 import cn.yyx.contentassist.jdtastvisitor.PartialProcessVisitor;
@@ -37,7 +36,7 @@ public class CodeNGramAnalyzer {
 			PartialProcessVisitor ppv = new PartialProcessVisitor(offset, aoi);
 			cu.accept(ppv);
 			ArrayList<String> analist = ppv.GetMainAnalyseList(aoi.isInAnonymousClass());
-			// TrimRightBrace(analist);
+			analist = TrimAfterMdOrIniBegin(analist);
 			
 			// debugging.
 			PrintUtil.PrintList(analist, "analysis list");
@@ -54,6 +53,22 @@ public class CodeNGramAnalyzer {
 		return list;
 	}
 	
+	private static ArrayList<String> TrimAfterMdOrIniBegin(ArrayList<String> analist) {
+		int i = 0;
+		int len = analist.size();
+		for (i=0;i<len;i++)
+		{
+			String an = analist.get(i);
+			if (an.trim().startsWith("IB@") || an.trim().startsWith("MD@"))
+			{
+				ArrayList<String> result = new ArrayList<String>();
+				result.addAll(analist.subList(i, len));
+				return result;
+			}
+		}
+		return analist;
+	}
+
 	private static String GetIndent(String document, int invokeoffset) {
 		char[] doccs = document.toCharArray();
 		int i = invokeoffset-1;
@@ -69,7 +84,7 @@ public class CodeNGramAnalyzer {
 				}
 				if (j > start) {
 					String indent = document.substring(start, j);
-					if (CodeCompletionMetaInfo.DebugMode) {
+					/*if (CodeCompletionMetaInfo.DebugMode) {
 						System.err.println("indent:" + indent);
 						System.err.println("before:" + document.substring(0, invokeoffset));
 						System.err.println("after:" + document.substring(invokeoffset));
@@ -78,8 +93,7 @@ public class CodeNGramAnalyzer {
 						for (int k = 0; k < klen; k++) {
 							System.err.println("one char:" + cs[k]);
 						}
-						// System.exit(1);
-					}
+					}*/
 					return indent;
 				}
 			}

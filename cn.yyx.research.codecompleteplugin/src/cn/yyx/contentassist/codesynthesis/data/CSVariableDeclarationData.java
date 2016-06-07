@@ -107,6 +107,10 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 				String vs = vitr.next();
 				clonedsc.NewDeclaredVariable(vs, detp, smthandler.getAoi().isInFieldLevel());
 			}
+			if (detp.equals("void"))
+			{
+				throw new CodeSynthesisException("void can not be generated as type declaration.");
+			}
 			if (!detp.equals(getData()))
 			{
 				ModifyPrefixedType(pd, detp);
