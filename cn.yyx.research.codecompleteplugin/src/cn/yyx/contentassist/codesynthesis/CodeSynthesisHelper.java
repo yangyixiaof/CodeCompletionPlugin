@@ -180,11 +180,15 @@ public class CodeSynthesisHelper {
 			MethodTypeSignature mtsone = MethodTypeSignature.TranslateMethodMember(mm, squeue, smthandler);
 			int id = squeue.GenerateNewNodeId();
 			List<CCType> rtclss = mtsone.getReturntype();
-			Iterator<CCType> rcitr = rtclss.iterator();
-			while (rcitr.hasNext())
-			{
-				CCType rc = rcitr.next();
-				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? addition + methodname : beforemethodexp + "." + addition + methodname), rc, null, squeue.GetLastHandler()), smthandler.getProb()));
+			if (rtclss == null) {
+				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? addition + methodname : beforemethodexp + "." + addition + methodname), null, null, squeue.GetLastHandler()), smthandler.getProb()));
+			} else {
+				Iterator<CCType> rcitr = rtclss.iterator();
+				while (rcitr.hasNext())
+				{
+					CCType rc = rcitr.next();
+					result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? addition + methodname : beforemethodexp + "." + addition + methodname), rc, null, squeue.GetLastHandler()), smthandler.getProb()));
+				}
 			}
 			mts.put(id+"", mtsone);
 		}
