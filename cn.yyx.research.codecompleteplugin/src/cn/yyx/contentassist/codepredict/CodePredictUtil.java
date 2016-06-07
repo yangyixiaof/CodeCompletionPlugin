@@ -8,10 +8,8 @@ import org.eclipse.jdt.ui.text.java.ContentAssistInvocationContext;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
-import cn.yyx.contentassist.codecompletion.IntelliJavaProposalComputer;
 import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 import cn.yyx.contentassist.commonutils.DocumentContentHelper;
 import cn.yyx.contentassist.commonutils.ProposalHelper;
@@ -37,8 +35,8 @@ public class CodePredictUtil implements CodePredict {
 				List<String> proposalcnt = CodeNGramAnalyzer.PossibleCodes(javacontext);
 				ProposalHelper.ProposalContentToFormalFormat(javacontext, proposalcnt, proposals);
 			} else {
-				proposals.add(new CompletionProposal(IntelliJavaProposalComputer.OnlyExpressionSupport,
-						context.getInvocationOffset(), 0, IntelliJavaProposalComputer.OnlyExpressionSupport.length()));
+				// proposals.add(new CompletionProposal(IntelliJavaProposalComputer.OnlyExpressionSupport,
+				//		context.getInvocationOffset(), 0, IntelliJavaProposalComputer.OnlyExpressionSupport.length()));
 			}
 		} catch (BadLocationException e) {
 			e.printStackTrace();
@@ -47,9 +45,9 @@ public class CodePredictUtil implements CodePredict {
 	}
 
 	private void NotifyError(ArrayList<ICompletionProposal> proposals, ContentAssistInvocationContext context) {
-		System.err.println(IntelliJavaProposalComputer.OnlyJavaSupport);
-		proposals.add(new CompletionProposal(IntelliJavaProposalComputer.OnlyJavaSupport, context.getInvocationOffset(),
-				0, IntelliJavaProposalComputer.OnlyJavaSupport.length()));
+		// System.err.println(IntelliJavaProposalComputer.OnlyJavaSupport);
+		// proposals.add(new CompletionProposal(IntelliJavaProposalComputer.OnlyJavaSupport, context.getInvocationOffset(),
+		//		0, IntelliJavaProposalComputer.OnlyJavaSupport.length()));
 	}
 	
 }

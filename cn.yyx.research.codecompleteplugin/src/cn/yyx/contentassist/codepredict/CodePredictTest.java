@@ -10,7 +10,6 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
-import cn.yyx.contentassist.codecompletion.IntelliJavaProposalComputer;
 import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 import cn.yyx.contentassist.specification.SearchSpecificationOfAReference;
 
@@ -52,8 +51,8 @@ public class CodePredictTest implements CodePredict{
 				}
 				else
 				{
-					proposals.add(new CompletionProposal(IntelliJavaProposalComputer.OnlyExpressionSupport, context.getInvocationOffset(), 0,
-							IntelliJavaProposalComputer.OnlyExpressionSupport.length()));
+					// proposals.add(new CompletionProposal(IntelliJavaProposalComputer.OnlyExpressionSupport, context.getInvocationOffset(), 0,
+					//		IntelliJavaProposalComputer.OnlyExpressionSupport.length()));
 				}
 			} catch (BadLocationException e) {
 				e.printStackTrace();
@@ -61,9 +60,9 @@ public class CodePredictTest implements CodePredict{
 		}
 		else
 		{
-			System.err.println(IntelliJavaProposalComputer.OnlyJavaSupport);
-			proposals.add(new CompletionProposal(IntelliJavaProposalComputer.OnlyJavaSupport, context.getInvocationOffset(), 0,
-					IntelliJavaProposalComputer.OnlyJavaSupport.length()));
+			// System.err.println(IntelliJavaProposalComputer.OnlyJavaSupport);
+			// proposals.add(new CompletionProposal(IntelliJavaProposalComputer.OnlyJavaSupport, context.getInvocationOffset(), 0,
+			//		IntelliJavaProposalComputer.OnlyJavaSupport.length()));
 		}
 		return proposals;
 	}

@@ -44,7 +44,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 	public CodeSynthesisPredictTask(PreTryFlowLineNode<Sentence> pretrylastpara, SynthesisHandler sh, AeroLifeCycle alc,
 			CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi, int id) {
 		this.pretrylast = pretrylastpara;
-		this.pretrylastwholetrace = PrintWholeTrace(pretrylastpara, "");
+		this.pretrylastwholetrace = PrintWholeTrace(pretrylastpara, "", "whole");
 		this.sh = sh;
 		this.alc = alc;
 		this.csfl = csfl;
@@ -125,6 +125,11 @@ public class CodeSynthesisPredictTask implements Runnable {
 			}
 			keylen = ppp.getKeylen();
 			Sentence pred = ppp.getPred();
+			
+			if (CodeCompletionMetaInfo.DebugMode) {
+				PrintWholeTrace(start, pred.getSentence(), "pre-handle");
+			}
+			
 			CSStatementHandler csh = new CSStatementHandler(pred, ppp.getProb(), aoi);
 			statement predsmt = pred.getSmt();
 			try {
@@ -164,7 +169,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 							CSFlowLineData addnodedata = addnode.getData();
 
 							if (CodeCompletionMetaInfo.DebugMode) {
-								PrintWholeTrace(lastone, addnodedata.getSete().getSentence());
+								PrintWholeTrace(lastone, addnodedata.getSete().getSentence(), "handled");
 							}
 
 							Stack<Integer> signals = new Stack<Integer>();
@@ -253,7 +258,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 		// return pps;
 	}
 
-	private String PrintWholeTrace(FlowLineNode<?> lastone, String mlast) {
+	private String PrintWholeTrace(FlowLineNode<?> lastone, String mlast, String additioninfo) {
 		FlowLineNode<?> tmp = lastone;
 		String one = mlast;
 		while (tmp != null) {
@@ -271,7 +276,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 			}
 			tmp = tmp.getPrev();
 		}
-		String trace = "one trace:" + one;
+		String trace = additioninfo + " one trace:" + one;
 		System.err.println(trace);
 		return trace;
 	}

@@ -15,8 +15,8 @@ import cn.yyx.contentassist.codepredict.CodePredictUtil;
 
 public class IntelliJavaProposalComputer implements IJavaCompletionProposalComputer {
 	
-	public final static String OnlyJavaSupport = "<Advanced Completion: Only support java code completion, other formats are not supported yet.>";
-	public final static String OnlyExpressionSupport = "<Advanced Completion: Only support expressions completions, other formats are not supported yet.>";
+	// public final static String OnlyJavaSupport = "<Advanced Completion: Only support java code completion, other formats are not supported yet.>";
+	// public final static String OnlyExpressionSupport = "<Advanced Completion: Only support expressions completions, other formats are not supported yet.>";
 	
 	// this is unchanged once created.
 	CodePredict cpt = new CodePredictTest();
