@@ -184,6 +184,13 @@ public class SearchSpecificationOfAReference {
 				AnonymousTypeCompletionProposal atcp = (AnonymousTypeCompletionProposal) icp;
 				pstr = atcp.getDisplayString();
 				anonymous = true;
+				if (CodeCompletionMetaInfo.DebugMode)
+				{
+					System.err.println(atcp.getReplacementString());
+					System.err.println(atcp.getSortString());
+					System.err.println(atcp.getReplacementOffset());
+					System.err.println(atcp.getReplacementLength());
+				}
 			}
 			if (ClassInstanceOfUtil.ObjectInstanceOf(icp, JavaMethodCompletionProposal.class)) {
 				JavaMethodCompletionProposal jmip = (JavaMethodCompletionProposal) icp;
@@ -298,6 +305,16 @@ public class SearchSpecificationOfAReference {
 			System.err.println("proposal" + idx + " type : " + icp.getClass());
 			System.err.println("proposal" + idx + " : " + icp.toString());
 			System.err.println("========================");
+			if (ClassInstanceOfUtil.ObjectInstanceOf(icp, AnonymousTypeCompletionProposal.class)) {
+				AnonymousTypeCompletionProposal atcp = (AnonymousTypeCompletionProposal) icp;
+				if (CodeCompletionMetaInfo.DebugMode)
+				{
+					System.err.println(atcp.getReplacementString());
+					System.err.println(atcp.getSortString());
+					System.err.println(atcp.getReplacementOffset());
+					System.err.println(atcp.getReplacementLength());
+				}
+			}
 		}
 		// testing
 		// System.out.println(result);
@@ -588,8 +605,7 @@ public class SearchSpecificationOfAReference {
 		collector.setIgnored(CompletionProposal.CONSTRUCTOR_INVOCATION, false);
 		collector.setIgnored(CompletionProposal.METHOD_REF_WITH_CASTED_RECEIVER, false);
 		// collector.setIgnored(CompletionProposal.PACKAGE_REF, false);
-		// collector.setIgnored(CompletionProposal.POTENTIAL_METHOD_DECLARATION,
-		// false);
+		collector.setIgnored(CompletionProposal.POTENTIAL_METHOD_DECLARATION, false);
 		// collector.setIgnored(CompletionProposal.VARIABLE_DECLARATION, false);
 		// collector.setIgnored(CompletionProposal.TYPE_REF, false);
 

@@ -36,7 +36,7 @@ public class CodePredictTest implements CodePredict{
 					SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("new StringBuffer", javacontext);
 					SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("System.out::", javacontext);
 					System.err.println("===================split line=================");
-					SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("new ActionListener", javacontext);
+					SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix("new ActionListener", javacontext);
 					// SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("keys.iterator", javacontext);
 					// SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix("System.class", javacontext);
 					// System.err.println("===================begin class=================");
