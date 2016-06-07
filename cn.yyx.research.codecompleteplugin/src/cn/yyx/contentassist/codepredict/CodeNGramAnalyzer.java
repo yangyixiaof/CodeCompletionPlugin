@@ -60,11 +60,7 @@ public class CodeNGramAnalyzer {
 		for (i=0;i<len;i++)
 		{
 			String an = analist.get(i).trim();
-			if (an.startsWith("HT@") || an.startsWith("HOT@"))
-			{
-				break;
-			}
-			if (an.startsWith("IB@") || an.startsWith("MD@"))
+			if (an.startsWith("HT@") || an.startsWith("HOT@") || an.startsWith("IB@") || an.startsWith("MD@"))
 			{
 				ArrayList<String> result = new ArrayList<String>();
 				result.addAll(analist.subList(i, len));
