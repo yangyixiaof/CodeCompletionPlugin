@@ -1,13 +1,13 @@
 package cn.yyx.contentassist.codesynthesis.typeutil;
 
-public class AssignTypeConflictException extends TypeConflictException {
+public class SameTypeConflictException extends TypeConflictException {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private int prelength = -1;
 	private CCType needclass = null;
 	
-	public AssignTypeConflictException(String info, CCType ndcls) {
+	public SameTypeConflictException(String info, CCType ndcls) {
 		super(info);
 		this.setNeedclass(ndcls);
 	}

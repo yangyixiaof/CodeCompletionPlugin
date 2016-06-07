@@ -2,6 +2,7 @@ package cn.yyx.contentassist.codesynthesis.typeutil.computations;
 
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.InferredCCType;
+import cn.yyx.contentassist.codesynthesis.typeutil.SameTypeConflictException;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputer;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeConflictException;
 
@@ -36,7 +37,11 @@ public class BooleanRTwoSideSame extends TypeComputationKind {
 		{
 			return new CCType(boolean.class, "boolean");
 		}
-		throw new TypeConflictException("pre:" + pre + " and post:" + post + " are not same in BooleanRTwoSideSame.");
+		if (TypeComputer.IsStrictNumberBit(getPre().getCls()) && TypeComputer.IsStrictNumberBit(getPost().getCls()))
+		{
+			return new CCType(boolean.class, "boolean");
+		}
+		throw new SameTypeConflictException("pre:" + pre + " and post:" + post + " are not same in BooleanRTwoSideSame.", post);
 	}
 	
 	@Override

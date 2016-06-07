@@ -9,7 +9,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.SynthesisCodeManager;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
-import cn.yyx.contentassist.codesynthesis.typeutil.AssignTypeConflictException;
+import cn.yyx.contentassist.codesynthesis.typeutil.SameTypeConflictException;
 
 public class CSFlowLineBackTraceGenerationHelper {
 
@@ -130,9 +130,9 @@ public class CSFlowLineBackTraceGenerationHelper {
 		try {
 			tres = CSFlowLineHelper.ConcateTwoFlowLineNode(null, onesyn, null, twosyn, null, squeue, smthandler, null);
 		} catch (CodeSynthesisException e) {
-			if (e instanceof AssignTypeConflictException)
+			if (e instanceof SameTypeConflictException)
 			{
-				((AssignTypeConflictException) e).setPrelength(onestart.getLength());
+				((SameTypeConflictException) e).setPrelength(onestart.getLength());
 			}
 			throw e;
 		}
@@ -144,7 +144,7 @@ public class CSFlowLineBackTraceGenerationHelper {
 		
 		one.getData().getSynthesisCodeManager().AddSynthesisCode(tresid, tres);
 		twostart.getData().getSynthesisCodeManager().setBlockstart(one, tresid);
-		// TODO should not set csep.
+		// Solved. should not set csep. Yes.
 		// tres.getData().setCsep(twostart.getData().getCsep());
 		// tres.getData().setTck(twostart.getData().getTck());
 		

@@ -18,7 +18,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
-import cn.yyx.contentassist.codesynthesis.typeutil.AssignTypeConflictException;
+import cn.yyx.contentassist.codesynthesis.typeutil.SameTypeConflictException;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputer;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.Assignment;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationKind;
@@ -202,7 +202,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 								} else {
 									csfl.AddToNextLevel(addnode, (FlowLineNode<CSFlowLineData>) fln);
 								}
-								// TODO aitr.hasNext() changes to hassilb ||
+								// Solved. aitr.hasNext() changes to hassilb ||
 								// aitr.hasNext().
 								EmergencyBack eb = RecursiveCodePredictAndSynthesis(level + 1, addnode,
 										hassilb || (i < len - 1), gennodes);
@@ -211,7 +211,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 								}
 							}
 						} catch (CodeSynthesisException e) {
-							if (e instanceof AssignTypeConflictException)
+							if (e instanceof SameTypeConflictException)
 							{
 								System.err.println("AssignTypeConflictException occurs.");
 								throw e;
@@ -223,7 +223,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 						}
 					}
 				}
-			} catch (AssignTypeConflictException e) {
+			} catch (SameTypeConflictException e) {
 				int neededlevel = e.getPrelength() - 1;
 				List<FlowLineNode<CSFlowLineData>> ads = gennodes.get(neededlevel).getGennodes();
 				int cidx = gennodes.get(neededlevel).getIdx();

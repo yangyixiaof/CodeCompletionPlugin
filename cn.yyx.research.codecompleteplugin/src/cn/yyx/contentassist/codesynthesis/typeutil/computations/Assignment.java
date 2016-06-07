@@ -1,6 +1,6 @@
 package cn.yyx.contentassist.codesynthesis.typeutil.computations;
 
-import cn.yyx.contentassist.codesynthesis.typeutil.AssignTypeConflictException;
+import cn.yyx.contentassist.codesynthesis.typeutil.SameTypeConflictException;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.InferredCCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputer;
@@ -33,7 +33,7 @@ public class Assignment extends TypeComputationKind {
 			// TODO do number type compute.
 			return getPre();
 		}
-		throw new AssignTypeConflictException("assign type check error. pre:" + pre + ";post:" + post, post);
+		throw new SameTypeConflictException("assign type check error. pre:" + pre + ";post:" + post, post);
 	}
 
 	@Override
