@@ -39,7 +39,6 @@ public class PlusAssign extends TypeComputationKind {
 		}
 		if (TypeComputer.IsStrictNumberBit(getPre().getCls()) && TypeComputer.IsStrictNumberBit(getPost().getCls()))
 		{
-			// TODO do number type compute.
 			return getPre();
 		}
 		if (getPre().getCls() == String.class)

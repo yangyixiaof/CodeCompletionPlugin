@@ -43,21 +43,8 @@ public class NumberOpAssign extends TypeComputationKind {
 		}
 		if (TypeComputer.IsStrictNumberBit(getPre().getCls()) && TypeComputer.IsStrictNumberBit(getPost().getCls()))
 		{
-			// TODO do number type compute.
 			return getPre();
 		}
-		/*if (TypeComputer.CCTypeSame(getPre(), getPost()))
-		{
-			if (getPost().getCls() != null)
-			{
-				return getPost();
-			}
-			if (getPre().getCls() != null)
-			{
-				return getPre();
-			}
-			return getPre();
-		}*/
 		throw new TypeConflictException("pre:" + pre + " and post:" + post + " are not same in InheritLeftOrRightTwoSameSide.");
 	}
 

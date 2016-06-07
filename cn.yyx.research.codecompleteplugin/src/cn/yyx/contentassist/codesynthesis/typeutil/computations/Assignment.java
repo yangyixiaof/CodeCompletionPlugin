@@ -30,7 +30,6 @@ public class Assignment extends TypeComputationKind {
 		}
 		if (TypeComputer.IsStrictNumberBit(getPre().getCls()) && TypeComputer.IsStrictNumberBit(getPost().getCls()))
 		{
-			// TODO do number type compute.
 			return getPre();
 		}
 		throw new SameTypeConflictException("assign type check error. pre:" + pre + ";post:" + post, post);
