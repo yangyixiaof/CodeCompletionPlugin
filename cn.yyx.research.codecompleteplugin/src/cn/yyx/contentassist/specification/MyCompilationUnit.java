@@ -1,4 +1,4 @@
-package cn.yyx.contentassist.codehelper;
+package cn.yyx.contentassist.specification;
 
 import org.eclipse.jdt.internal.compiler.env.ICompilationUnit;
 import org.eclipse.jface.text.IDocument;

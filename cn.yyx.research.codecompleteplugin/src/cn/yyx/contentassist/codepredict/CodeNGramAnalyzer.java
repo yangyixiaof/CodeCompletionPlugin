@@ -35,6 +35,7 @@ public class CodeNGramAnalyzer {
 
 			PartialProcessVisitor ppv = new PartialProcessVisitor(offset, aoi);
 			cu.accept(ppv);
+			
 			ArrayList<String> analist = ppv.GetMainAnalyseList(aoi.isInAnonymousClass());
 			analist = TrimAfterMdOrIniBegin(analist);
 			
@@ -58,8 +59,12 @@ public class CodeNGramAnalyzer {
 		int len = analist.size();
 		for (i=0;i<len;i++)
 		{
-			String an = analist.get(i);
-			if (an.trim().startsWith("IB@") || an.trim().startsWith("MD@"))
+			String an = analist.get(i).trim();
+			if (an.startsWith("HT@") || an.startsWith("HOT@"))
+			{
+				break;
+			}
+			if (an.startsWith("IB@") || an.startsWith("MD@"))
 			{
 				ArrayList<String> result = new ArrayList<String>();
 				result.addAll(analist.subList(i, len));

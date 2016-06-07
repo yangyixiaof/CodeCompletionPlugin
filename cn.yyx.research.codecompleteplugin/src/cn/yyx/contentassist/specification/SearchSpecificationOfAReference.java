@@ -27,7 +27,6 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
 import cn.yyx.contentassist.codecompletion.CodeCompletionMetaInfo;
 import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
-import cn.yyx.contentassist.codehelper.MyCompilationUnit;
 import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.TimeOutProgressMonitor;
