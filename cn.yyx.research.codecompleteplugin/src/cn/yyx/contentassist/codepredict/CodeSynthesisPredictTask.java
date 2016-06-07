@@ -127,7 +127,11 @@ public class CodeSynthesisPredictTask implements Runnable {
 			Sentence pred = ppp.getPred();
 			
 			if (CodeCompletionMetaInfo.DebugMode) {
-				PrintWholeTrace(start, pred.getSentence(), "pre-handle");
+				String one = PrintWholeTrace(start, pred.getSentence(), "pre-handle");
+				if (one.equals("MI@toString(@C0?0) DH@);Pr"))
+				{
+					System.err.println("Strange caught.");
+				}
 			}
 			
 			CSStatementHandler csh = new CSStatementHandler(pred, ppp.getProb(), aoi);
@@ -278,7 +282,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 		}
 		String trace = additioninfo + " one trace:" + one;
 		System.err.println(trace);
-		return trace;
+		return one;
 	}
 
 	public boolean TotalStopCondition() {

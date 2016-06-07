@@ -64,6 +64,10 @@ public class rightParentheseStatement extends statement{
 		Stack<Integer> signals = new Stack<Integer>();
 		cr.HandleStackSignal(signals);
 		FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForSpecialClass(CSLeftParenInfoProperty.class, signals);
+		if (cnode == null)
+		{
+			throw new CodeSynthesisException("there is no left parenthese before right parenthese.");
+		}
 		List<FlowLineNode<CSFlowLineData>> rls = CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, cnode);
 		if (rls != null && rls.size() > 0)
 		{

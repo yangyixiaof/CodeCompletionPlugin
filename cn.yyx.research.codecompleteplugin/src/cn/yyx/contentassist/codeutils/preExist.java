@@ -208,8 +208,8 @@ public class preExist extends referedExpression{
 		}
 		if (!handled && tmp.getPrev() == null)
 		{
-			new Exception("tmp pre is null? what the fuck?").printStackTrace();
-			System.exit(1);
+			throw new CodeSynthesisException("tmp pre is null? what the fuck? The whole structure may be wrong."); // .printStackTrace()
+			// System.exit(1);
 		}
 		if (!handled && (tmp.getPrev().getData().HasSpecialProperty(CSPsProperty.class) || tmp.getPrev().getData().HasSpecialProperty(CSPrProperty.class)) && signals.size() == 1)
 		{
