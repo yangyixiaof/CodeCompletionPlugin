@@ -129,6 +129,7 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 		}
 		String pdnewdata = changetotypecode + pddata.substring(typecode.length());
 		pd.setData(pdnewdata);
+		this.setTypecode(changetotypecode);
 	}
 
 	public String getTypecode() {

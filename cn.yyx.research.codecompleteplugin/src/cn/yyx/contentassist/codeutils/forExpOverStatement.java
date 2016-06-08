@@ -2,12 +2,16 @@ package cn.yyx.contentassist.codeutils;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
+import cn.yyx.contentassist.codesynthesis.CSFlowLineBackTraceGenerationHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSForExpOverProperty;
+import cn.yyx.contentassist.codesynthesis.data.CSForIniOverProperty;
+import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 
@@ -57,6 +61,13 @@ public class forExpOverStatement extends rawForExpOverStatement implements SWrap
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
+		Stack<Integer> signals = new Stack<Integer>();
+		signals.push(DataStructureSignalMetaInfo.CommonForExpWaitingOver);
+		FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForTheNextOfSpecialClass(CSForIniOverProperty.class, signals);
+		if (cnode == null)
+		{
+			throw new CodeSynthesisException("no ini over before exp over?");
+		}
 		List<FlowLineNode<CSFlowLineData>> smtls = smt.HandleCodeSynthesis(squeue, smthandler);
 		
 		// debugging code, do not remove.
@@ -72,6 +83,7 @@ public class forExpOverStatement extends rawForExpOverStatement implements SWrap
 		{
 			FlowLineNode<CSFlowLineData> smtln = itr.next();
 			CSFlowLineData smtdata = smtln.getData();
+			CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, smtln, cnode);
 			smtdata.setCsep(new CSForExpOverProperty(null));
 		}
 		// result.add(new FlowLineNode<CSFlowLineData>(new CSForExpOverData(squeue.GenerateNewNodeId(), smthandler.getSete(), ";", null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
