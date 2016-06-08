@@ -212,7 +212,7 @@ public class PredictionFetch {
 			if (count >= avgsize)
 			{
 				taskid++;
-				PreTryPredictTask ptpt = new PreTryPredictTask(taskid, alc, keys, smtmises);
+				PreTryPredictTask ptpt = new PreTryPredictTask(taskid, alc, keys, smtmises, fln, smtlist, smtmilist);
 				ptpts.add(ptpt);
 				keys.clear();
 				smtmises.clear();
