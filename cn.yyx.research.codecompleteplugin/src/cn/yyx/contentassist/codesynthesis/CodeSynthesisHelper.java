@@ -15,7 +15,6 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHand
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.InferredCCType;
-import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeResolver;
 import cn.yyx.contentassist.codeutils.OneCode;
@@ -158,7 +157,7 @@ public class CodeSynthesisHelper {
 	}
 	
 	private static List<FlowLineNode<CSFlowLineData>> HandleMethodSpecificationInfer(CSFlowLineQueue squeue,
-			CSStatementHandler smthandler, String spechint, String beforemethodexp, String keywordfull, Map<String, MethodTypeSignature> mts) {
+			CSStatementHandler smthandler, String spechint, String beforemethodexp, String keywordfull, Map<String, MethodMember> mts) {
 		String addition = keywordfull == null ? "" : keywordfull;
 		
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
@@ -176,8 +175,10 @@ public class CodeSynthesisHelper {
 		{
 			MethodMember mm = itr.next();
 			String methodname = mm.getName();
-			MethodTypeSignature mtsone = MethodTypeSignature.TranslateMethodMember(mm, squeue, smthandler);
 			int id = squeue.GenerateNewNodeId();
+			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? addition + methodname : beforemethodexp + "." + addition + methodname), null, null, squeue.GetLastHandler()), smthandler.getProb()));
+			// MethodTypeSignature mtsone = MethodTypeSignature.TranslateMethodMember(mm, squeue, smthandler);
+			/*int id = squeue.GenerateNewNodeId();
 			List<CCType> rtclss = mtsone.getReturntype();
 			if (rtclss == null) {
 				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? addition + methodname : beforemethodexp + "." + addition + methodname), null, null, squeue.GetLastHandler()), smthandler.getProb()));
@@ -188,13 +189,13 @@ public class CodeSynthesisHelper {
 					CCType rc = rcitr.next();
 					result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(id, smthandler.getSete(), ((beforemethodexp == null || beforemethodexp.equals("")) ? addition + methodname : beforemethodexp + "." + addition + methodname), rc, null, squeue.GetLastHandler()), smthandler.getProb()));
 				}
-			}
-			mts.put(id+"", mtsone);
+			}*/
+			mts.put(id+"", mm);
 		}
 		return result;
 	}
 	
-	public static List<FlowLineNode<CSFlowLineData>> HandleClassInvokeCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler, firstArgReferedExpression rexp, String between, String methodname, Map<String, MethodTypeSignature> mts)
+	public static List<FlowLineNode<CSFlowLineData>> HandleClassInvokeCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler, firstArgReferedExpression rexp, String between, String methodname, Map<String, MethodMember> mts)
 			throws CodeSynthesisException {
 		// CheckUtil.CheckStatementHandlerIsMethodStatementHandler(smthandler);
 		// CSMethodStatementHandler realhandler = (CSMethodStatementHandler) smthandler;

@@ -8,11 +8,11 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
-import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
+import cn.yyx.contentassist.specification.MethodMember;
 
 public abstract class firstArg implements OneCode {
 	
-	public abstract List<FlowLineNode<CSFlowLineData>> HandleClassOrMethodInvoke(CSFlowLineQueue squeue, CSStatementHandler smthandler, String methodname, Map<String, MethodTypeSignature> mts)
+	public abstract List<FlowLineNode<CSFlowLineData>> HandleClassOrMethodInvoke(CSFlowLineQueue squeue, CSStatementHandler smthandler, String methodname, Map<String, MethodMember> mts)
 			throws CodeSynthesisException;
 	
 }

@@ -10,7 +10,7 @@ import cn.yyx.contentassist.codesynthesis.ErrorCheck;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
-import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
+import cn.yyx.contentassist.specification.MethodMember;
 
 public class commonClassMemberInvoke extends firstArg{
 	
@@ -52,7 +52,7 @@ public class commonClassMemberInvoke extends firstArg{
 
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleClassOrMethodInvoke(CSFlowLineQueue squeue,
-			CSStatementHandler smthandler, String methodname, Map<String, MethodTypeSignature> mts)
+			CSStatementHandler smthandler, String methodname, Map<String, MethodMember> mts)
 			throws CodeSynthesisException {
 		return CodeSynthesisHelper.HandleClassInvokeCodeSynthesis(squeue, smthandler, rexp, null, methodname, mts);
 	}
