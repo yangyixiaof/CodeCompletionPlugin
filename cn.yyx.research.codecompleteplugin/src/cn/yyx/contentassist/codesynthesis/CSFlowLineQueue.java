@@ -144,7 +144,7 @@ public class CSFlowLineQueue {
 	
 	public BackSearchResult BackSearchForTheNextOfSpecialClass(Class<?> cls,
 			Stack<Integer> signals) throws CodeSynthesisException {
-		BackSearchResult br = new BackSearchResult(true, null);
+		BackSearchResult br = new BackSearchResult(false, null);
 		int inisize = signals.size();
 		FlowLineNode<CSFlowLineData> tmp = last;
 		FlowLineNode<CSFlowLineData> tmpnext = null;
@@ -154,6 +154,10 @@ public class CSFlowLineQueue {
 			tmpdata.HandleStackSignal(signals);
 			if (tmpdata.HasSpecialProperty(cls) && signals.size() <= inisize) // signals.isEmpty()
 			{
+				if (tmpnext == null)
+				{
+					br.setSelfisneeded(true);
+				}
 				br.setCnode(tmpnext);
 				// return tmpnext;
 				return br;
@@ -161,7 +165,6 @@ public class CSFlowLineQueue {
 			tmpnext = tmp;
 			tmp = tmp.getPrev();
 		}
-		br.setSelfisneeded(false);
 		// return null;
 		return br;
 	}
