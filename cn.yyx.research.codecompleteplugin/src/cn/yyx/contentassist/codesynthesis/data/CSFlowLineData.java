@@ -221,12 +221,22 @@ public class CSFlowLineData implements CSDataStructure, Cloneable {
 			if (TCKNotOver(this.getTck()) && !TCKNotOver(d2.getTck()))
 			{
 				// tck = d2.getTck();
-				tck = getTck();
+				try {
+					tck = (TypeComputationKind) getTck().clone();
+				} catch (CloneNotSupportedException e) {
+					System.err.println("can not clone?");
+					System.exit(1);
+				}
 			}
 			if (!TCKNotOver(this.getTck()) && TCKNotOver(d2.getTck()))
 			{
 				// tck = getTck();
-				tck = d2.getTck();
+				try {
+					tck = (TypeComputationKind) d2.getTck().clone();
+				} catch (CloneNotSupportedException e) {
+					System.err.println("can not clone?");
+					System.exit(1);
+				}
 			}
 			if (TCKNotOver(this.getTck()) && TCKNotOver(d2.getTck()))
 			{
