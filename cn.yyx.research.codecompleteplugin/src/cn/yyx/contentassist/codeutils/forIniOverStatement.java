@@ -14,6 +14,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSForProperty;
 import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.commonutils.BackSearchResult;
 
 public class forIniOverStatement extends rawForIniOverStatement implements SWrapper{
 	
@@ -64,8 +65,8 @@ public class forIniOverStatement extends rawForIniOverStatement implements SWrap
 		// List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		Stack<Integer> signals = new Stack<Integer>();
 		signals.push(DataStructureSignalMetaInfo.CommonForInitWaitingOver);
-		FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForTheNextOfSpecialClass(CSForProperty.class, signals);
-		if (cnode == null)
+		BackSearchResult br = squeue.BackSearchForTheNextOfSpecialClass(CSForProperty.class, signals);
+		if (!br.isValid())
 		{
 			throw new CodeSynthesisException("no for before ini over?");
 		}
@@ -80,7 +81,10 @@ public class forIniOverStatement extends rawForIniOverStatement implements SWrap
 		{
 			FlowLineNode<CSFlowLineData> smtln = itr.next();
 			CSFlowLineData smtdata = smtln.getData();
-			CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, smtln, cnode);
+			if (!br.isSelfisneeded())
+			{
+				CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, smtln, br.getCnode());
+			}
 			smtdata.setCsep(new CSForIniOverProperty(null));
 		}
 		return smtls;

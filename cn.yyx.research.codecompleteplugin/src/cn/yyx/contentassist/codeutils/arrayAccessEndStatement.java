@@ -17,6 +17,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
+import cn.yyx.contentassist.commonutils.BackSearchResult;
 import cn.yyx.contentassist.commonutils.ComplicatedSignal;
 import cn.yyx.contentassist.commonutils.StringUtil;
 
@@ -64,7 +65,6 @@ public class arrayAccessEndStatement extends statement{
 			return null;
 		}
 		
-		FlowLineNode<CSFlowLineData> cnode = null;
 		int ertime = endrtimes;
 		if (es instanceof arrayAccessStatement)
 		{
@@ -91,15 +91,23 @@ public class arrayAccessEndStatement extends statement{
 		{
 			Stack<Integer> signals = new Stack<Integer>();
 			signals.push(ComplicatedSignal.GenerateComplicatedSignal(DataStructureSignalMetaInfo.ArrayAccessBlcok, ertime));
-			cnode = squeue.BackSearchForTheNextOfSpecialClass(CSArrayAccessStartProperty.class, signals);
-			if (cnode != null)
+			BackSearchResult br = squeue.BackSearchForTheNextOfSpecialClass(CSArrayAccessStartProperty.class, signals);
+			if (br.isValid())
 			{
-				FlowLineNode<CSFlowLineData> aastart = cnode.getPrev();
+				FlowLineNode<CSFlowLineData> aastart = squeue.getLast();
+				if (br.getCnode() != null)
+				{
+					aastart = br.getCnode().getPrev();
+				}
 				Iterator<FlowLineNode<CSFlowLineData>> itr = esls.iterator();
 				while (itr.hasNext())
 				{
 					FlowLineNode<CSFlowLineData> fln = itr.next();
-					List<FlowLineNode<CSFlowLineData>> gks = CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, cnode);
+					List<FlowLineNode<CSFlowLineData>> gks = null;
+					if (!br.isSelfisneeded())
+					{
+						gks = CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, br.getCnode());
+					}
 					if (gks != null && gks.size() > 0)
 					{
 						FlowLineNode<CSFlowLineData> gn = gks.get(0);

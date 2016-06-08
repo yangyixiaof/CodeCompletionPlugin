@@ -15,6 +15,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.CondColon;
+import cn.yyx.contentassist.commonutils.BackSearchResult;
 
 public class condExpColonMarkStatement extends statement{
 
@@ -46,12 +47,15 @@ public class condExpColonMarkStatement extends statement{
 		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		Stack<Integer> signals = new Stack<Integer>();
 		signals.push(DataStructureSignalMetaInfo.ConditionExpressionColon);
-		FlowLineNode<CSFlowLineData> cnode = squeue.BackSearchForTheNextOfSpecialClass(CSCondExpQuestionMarkProperty.class, signals);
-		if (cnode == null)
+		BackSearchResult br = squeue.BackSearchForTheNextOfSpecialClass(CSCondExpQuestionMarkProperty.class, signals);
+		if (!br.isValid())
 		{
 			throw new CodeSynthesisException("Condition Expression does not have begin?");
 		}
-		CSFlowLineBackTraceGenerationHelper.GenerateSynthesisCode(squeue, smthandler, squeue.getLast(), cnode);
+		if (!br.isSelfisneeded())
+		{
+			CSFlowLineBackTraceGenerationHelper.GenerateSynthesisCode(squeue, smthandler, squeue.getLast(), br.getCnode());
+		}
 		result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId()+"", smthandler.getSete(), " : ", null, new CondColon(), squeue.GetLastHandler(), new CSCondExpColonMarkProperty(null)), smthandler.getProb()));
 		return result;
 	}

@@ -19,6 +19,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSVariableDeclarationData;
 import cn.yyx.contentassist.codesynthesis.data.CSVariableHolderData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSDirectLambdaHandler;
+import cn.yyx.contentassist.commonutils.BackSearchResult;
 import cn.yyx.contentassist.commonutils.CheckUtil;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.contentassist.commonutils.VariableHT;
@@ -141,8 +142,9 @@ public class CSFlowLineQueue {
 		return null;
 	}
 	
-	public FlowLineNode<CSFlowLineData> BackSearchForTheNextOfSpecialClass(Class<?> cls,
+	public BackSearchResult BackSearchForTheNextOfSpecialClass(Class<?> cls,
 			Stack<Integer> signals) throws CodeSynthesisException {
+		BackSearchResult br = new BackSearchResult(true, null);
 		int inisize = signals.size();
 		FlowLineNode<CSFlowLineData> tmp = last;
 		FlowLineNode<CSFlowLineData> tmpnext = null;
@@ -152,12 +154,16 @@ public class CSFlowLineQueue {
 			tmpdata.HandleStackSignal(signals);
 			if (tmpdata.HasSpecialProperty(cls) && signals.size() <= inisize) // signals.isEmpty()
 			{
-				return tmpnext;
+				br.setCnode(tmpnext);
+				// return tmpnext;
+				return br;
 			}
 			tmpnext = tmp;
 			tmp = tmp.getPrev();
 		}
-		return null;
+		br.setSelfisneeded(false);
+		// return null;
+		return br;
 	}
 	
 	private String SearchForVarableDeclarationType(FlowLineNode<CSFlowLineData> tfln)
@@ -171,11 +177,11 @@ public class CSFlowLineQueue {
 				return ((CSVariableDeclarationData)tmpdata).getTypecode();
 			}
 			FlowLineNode<CSFlowLineData> bs = tmpdata.getSynthesisCodeManager().getBlockstart();
-			if (bs != null)
-			{
+			if (bs != null && bs != tmp) {
 				tmp = bs;
+			} else {
+				tmp = tmp.getPrev();
 			}
-			tmp = tmp.getPrev();
 		}
 		new Exception("There is no variable declaration data before variableHolder?").printStackTrace();
 		System.exit(1);
