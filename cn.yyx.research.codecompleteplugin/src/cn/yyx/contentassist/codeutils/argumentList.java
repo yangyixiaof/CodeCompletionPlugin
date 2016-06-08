@@ -186,13 +186,17 @@ public class argumentList implements OneCode {
 			List<CCType> rtccts = msig.getReturntype();
 			if (rtccts == null) {
 				data.setDcls(null);
+				FlowLineNode<CSFlowLineData> dfln = null;
 				if (!datahint.equals(prehint)) {
 					prehintsuccess = 0;
-					results.add(0, new FlowLineNode<CSFlowLineData>(data, fln.getProbability()));
+					dfln = new FlowLineNode<CSFlowLineData>(data, fln.getProbability());
+					results.add(0, dfln);
 				} else {
 					prehintsuccess++;
-					results.add(new FlowLineNode<CSFlowLineData>(data, fln.getProbability()));
+					dfln = new FlowLineNode<CSFlowLineData>(data, fln.getProbability());
+					results.add(dfln);
 				}
+				SetDataBlockInfo(squeue, realhandler, dfln, hasem);
 			} else {
 				boolean first = true;
 				Iterator<CCType> cctitr = rtccts.iterator();
@@ -200,14 +204,18 @@ public class argumentList implements OneCode {
 					CCType cct = cctitr.next();
 					CSFlowLineData cfdata = new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), data);
 					cfdata.setDcls(cct);
+					FlowLineNode<CSFlowLineData> dfln = null;
 					if (!datahint.equals(prehint) && first) {
 						prehintsuccess = 0;
-						results.add(insertpos, new FlowLineNode<CSFlowLineData>(cfdata, fln.getProbability()));
+						dfln = new FlowLineNode<CSFlowLineData>(cfdata, fln.getProbability());
+						results.add(insertpos, dfln);
 						insertpos++;
 					} else {
 						prehintsuccess++;
-						results.add(new FlowLineNode<CSFlowLineData>(cfdata, fln.getProbability()));
+						dfln = new FlowLineNode<CSFlowLineData>(cfdata, fln.getProbability());
+						results.add(dfln);
 					}
+					SetDataBlockInfo(squeue, realhandler, dfln, hasem);
 					first = false;
 				}
 			}
@@ -217,18 +225,22 @@ public class argumentList implements OneCode {
 				diffhint++;
 			}
 			prehint = datahint;
-
-			FlowLineNode<CSFlowLineData> mf = realhandler.getMostfar();
-			if (mf != null) {
-				String id = CSFlowLineBackTraceGenerationHelper.GetConcateId(squeue.getLast(), mf) + "." + data.getId();
-				mf.getData().getSynthesisCodeManager().AddSynthesisCode(id, fln);
-				data.getExtraData().AddExtraData(CSDataMetaInfo.LastNode, data);
-				data.getSynthesisCodeManager().setBlockstart(mf, id);
-				data.setCsep(new CSMethodInvocationProperty(hasem, null));
-				data.setTck(null);
-			}
 		}
 		return results;
+	}
+	
+	private void SetDataBlockInfo(CSFlowLineQueue squeue, CSMethodStatementHandler realhandler, FlowLineNode<CSFlowLineData> fln, boolean hasem)
+	{
+		CSFlowLineData data = fln.getData();
+		FlowLineNode<CSFlowLineData> mf = realhandler.getMostfar();
+		if (mf != null) {
+			String id = CSFlowLineBackTraceGenerationHelper.GetConcateId(squeue.getLast(), mf) + "." + data.getId();
+			mf.getData().getSynthesisCodeManager().AddSynthesisCode(id, fln);
+			data.getExtraData().AddExtraData(CSDataMetaInfo.LastNode, data);
+			data.getSynthesisCodeManager().setBlockstart(mf, id);
+			data.setCsep(new CSMethodInvocationProperty(hasem, null));
+			data.setTck(null);
+		}
 	}
 
 	public String HandleOneParam(LinkedList<CCType> c, List<FlowLineNode<CSFlowLineData>> parg)

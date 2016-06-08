@@ -333,17 +333,6 @@ public class CodeSynthesisHelper {
 		}
 		// List<FlowLineNode<CSFlowLineData>> alls = arglist.HandleCodeSynthesis(squeue, csmsh);
 		List<FlowLineNode<CSFlowLineData>> alls = arglist.HandleMethodIntegrationCodeSynthesis(squeue, csmsh, methodname, hasem);
-		/*
-		 * CSMethodSignalHandleResult csmshr = squeue.BackSearchForMethodRelatedSignal();
-		 * List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
-		 * Iterator<FlowLineNode<CSFlowLineData>> itr = alls.iterator();
-		 * while (itr.hasNext())
-		 * {
-		 * 	FlowLineNode<CSFlowLineData> fln = itr.next();
-		 * 	CSMethodInvocationData dt = new CSMethodInvocationData(csmshr.getFarem(), csmshr.getFaremused(), hasem, fln.getData());
-		 * 	result.add(new FlowLineNode<CSFlowLineData>(dt, fln.getProbability()));
-		 * }
-		 * return result;*/
 		FlowLineNode<CSFlowLineData> mf = csmsh.getMostfar();
 		if (mf != null && !(mf.getData().HasSpecialProperty(CSEnterParamInfoProperty.class)))
 		{
