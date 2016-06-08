@@ -13,15 +13,15 @@ public class TerminationHelper {
 		return false;
 	}
 	
-	public static boolean couldTerminate(Sentence sete, Class<?> lastkind, int currlen, int totallen, boolean isexactmatch)
+	public static boolean couldTerminate(Sentence sete, Class<?> lastkind, int currlen, int totallen)
 	{
 		int level = (int)(totallen*0.75);
 		statement smt = sete.getSmt();
 		boolean minilevel = currlen >= level;
-		if (isexactmatch)
+		/*if (isexactmatch)
 		{
 			minilevel = currlen >= totallen;
-		}
+		}*/
 		// lastchar == ';' && 
 		if ((ClassInstanceOfUtil.ObjectInstanceOf(smt, lastkind)) && minilevel)
 		{

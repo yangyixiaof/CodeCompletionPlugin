@@ -2,9 +2,9 @@ package cn.yyx.contentassist.codecompletion;
 
 public class AeroMetaData {
 	
-	public static final int code1sim = 1;
+	// public static final int code1sim = 1;
 
-	public static final int[] codengram = {2,3,4};
+	public static final int[] codengram = {1,2,3,4,5,6,7,8};
 	
 	// if -1, infinite.
 	public static final int MaxPutAllLineNum = -1;

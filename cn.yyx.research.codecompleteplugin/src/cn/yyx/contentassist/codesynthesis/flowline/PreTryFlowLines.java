@@ -10,11 +10,20 @@ import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 
 public class PreTryFlowLines<T> extends FlowLines<T> {
 	
-	private PreTryFlowLineNode<T> exactmatchtail = null;
+	// private PreTryFlowLineNode<T> exactmatchtail = null;
 	// private FlowLineNode<T> tempexactmatchtail = null;
 	
-	private List<PreTryFlowLineNode<T>> overtails = new LinkedList<PreTryFlowLineNode<T>>();
+	private List<PreTryFlowLineNode<T>> overtails = null;
 	int validovers = 0;
+	
+	public PreTryFlowLines(List<PreTryFlowLineNode<T>> overtails) {
+		this.overtails = overtails;
+		this.validovers = overtails.size();
+	}
+	
+	public PreTryFlowLines() {
+		overtails = new LinkedList<PreTryFlowLineNode<T>>();
+	}
 	
 	public void AddOverFlowLineNode(PreTryFlowLineNode<T> otail, PreTryFlowLineNode<T> prenode)
 	{
@@ -26,7 +35,7 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 		otail.setPrev(prenode);
 	}
 	
-	public PreTryFlowLineNode<T> getExactmatchtail() {
+	/*public PreTryFlowLineNode<T> getExactmatchtail() {
 		return exactmatchtail;
 	}
 
@@ -37,13 +46,6 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 	public void ClearExactMatch()
 	{
 		this.exactmatchtail = null;
-	}
-	
-	/*@Override
-	public void EndOperation()
-	{
-		super.EndOperation();
-		exactmatchtail = tempexactmatchtail;
 	}*/
 	
 	@Override
@@ -54,7 +56,7 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 		fln.setLength(1);
 		setTails(new LinkedList<FlowLineNode<T>>());
 		getTails().add(fln);
-		exactmatchtail = (PreTryFlowLineNode<T>)getHeads();
+		// exactmatchtail = (PreTryFlowLineNode<T>)getHeads();
 	}
 
 	public List<PreTryFlowLineNode<T>> getOvertails() {
@@ -89,10 +91,10 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 				finalovertails.add(pop);
 			} else
 			{
-				if (i == 0)
+				/*if (i == 0)
 				{
 					finalovertails.add(pop);
-				}
+				}*/
 			}
 		}
 		overtails = finalovertails;
