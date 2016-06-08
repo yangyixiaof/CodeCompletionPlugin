@@ -24,6 +24,7 @@ import cn.yyx.contentassist.codesynthesis.typeutil.computations.Assignment;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationKind;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
+import cn.yyx.contentassist.commonutils.LevelArrayHelper;
 import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 import cn.yyx.contentassist.commonutils.EmergencyBack;
 import cn.yyx.contentassist.commonutils.GenBlock;
@@ -40,6 +41,8 @@ public class CodeSynthesisPredictTask implements Runnable {
 	PredictInfer pi = null;
 	int totalsuccess = 0;
 	int totalstep = 0;
+	int maxlevel = -1;
+	int[] levelconsumed = null;
 
 	public CodeSynthesisPredictTask(PreTryFlowLineNode<Sentence> pretrylastpara, SynthesisHandler sh, AeroLifeCycle alc,
 			CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi, int id) {
@@ -61,14 +64,11 @@ public class CodeSynthesisPredictTask implements Runnable {
 	private EmergencyBack RecursiveCodePredictAndSynthesis(int level, FlowLineNode<CSFlowLineData> start,
 			boolean hassilb, List<GenBlock> gennodes) {
 		if (level >= PredictMetaInfo.MaxExtendLength) {
-			// return null;
 			return null;
 		}
 		if (TotalStopCondition()) {
-			// return null;
 			return null;
 		}
-		// int tmpstartsuccess = 0;
 		List<PredictProbPair> pps = null;
 		TypeComputationKind starttck = null;
 		if (start != null) {
@@ -115,6 +115,8 @@ public class CodeSynthesisPredictTask implements Runnable {
 			if (level == 0) {
 				totalsuccess = 0;
 				totalstep = 0;
+				maxlevel = -1;
+				levelconsumed = null;
 			}
 			if (TotalStopCondition()) {
 				break;
@@ -155,8 +157,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 					} else {
 						gennodes.add(new GenBlock(addnodes));
 					}
-
-					// List<PredictProbPair> ppps = null;
+					
 					int i = 0;
 					int len = addnodes.size();
 					for (i = 0; i < len; i++) {
@@ -185,17 +186,22 @@ public class CodeSynthesisPredictTask implements Runnable {
 							over = predsmt.HandleOverSignal(new FlowLineStack(lastone, signals));
 							addnode.setCouldextend(!over);
 							if (over) {
+								if (maxlevel == -1) {
+									maxlevel = level;
+									levelconsumed = new int[maxlevel+2];
+									LevelArrayHelper.InitialIntArrayToZero(levelconsumed);
+								}
 								if (addnode.getSynthesisdata() != null) {
 									csfl.AddCodeSynthesisOver(new FlowLineNode<CSFlowLineData>(addnode.getSynthesisdata(), addnode.getProbability()), pred);
 								} else {
 									csfl.AddCodeSynthesisOver(addnode, pred);
 								}
 								totalsuccess++;
-								/*tmpstartsuccess++;
-								if (tmpstartsuccess >= PredictMetaInfo.OneFlowLineMaxTotalSuccess)
+								boolean shouldreturn = LevelArrayHelper.CheckAndAddOneAccordToLevel(levelconsumed, level);
+								if (shouldreturn)
 								{
 									return null;
-								}*/
+								}
 							} else {
 								if (ClassInstanceOfUtil.ObjectInstanceOf(csdflq, VirtualCSFlowLineQueue.class)) {
 									// means first infer level.
