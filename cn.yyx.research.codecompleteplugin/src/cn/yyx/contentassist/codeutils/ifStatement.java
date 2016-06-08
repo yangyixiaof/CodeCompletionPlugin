@@ -13,6 +13,7 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSInnerLevelPreHandle
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.CSFlowLineTypeCheckRefiner;
+import cn.yyx.contentassist.commonutils.ListHelper;
 
 public class ifStatement extends statement{
 	
@@ -50,7 +51,9 @@ public class ifStatement extends statement{
 		{
 			return null;
 		}
-		return CSFlowLineTypeCheckRefiner.RetainTheFallThroughFlowLineNodes(CSFlowLineHelper.ConcateOneFlowLineList("if (", rels, ") " + CodeSynthesisHelper.GenerateBlockCode(smthandler)), new CCType(Boolean.class, "Boolean"));
+		List<FlowLineNode<CSFlowLineData>> ifls = CSFlowLineTypeCheckRefiner.RetainTheFallThroughFlowLineNodes(CSFlowLineHelper.ConcateOneFlowLineList("if (", rels, ") " + CodeSynthesisHelper.GenerateBlockCode(smthandler)), new CCType(Boolean.class, "Boolean"));
+		ListHelper.SetDclsToAllListNodes(ifls, new CCType(void.class, "void"));
+		return ifls;
 	}
 
 	@Override
