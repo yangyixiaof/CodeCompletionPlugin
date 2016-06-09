@@ -47,7 +47,7 @@ public class PredictionFetch {
 		
 		ContextHandler ch = new ContextHandler(javacontext);
 		SynthesisHandler sh = new SynthesisHandler(handler, ch);
-		// List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesis(sh, alc, fls, aoi);
+		// List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesisInParallel(sh, alc, fls, aoi);
 		List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesisInSerial(sh, alc, fls, aoi);
 		
 		List<String> list = new LinkedList<String>();
@@ -60,7 +60,7 @@ public class PredictionFetch {
 		return list;
 	}
 	
-	protected List<CodeSynthesisFlowLines> DoRealCodePredictAndSynthesis(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, ASTOffsetInfo aoi) {
+	protected List<CodeSynthesisFlowLines> DoRealCodePredictAndSynthesisInParallel(SynthesisHandler sh, AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, ASTOffsetInfo aoi) {
 		List<CodeSynthesisFlowLines> csfll = new LinkedList<CodeSynthesisFlowLines>();
 		List<CodeSynthesisPredictTask> csptl = new LinkedList<CodeSynthesisPredictTask>();
 		List<PreTryFlowLineNode<Sentence>> ots = fls.getOvertails();
