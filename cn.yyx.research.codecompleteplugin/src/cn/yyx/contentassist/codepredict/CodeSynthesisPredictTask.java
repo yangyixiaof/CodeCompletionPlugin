@@ -14,6 +14,7 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.VirtualCSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.CodeSynthesisFlowLines;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLineNode;
@@ -47,7 +48,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 	public CodeSynthesisPredictTask(PreTryFlowLineNode<Sentence> pretrylastpara, SynthesisHandler sh, AeroLifeCycle alc,
 			CodeSynthesisFlowLines csfl, ASTOffsetInfo aoi, int id) {
 		this.pretrylast = pretrylastpara;
-		this.pretrylastwholetrace = PrintWholeTrace(pretrylastpara, "", "whole");
+		this.pretrylastwholetrace = FlowLineHelper.PrintWholeTrace(pretrylastpara, "", "whole");
 		this.sh = sh;
 		this.alc = alc;
 		this.csfl = csfl;
@@ -130,7 +131,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 			Sentence pred = ppp.getPred();
 			
 			if (CodeCompletionMetaInfo.DebugMode) {
-				String one = PrintWholeTrace(start, pred.getSentence(), "pre-handle");
+				String one = FlowLineHelper.PrintWholeTrace(start, pred.getSentence(), "pre-handle");
 				if (one.equals("MI@toString(@C0?0) DH@);Pr"))
 				{
 					System.err.println("Strange caught.");
@@ -175,7 +176,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 							CSFlowLineData addnodedata = addnode.getData();
 
 							if (CodeCompletionMetaInfo.DebugMode) {
-								PrintWholeTrace(lastone, addnodedata.getSete().getSentence(), "handled");
+								FlowLineHelper.PrintWholeTrace(lastone, addnodedata.getSete().getSentence(), "handled");
 							}
 
 							Stack<Integer> signals = new Stack<Integer>();
@@ -272,29 +273,6 @@ public class CodeSynthesisPredictTask implements Runnable {
 		}
 		return null;
 		// return pps;
-	}
-
-	private String PrintWholeTrace(FlowLineNode<?> lastone, String mlast, String additioninfo) {
-		FlowLineNode<?> tmp = lastone;
-		String one = mlast;
-		while (tmp != null) {
-			Object obj = tmp.getData();
-			if (obj instanceof CSFlowLineData) {
-				one = ((CSFlowLineData) obj).getSete().getSentence() + " " + one;
-			} else {
-				if (obj instanceof Sentence) {
-					one = ((Sentence) obj).getSentence() + " " + one;
-				} else {
-					System.err.println(
-							"What the fuck? the element of FlowLineNode is not Sentence or CSFlowLineData? Serious error, the system will exit.");
-					System.exit(1);
-				}
-			}
-			tmp = tmp.getPrev();
-		}
-		String trace = additioninfo + " one trace:" + one;
-		System.err.println(trace);
-		return one;
 	}
 
 	public boolean TotalStopCondition() {

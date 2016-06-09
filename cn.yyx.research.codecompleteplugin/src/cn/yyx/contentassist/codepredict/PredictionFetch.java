@@ -247,20 +247,17 @@ public class PredictionFetch {
 		}
 		
 		fls.BeginOperation();
-		int ndsize = PredictMetaInfo.PreTryTotalMaxParSize;
+		int ndsize = (int)(PredictMetaInfo.PreTryTotalMaxParSize);
 		while (ndsize > 0 && (!pppqueue.isEmpty()))
 		{
 			PreTryFlowLineNode<Sentence> nf = pppqueue.poll();
-			
 			boolean couldterminate = TerminationHelper.couldTerminate(nf.getData(), lastkind, nf.getParent().getLength()+1, smtlist.size());
+			fls.AddToNextLevel(nf, nf.getParent());
+			nf.setWholekey(FlowLineHelper.GetWholeTraceKey(nf));
+			ndsize--;
 			if (couldterminate)
 			{
 				fls.AddOverFlowLineNode(nf, nf.getParent());
-			}
-			else
-			{
-				fls.AddToNextLevel(nf, nf.getParent());
-				ndsize--;
 			}
 		}
 		fls.EndOperation();

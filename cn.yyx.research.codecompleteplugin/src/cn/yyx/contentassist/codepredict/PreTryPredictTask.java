@@ -66,9 +66,11 @@ public class PreTryPredictTask implements Runnable {
 				
 				double misim = LCSComparison.LCSSimilarity(oraclesmtmilist, triedcmpsmi);
 				double sim = 0.5*mtsim + 0.5*misim;
-				PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability(), sim, fln, ppp.getKeylen());
-				// fls.AddToNextLevel(nf, fln);
-				result.add(nf);
+				if (sim > 0.25)
+				{
+					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability(), sim, fln, ppp.getKeylen());
+					result.add(nf);
+				}
 				((LinkedList<statement>)triedcmp).removeLast();
 				if (ClassInstanceOfUtil.ObjectInstanceOf(predsmt, methodInvocationStatement.class))
 				{

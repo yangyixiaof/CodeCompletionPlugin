@@ -13,6 +13,44 @@ import cn.yyx.contentassist.commonutils.StatementsMIs;
 
 public class FlowLineHelper {
 	
+	public static String PrintWholeTrace(FlowLineNode<?> lastone, String mlast, String additioninfo) {
+		FlowLineNode<?> tmp = lastone;
+		String one = mlast;
+		while (tmp != null) {
+			Object obj = tmp.getData();
+			if (obj instanceof CSFlowLineData) {
+				one = ((CSFlowLineData) obj).getSete().getSentence() + " " + one;
+			} else {
+				if (obj instanceof Sentence) {
+					one = ((Sentence) obj).getSentence() + " " + one;
+				} else {
+					System.err.println(
+							"What the fuck? the element of FlowLineNode is not Sentence or CSFlowLineData? Serious error, the system will exit.");
+					System.exit(1);
+				}
+			}
+			tmp = tmp.getPrev();
+		}
+		String trace = additioninfo + " one trace:" + one;
+		System.err.println(trace);
+		return one;
+	}
+	
+	public static String GetWholeTraceKey(FlowLineNode<Sentence> lastone) {
+		String one = null;
+		FlowLineNode<Sentence> tmp = lastone;
+		while (tmp != null) {
+			Sentence sete = tmp.getData();
+			if (one == null) {
+				one = sete.getSentence();
+			} else {
+				one = sete.getSentence() + " " + one;
+			}
+			tmp = tmp.getPrev();
+		}
+		return one;
+	}
+	
 	public static List<Sentence> LastNeededSentenceQueue(int needsize, FlowLineNode<?> fln, PreTryFlowLineNode<Sentence> pretrylast) {
 		List<Sentence> result = new LinkedList<Sentence>();
 		int size = LastNeededSentenceQueueWithResultNeeded(needsize, fln, result);
