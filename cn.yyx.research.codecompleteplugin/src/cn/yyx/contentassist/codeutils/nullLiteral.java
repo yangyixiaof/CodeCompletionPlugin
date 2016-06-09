@@ -29,15 +29,7 @@ public class nullLiteral extends literal{
 		}
 		return 0;
 	}
-
-	/*@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
-		result.setContenttype(CSNodeType.SymbolMark);
-		result.AddOneData("null", null);
-		return false;
-	}*/
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {

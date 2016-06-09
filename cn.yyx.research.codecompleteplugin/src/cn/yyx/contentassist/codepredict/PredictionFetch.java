@@ -233,6 +233,7 @@ public class PredictionFetch {
 		// DoRoundTaskRunInParallel(ptpts, pppqueue);
 		DoRoundTaskRunInSerial(ptpts, pppqueue);
 		
+		boolean hasnextgeneration = !pppqueue.isEmpty();
 		fls.BeginOperation();
 		int ndsize = (int)(PredictMetaInfo.PreTryTotalMaxParSize);
 		while (ndsize > 0 && (!pppqueue.isEmpty()))
@@ -248,7 +249,7 @@ public class PredictionFetch {
 			}
 		}
 		fls.EndOperation();
-		return !pppqueue.isEmpty();
+		return hasnextgeneration;
 	}
 	
 	protected void DoRoundTaskRunInSerial(List<PreTryPredictTask> ptpts, Queue<PreTryFlowLineNode<Sentence>> pppqueue)
