@@ -15,6 +15,7 @@ import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.commonutils.BackSearchResult;
+import cn.yyx.contentassist.commonutils.ListHelper;
 
 public class forExpOverStatement extends rawForExpOverStatement implements SWrapper{
 	
@@ -83,13 +84,12 @@ public class forExpOverStatement extends rawForExpOverStatement implements SWrap
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> smtln = itr.next();
-			CSFlowLineData smtdata = smtln.getData();
 			if (!br.isSelfisneeded())
 			{
 				CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, smtln, br.getCnode());
 			}
-			smtdata.setCsep(new CSForExpOverProperty(null));
 		}
+		ListHelper.AddExtraPropertyToAllListNodes(smtls, new CSForExpOverProperty(null));
 		// result.add(new FlowLineNode<CSFlowLineData>(new CSForExpOverData(squeue.GenerateNewNodeId(), smthandler.getSete(), ";", null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
 		return smtls;
 	}
