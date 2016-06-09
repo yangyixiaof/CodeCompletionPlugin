@@ -38,4 +38,6 @@ public class PredictMetaInfo {
 	
 	public static final int OneCodeSynthesisTaskValidFinalSize = 2;
 	
+	public static final double MinSimilarity = 0.25;
+	
 }

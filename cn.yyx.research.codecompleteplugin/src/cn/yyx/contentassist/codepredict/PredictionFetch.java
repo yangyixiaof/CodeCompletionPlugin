@@ -164,7 +164,11 @@ public class PredictionFetch {
 			Sentence ons = itr.next();
 			if (!first)
 			{
-				DoOneRoundPreTrySequencePredict(alc, fls, setelist, smtlist, smtmilist, lastkind);
+				boolean hasnextgeneration = DoOneRoundPreTrySequencePredict(alc, fls, setelist, smtlist, smtmilist, lastkind);
+				if (!hasnextgeneration)
+				{
+					return;
+				}
 			}
 			if (first)
 			{
@@ -177,12 +181,16 @@ public class PredictionFetch {
 		while ((size == 0) && turn < PredictMetaInfo.PreTryMaxExtendStep)
 		{
 			turn++;
-			DoOneRoundPreTrySequencePredict(alc, fls, setelist, smtlist, smtmilist, lastkind);
+			boolean hasnextgeneration = DoOneRoundPreTrySequencePredict(alc, fls, setelist, smtlist, smtmilist, lastkind);
+			if (!hasnextgeneration)
+			{
+				return;
+			}
 			size = fls.GetValidOveredSize();
 		}
 	}
 	
-	protected void DoOneRoundPreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, List<Sentence> setelist,
+	protected boolean DoOneRoundPreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, List<Sentence> setelist,
 			List<statement> smtlist, final List<statement> smtmilist, final Class<?> lastkind) { // int needsize,
 		List<FlowLineNode<Sentence>> tails = fls.getTails();
 		int tailsize = tails.size();
@@ -240,6 +248,7 @@ public class PredictionFetch {
 			}
 		}
 		fls.EndOperation();
+		return !pppqueue.isEmpty();
 	}
 	
 	protected void DoRoundTaskRunInSerial(List<PreTryPredictTask> ptpts, Queue<PreTryFlowLineNode<Sentence>> pppqueue)
