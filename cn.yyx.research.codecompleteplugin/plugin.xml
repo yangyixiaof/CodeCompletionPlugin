@@ -27,7 +27,7 @@
      <page
            class="cn.yyx.contentassist.codecompletion.IpPreferencePage"
            id="cn.yyx.research.codecompleteplugin.preferencepage"
-           name="CodeCompletionPractical">
+           name="Code Completion Practical">
      </page>
   </extension>
 </plugin>

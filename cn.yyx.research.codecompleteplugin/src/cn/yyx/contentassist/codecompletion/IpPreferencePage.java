@@ -12,7 +12,7 @@ public class IpPreferencePage extends FieldEditorPreferencePage implements IWork
 	public IpPreferencePage() {
 		super(GRID);
 		setPreferenceStore(PreferenceManager.GetPreference());
-		setDescription("IpPreferencePage viable.");
+		setDescription("Ip Preference Page Settings:");
 	}
 
 	@Override
@@ -21,7 +21,7 @@ public class IpPreferencePage extends FieldEditorPreferencePage implements IWork
 
 	@Override
 	protected void createFieldEditors() {
-		StringFieldEditor sfe = new StringFieldEditor(PreferenceManager.IPPreference, "AeroSpike IP:", getFieldEditorParent());
+		StringFieldEditor sfe = new StringFieldEditor(PreferenceManager.IPPreference, " The IP of One Machine of AeroSpike Clusers: ", getFieldEditorParent());
 		String sval = getPreferenceStore().getString(PreferenceManager.IPPreference);
 		sfe.setStringValue(sval);
 		addField(sfe);
