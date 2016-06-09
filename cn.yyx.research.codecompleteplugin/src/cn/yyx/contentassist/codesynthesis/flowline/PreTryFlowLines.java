@@ -87,10 +87,12 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 			PreTryFlowLineNode<T> pop = priorityqueue.poll();
 			if (pop.getSeqencesimilarity() > PredictMetaInfo.SequenceSimilarThreshold)
 			{
-				validovers++;
-				finalovertails.add(pop);
-			} else
-			{
+				if (!WholeKeyPrefixContains(finalovertails, pop))
+				{
+					validovers++;
+					finalovertails.add(pop);
+				}
+			} else {
 				/*if (i == 0)
 				{
 					finalovertails.add(pop);
@@ -98,6 +100,20 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 			}
 		}
 		overtails = finalovertails;
+	}
+	
+	private boolean WholeKeyPrefixContains(List<PreTryFlowLineNode<T>> fls, PreTryFlowLineNode<T> pop)
+	{
+		Iterator<PreTryFlowLineNode<T>> fitr = fls.iterator();
+		while (fitr.hasNext())
+		{
+			PreTryFlowLineNode<T> ptfn = fitr.next();
+			if (ptfn.getWholekey().startsWith(pop.getWholekey()))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void MoveTempTailLastToFirst() {
