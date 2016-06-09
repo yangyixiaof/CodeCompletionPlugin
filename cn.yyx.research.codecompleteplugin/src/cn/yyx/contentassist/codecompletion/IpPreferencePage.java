@@ -23,7 +23,6 @@ public class IpPreferencePage extends FieldEditorPreferencePage implements IWork
 	protected void createFieldEditors() {
 		StringFieldEditor sfe = new StringFieldEditor(PreferenceManager.IPPreference, "AeroSpike IP:", getFieldEditorParent());
 		String sval = getPreferenceStore().getString(PreferenceManager.IPPreference);
-		System.out.println("sval:" + sval);
 		sfe.setStringValue(sval);
 		addField(sfe);
 	}
