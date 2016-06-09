@@ -20,8 +20,30 @@ public class OmnipotentClassLoader {
 
 	private static List<IJavaProject> javaProjects = null;
 	private static List<URLClassLoader> loaders = null;
-
+	
+	public static final int MaxTryTime = 3;
+	
 	public static Class<?> LoadClass(String classfullname) throws Exception {
+		Class<?> cls = null;
+		int tt = 0;
+		StringBuilder sb = new StringBuilder(classfullname);
+		int lastdotidx = classfullname.length();
+		while (tt < MaxTryTime && cls == null)
+		{
+			cls = LoadClassDetail(classfullname);
+			lastdotidx--;
+			lastdotidx = classfullname.lastIndexOf('.', lastdotidx);
+			if (lastdotidx < 0)
+			{
+				break;
+			}
+			sb.setCharAt(lastdotidx, '$');
+			classfullname = sb.toString();
+		}
+		return cls;
+	}
+
+	private static Class<?> LoadClassDetail(String classfullname) throws Exception {
 		Class<?> cls = null;
 		cls = LoadPrimitiveClassAndVoidClass(classfullname);
 		if (cls != null)
