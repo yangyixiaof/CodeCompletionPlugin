@@ -20,4 +20,14 @@
       <!--<partition type="__java_javadoc"/>-->
     </javaCompletionProposalComputer>
   </extension>
+  <extension
+        id="CodeCompletionPracticalID"
+        name="Practical_Code_Completion"
+        point="org.eclipse.ui.preferencePages">
+     <page
+           class="cn.yyx.contentassist.codecompletion.IpPreferencePage"
+           id="cn.yyx.research.codecompleteplugin.preferencepage"
+           name="CodeCompletionPractical">
+     </page>
+  </extension>
 </plugin>

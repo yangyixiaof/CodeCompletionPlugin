@@ -31,6 +31,7 @@ public class PredictionFetch {
 	public List<String> FetchPrediction(JavaContentAssistInvocationContext javacontext, ScopeOffsetRefHandler handler, List<String> analist, ArrayList<String> result, ASTOffsetInfo aoi)
 	{
 		AeroLifeCycle alc = AeroLifeCycle.GetInstance();
+		alc.Initialize();
 		
 		int size = analist.size();
 		if (size > PredictMetaInfo.PrePredictWindow) {

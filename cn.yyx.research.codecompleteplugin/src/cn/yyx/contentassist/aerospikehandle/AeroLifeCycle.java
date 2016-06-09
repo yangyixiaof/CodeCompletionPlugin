@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.yyx.contentassist.codecompletion.AeroMetaData;
 import cn.yyx.contentassist.codecompletion.CodeCompletionMetaInfo;
+import cn.yyx.contentassist.codepredict.preference.PreferenceManager;
 
 public class AeroLifeCycle {
 	
@@ -12,7 +13,6 @@ public class AeroLifeCycle {
 	boolean hasInitialized = false;
 	
 	private AeroLifeCycle() {
-		Initialize();
 	}
 	
 	public static AeroLifeCycle GetInstance()
@@ -20,14 +20,20 @@ public class AeroLifeCycle {
 		return alc;
 	}
 
-	private void Initialize() {
-		// Parameters param = new Parameters(CodeCompletionMetaInfo.ServerIp, 3000, null, null, "yyx", "code1sim");
-		// AeroHelper.ANewClient(AeroMetaData.code1sim, param);
-		int alen = AeroMetaData.codengram.length;
-		for (int i=0;i<alen;i++)
+	public void Initialize() {
+		// handle server ip.
+		String newip = PreferenceManager.GetPreference().getString(PreferenceManager.IPPreference);
+		if (!newip.equals(CodeCompletionMetaInfo.ServerIp) || !hasInitialized)
 		{
-			Parameters param = new Parameters(CodeCompletionMetaInfo.ServerIp, 3000, null, null, "yyx", "codengram");
-			AeroHelper.ANewClient(AeroMetaData.codengram[i], param);
+			CodeCompletionMetaInfo.ServerIp = newip;
+			// Parameters param = new Parameters(CodeCompletionMetaInfo.ServerIp, 3000, null, null, "yyx", "code1sim");
+			// AeroHelper.ANewClient(AeroMetaData.code1sim, param);
+			int alen = AeroMetaData.codengram.length;
+			for (int i=0;i<alen;i++)
+			{
+				Parameters param = new Parameters(CodeCompletionMetaInfo.ServerIp, 3000, null, null, "yyx", "codengram");
+				AeroHelper.ANewClient(AeroMetaData.codengram[i], param);
+			}
 		}
 		hasInitialized = true;
 	}
