@@ -7,6 +7,7 @@ import java.util.List;
 import cn.yyx.contentassist.aerospikehandle.AeroLifeCycle;
 import cn.yyx.contentassist.aerospikehandle.PredictProbPair;
 import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
+import cn.yyx.contentassist.codesynthesis.flowline.FlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLineNode;
 import cn.yyx.contentassist.codeutils.methodInvocationStatement;
 import cn.yyx.contentassist.codeutils.statement;
@@ -68,7 +69,7 @@ public class PreTryPredictTask implements Runnable {
 				double sim = 0.5*mtsim + 0.5*misim;
 				if (sim > PredictMetaInfo.MinSimilarity)
 				{
-					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability(), sim, fln, ppp.getKeylen());
+					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability(), sim, fln, FlowLineHelper.GetWholeTraceKey(fln) + " " + pred.getSentence(), ppp.getKeylen());
 					result.add(nf);
 				}
 				((LinkedList<statement>)triedcmp).removeLast();

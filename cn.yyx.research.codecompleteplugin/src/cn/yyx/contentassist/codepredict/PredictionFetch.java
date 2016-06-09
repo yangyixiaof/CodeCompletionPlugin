@@ -241,7 +241,7 @@ public class PredictionFetch {
 			PreTryFlowLineNode<Sentence> nf = pppqueue.poll();
 			boolean couldterminate = TerminationHelper.couldTerminate(nf.getData(), lastkind, nf.getParent().getLength()+1, smtlist.size());
 			fls.AddToNextLevel(nf, nf.getParent());
-			nf.setWholekey(FlowLineHelper.GetWholeTraceKey(nf));
+			// nf.setWholekey(FlowLineHelper.GetWholeTraceKey(nf));
 			ndsize--;
 			if (couldterminate)
 			{

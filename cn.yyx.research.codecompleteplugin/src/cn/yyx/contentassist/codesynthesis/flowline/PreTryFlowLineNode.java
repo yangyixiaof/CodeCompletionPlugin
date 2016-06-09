@@ -10,10 +10,11 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 	private String wholekey = null;
 	private int keylen = 0;
 	
-	public PreTryFlowLineNode(T t, double prob, double seqsimilarity, PreTryFlowLineNode<T> parent, int keylen) {
+	public PreTryFlowLineNode(T t, double prob, double seqsimilarity, PreTryFlowLineNode<T> parent, String wholekey, int keylen) {
 		super(t, prob);
 		this.setSeqencesimilarity(seqsimilarity);
 		this.setParent(parent);
+		this.setWholekey(wholekey);
 		this.setKeylen(keylen);
 	}
 	
@@ -73,7 +74,7 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 		return wholekey;
 	}
 
-	public void setWholekey(String wholekey) {
+	private void setWholekey(String wholekey) {
 		this.wholekey = wholekey;
 	}
 	
