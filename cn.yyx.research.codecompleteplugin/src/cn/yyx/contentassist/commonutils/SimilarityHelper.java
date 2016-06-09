@@ -18,7 +18,7 @@ public class SimilarityHelper {
 	
 	public static boolean CouldThoughtTwoDoubleSame(double d1, double d2)
 	{
-		if (Math.abs(d1-d2) < 0.05)
+		if (Math.abs(d1-d2) < 0.00001)
 		{
 			return true;
 		}

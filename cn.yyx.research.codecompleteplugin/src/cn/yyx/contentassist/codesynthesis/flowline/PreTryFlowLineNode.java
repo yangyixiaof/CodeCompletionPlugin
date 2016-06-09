@@ -26,6 +26,12 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 			{
 				return ((Double)(-getSeqencesimilarity())).compareTo((Double)(-((PreTryFlowLineNode) o).getSeqencesimilarity()));
 			}
+			int kcmp = ((Integer)keylen).compareTo(((PreTryFlowLineNode)o).getKeylen());
+			if (kcmp == 0)
+			{
+				return wholekey.compareTo(((PreTryFlowLineNode)o).getWholekey());
+			}
+			return kcmp;
 		}
 		return ((Double)(-probability)).compareTo((Double)(-o.probability));
 	}
@@ -44,7 +50,7 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 	}
 	
 	public String rawString() {
-		return super.rawString() + ";keylen:" + keylen + ";seqsim:" + getSeqencesimilarity();
+		return super.rawString() + ";keylen:" + keylen + ";seqsim:" + getSeqencesimilarity() + ";wholekey:" + wholekey;
 	}
 
 	public double getSeqencesimilarity() {
