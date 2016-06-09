@@ -220,31 +220,10 @@ public class PredictionFetch {
 			}
 		}
 		
-		List<Thread> llths = new LinkedList<Thread>();
-		Iterator<PreTryPredictTask> ptptitr = ptpts.iterator();
-		while (ptptitr.hasNext())
-		{
-			PreTryPredictTask ptpt = ptptitr.next();
-			Thread nt = new Thread(ptpt);
-			nt.start();
-			llths.add(nt);
-		}
-		
 		Queue<PreTryFlowLineNode<Sentence>> pppqueue = new PriorityQueue<PreTryFlowLineNode<Sentence>>();
-		Iterator<Thread> llitr = llths.iterator();
-		ptptitr = ptpts.iterator();
-		while (llitr.hasNext())
-		{
-			Thread t = llitr.next();
-			PreTryPredictTask ptpt = ptptitr.next();
-			try {
-				t.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			List<PreTryFlowLineNode<Sentence>> ls = ptpt.GetResultList();
-			pppqueue.addAll(ls);
-		}
+		
+		// DoRoundTaskRunInParallel(ptpts, pppqueue);
+		DoRoundTaskRunInSerial(ptpts, pppqueue);
 		
 		fls.BeginOperation();
 		int ndsize = (int)(PredictMetaInfo.PreTryTotalMaxParSize);
@@ -261,6 +240,52 @@ public class PredictionFetch {
 			}
 		}
 		fls.EndOperation();
+	}
+	
+	protected void DoRoundTaskRunInSerial(List<PreTryPredictTask> ptpts, Queue<PreTryFlowLineNode<Sentence>> pppqueue)
+	{
+		Iterator<PreTryPredictTask> ptptitr = ptpts.iterator();
+		while (ptptitr.hasNext())
+		{
+			PreTryPredictTask ptpt = ptptitr.next();
+			ptpt.run();
+		}
+		
+		ptptitr = ptpts.iterator();
+		while (ptptitr.hasNext())
+		{
+			PreTryPredictTask ptpt = ptptitr.next();
+			List<PreTryFlowLineNode<Sentence>> ls = ptpt.GetResultList();
+			pppqueue.addAll(ls);
+		}
+	}
+	
+	protected void DoRoundTaskRunInParallel(List<PreTryPredictTask> ptpts, Queue<PreTryFlowLineNode<Sentence>> pppqueue)
+	{
+		List<Thread> llths = new LinkedList<Thread>();
+		Iterator<PreTryPredictTask> ptptitr = ptpts.iterator();
+		while (ptptitr.hasNext())
+		{
+			PreTryPredictTask ptpt = ptptitr.next();
+			Thread nt = new Thread(ptpt);
+			nt.start();
+			llths.add(nt);
+		}
+		
+		Iterator<Thread> llitr = llths.iterator();
+		ptptitr = ptpts.iterator();
+		while (llitr.hasNext())
+		{
+			Thread t = llitr.next();
+			PreTryPredictTask ptpt = ptptitr.next();
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			List<PreTryFlowLineNode<Sentence>> ls = ptpt.GetResultList();
+			pppqueue.addAll(ls);
+		}
 	}
 	
 }
