@@ -38,7 +38,6 @@ public class PreTryPredictTask implements Runnable {
 		this.oraclesmtmilist = smtmilist;
 		this.ons = ons;
 		this.flnwholekey = FlowLineHelper.GetWholeTraceKey(fln);
-		
 	}
 	
 	@Override
@@ -99,8 +98,9 @@ public class PreTryPredictTask implements Runnable {
 			{
 				if (ExactSameExists())
 				{
-					PreTryFlowLineNode<Sentence> lst = result.getLast();
-					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(ons, lst.getProbability()*4.0/5.0 + fln.getProbability(), 1, fln, key.getKey() + " " + ons.getSentence(), flnwholekey + " " + ons.getSentence(), fln.getKeylen()+1);
+					// PreTryFlowLineNode<Sentence> lst = result.getLast();
+					// double prob = lst.getProbability()*4.0/5.0;
+					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(ons, fln.getProbability(), 1, fln, key.getKey() + " " + ons.getSentence(), flnwholekey + " " + ons.getSentence(), fln.getKeylen()+1);
 					nf.setIsexactsame(true);
 					result.add(nf);
 				}
@@ -110,7 +110,7 @@ public class PreTryPredictTask implements Runnable {
 	
 	private boolean ExactSameExists()
 	{
-		List<PredictProbPair> pps = alc.AeroModelPredict(id, fln.getKey() + ons.getSentence(), PredictMetaInfo.PreTryMaxSmallParSize, fln.getKeylen()+1);
+		List<PredictProbPair> pps = alc.AeroModelPredict(id, fln.getKey() + " " + ons.getSentence(), PredictMetaInfo.PreTryMaxSmallParSize, -1);
 		if (pps != null && pps.size() > 0)
 		{
 			return true;

@@ -93,7 +93,9 @@ public class LCSComparison {
 				}
 			}
 		}
-		return 0.4*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.6*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
+		double prob1 = 0.4*(c[m][n]*1.0)/(Math.min(m, n)*1.0);
+		double prob2 = 0.6*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
+		return prob1 + prob2;
 	}
 	
 	/*public static double LCSSimilarityMIs(List<methodInvocationStatement> x, List<methodInvocationStatement> y) {
