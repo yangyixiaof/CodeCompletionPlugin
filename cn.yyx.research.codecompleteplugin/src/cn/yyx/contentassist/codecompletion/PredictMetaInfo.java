@@ -33,12 +33,12 @@ public class PredictMetaInfo {
 	
 	public static final int NgramMaxSize = 9;
 	
-	public static final int MaxTypeConcateSize = 2;
 	public static final int MaxTypeSpecificationSize = 6;
 	public static final int MaxFieldSpecificationSize = 6;
 	public static final int MaxMethodSpecificationSize = 6;
 	
-	public static final int OneCodeSynthesisTaskValidFinalSize = 2;
+	// public static final int MaxTypeConcateSize = 2;
+	// public static final int OneCodeSynthesisTaskValidFinalSize = 2;
 	
 	public static final double MinSimilarity = 0.25;
 	
