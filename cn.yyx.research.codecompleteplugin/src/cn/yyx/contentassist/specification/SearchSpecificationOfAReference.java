@@ -30,6 +30,7 @@ import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 import cn.yyx.contentassist.commonutils.SimilarityHelper;
 import cn.yyx.contentassist.commonutils.TimeOutProgressMonitor;
+import cn.yyx.contentassist.commonutils.YJCache;
 
 @SuppressWarnings("restriction")
 public class SearchSpecificationOfAReference {
@@ -70,9 +71,28 @@ public class SearchSpecificationOfAReference {
 	 * spechint.lastIndexOf(':'); } if (idx == spechint.length()-1) { return
 	 * null; } return spechint.substring(idx+1); }
 	 */
+	
+	public static YJCache<List<FieldMember>> fieldcache = new YJCache<List<FieldMember>>();
+	public static YJCache<List<TypeMember>> typecache = new YJCache<List<TypeMember>>();
+	public static YJCache<List<MethodMember>> methodcache = new YJCache<List<MethodMember>>();
+	
+	public static void Initialize()
+	{
+		fieldcache.Clear();
+		typecache.Clear();
+		methodcache.Clear();
+	}
 
 	public static List<FieldMember> SearchFieldSpecificationByPrefix(String prefix,
 			JavaContentAssistInvocationContext javacontext) {
+		
+		// get cache.
+		List<FieldMember> fc = fieldcache.GetCachedContent(prefix);
+		if (fc != null)
+		{
+			return fc;
+		}
+		
 		String prefixcmp = SpecificationHelper.GetPrefixCmp(prefix);
 		CompletionProposalCollector collector = GetFieldMemberProposalCollector(javacontext);
 		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.fieldtimeout);
@@ -112,11 +132,20 @@ public class SearchSpecificationOfAReference {
 			}
 			fmlist.add((FieldMember) ms.getMember());
 		}
+		fieldcache.AddCachePair(prefix, fmlist);
 		return fmlist;
 	}
 
 	public static List<TypeMember> SearchFieldClassMemberSpecificationByPrefix(String prefix,
 			JavaContentAssistInvocationContext javacontext) {
+		
+		// get cache
+		List<TypeMember> tc = typecache.GetCachedContent(prefix);
+		if (tc != null)
+		{
+			return tc;
+		}
+		
 		CompletionProposalCollector collector = GetFieldClassMemberProposalCollector(javacontext);
 		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.typetimeout);
 		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix + ".class", javacontext,
@@ -147,6 +176,7 @@ public class SearchSpecificationOfAReference {
 			TypeMember tm = new TypeMember(classfullname, cls);
 			tmlist.add(tm);
 		}
+		typecache.AddCachePair(prefix, tmlist);
 		return tmlist;
 	}
 
@@ -159,6 +189,14 @@ public class SearchSpecificationOfAReference {
 
 	public static List<MethodMember> SearchMethodSpecificationByPrefix(String prefix,
 			JavaContentAssistInvocationContext javacontext) {
+
+		// get cache
+		List<MethodMember> mc = methodcache.GetCachedContent(prefix);
+		if (mc != null)
+		{
+			return mc;
+		}
+		
 		prefix = prefix.trim();
 		boolean methodref = false;
 		if (prefix.endsWith("::")) {
@@ -282,6 +320,7 @@ public class SearchSpecificationOfAReference {
 			}
 			mmlist.add((MethodMember) ms.getMember());
 		}
+		methodcache.AddCachePair(prefix, mmlist);
 		return mmlist;
 	}
 

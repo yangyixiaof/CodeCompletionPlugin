@@ -11,14 +11,12 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codeutils.type;
 import cn.yyx.contentassist.codeutils.virtualInferredType;
-import cn.yyx.contentassist.commonutils.YJCache;
 import cn.yyx.contentassist.parsehelper.ComplexParser;
 
 public class TypeResolver {
 	
-	public static final int MaxTryTimes = 3;
-	
-	public static YJCache<LinkedList<CCType>> classcache = new YJCache<LinkedList<CCType>>();
+	// public static final int MaxTryTimes = 3;
+	// public static YJCache<LinkedList<CCType>> classcache = new YJCache<LinkedList<CCType>>();
 	
 	public static char seed = 'A';
 	
@@ -36,10 +34,6 @@ public class TypeResolver {
 			System.err.println("debug:is at Map<?.");
 		}
 		type tp = ComplexParser.GetType(type);
-		LinkedList<CCType> clss = classcache.GetCachedContent(type);
-		if (clss != null) {
-			return clss;
-		}
 		LinkedList<CCType> res = new LinkedList<CCType>();
 		List<FlowLineNode<CSFlowLineData>> tpls = null;
 		try {

@@ -35,4 +35,10 @@ public class YJCache<T> {
 		return map.get(key);
 	}
 	
+	public void Clear()
+	{
+		map.clear();
+		fifo.clear();
+	}
+	
 }
