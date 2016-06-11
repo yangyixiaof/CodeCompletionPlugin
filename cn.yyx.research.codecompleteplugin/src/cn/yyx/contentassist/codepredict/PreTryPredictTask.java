@@ -52,7 +52,8 @@ public class PreTryPredictTask implements Runnable {
 			StatementsMIs smi = smitr.next();
 			List<statement> triedcmp = smi.getSmts();
 			List<statement> triedcmpsmi = smi.getSmis();
-			List<PredictProbPair> pps = alc.AeroModelPredict(id, key.getKey(), PredictMetaInfo.PreTryMaxParSize, key.getKeylen());
+			int needsize = PredictMetaInfo.PreTryMaxSmallParSize;
+			List<PredictProbPair> pps = alc.AeroModelPredict(id, key.getKey(), needsize, key.getKeylen());
 			Iterator<PredictProbPair> ppsitr = pps.iterator();
 			while (ppsitr.hasNext())
 			{
@@ -109,7 +110,7 @@ public class PreTryPredictTask implements Runnable {
 	
 	private boolean ExactSameExists()
 	{
-		List<PredictProbPair> pps = alc.AeroModelPredict(id, fln.getKey() + ons.getSentence(), PredictMetaInfo.PreTryMaxParSize, fln.getKeylen()+1);
+		List<PredictProbPair> pps = alc.AeroModelPredict(id, fln.getKey() + ons.getSentence(), PredictMetaInfo.PreTryMaxSmallParSize, fln.getKeylen()+1);
 		if (pps != null && pps.size() > 0)
 		{
 			return true;
