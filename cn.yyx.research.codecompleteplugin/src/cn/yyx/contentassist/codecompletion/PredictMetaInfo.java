@@ -4,7 +4,7 @@ public class PredictMetaInfo {
 	
 	public static final double NotExistProbability = 0;
 	
-	public static final double SequenceSimilarThreshold = 0.6;
+	public static final double SequenceSimilarThreshold = 0.65;
 	public static final double OneSentenceSimilarThreshold = 0.7;
 	
 	public static final double TwoStringSimilarThreshold = 0.75;
@@ -18,6 +18,7 @@ public class PredictMetaInfo {
 	public static final int PreTryMaxParSize = 4;
 	public static final int PreTryMaxExtendStep = 4;
 	public static final int PreTryNeedSize = 4;
+	public static final int FinalPreTryNeedSize = 4;
 	
 	public static final int OneExtendFirstTotalStep = 25;
 	public static final int OneFirstMaxTotalSuccess = 2;

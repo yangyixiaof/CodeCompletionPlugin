@@ -51,7 +51,8 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 	@Override
 	public void InitialSeed(T t) {
 		assert IsEmpty();
-		FlowLineNode<T> fln = new PreTryFlowLineNode<T>(t, 0, 0, null, t.toString(), 0);
+		PreTryFlowLineNode<T> fln = new PreTryFlowLineNode<T>(t, 0, 0, null, t.toString(), t.toString(), 0);
+		fln.setIsexactsame(true);
 		setHeads(fln);
 		fln.setLength(1);
 		setTails(new LinkedList<FlowLineNode<T>>());

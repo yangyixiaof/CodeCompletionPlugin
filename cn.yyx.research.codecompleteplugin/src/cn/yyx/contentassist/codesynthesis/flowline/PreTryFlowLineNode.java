@@ -7,13 +7,16 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 	
 	private double seqencesimilarity = -1;
 	private PreTryFlowLineNode<T> parent = null;
+	private String key = null;
 	private String wholekey = null;
 	private int keylen = 0;
+	private boolean isexactsame = false;
 	
-	public PreTryFlowLineNode(T t, double prob, double seqsimilarity, PreTryFlowLineNode<T> parent, String wholekey, int keylen) {
+	public PreTryFlowLineNode(T t, double prob, double seqsimilarity, PreTryFlowLineNode<T> parent, String key, String wholekey, int keylen) {
 		super(t, prob);
 		this.setSeqencesimilarity(seqsimilarity);
 		this.setParent(parent);
+		this.setKey(key);
 		this.setWholekey(wholekey);
 		this.setKeylen(keylen);
 	}
@@ -30,7 +33,10 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 			int kcmp = ((Integer)keylen).compareTo(((PreTryFlowLineNode)o).getKeylen());
 			if (kcmp == 0)
 			{
-				return wholekey.compareTo(((PreTryFlowLineNode)o).getWholekey());
+				if (SimilarityHelper.CouldThoughtTwoDoubleSame(getProbability(), ((PreTryFlowLineNode) o).getProbability()))
+				{
+					return wholekey.compareTo(((PreTryFlowLineNode)o).getWholekey());
+				}
 			}
 			return kcmp;
 		}
@@ -76,6 +82,22 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 
 	private void setWholekey(String wholekey) {
 		this.wholekey = wholekey;
+	}
+
+	public boolean isIsexactsame() {
+		return isexactsame;
+	}
+
+	public void setIsexactsame(boolean isexactsame) {
+		this.isexactsame = isexactsame;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
 	}
 	
 }

@@ -144,16 +144,33 @@ public class PredictionFetch {
 		final List<statement> smtlist = smtmis.getSmts();
 		int smtsize = smtlist.size();
 		final List<statement> smilist = smtmis.getSmis();
-		int trysize = PredictMetaInfo.NgramMaxSize/2;
+		int trysize = (int)Math.ceil(PredictMetaInfo.NgramMaxSize/2.0);
 		for (int i=0;i<trysize;i++)
 		{
 			PreTryFlowLines<Sentence> fls = new PreTryFlowLines<Sentence>();
-			DoOnePreTrySequencePredict(alc, fls, setelist.subList(i, smtsize), smtlist.subList(i, smtsize), smilist, lastkind);
+			DoOnePreTrySequencePredict(alc, fls, setelist.subList(i, smtsize), smtlist.subList(i, smtsize), smilist, lastkind); // , ListHelper.ConcateJoin(setelist, 0, i)
 			fls.TrimOverTails(PredictMetaInfo.PreTryNeedSize);
 			List<PreTryFlowLineNode<Sentence>> ot = fls.getOvertails();
-			ots.addAll(ot);
+			UniqueAddOts(ots, ot);
+			if (ots.size() >= PredictMetaInfo.FinalPreTryNeedSize)
+			{
+				break;
+			}
 		}
 		return new PreTryFlowLines<Sentence>(ots);
+	}
+	
+	protected void UniqueAddOts(List<PreTryFlowLineNode<Sentence>> ots, List<PreTryFlowLineNode<Sentence>> ot)
+	{
+		Iterator<PreTryFlowLineNode<Sentence>> oitr = ot.iterator();
+		while (oitr.hasNext())
+		{
+			PreTryFlowLineNode<Sentence> fln = oitr.next();
+			if (!ListHelper.WholeKeyContains(ots, fln))
+			{
+				ots.add(fln);
+			}
+		}
 	}
 	
 	protected void DoOnePreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, List<Sentence> setelist,
@@ -165,7 +182,7 @@ public class PredictionFetch {
 			Sentence ons = itr.next();
 			if (!first)
 			{
-				boolean hasnextgeneration = DoOneRoundPreTrySequencePredict(alc, fls, setelist, smtlist, smtmilist, lastkind);
+				boolean hasnextgeneration = DoOneRoundPreTrySequencePredict(alc, fls, ons, setelist, smtlist, smtmilist, lastkind);
 				if (!hasnextgeneration)
 				{
 					return;
@@ -182,7 +199,7 @@ public class PredictionFetch {
 		while ((size == 0) && turn < PredictMetaInfo.PreTryMaxExtendStep)
 		{
 			turn++;
-			boolean hasnextgeneration = DoOneRoundPreTrySequencePredict(alc, fls, setelist, smtlist, smtmilist, lastkind);
+			boolean hasnextgeneration = DoOneRoundPreTrySequencePredict(alc, fls, null, setelist, smtlist, smtmilist, lastkind);
 			if (!hasnextgeneration)
 			{
 				return;
@@ -191,7 +208,7 @@ public class PredictionFetch {
 		}
 	}
 	
-	protected boolean DoOneRoundPreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, List<Sentence> setelist,
+	protected boolean DoOneRoundPreTrySequencePredict(AeroLifeCycle alc, PreTryFlowLines<Sentence> fls, Sentence ons, List<Sentence> setelist,
 			List<statement> smtlist, final List<statement> smtmilist, final Class<?> lastkind) { // int needsize,
 		List<FlowLineNode<Sentence>> tails = fls.getTails();
 		int tailsize = tails.size();
@@ -221,7 +238,7 @@ public class PredictionFetch {
 			if (count >= avgsize)
 			{
 				taskid++;
-				PreTryPredictTask ptpt = new PreTryPredictTask(taskid, alc, keys, smtmises, fln, smtlist, smtmilist);
+				PreTryPredictTask ptpt = new PreTryPredictTask(taskid, alc, keys, smtmises, fln, smtlist, smtmilist, ons);
 				ptpts.add(ptpt);
 				keys.clear();
 				smtmises.clear();

@@ -9,10 +9,51 @@ import cn.yyx.contentassist.codepredict.Sentence;
 import cn.yyx.contentassist.codesynthesis.data.CSExtraProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
+import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLineNode;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeSameJudger;
 
 public class ListHelper {
+	
+	public static boolean WholeKeyContains(List<PreTryFlowLineNode<Sentence>> fls, PreTryFlowLineNode<Sentence> pop)
+	{
+		Iterator<PreTryFlowLineNode<Sentence>> fitr = fls.iterator();
+		while (fitr.hasNext())
+		{
+			PreTryFlowLineNode<Sentence> ptfn = fitr.next();
+			if (ptfn.getWholekey().contains(pop.getWholekey()))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static String ConcateJoin(List<Sentence> ls, int start, int stop)
+	{
+		StringBuilder sb = new StringBuilder("");
+		Iterator<Sentence> itr = ls.iterator();
+		int i=0;
+		while (itr.hasNext())
+		{
+			Sentence sete = itr.next();
+			if (i >= start)
+			{
+				String sp = " ";
+				if (i == stop-1)
+				{
+					sp = "";
+				}
+				sb.append(sete.getSentence() + sp);
+			}
+			i++;
+			if (i == stop)
+			{
+				break;
+			}
+		}
+		return sb.toString();
+	}
 	
 	public static void AddExtraPropertyToAllListNodes(List<FlowLineNode<CSFlowLineData>> alls, CSExtraProperty csep) {
 		if (alls == null || alls.size() == 0) {
