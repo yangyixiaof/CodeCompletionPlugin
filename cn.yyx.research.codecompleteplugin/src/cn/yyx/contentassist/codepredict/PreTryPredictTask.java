@@ -100,6 +100,7 @@ public class PreTryPredictTask implements Runnable {
 				{
 					PreTryFlowLineNode<Sentence> lst = result.getLast();
 					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(ons, lst.getProbability()*4.0/5.0 + fln.getProbability(), 1, fln, key.getKey() + " " + ons.getSentence(), flnwholekey + " " + ons.getSentence(), fln.getKeylen()+1);
+					nf.setIsexactsame(true);
 					result.add(nf);
 				}
 			}
