@@ -76,7 +76,7 @@ public class SearchSpecificationOfAReference {
 	public static YJCache<List<TypeMember>> typecache = new YJCache<List<TypeMember>>();
 	public static YJCache<List<MethodMember>> methodcache = new YJCache<List<MethodMember>>();
 	
-	public static void Initialize()
+	public static void Reset()
 	{
 		fieldcache.Clear();
 		typecache.Clear();
