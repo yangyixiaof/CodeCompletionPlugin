@@ -32,13 +32,13 @@ public class ExactPredictionFetch extends PredictionFetch {
 			fls.AddToNextLevel(nf, prenf);
 			fls.EndOperation();
 			
-			prenf = nf;
-			keylen++;
-			
 			if (!itr.hasNext())
 			{
 				fls.AddOverFlowLineNode(nf, prenf);
 			}
+			
+			keylen++;
+			prenf = nf;
 		}
 		return fls;
 	}
