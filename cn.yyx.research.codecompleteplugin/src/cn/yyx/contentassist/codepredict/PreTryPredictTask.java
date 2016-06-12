@@ -110,10 +110,13 @@ public class PreTryPredictTask implements Runnable {
 	
 	private boolean ExactSameExists()
 	{
-		List<PredictProbPair> pps = alc.AeroModelPredict(id, fln.getKey() + " " + ons.getSentence(), PredictMetaInfo.PreTryMaxSmallParSize, -1);
-		if (pps != null && pps.size() > 0)
+		if (ons != null)
 		{
-			return true;
+			List<PredictProbPair> pps = alc.AeroModelPredict(id, fln.getKey() + " " + ons.getSentence(), PredictMetaInfo.PreTryMaxSmallParSize, -1);
+			if (pps != null && pps.size() > 0)
+			{
+				return true;
+			}
 		}
 		return false;
 	}

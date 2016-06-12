@@ -145,6 +145,7 @@ public class PredictionFetch {
 		int smtsize = smtlist.size();
 		final List<statement> smilist = smtmis.getSmis();
 		int trysize = (int)Math.ceil(PredictMetaInfo.NgramMaxSize/2.0);
+		trysize = Math.min(trysize, smtsize);
 		for (int i=0;i<trysize;i++)
 		{
 			PreTryFlowLines<Sentence> fls = new PreTryFlowLines<Sentence>();
