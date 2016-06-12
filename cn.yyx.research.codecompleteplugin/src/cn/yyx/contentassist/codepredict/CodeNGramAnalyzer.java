@@ -8,6 +8,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.IDocument;
 
+import cn.yyx.contentassist.codecompletion.CodeCompletionMetaInfo;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.contentassist.commonutils.PrintUtil;
 import cn.yyx.contentassist.jdtastvisitor.PartialProcessVisitor;
@@ -48,10 +49,13 @@ public class CodeNGramAnalyzer {
 			
 			ScopeOffsetRefHandler sohandler = ppv.GenerateScopeOffsetRefHandler();
 			
-			PredictionFetch pf = new PredictionFetch();
-			return pf.FetchPrediction(javacontext, sohandler, analist, list, aoi);
-			// ExactPredictionFetch epf = new ExactPredictionFetch();
-			// return epf.FetchPrediction(javacontext, sohandler, analist, list, aoi);
+			if (CodeCompletionMetaInfo.ExactMatchMode) {
+				ExactPredictionFetch epf = new ExactPredictionFetch();
+				return epf.FetchPrediction(javacontext, sohandler, analist, list, aoi);
+			} else {
+				PredictionFetch pf = new PredictionFetch();
+				return pf.FetchPrediction(javacontext, sohandler, analist, list, aoi);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();

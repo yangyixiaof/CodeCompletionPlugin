@@ -11,6 +11,7 @@ import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 
 import cn.yyx.contentassist.aerospikehandle.AeroLifeCycle;
 import cn.yyx.contentassist.codecompletion.AeroMetaData;
+import cn.yyx.contentassist.codecompletion.CodeCompletionMetaInfo;
 import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.CodeSynthesisFlowLines;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineHelper;
@@ -48,8 +49,13 @@ public class PredictionFetch {
 		
 		ContextHandler ch = new ContextHandler(javacontext);
 		SynthesisHandler sh = new SynthesisHandler(handler, ch);
-		List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesisInParallel(sh, alc, fls, aoi);
-		// List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesisInSerial(sh, alc, fls, aoi);
+		List<CodeSynthesisFlowLines> csfll = null;
+		if (CodeCompletionMetaInfo.SerialMode)
+		{
+			csfll = DoRealCodePredictAndSynthesisInSerial(sh, alc, fls, aoi);
+		} else {
+			csfll = DoRealCodePredictAndSynthesisInParallel(sh, alc, fls, aoi);
+		}
 		
 		List<String> list = new LinkedList<String>();
 		Iterator<CodeSynthesisFlowLines> itr = csfll.iterator();
@@ -253,8 +259,11 @@ public class PredictionFetch {
 		
 		Queue<PreTryFlowLineNode<Sentence>> pppqueue = new PriorityQueue<PreTryFlowLineNode<Sentence>>();
 		
-		DoRoundTaskRunInParallel(ptpts, pppqueue);
-		// DoRoundTaskRunInSerial(ptpts, pppqueue);
+		if (CodeCompletionMetaInfo.SerialMode) {
+			DoRoundTaskRunInSerial(ptpts, pppqueue);
+		} else {
+			DoRoundTaskRunInParallel(ptpts, pppqueue);
+		}
 		
 		boolean hasnextgeneration = !pppqueue.isEmpty();
 		fls.BeginOperation();
