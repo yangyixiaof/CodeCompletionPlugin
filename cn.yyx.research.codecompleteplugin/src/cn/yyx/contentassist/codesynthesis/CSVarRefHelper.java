@@ -27,7 +27,7 @@ public class CSVarRefHelper {
 		}
 		if (!(smthandler.getAoi().isInFieldLevel())) // scope == 0 && 
 		{
-			vht = squeue.BackSearchHandleLambdaScope(scope, off);
+			vht = squeue.BackSearchHandleLambdaScopeAndForScopeAndInnerDeclaration(scope, off);
 		}
 		Map<String, String> pores1 = new TreeMap<String, String>();
 		Map<String, Long> pores2 = new TreeMap<String, Long>();
@@ -83,7 +83,7 @@ public class CSVarRefHelper {
 		}
 		if (smthandler.getAoi().isInFieldLevel()) // scope == 0 && 
 		{
-			vht = squeue.BackSearchHandleLambdaScope(scope, off);
+			vht = squeue.BackSearchHandleLambdaScopeAndForScopeAndInnerDeclaration(scope, off);
 		}
 		Map<String, String> pores1 = new TreeMap<String, String>();
 		Map<String, Long> pores2 = new TreeMap<String, Long>();

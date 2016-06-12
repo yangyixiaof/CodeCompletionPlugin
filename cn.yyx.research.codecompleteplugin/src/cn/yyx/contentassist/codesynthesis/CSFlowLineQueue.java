@@ -12,6 +12,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSCommonOverProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSExtraProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.data.CSForIniOverProperty;
+import cn.yyx.contentassist.codesynthesis.data.CSForProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSLambdaData;
 import cn.yyx.contentassist.codesynthesis.data.CSLambdaEndProperty;
 import cn.yyx.contentassist.codesynthesis.data.CSLambdaProperty;
@@ -233,7 +234,7 @@ public class CSFlowLineQueue {
 	 * @param scope
 	 * @return
 	 */
-	public VariableHT BackSearchHandleLambdaScope(int scope, int off)
+	public VariableHT BackSearchHandleLambdaScopeAndForScopeAndInnerDeclaration(int scope, int off)
 	{
 		
 		Map<String, String> tpvarname = new TreeMap<String, String>();
@@ -257,6 +258,10 @@ public class CSFlowLineQueue {
 				{
 					scope--;
 				}
+			}
+			if (tmpdata.HasSpecialProperty(CSForProperty.class))
+			{
+				scope--;
 			}
 			if (tmpdata.HasSpecialProperty(CSLambdaEndProperty.class))
 			{
