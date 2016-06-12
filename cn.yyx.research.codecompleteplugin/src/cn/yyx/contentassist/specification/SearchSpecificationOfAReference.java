@@ -79,7 +79,7 @@ public class SearchSpecificationOfAReference {
 	public static void Reset()
 	{
 		fieldcache.Clear();
-		typecache.Clear();
+		// typecache.Clear();
 		methodcache.Clear();
 	}
 
