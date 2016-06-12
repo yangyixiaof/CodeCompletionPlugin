@@ -189,7 +189,7 @@ public class CodeSynthesisPredictTask implements Runnable {
 							if (over) {
 								if (maxlevel == -1) {
 									maxlevel = level;
-									levelconsumed = new int[maxlevel+2];
+									levelconsumed = new int[maxlevel + PredictMetaInfo.LevelConsumedExtraLength];
 									LevelArrayHelper.InitialIntArrayToZero(levelconsumed);
 								}
 								if (addnode.getSynthesisdata() != null) {
