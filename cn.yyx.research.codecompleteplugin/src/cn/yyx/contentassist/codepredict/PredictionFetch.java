@@ -48,8 +48,8 @@ public class PredictionFetch {
 		
 		ContextHandler ch = new ContextHandler(javacontext);
 		SynthesisHandler sh = new SynthesisHandler(handler, ch);
-		// List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesisInParallel(sh, alc, fls, aoi);
-		List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesisInSerial(sh, alc, fls, aoi);
+		List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesisInParallel(sh, alc, fls, aoi);
+		// List<CodeSynthesisFlowLines> csfll = DoRealCodePredictAndSynthesisInSerial(sh, alc, fls, aoi);
 		
 		List<String> list = new LinkedList<String>();
 		Iterator<CodeSynthesisFlowLines> itr = csfll.iterator();
@@ -248,8 +248,8 @@ public class PredictionFetch {
 		
 		Queue<PreTryFlowLineNode<Sentence>> pppqueue = new PriorityQueue<PreTryFlowLineNode<Sentence>>();
 		
-		// DoRoundTaskRunInParallel(ptpts, pppqueue);
-		DoRoundTaskRunInSerial(ptpts, pppqueue);
+		DoRoundTaskRunInParallel(ptpts, pppqueue);
+		// DoRoundTaskRunInSerial(ptpts, pppqueue);
 		
 		boolean hasnextgeneration = !pppqueue.isEmpty();
 		fls.BeginOperation();
