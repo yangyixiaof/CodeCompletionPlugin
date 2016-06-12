@@ -60,7 +60,60 @@ public class TypeCheckHelper {
 		{
 			return true;
 		}
-		return CanBeMutualCast(onetype, twotype);
+		return CanBeMutualCastInMethodParamDetail(onetype, twotype);
+	}
+	
+	public static boolean CanBeMutualCastInMethodParamDetail(CCType onetype, CCType twotype)
+	{
+		if (onetype == null || twotype == null)
+		{
+			return true;
+		}
+		if (onetype instanceof InferredCCType || twotype instanceof InferredCCType)
+		{
+			return true;
+		}
+		if (onetype.getCls() != null && twotype.getCls() != null)
+		{
+			if (onetype.getCls().isArray() && twotype.getCls().isArray())
+			{
+				if (onetype.getCls().getComponentType().isAssignableFrom(twotype.getCls().getComponentType()))
+				{
+					return true;
+				}
+				/*if (twotype.getCls().getComponentType().isAssignableFrom(onetype.getCls().getComponentType()))
+				{
+					return true;
+				}*/
+				if (NormalizeClass(twotype.getCls().getComponentType()) == NormalizeClass(onetype.getCls().getComponentType()))
+				{
+					return true;
+				}
+			}
+		}
+		Class<?> ot = NormalizeClass(onetype.getCls());
+		Class<?> tt = NormalizeClass(twotype.getCls());
+		if (onetype instanceof VarArgCCType)
+		{
+			ot = NormalizeClass(((VarArgCCType) onetype).getCompocls());
+		}
+		if (twotype instanceof VarArgCCType)
+		{
+			tt = NormalizeClass(((VarArgCCType) twotype).getCompocls());
+		}
+		if (ot == null || tt == null)
+		{
+			return true;
+		}
+		if (TypeComputer.IsStrictNumberBit(ot) && TypeComputer.IsStrictNumberBit(tt))
+		{
+			return true;
+		}
+		if (ot.isAssignableFrom(tt)) //  || tt.isAssignableFrom(ot)
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	public static boolean CanBeMutualCast(List<CCType> cs, CCType rtclass) {
