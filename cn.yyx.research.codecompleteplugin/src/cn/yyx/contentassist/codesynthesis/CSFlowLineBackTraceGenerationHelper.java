@@ -78,7 +78,7 @@ public class CSFlowLineBackTraceGenerationHelper {
 		if (preid == null)
 		{
 			// the content from startnode to mergestart.
-			result.add(startnode);
+			result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), startnode.getData()), startnode.getProbability()));
 			startnode.getData().getSynthesisCodeManager().AddSynthesisCode(startnode.getData().getId(), startnode);
 			startnode.getData().getSynthesisCodeManager().setBlockstart(startnode, startnode.getData().getId());
 			// do not need to do the following two codes.
