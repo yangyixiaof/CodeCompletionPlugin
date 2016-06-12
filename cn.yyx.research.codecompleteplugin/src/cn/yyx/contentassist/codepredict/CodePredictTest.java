@@ -1,6 +1,9 @@
 package cn.yyx.contentassist.codepredict;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.ui.text.java.ContentAssistInvocationContext;
@@ -33,10 +36,28 @@ public class CodePredictTest implements CodePredict{
 				char lastchar = precontent.charAt(precontent.length()-1);
 				if (lastchar == ';' || lastchar == '}' || lastchar == ',' || lastchar == '{' || lastchar == '(' || lastchar == ':')
 				{
-					SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("new StringBuffer", javacontext);
-					SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("System.out::", javacontext);
-					System.err.println("===================split line=================");
-					SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix("new ActionListener", javacontext);
+					List<Runnable> rls = new LinkedList<Runnable>();
+					rls.add(new CPTMethodTask("new StringBuffe", javacontext));
+					rls.add(new CPTMethodTask("System.out::", javacontext));
+					rls.add(new CPTMethodTask("System.out.", javacontext));
+					rls.add(new CPTMethodTask("new ActionListener", javacontext));
+					rls.add(new CPTTypeTask("System.class", javacontext));
+					rls.add(new CPTTypeTask("System.", javacontext));
+					rls.add(new CPTTypeTask("System", javacontext));
+					rls.add(new CPTFieldTask("System", javacontext));
+					rls.add(new CPTFieldTask("PrintStream", javacontext));
+					
+					Iterator<Runnable> ritr = rls.iterator();
+					while (ritr.hasNext())
+					{
+						Runnable ra = ritr.next();
+						new Thread(ra).start();
+					}
+					
+					// SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("new StringBuffer", javacontext);
+					// SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("System.out::", javacontext);
+					// System.err.println("===================split line=================");
+					// SearchSpecificationOfAReference.SearchFunctionSpecificationByPrefix("new ActionListener", javacontext);
 					// SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix("keys.iterator", javacontext);
 					// SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix("System.class", javacontext);
 					// System.err.println("===================begin class=================");
@@ -66,6 +87,48 @@ public class CodePredictTest implements CodePredict{
 			//		IntelliJavaProposalComputer.OnlyJavaSupport.length()));
 		}
 		return proposals;
+	}
+	
+	class CPTFieldTask implements Runnable
+	{
+		String prefix = null;
+		JavaContentAssistInvocationContext javacontext = null;
+		public CPTFieldTask(String prefix, JavaContentAssistInvocationContext javacontext) {
+			this.prefix = prefix;
+			this.javacontext = javacontext;
+		}
+		@Override
+		public void run() {
+			SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix(prefix, javacontext);
+		}
+	}
+	
+	class CPTTypeTask implements Runnable
+	{
+		String prefix = null;
+		JavaContentAssistInvocationContext javacontext = null;
+		public CPTTypeTask(String prefix, JavaContentAssistInvocationContext javacontext) {
+			this.prefix = prefix;
+			this.javacontext = javacontext;
+		}
+		@Override
+		public void run() {
+			SearchSpecificationOfAReference.SearchFieldClassMemberSpecificationByPrefix(prefix, javacontext);
+		}
+	}
+	
+	class CPTMethodTask implements Runnable
+	{
+		String prefix = null;
+		JavaContentAssistInvocationContext javacontext = null;
+		public CPTMethodTask(String prefix, JavaContentAssistInvocationContext javacontext) {
+			this.prefix = prefix;
+			this.javacontext = javacontext;
+		}
+		@Override
+		public void run() {
+			SearchSpecificationOfAReference.SearchMethodSpecificationByPrefix(prefix, javacontext);
+		}
 	}
 	
 }

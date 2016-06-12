@@ -72,9 +72,11 @@ public class SearchSpecificationOfAReference {
 	 * null; } return spechint.substring(idx+1); }
 	 */
 	
-	public static YJCache<List<FieldMember>> fieldcache = new YJCache<List<FieldMember>>();
-	public static YJCache<List<TypeMember>> typecache = new YJCache<List<TypeMember>>();
-	public static YJCache<List<MethodMember>> methodcache = new YJCache<List<MethodMember>>();
+	private static YJCache<List<FieldMember>> fieldcache = new YJCache<List<FieldMember>>();
+	private static YJCache<List<TypeMember>> typecache = new YJCache<List<TypeMember>>();
+	private static YJCache<List<MethodMember>> methodcache = new YJCache<List<MethodMember>>();
+	
+	private static String DebugExtraInfo = "";
 	
 	public static void Reset()
 	{
@@ -104,7 +106,7 @@ public class SearchSpecificationOfAReference {
 			JavaCompletionProposal jcp = (JavaCompletionProposal) icp;
 			String pstr = jcp.getDisplayString().trim();
 			if (CodeCompletionMetaInfo.DebugMode) {
-				System.err.println(pstr);
+				System.err.println(DebugExtraInfo + pstr);
 			}
 			String[] strs = pstr.split(":|-");
 			String fieldname = strs[0].trim();
@@ -139,6 +141,14 @@ public class SearchSpecificationOfAReference {
 	public static List<TypeMember> SearchFieldClassMemberSpecificationByPrefix(String prefix,
 			JavaContentAssistInvocationContext javacontext) {
 		
+		if (!prefix.endsWith(".class"))
+		{
+			if (prefix.endsWith(".")) {
+				prefix = prefix + "class";
+			} else {
+				prefix = prefix + ".class";
+			}
+		}
 		// get cache
 		List<TypeMember> tc = typecache.GetCachedContent(prefix);
 		if (tc != null)
@@ -148,7 +158,7 @@ public class SearchSpecificationOfAReference {
 		
 		CompletionProposalCollector collector = GetFieldClassMemberProposalCollector(javacontext);
 		TimeOutProgressMonitor topm = new TimeOutProgressMonitor(CodeCompletionMetaInfo.typetimeout);
-		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix + ".class", javacontext,
+		List<ICompletionProposal> proposals = SearchSpecificationByPrefix(collector, prefix, javacontext, // prefix + ".class"
 				topm);
 		Iterator<ICompletionProposal> itr = proposals.iterator();
 		List<TypeMember> tmlist = new LinkedList<TypeMember>();
@@ -160,7 +170,7 @@ public class SearchSpecificationOfAReference {
 				continue;
 			}
 			if (CodeCompletionMetaInfo.DebugMode) {
-				System.err.println(pstr);
+				System.err.println(DebugExtraInfo + pstr);
 				// System.err.println(icp.getClass());
 			}
 			int classbegin = pstr.indexOf('<');
@@ -223,10 +233,10 @@ public class SearchSpecificationOfAReference {
 				anonymous = true;
 				if (CodeCompletionMetaInfo.DebugMode)
 				{
-					System.err.println(atcp.getReplacementString());
-					System.err.println(atcp.getSortString());
-					System.err.println(atcp.getReplacementOffset());
-					System.err.println(atcp.getReplacementLength());
+					System.err.println(DebugExtraInfo + atcp.getReplacementString());
+					System.err.println(DebugExtraInfo + atcp.getSortString());
+					System.err.println(DebugExtraInfo + atcp.getReplacementOffset());
+					System.err.println(DebugExtraInfo + atcp.getReplacementLength());
 				}
 			}
 			if (ClassInstanceOfUtil.ObjectInstanceOf(icp, JavaMethodCompletionProposal.class)) {
@@ -239,7 +249,7 @@ public class SearchSpecificationOfAReference {
 			}
 			
 			if (CodeCompletionMetaInfo.DebugMode) {
-				System.err.println(pstr);
+				System.err.println(DebugExtraInfo + pstr);
 			}
 
 			if (pstr != null) {
@@ -339,18 +349,18 @@ public class SearchSpecificationOfAReference {
 			idx++;
 			ICompletionProposal icp = itr.next();
 			// interested
-			System.err.println("proposal" + idx + " display : " + icp.getDisplayString());
-			System.err.println("proposal" + idx + " type : " + icp.getClass());
-			System.err.println("proposal" + idx + " : " + icp.toString());
+			System.err.println(DebugExtraInfo + "proposal" + idx + " display : " + icp.getDisplayString());
+			System.err.println(DebugExtraInfo + "proposal" + idx + " type : " + icp.getClass());
+			System.err.println(DebugExtraInfo + "proposal" + idx + " : " + icp.toString());
 			System.err.println("========================");
 			if (ClassInstanceOfUtil.ObjectInstanceOf(icp, AnonymousTypeCompletionProposal.class)) {
 				AnonymousTypeCompletionProposal atcp = (AnonymousTypeCompletionProposal) icp;
 				if (CodeCompletionMetaInfo.DebugMode)
 				{
-					System.err.println(atcp.getReplacementString());
-					System.err.println(atcp.getSortString());
-					System.err.println(atcp.getReplacementOffset());
-					System.err.println(atcp.getReplacementLength());
+					System.err.println(DebugExtraInfo + atcp.getReplacementString());
+					System.err.println(DebugExtraInfo + atcp.getSortString());
+					System.err.println(DebugExtraInfo + atcp.getReplacementOffset());
+					System.err.println(DebugExtraInfo + atcp.getReplacementLength());
 				}
 			}
 		}
@@ -667,6 +677,14 @@ public class SearchSpecificationOfAReference {
 		// CompletionProposal.TYPE_REF, true);
 
 		return collector;
+	}
+
+	public static String getDebugExtraInfo() {
+		return DebugExtraInfo;
+	}
+
+	public static void setDebugExtraInfo(String debugExtraInfo) {
+		DebugExtraInfo = debugExtraInfo;
 	}
 
 }
