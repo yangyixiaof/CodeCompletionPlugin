@@ -4,7 +4,7 @@ import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeConflictException;
 
 public class ChooseArrayComponentCheckIdxInteger extends TypeComputationKind {
-
+	
 	@Override
 	public void HandlePre(CCType pre) throws TypeConflictException {
 		this.pre = pre;

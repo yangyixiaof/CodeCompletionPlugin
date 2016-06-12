@@ -107,6 +107,9 @@ public class arrayAccessEndStatement extends statement{
 					if (!br.isSelfisneeded())
 					{
 						gks = CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, br.getCnode());
+					} else {
+						gks = new LinkedList<FlowLineNode<CSFlowLineData>>();
+						gks.add(fln);
 					}
 					if (gks != null && gks.size() > 0)
 					{
