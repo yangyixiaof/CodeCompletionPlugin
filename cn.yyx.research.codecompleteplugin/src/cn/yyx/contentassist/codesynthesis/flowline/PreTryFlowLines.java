@@ -49,14 +49,15 @@ public class PreTryFlowLines<T> extends FlowLines<T> {
 	}*/
 	
 	@Override
-	public void InitialSeed(T t) {
+	public PreTryFlowLineNode<T> InitialSeed(T t) {
 		assert IsEmpty();
-		PreTryFlowLineNode<T> fln = new PreTryFlowLineNode<T>(t, 0, 0, null, t.toString(), t.toString(), 0);
+		PreTryFlowLineNode<T> fln = new PreTryFlowLineNode<T>(t, 0, 1, null, t.toString(), t.toString(), 0);
 		fln.setIsexactsame(true);
 		setHeads(fln);
 		fln.setLength(1);
 		setTails(new LinkedList<FlowLineNode<T>>());
 		getTails().add(fln);
+		return fln;
 		// exactmatchtail = (PreTryFlowLineNode<T>)getHeads();
 	}
 

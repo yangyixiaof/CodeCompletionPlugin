@@ -191,8 +191,12 @@ public class PredictionFetch {
 			}
 			if (first)
 			{
-				fls.InitialSeed(ons);
+				PreTryFlowLineNode<Sentence> fln = fls.InitialSeed(ons);
 				first = false;
+				if (setelist.size() == 1)
+				{
+					fls.AddOverFlowLineNode(fln, null);
+				}
 			}
 		}
 		int size = fls.GetValidOveredSize();

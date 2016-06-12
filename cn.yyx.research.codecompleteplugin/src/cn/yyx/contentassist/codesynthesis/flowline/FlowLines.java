@@ -21,11 +21,12 @@ public class FlowLines<T> {
 		return getHeads() == null;
 	}
 	
-	public void InitialSeed(T t) {
+	public FlowLineNode<T> InitialSeed(T t) {
 		assert IsEmpty();
 		FlowLineNode<T> fln = new FlowLineNode<T>(t, 0);
 		setHeads(fln);
 		getTails().add(fln);
+		return fln;
 	}
 	
 	protected void CheckOperationPermit()
