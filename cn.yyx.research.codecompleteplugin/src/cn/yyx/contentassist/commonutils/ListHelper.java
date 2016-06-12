@@ -12,6 +12,7 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLineNode;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeSameJudger;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationKind;
 
 public class ListHelper {
 	
@@ -63,6 +64,18 @@ public class ListHelper {
 		while (itr.hasNext()) {
 			FlowLineNode<CSFlowLineData> fln = itr.next();
 			fln.getData().setCsep(csep);
+		}
+	}
+	
+
+	public static void SetTcksToAllListNodes(List<FlowLineNode<CSFlowLineData>> alls, TypeComputationKind tck) {
+		if (alls == null || alls.size() == 0) {
+			return;
+		}
+		Iterator<FlowLineNode<CSFlowLineData>> itr = alls.iterator();
+		while (itr.hasNext()) {
+			FlowLineNode<CSFlowLineData> fln = itr.next();
+			fln.getData().setTck(tck);
 		}
 	}
 
@@ -148,5 +161,5 @@ public class ListHelper {
 		key = sb.toString();
 		return new TKey(key, keylen, trim1key);
 	}
-
+	
 }

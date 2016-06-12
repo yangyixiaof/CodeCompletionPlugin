@@ -31,17 +31,6 @@ public class CCType implements Cloneable {
 		return false;
 	}
 	
-	/*public static LinkedList<CCType> CCTypeList(List<TypeMember> tmlist) {
-		LinkedList<CCType> result = new LinkedList<CCType>();
-		Iterator<TypeMember> itr = tmlist.iterator();
-		while (itr.hasNext())
-		{
-			TypeMember tm = itr.next();
-			result.add(new CCType(tm));
-		}
-		return result;
-	}*/
-
 	public Class<?> getCls() {
 		return cls;
 	}

@@ -15,6 +15,8 @@ import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSDirectLambdaHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.computations.DirectlySetNull;
+import cn.yyx.contentassist.commonutils.ListHelper;
 
 public class lambdaExpressionStatement extends statement {
 
@@ -78,6 +80,8 @@ public class lambdaExpressionStatement extends statement {
 							fln.getProbability()));
 				}
 			}
+			ListHelper.SetTcksToAllListNodes(result, new DirectlySetNull());
+			ListHelper.SetDclsToAllListNodes(result, null);
 			return result;
 		} else {
 			if (rexp == null) {
@@ -128,6 +132,8 @@ public class lambdaExpressionStatement extends statement {
 					}
 				}
 			}
+			ListHelper.SetTcksToAllListNodes(result, new DirectlySetNull());
+			ListHelper.SetDclsToAllListNodes(result, null);
 			return result;
 		}
 	}
