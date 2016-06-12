@@ -19,6 +19,7 @@ import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementFirs
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSMethodStatementHandler;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
+import cn.yyx.contentassist.codesynthesis.typeutil.InferredCCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.MethodTypeSignature;
 import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
 import cn.yyx.contentassist.commonutils.CheckUtil;
@@ -126,8 +127,22 @@ public class argumentList implements OneCode {
 			{
 				break;
 			}
+			MethodTypeSignature msig = null;
 			MethodMember mm = mts.get(data.getId());
-			MethodTypeSignature msig = MethodTypeSignature.TranslateMethodMember(mm, squeue, smthandler);
+			if (mm != null)
+			{
+				msig = MethodTypeSignature.TranslateMethodMember(mm, squeue, smthandler);
+			}
+			List<CCType> rtccts = null;
+			if (msig != null) {
+				rtccts = msig.getReturntype();
+			} else {
+				if (mts.isEmpty())
+				{
+					rtccts = new LinkedList<CCType>();
+					rtccts.add(new InferredCCType());
+				}
+			}
 			StringBuilder sb = new StringBuilder(data.getData());
 			if (msig == null) {
 				if (TypeCheckHelper.IsInferredType(data.getDcls())) {
@@ -183,7 +198,6 @@ public class argumentList implements OneCode {
 
 			// if (!ListHelper.DetailContains(results, data))
 			// {
-			List<CCType> rtccts = msig.getReturntype();
 			if (rtccts == null) {
 				data.setDcls(null);
 				FlowLineNode<CSFlowLineData> dfln = null;

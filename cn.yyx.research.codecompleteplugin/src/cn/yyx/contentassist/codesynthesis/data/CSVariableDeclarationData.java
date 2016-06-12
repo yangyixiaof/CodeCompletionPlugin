@@ -122,12 +122,32 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 	private void ModifyPrefixedType(CSFlowLineData pd, String changetotypecode)
 	{
 		String pddata = pd.getData();
-		if (!pddata.startsWith(typecode))
+		
+		int wsidx = pddata.indexOf(' ');
+		String pdwsdata = pddata.substring(wsidx);
+		
+		/*String pdwstype = pddata.substring(0, wsidx);
+		int pdidx = pdwstype.indexOf('<');
+		if (pdidx == -1)
 		{
-			System.err.println("What the fuck, variable declaration code not start with its typecode?");
-			System.exit(1);
+			pdidx = pdwstype.length();
 		}
-		String pdnewdata = changetotypecode + pddata.substring(typecode.length());
+		String pdtpraw = pdwstype.substring(0, pdidx);
+		
+		int ctidx = changetotypecode.indexOf('<');
+		if (ctidx == -1)
+		{
+			ctidx = changetotypecode.length();
+		}
+		String cttpraw = changetotypecode.substring(0, ctidx);
+		
+		if (!(pdtpraw.startsWith(cttpraw) || cttpraw.startsWith(pdtpraw)))
+		{
+			System.err.println("What the fuck, variable declaration code not start with its typecode? typecode:" + typecode + ";pddata:" + pddata);
+			new Exception().printStackTrace();
+			System.exit(1);
+		}*/
+		String pdnewdata = changetotypecode + pdwsdata; // pddata.substring(typecode.length())
 		pd.setData(pdnewdata);
 		this.setTypecode(changetotypecode);
 	}

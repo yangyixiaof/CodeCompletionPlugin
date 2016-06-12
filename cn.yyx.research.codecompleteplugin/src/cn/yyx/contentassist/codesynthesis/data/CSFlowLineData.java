@@ -240,8 +240,13 @@ public class CSFlowLineData implements CSDataStructure, Cloneable {
 			}
 			if (TCKNotOver(this.getTck()) && TCKNotOver(d2.getTck()))
 			{
+				TypeComputationKind tck1 = this.getTck();
+				TypeComputationKind tck2 = d2.getTck();
+				System.err.println(tck1);
+				System.err.println(tck2);
 				new Exception("two all have not over tck, what the fuck?").printStackTrace();
-				throw new TypeConflictException("two all have not over tck, what the fuck?");
+				// throw new TypeConflictException("two all have not over tck, what the fuck?");
+				tck = tck1;
 			}
 		}
 		CCType clz = null;
