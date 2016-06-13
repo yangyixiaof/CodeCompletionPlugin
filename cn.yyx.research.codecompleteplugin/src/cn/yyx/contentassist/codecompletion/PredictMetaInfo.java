@@ -17,8 +17,8 @@ public class PredictMetaInfo {
 	public static final int PreTryTotalMaxParSize = 8;
 	public static final int PreTryMaxBigParSize = 4;
 	public static final int PreTryMaxSmallParSize = 2;
-	public static final int PreTryMinExtendStep = 4;
-	public static final int PreTryMaxExtendStep = 10;
+	public static final int PreTryMinExtendStep = 10;
+	public static final int PreTryMaxExtendStep = 15;
 	public static final int PreTryNeedSize = 2;
 	public static final int FinalPreTryNeedSize = 2;
 	
@@ -42,6 +42,7 @@ public class PredictMetaInfo {
 	// public static final int MaxTypeConcateSize = 2;
 	// public static final int OneCodeSynthesisTaskValidFinalSize = 2;
 	
-	public static final double MinSimilarity = 0.25;
+	public static final double LeastMinSimilarity = 0.25;
+	public static final double HighestMinSimilarity = 0.6;
 	
 }

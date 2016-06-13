@@ -73,7 +73,10 @@ public class PreTryPredictTask implements Runnable {
 				
 				double misim = LCSComparison.LCSSimilarity(oraclesmtmilist.size(), oraclesmtmilist, triedcmpsmi);
 				double sim = 0.875*mtsim + 0.125*misim;
-				if (sim > PredictMetaInfo.MinSimilarity)
+				int nlen = key.getKeylen()+1;
+				int mlen = Math.min(nlen, oraclesmtlist.size());
+				double minsim = PredictMetaInfo.LeastMinSimilarity + (PredictMetaInfo.HighestMinSimilarity - PredictMetaInfo.LeastMinSimilarity)/(oraclesmtlist.size()*1.0)*(mlen*1.0);
+				if (sim > minsim)
 				{
 					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability(), sim, fln, key.getKey() + " " + pred.getSentence(), flnwholekey + " " + pred.getSentence(), ppp.getKeylen());
 					result.add(nf);
