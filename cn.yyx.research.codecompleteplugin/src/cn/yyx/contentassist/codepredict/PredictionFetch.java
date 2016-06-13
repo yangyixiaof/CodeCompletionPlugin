@@ -34,12 +34,6 @@ public class PredictionFetch {
 		AeroLifeCycle alc = AeroLifeCycle.GetInstance();
 		alc.Initialize();
 		
-		int size = analist.size();
-		if (size > PredictMetaInfo.PrePredictWindow) {
-			analist = analist.subList(size - PredictMetaInfo.PrePredictWindow, size);
-			size = PredictMetaInfo.PrePredictWindow;
-		}
-		
 		LinkedList<Sentence> setelist = SentenceHelper.TranslateStringsToSentences(analist);
 		final Class<?> lastkind = setelist.getLast().getSmt().getClass();
 		StatementsMIs smtmis = SentenceHelper.TranslateSentencesToStatements(setelist);

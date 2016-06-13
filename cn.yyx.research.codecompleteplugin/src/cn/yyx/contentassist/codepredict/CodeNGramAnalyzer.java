@@ -9,6 +9,7 @@ import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.IDocument;
 
 import cn.yyx.contentassist.codecompletion.CodeCompletionMetaInfo;
+import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
 import cn.yyx.contentassist.commonutils.PrintUtil;
 import cn.yyx.contentassist.jdtastvisitor.PartialProcessVisitor;
@@ -41,8 +42,14 @@ public class CodeNGramAnalyzer {
 			PartialProcessVisitor ppv = new PartialProcessVisitor(offset, aoi);
 			cu.accept(ppv);
 			
-			ArrayList<String> analist = ppv.GetMainAnalyseList(aoi.isInAnonymousClass());
-			analist = TrimAfterMdOrIniBegin(analist);
+			ArrayList<String> rawanalist = ppv.GetMainAnalyseList(aoi.isInAnonymousClass());
+			rawanalist = TrimAfterMdOrIniBegin(rawanalist);
+			int size = rawanalist.size();
+			List<String> analist = rawanalist;
+			if (size > PredictMetaInfo.PrePredictWindow) {
+				analist = analist.subList(size - PredictMetaInfo.PrePredictWindow, size);
+				size = PredictMetaInfo.PrePredictWindow;
+			}
 			
 			// debugging.
 			PrintUtil.PrintList(analist, "analysis list");
