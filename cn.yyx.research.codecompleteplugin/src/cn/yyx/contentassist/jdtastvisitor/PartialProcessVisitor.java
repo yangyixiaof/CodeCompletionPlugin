@@ -136,8 +136,8 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 	
 	private void RecordCouldContinue(ASTNode node, boolean couldcontinue)
 	{
-		if (NeedSpecialTreat(node))
-		{
+		//if (NeedSpecialTreat(node))
+		//{
 			int hashcode = node.hashCode();
 			if (continuerecord.containsKey(hashcode))
 			{
@@ -149,7 +149,7 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 				throw new Error("What the fuck, continuerecord key conflicts.");
 			}
 			continuerecord.put(hashcode, couldcontinue);
-		}
+		//}
 	}
 	
 	private void DeleteCouldContinue(ASTNode node)
