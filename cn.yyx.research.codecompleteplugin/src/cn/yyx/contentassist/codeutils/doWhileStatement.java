@@ -40,23 +40,7 @@ public class doWhileStatement extends statement{
 		}
 		return 0;
 	}
-
-	/*@Override
-	public boolean HandleCodeSynthesis(CodeSynthesisQueue squeue, Stack<TypeCheck> expected, SynthesisHandler handler,
-			CSNode result, AdditionalInfo ai) {
-		CSNode ts = new CSNode(CSNodeType.TempUsed);
-		boolean conflict = rexp.HandleCodeSynthesis(squeue, expected, handler, ts, null);
-		if (conflict)
-		{
-			return true;
-		}
-		ts.setContenttype(CSNodeType.WholeStatement);
-		ts.setPrefix("do {\n\n} while (");
-		ts.setPostfix(");");
-		squeue.add(ts);
-		return false;
-	}*/
-
+	
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {

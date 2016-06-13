@@ -1,12 +1,16 @@
 package cn.yyx.contentassist.jdtastvisitor;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.TreeMap;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
+import org.eclipse.jdt.core.dom.DoStatement;
 import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.LambdaExpression;
@@ -26,6 +30,8 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 	ASTOffsetInfo aoi = null;
 	
 	Map<Integer, Boolean> continuerecord = new TreeMap<Integer, Boolean>();
+	
+	Queue<BreakRuleRange> brrlist = new LinkedList<BreakRuleRange>();
 	
 	public PartialProcessVisitor(int offset, ASTOffsetInfo aoi) {
 		this.offset = offset;
@@ -48,6 +54,15 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 			}
 		}
 		
+		// set do-while break rule range.
+		if (node instanceof DoStatement)
+		{
+			if (couldcontinue)
+			{
+				DoStatement don = (DoStatement)node;
+				brrlist.add(new BreakRuleRange(don.getExpression().getStartPosition(), don.getExpression().getStartPosition() + don.getLength()));
+			}
+		}
 		// set the field of if in field aoi.
 		if (node instanceof AbstractTypeDeclaration)
 		{
@@ -98,6 +113,16 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 				}
 			}
 		}
+		
+		if (node instanceof DoStatement)
+		{
+			if (GetCouldContinue(node))
+			{
+				brrlist.poll();
+			}
+		}
+		
+		DeleteCouldContinue(node);
 	}
 
 	/*@Override
@@ -125,6 +150,12 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 			}
 			continuerecord.put(hashcode, couldcontinue);
 		}
+	}
+	
+	private boolean DeleteCouldContinue(ASTNode node)
+	{
+		int hashcode = node.hashCode();
+		return continuerecord.remove(hashcode);
 	}
 	
 	private boolean GetCouldContinue(ASTNode node)
@@ -170,8 +201,28 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 				aoi.setInAnonymousClass(true);
 			}
 		}
+		if (CheckBreakRule(node))
+		{
+			nowres = true;
+		}
 		boolean couldcontinue = nowres && supres;
 		return couldcontinue;
+	}
+	
+	private boolean CheckBreakRule(ASTNode node)
+	{
+		Iterator<BreakRuleRange> itr = brrlist.iterator();
+		while (itr.hasNext())
+		{
+			BreakRuleRange brr = itr.next();
+			int start = node.getStartPosition();
+			int end = start + node.getLength();
+			if (start >= brr.getStartpos() && end <= brr.getStoppos())
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private boolean IsEnclosed(ASTNode node)
@@ -183,6 +234,34 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 			return true;
 		}
 		return false;
+	}
+	
+	class BreakRuleRange
+	{
+		private int startpos = 0;
+		private int stoppos = 0;
+		
+		public BreakRuleRange(int startpos, int stoppos) {
+			this.setStartpos(startpos);
+			this.setStoppos(stoppos);
+		}
+
+		public int getStartpos() {
+			return startpos;
+		}
+
+		public void setStartpos(int startpos) {
+			this.startpos = startpos;
+		}
+
+		public int getStoppos() {
+			return stoppos;
+		}
+
+		public void setStoppos(int stoppos) {
+			this.stoppos = stoppos;
+		}
+		
 	}
 	
 }
