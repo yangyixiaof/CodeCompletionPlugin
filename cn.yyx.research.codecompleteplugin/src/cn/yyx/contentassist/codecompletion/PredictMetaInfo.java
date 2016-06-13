@@ -17,6 +17,7 @@ public class PredictMetaInfo {
 	public static final int PreTryTotalMaxParSize = 8;
 	public static final int PreTryMaxBigParSize = 4;
 	public static final int PreTryMaxSmallParSize = 2;
+	public static final int PreTryMinExtendStep = 4;
 	public static final int PreTryMaxExtendStep = 10;
 	public static final int PreTryNeedSize = 2;
 	public static final int FinalPreTryNeedSize = 2;

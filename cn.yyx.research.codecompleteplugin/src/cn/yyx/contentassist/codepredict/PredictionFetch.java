@@ -207,7 +207,7 @@ public class PredictionFetch {
 		}
 		int size = fls.GetValidOveredSize();
 		int turn = 0;
-		while ((size < PredictMetaInfo.FinalPreTryNeedSize) && turn < PredictMetaInfo.PreTryMaxExtendStep)
+		while (turn < PredictMetaInfo.PreTryMaxExtendStep)
 		{
 			turn++;
 			boolean hasnextgeneration = DoOneRoundPreTrySequencePredict(alc, fls, null, setelist, smtlist, smtmilist, lastkind);
@@ -216,6 +216,9 @@ public class PredictionFetch {
 				return;
 			}
 			size = fls.GetValidOveredSize();
+			if (size >= PredictMetaInfo.FinalPreTryNeedSize && turn >= PredictMetaInfo.PreTryMinExtendStep) {
+				break;
+			}
 		}
 	}
 	

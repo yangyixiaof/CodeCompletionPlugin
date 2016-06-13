@@ -30,7 +30,7 @@ public class PreTryFlowLineNode<T> extends FlowLineNode<T> {
 			{
 				return ((Double)(-getSeqencesimilarity())).compareTo((Double)(-((PreTryFlowLineNode) o).getSeqencesimilarity()));
 			}
-			int kcmp = ((Integer)keylen).compareTo(((PreTryFlowLineNode)o).getKeylen());
+			int kcmp = ((Integer)(keylen)).compareTo((Integer)(((PreTryFlowLineNode)o).getKeylen()));
 			if (kcmp == 0)
 			{
 				if (SimilarityHelper.CouldThoughtTwoDoubleSame(getProbability(), ((PreTryFlowLineNode) o).getProbability()))
