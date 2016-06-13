@@ -9,10 +9,10 @@ public class YJCache<T> {
 	
 	public static final int MaxSize = 50;
 	
-	Map<String, T> map = new TreeMap<String, T>();
-	Queue<String> fifo = new LinkedList<String>();
+	private Map<String, T> map = new TreeMap<String, T>();
+	private Queue<String> fifo = new LinkedList<String>();
 	
-	public void AddCachePair(String key, T cnt)
+	public synchronized void AddCachePair(String key, T cnt)
 	{
 		if (map.size() >= MaxSize)
 		{
@@ -30,12 +30,12 @@ public class YJCache<T> {
 		}
 	}
 	
-	public T GetCachedContent(String key)
+	public synchronized T GetCachedContent(String key)
 	{
 		return map.get(key);
 	}
 	
-	public void Clear()
+	public synchronized void Clear()
 	{
 		map.clear();
 		fifo.clear();
