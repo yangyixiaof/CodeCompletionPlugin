@@ -25,9 +25,9 @@ public class LCSTest {
 		Class<?> micls = mi.getClass();
 		double misim = mi.Similarity(mi);
 		System.err.println("mi type:" + micls + ";mi self similarity:" + misim);
-		double sim1 = LCSComparison.LCSSimilarity(smts, smts.subList(0, len-1));
+		double sim1 = LCSComparison.LCSSimilarity(smts.size(), smts, smts.subList(0, len-1));
 		System.err.println("sim1:" + sim1);
-		double sim2 = LCSComparison.LCSSimilarity(smts, smts.subList(0, len-2));
+		double sim2 = LCSComparison.LCSSimilarity(smts.size(), smts, smts.subList(0, len-2));
 		System.err.println("sim2:" + sim2);
 	}
 	

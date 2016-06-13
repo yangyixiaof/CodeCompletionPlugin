@@ -50,7 +50,7 @@ public class LCSComparison {
 		return 0.4*(c[m][n]*1.0)/(Math.min(m, n)*1.0) + 0.6*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
 	}
 	
-	public static double LCSSimilarity(List<statement> x, List<statement> y) {
+	public static double LCSSimilarity(int oraclesize, List<statement> x, List<statement> y) {
 		if (x.size() == 0 && y.size() == 0)
 		{
 			return 1;
@@ -93,9 +93,10 @@ public class LCSComparison {
 				}
 			}
 		}
-		double prob1 = 0.4*(c[m][n]*1.0)/(Math.min(m, n)*1.0);
-		double prob2 = 0.6*(c[m][n]*1.0)/(Math.max(m, n)*1.0);
-		return prob1 + prob2;
+		int min = Math.min(m, n);
+		double rate = (min*1.0)/(oraclesize*1.0);
+		double prob = (c[m][n]*1.0)/oraclesize*1.0/rate;
+		return prob;
 	}
 	
 	/*public static double LCSSimilarityMIs(List<methodInvocationStatement> x, List<methodInvocationStatement> y) {

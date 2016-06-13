@@ -64,15 +64,15 @@ public class PreTryPredictTask implements Runnable {
 				{
 					triedcmpsmi.add(predsmt);
 				}
-				double mtsim = LCSComparison.LCSSimilarity(oraclesmtlist, triedcmp);
+				double mtsim = LCSComparison.LCSSimilarity(oraclesmtlist.size(), oraclesmtlist, triedcmp);
 				
 				if (pred.getSentence().equals("MI@getActionCommand(@PE);"))
 				{
 					System.err.println("Debugging Sentence.");
 				}
 				
-				double misim = LCSComparison.LCSSimilarity(oraclesmtmilist, triedcmpsmi);
-				double sim = 0.8*mtsim + 0.2*misim;
+				double misim = LCSComparison.LCSSimilarity(oraclesmtmilist.size(), oraclesmtmilist, triedcmpsmi);
+				double sim = 0.875*mtsim + 0.125*misim;
 				if (sim > PredictMetaInfo.MinSimilarity)
 				{
 					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(pred, ppp.getProb() + fln.getProbability(), sim, fln, key.getKey() + " " + pred.getSentence(), flnwholekey + " " + pred.getSentence(), ppp.getKeylen());
