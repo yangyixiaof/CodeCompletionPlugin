@@ -152,10 +152,10 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 		}
 	}
 	
-	private boolean DeleteCouldContinue(ASTNode node)
+	private void DeleteCouldContinue(ASTNode node)
 	{
 		int hashcode = node.hashCode();
-		return continuerecord.remove(hashcode);
+		continuerecord.remove(hashcode);
 	}
 	
 	private boolean GetCouldContinue(ASTNode node)
