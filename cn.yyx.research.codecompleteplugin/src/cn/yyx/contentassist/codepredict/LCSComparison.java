@@ -93,9 +93,9 @@ public class LCSComparison {
 				}
 			}
 		}
-		int min = Math.min(m, n);
-		double rate = (min*1.0)/(oraclesize*1.0);
-		double prob = (c[m][n]*1.0)/oraclesize*1.0/rate;
+		// int min = Math.min(m, n);
+		// double rate = (min*1.0)/(oraclesize*1.0);
+		double prob = (c[m][n]*1.0)/(oraclesize*1.0);// /rate
 		return prob;
 	}
 	

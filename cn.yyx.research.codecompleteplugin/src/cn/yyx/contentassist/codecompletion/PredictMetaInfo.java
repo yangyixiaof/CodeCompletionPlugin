@@ -42,7 +42,7 @@ public class PredictMetaInfo {
 	// public static final int MaxTypeConcateSize = 2;
 	// public static final int OneCodeSynthesisTaskValidFinalSize = 2;
 	
-	public static final double LeastMinSimilarity = 0.25;
-	public static final double HighestMinSimilarity = 0.6;
+	public static final double LeastMinSimilarity = 0.085;
+	public static final double HighestMinSimilarity = 0.5;
 	
 }
