@@ -265,7 +265,16 @@ public class CodeSynthesisHelper {
 					String cmped = id.getData().getData();
 					if (SimilarityHelper.ComputeTwoStringSimilarity(cmp, cmped) > PredictMetaInfo.TwoStringSimilarThreshold)
 					{
-						result.add(CSFlowLineHelper.ConcateTwoFlowLineNode(null, fln, concator, id, null, squeue, smthandler, null));
+						FlowLineNode<CSFlowLineData> rn = CSFlowLineHelper.ConcateTwoFlowLineNode(null, fln, concator, id, null, squeue, smthandler, null);
+						LinkedList<CCType> rnts = TypeResolver.ResolveType(fm.getType(), squeue, smthandler);
+						Iterator<CCType> rnitr = rnts.iterator();
+						while (rnitr.hasNext())
+						{
+							CCType cct = rnitr.next();
+							CSFlowLineData cldata = new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), rn.getData());
+							cldata.setDcls(cct);
+							result.add(new FlowLineNode<CSFlowLineData>(cldata, rn.getProbability()));
+						}
 					}
 				}
 			}
