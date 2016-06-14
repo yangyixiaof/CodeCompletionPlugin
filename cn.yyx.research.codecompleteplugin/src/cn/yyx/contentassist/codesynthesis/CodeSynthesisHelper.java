@@ -256,15 +256,15 @@ public class CodeSynthesisHelper {
 				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), flndata.getData() + concator + idls.get(0).getData().getData(), new InferredCCType(), null, squeue.GetLastHandler()), fln.getProbability()));
 				continue;
 			}
-			List<FieldMember> fmm = SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix(fln.getData().getData() + concator, squeue.GetLastHandler().getContextHandler().getJavacontext());
+			List<FieldMember> fmm = SearchSpecificationOfAReference.SearchFieldSpecificationByPrefix(fln.getData().getData() + concator + idls.get(0).getData().getData(), squeue.GetLastHandler().getContextHandler().getJavacontext());
 			Iterator<FieldMember> fitr = fmm.iterator();
 			while (fitr.hasNext())
 			{
 				FieldMember fm = fitr.next();
 				String cmp = fm.getName();
 				Iterator<FlowLineNode<CSFlowLineData>> iditr = idls.iterator();
-				while (iditr.hasNext())
-				{
+				//while (iditr.hasNext())
+				//{
 					FlowLineNode<CSFlowLineData> id = iditr.next();
 					String cmped = id.getData().getData();
 					if (SimilarityHelper.ComputeTwoStringSimilarity(cmp, cmped) > PredictMetaInfo.TwoStringSimilarThreshold)
@@ -280,7 +280,7 @@ public class CodeSynthesisHelper {
 							result.add(new FlowLineNode<CSFlowLineData>(cldata, rn.getProbability()));
 						}
 					}
-				}
+				//}
 			}
 		}
 		return result;
