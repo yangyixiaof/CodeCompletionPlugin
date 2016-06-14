@@ -52,6 +52,10 @@ public class PreTryPredictTask implements Runnable {
 			List<statement> triedcmp = smi.getSmts();
 			List<statement> triedcmpsmi = smi.getSmis();
 			int needsize = PredictMetaInfo.PreTryMaxSmallParSize;
+			if (key.getKeylen() == 2)
+			{
+				needsize = PredictMetaInfo.PreTryMaxBigParSize;
+			}
 			List<PredictProbPair> pps = alc.AeroModelPredict(id, key.getKey(), needsize, key.getKeylen());
 			Iterator<PredictProbPair> ppsitr = pps.iterator();
 			while (ppsitr.hasNext())
