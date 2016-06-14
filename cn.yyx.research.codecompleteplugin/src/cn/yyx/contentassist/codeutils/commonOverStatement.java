@@ -1,6 +1,7 @@
 package cn.yyx.contentassist.codeutils;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
@@ -11,6 +12,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.SameTypeConflictException;
 import cn.yyx.contentassist.commonutils.ListHelper;
 
 public class commonOverStatement extends statement implements SWrapper{
@@ -25,7 +27,7 @@ public class commonOverStatement extends statement implements SWrapper{
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		List<FlowLineNode<CSFlowLineData>> smtls = smt.HandleCodeSynthesis(squeue, smthandler);
 		// smtls = CSFlowLineHelper.ConcateOneFlowLineList(null, smtls, ";");
 		if (smtls == null)
@@ -33,21 +35,33 @@ public class commonOverStatement extends statement implements SWrapper{
 			return null;
 		}
 		Iterator<FlowLineNode<CSFlowLineData>> ritr = smtls.iterator();
+		boolean succeed = false;
 		while (ritr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = ritr.next();
 			// result.addAll(CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, null));
-			List<FlowLineNode<CSFlowLineData>> rls = CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, null);
+			List<FlowLineNode<CSFlowLineData>> rls = null;
+			try {
+				rls = CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, null);
+			} catch (SameTypeConflictException e) {
+				if (succeed) {
+					continue;
+				} else {
+					throw e;
+				}
+			}
 			if (rls != null && rls.size() > 0)
 			{
 				CSFlowLineData dt = rls.get(0).getData();
 				dt.setData(dt.getData() + ";");
 				fln.setSynthesisdata(dt);
+				result.add(fln);
+				succeed = true;
 			}
 		}
-		ListHelper.AddExtraPropertyToAllListNodes(smtls, new CSCommonOverProperty(null)); // result
-		return smtls;
-		// return result;
+		ListHelper.AddExtraPropertyToAllListNodes(result, new CSCommonOverProperty(null)); // result
+		// return smtls;
+		return result;
 	}
 
 	@Override

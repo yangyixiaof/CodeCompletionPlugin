@@ -1,6 +1,7 @@
 package cn.yyx.contentassist.codeutils;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
@@ -14,6 +15,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSForProperty;
 import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.SameTypeConflictException;
 import cn.yyx.contentassist.commonutils.BackSearchResult;
 
 public class forIniOverStatement extends rawForIniOverStatement implements SWrapper{
@@ -62,7 +64,7 @@ public class forIniOverStatement extends rawForIniOverStatement implements SWrap
 	@Override
 	public List<FlowLineNode<CSFlowLineData>> HandleCodeSynthesis(CSFlowLineQueue squeue, CSStatementHandler smthandler)
 			throws CodeSynthesisException {
-		// List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		Stack<Integer> signals = new Stack<Integer>();
 		signals.push(DataStructureSignalMetaInfo.CommonForInitWaitingOver);
 		BackSearchResult br = squeue.BackSearchForTheNextOfSpecialClass(CSForProperty.class, signals);
@@ -77,17 +79,28 @@ public class forIniOverStatement extends rawForIniOverStatement implements SWrap
 			return null;
 		}
 		Iterator<FlowLineNode<CSFlowLineData>> itr = smtls.iterator();
+		boolean succeed = false;
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> smtln = itr.next();
 			CSFlowLineData smtdata = smtln.getData();
 			if (!br.isSelfisneeded())
 			{
-				CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, smtln, br.getCnode());
+				try {
+					CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, smtln, br.getCnode());
+				} catch (SameTypeConflictException e) {
+					if (succeed) {
+						continue;
+					} else {
+						throw e;
+					}
+				}
 			}
 			smtdata.setCsep(new CSForIniOverProperty(null));
+			result.add(smtln);
+			succeed = true;
 		}
-		return smtls;
+		return result;
 	}
 
 	@Override

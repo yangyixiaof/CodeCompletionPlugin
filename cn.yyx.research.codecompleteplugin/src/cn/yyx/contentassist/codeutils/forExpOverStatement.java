@@ -1,6 +1,7 @@
 package cn.yyx.contentassist.codeutils;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
@@ -14,6 +15,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSForIniOverProperty;
 import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.SameTypeConflictException;
 import cn.yyx.contentassist.commonutils.BackSearchResult;
 import cn.yyx.contentassist.commonutils.ListHelper;
 
@@ -79,19 +81,30 @@ public class forExpOverStatement extends rawForExpOverStatement implements SWrap
 			return null;
 		}
 		
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		smtls = CSFlowLineHelper.ConcateOneFlowLineList(null, smtls, ";");
 		Iterator<FlowLineNode<CSFlowLineData>> itr = smtls.iterator();
+		boolean succeed = false;
 		while (itr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> smtln = itr.next();
 			if (!br.isSelfisneeded())
 			{
-				CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, smtln, br.getCnode());
+				try {
+					CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, smtln, br.getCnode());
+				} catch (SameTypeConflictException e) {
+					if (succeed) {
+						continue;
+					} else {
+						throw e;
+					}
+				}
 			}
+			succeed = true;
+			result.add(smtln);
 		}
-		ListHelper.AddExtraPropertyToAllListNodes(smtls, new CSForExpOverProperty(null));
-		// result.add(new FlowLineNode<CSFlowLineData>(new CSForExpOverData(squeue.GenerateNewNodeId(), smthandler.getSete(), ";", null, true, true, null, null, squeue.GetLastHandler()), smthandler.getProb()));
-		return smtls;
+		ListHelper.AddExtraPropertyToAllListNodes(result, new CSForExpOverProperty(null));
+		return result;
 	}
 
 	@Override

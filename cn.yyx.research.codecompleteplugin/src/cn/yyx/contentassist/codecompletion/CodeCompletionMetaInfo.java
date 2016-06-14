@@ -8,7 +8,7 @@ public class CodeCompletionMetaInfo {
 	
 	public static final boolean SerialMode = true;
 	
-	public static final boolean ExactMatchMode = false;
+	public static final boolean ExactMatchMode = true;
 	
 	public static final int alltimeout = 1000;//ms
 	public static final int typetimeout = 100;//ms

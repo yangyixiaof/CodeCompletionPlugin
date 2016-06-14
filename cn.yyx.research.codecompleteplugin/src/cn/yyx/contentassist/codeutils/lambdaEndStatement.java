@@ -1,6 +1,7 @@
 package cn.yyx.contentassist.codeutils;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
@@ -34,7 +35,9 @@ public class lambdaEndStatement extends statement implements SWrapper{
 		{
 			return null;
 		}
+		List<FlowLineNode<CSFlowLineData>> result = new LinkedList<FlowLineNode<CSFlowLineData>>();
 		Iterator<FlowLineNode<CSFlowLineData>> ritr = smtls.iterator();
+		boolean succeed = false;
 		while (ritr.hasNext())
 		{
 			FlowLineNode<CSFlowLineData> fln = ritr.next();
@@ -46,11 +49,21 @@ public class lambdaEndStatement extends statement implements SWrapper{
 			{
 				throw new CodeSynthesisException("lambda block check runs into error.");
 			}
-			CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, cnode);
+			try {
+				CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, cnode);
+			} catch (Exception e) {
+				if (succeed) {
+					continue;
+				} else {
+					throw e;
+				}
+			}
 			// result.addAll();
+			result.add(fln);
+			succeed = true;
 		}
-		ListHelper.AddExtraPropertyToAllListNodes(smtls, new CSLambdaEndProperty(null));
-		return smtls;
+		ListHelper.AddExtraPropertyToAllListNodes(result, new CSLambdaEndProperty(null));
+		return result;
 		// ListHelper.AddExtraPropertyToAllListNodes(result, new CSLambdaEndProperty(null));
 		// return result;
 	}
