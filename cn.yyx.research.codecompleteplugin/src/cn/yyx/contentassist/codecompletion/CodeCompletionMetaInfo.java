@@ -6,7 +6,7 @@ public class CodeCompletionMetaInfo {
 	
 	public static final boolean DebugMode = true;
 	
-	public static final boolean SerialMode = false;
+	public static final boolean SerialMode = true;
 	
 	public static final boolean ExactMatchMode = false;
 	

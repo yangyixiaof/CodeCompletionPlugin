@@ -105,9 +105,8 @@ public class PreTryPredictTask implements Runnable {
 			{
 				if (ExactSameExists())
 				{
-					// PreTryFlowLineNode<Sentence> lst = result.getLast();
-					// double prob = lst.getProbability()*4.0/5.0;
-					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(ons, fln.getProbability(), 1, fln, key.getKey() + " " + ons.getSentence(), flnwholekey + " " + ons.getSentence(), fln.getKeylen()+1);
+					double exactprob = ((fln.getKeylen()+2)*1.0)/(oraclesmtlist.size()*1.0);
+					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(ons, fln.getProbability(), exactprob, fln, key.getKey() + " " + ons.getSentence(), flnwholekey + " " + ons.getSentence(), fln.getKeylen()+1);
 					nf.setIsexactsame(true);
 					result.add(nf);
 				}
