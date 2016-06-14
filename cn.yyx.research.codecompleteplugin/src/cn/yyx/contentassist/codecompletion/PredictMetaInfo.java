@@ -43,7 +43,7 @@ public class PredictMetaInfo {
 	// public static final int OneCodeSynthesisTaskValidFinalSize = 2;
 	public static final double DoubleSameGap = 0.0000001;
 	
-	public static final double ExactSameCompensate = 0.0001;
+	public static final double ExactSameCompensate = 0.00001;
 	
 	public static final double LeastMinSimilarity = 0.085;
 	public static final double HighestMinSimilarity = 0.5;

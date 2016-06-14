@@ -9,9 +9,7 @@ import cn.yyx.contentassist.aerospikehandle.PredictProbPair;
 import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.flowline.PreTryFlowLineNode;
-import cn.yyx.contentassist.codeutils.methodInvocationStatement;
 import cn.yyx.contentassist.codeutils.statement;
-import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 import cn.yyx.contentassist.commonutils.StatementsMIs;
 import cn.yyx.contentassist.commonutils.TKey;
 
@@ -50,7 +48,7 @@ public class PreTryPredictTask implements Runnable {
 			TKey key = itr.next();
 			StatementsMIs smi = smitr.next();
 			List<statement> triedcmp = smi.getSmts();
-			List<statement> triedcmpsmi = smi.getSmis();
+			// List<statement> triedcmpsmi = smi.getSmis();
 			int needsize = PredictMetaInfo.PreTryMaxSmallParSize;
 			if (key.getKeylen() == 2)
 			{
@@ -64,10 +62,10 @@ public class PreTryPredictTask implements Runnable {
 				Sentence pred = ppp.getPred();
 				statement predsmt = pred.getSmt();
 				triedcmp.add(predsmt);
-				if (ClassInstanceOfUtil.ObjectInstanceOf(predsmt, methodInvocationStatement.class))
+				/*if (ClassInstanceOfUtil.ObjectInstanceOf(predsmt, methodInvocationStatement.class))
 				{
 					triedcmpsmi.add(predsmt);
-				}
+				}*/
 				double mtsim = LCSComparison.LCSSimilarity(oraclesmtlist.size(), oraclesmtlist, triedcmp);
 				
 				if (pred.getSentence().equals("MI@getActionCommand(@PE);"))
@@ -75,8 +73,8 @@ public class PreTryPredictTask implements Runnable {
 					System.err.println("Debugging Sentence.");
 				}
 				
-				double misim = LCSComparison.LCSSimilarity(oraclesmtmilist.size(), oraclesmtmilist, triedcmpsmi);
-				double sim = 0.875*mtsim + 0.125*misim;
+				// double misim = LCSComparison.LCSSimilarity(oraclesmtmilist.size(), oraclesmtmilist, triedcmpsmi);
+				double sim = mtsim; // 0.875* + 0.125*misim
 				int nlen = key.getKeylen()+1;
 				int mlen = Math.min(nlen, oraclesmtlist.size());
 				double minsim = PredictMetaInfo.LeastMinSimilarity + (PredictMetaInfo.HighestMinSimilarity - PredictMetaInfo.LeastMinSimilarity)/(oraclesmtlist.size()*1.0)*(mlen*1.0);
@@ -95,10 +93,10 @@ public class PreTryPredictTask implements Runnable {
 					}
 				}
 				((LinkedList<statement>)triedcmp).removeLast();
-				if (ClassInstanceOfUtil.ObjectInstanceOf(predsmt, methodInvocationStatement.class))
+				/*if (ClassInstanceOfUtil.ObjectInstanceOf(predsmt, methodInvocationStatement.class))
 				{
 					((LinkedList<statement>)triedcmpsmi).removeLast();
-				}
+				}*/
 			}
 			
 			if (fln.isIsexactsame() && !exactsamefound)
@@ -107,22 +105,22 @@ public class PreTryPredictTask implements Runnable {
 				{
 					statement onssmt = ons.getSmt();
 					triedcmp.add(onssmt);
-					if (ClassInstanceOfUtil.ObjectInstanceOf(onssmt, methodInvocationStatement.class))
+					/*if (ClassInstanceOfUtil.ObjectInstanceOf(onssmt, methodInvocationStatement.class))
 					{
 						triedcmpsmi.add(onssmt);
-					}
+					}*/
 					double mtsim = LCSComparison.LCSSimilarity(oraclesmtlist.size(), oraclesmtlist, triedcmp);
-					double misim = LCSComparison.LCSSimilarity(oraclesmtmilist.size(), oraclesmtmilist, triedcmpsmi);
-					double sim = 0.875*mtsim + 0.125*misim + PredictMetaInfo.ExactSameCompensate;
+					// double misim = LCSComparison.LCSSimilarity(oraclesmtmilist.size(), oraclesmtmilist, triedcmpsmi);
+					double sim = mtsim + PredictMetaInfo.ExactSameCompensate; // 0.875* + 0.125*misim
 					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(ons, fln.getProbability(), sim, fln, key.getKey() + " " + ons.getSentence(), flnwholekey + " " + ons.getSentence(), fln.getKeylen()+1);
 					nf.setIsexactsame(true);
 					result.add(nf);
 					
 					((LinkedList<statement>)triedcmp).removeLast();
-					if (ClassInstanceOfUtil.ObjectInstanceOf(onssmt, methodInvocationStatement.class))
+					/*if (ClassInstanceOfUtil.ObjectInstanceOf(onssmt, methodInvocationStatement.class))
 					{
 						((LinkedList<statement>)triedcmpsmi).removeLast();
-					}
+					}*/
 				}
 			}
 		}
