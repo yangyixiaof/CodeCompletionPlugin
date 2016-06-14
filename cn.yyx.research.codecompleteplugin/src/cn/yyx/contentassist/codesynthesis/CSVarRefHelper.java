@@ -25,6 +25,7 @@ public class CSVarRefHelper {
 			directvht = squeue.DirectHandleLambdaScope((CSDirectLambdaHandler)smthandler, scope, off);
 			scope--;
 		}
+		int trimscope = squeue.BackSearchHandleLambdaScopeAndForScopeAndInnerDeclaration(scope);
 		if (!(smthandler.getAoi().isInFieldLevel())) // scope == 0 && 
 		{
 			vht = squeue.BackSearchHandleLambdaScopeAndForScopeAndInnerDeclaration(scope, off);
@@ -34,7 +35,7 @@ public class CSVarRefHelper {
 		ScopeOffsetResult pofield = null;
 		ScopeOffsetResult po = null;
 		try {
-			pofield = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(null, -1, scope, off);
+			pofield = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(null, -1, trimscope, off); // scope
 		} catch (OffsetOutOfScopeException e) {
 			// e.printStackTrace();
 			// throw new CodeSynthesisException(e.getMessage());
@@ -43,7 +44,7 @@ public class CSVarRefHelper {
 			if (vht != null) {
 				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(vht.getTpremains(), vht.getTrimedscope(), vht.getTrimedscope(), off);
 			} else {
-				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(null, -1, scope, off);
+				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(null, -1, trimscope, off); // scope
 			}
 		} catch (OffsetOutOfScopeException e) {
 			// e.printStackTrace();
@@ -81,6 +82,7 @@ public class CSVarRefHelper {
 			directvht = squeue.DirectHandleLambdaScope((CSDirectLambdaHandler)smthandler, scope, off);
 			scope--;
 		}
+		int trimscope = squeue.BackSearchHandleLambdaScopeAndForScopeAndInnerDeclaration(scope);
 		if (smthandler.getAoi().isInFieldLevel()) // scope == 0 && 
 		{
 			vht = squeue.BackSearchHandleLambdaScopeAndForScopeAndInnerDeclaration(scope, off);
@@ -90,7 +92,7 @@ public class CSVarRefHelper {
 		ScopeOffsetResult povar = null;
 		ScopeOffsetResult po = null;
 		try {
-			povar = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(null, -1, scope, off);
+			povar = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleCommonVariableRef(null, -1, trimscope, off); // scope
 		} catch (OffsetOutOfScopeException e) {
 			// e.printStackTrace();
 			// throw new CodeSynthesisException(e.getMessage());
@@ -99,7 +101,7 @@ public class CSVarRefHelper {
 			if (vht != null) {
 				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(vht.getTpremains(), vht.getTrimedscope(), vht.getTrimedscope(), off);
 			} else {
-				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(null, -1, scope, off);
+				po = squeue.GetLastHandler().getScopeOffsetRefHandler().HandleFieldVariableRef(null, -1, trimscope, off); // scope
 			}
 		} catch (OffsetOutOfScopeException e) {
 			// e.printStackTrace();

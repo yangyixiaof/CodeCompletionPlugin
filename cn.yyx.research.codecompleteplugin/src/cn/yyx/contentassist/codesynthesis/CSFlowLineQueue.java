@@ -229,6 +229,36 @@ public class CSFlowLineQueue {
 		return new VariableHT(tpvarname, tpremains, scope);
 	}
 	
+	public int BackSearchHandleLambdaScopeAndForScopeAndInnerDeclaration(int scope)
+	{
+		FlowLineNode<CSFlowLineData> tmp = last;
+		while (tmp != null && scope >= 0)
+		{
+			CSFlowLineData tmpdata = tmp.getData();
+			if (tmpdata.HasSpecialProperty(CSLambdaData.class))
+			{
+				CSExtraProperty prp = tmpdata.GetSpecialProperty(CSLambdaProperty.class);
+				if (!((CSLambdaProperty)prp).isOvered())
+				{
+					scope--;
+				}
+			}
+			if (tmpdata.HasSpecialProperty(CSForProperty.class))
+			{
+				scope--;
+			}
+			if (tmpdata.HasSpecialProperty(CSLambdaEndProperty.class))
+			{
+				FlowLineNode<CSFlowLineData> bs = tmpdata.getSynthesisCodeManager().getBlockstart();
+				if (bs != null) {
+					tmp = bs;
+				}
+			}
+			tmp = tmp.getPrev();
+		}
+		return scope;
+	}
+	
 	/**
 	 * return value is the level outer should handle.
 	 * @param scope
