@@ -5,11 +5,12 @@ import java.util.List;
 import cn.yyx.contentassist.codepredict.CodeSynthesisException;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
-import cn.yyx.contentassist.codesynthesis.CodeSynthesisHelper;
 import cn.yyx.contentassist.codesynthesis.ErrorCheck;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.InferredCCType;
+import cn.yyx.contentassist.commonutils.ListHelper;
 
 public class commonMethodReferenceExpression extends methodReferenceExpression{
 	
@@ -27,11 +28,14 @@ public class commonMethodReferenceExpression extends methodReferenceExpression{
 		List<FlowLineNode<CSFlowLineData>> idls = id.HandleCodeSynthesis(squeue, smthandler);
 		// CSMethodReferenceStatementHandler csmrsh = new CSMethodReferenceStatementHandler(idls.get(0).getData().getData(), smthandler);
 		List<FlowLineNode<CSFlowLineData>> rels = rexp.HandleCodeSynthesis(squeue, smthandler);
-		List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleFieldSpecificationInfer(rels, idls, squeue, smthandler, "::");
+		// TODO here must be formally done.
+		// List<FlowLineNode<CSFlowLineData>> ls = CodeSynthesisHelper.HandleMethodSpecificationInfer(rels, idls, squeue, smthandler, "::");
+		List<FlowLineNode<CSFlowLineData>> ls = CSFlowLineHelper.ForwardConcate(null, rels, "::", idls, null, squeue, smthandler, null);
 		if (ls == null || ls.size() == 0)
 		{
-			return CSFlowLineHelper.ForwardConcate(null, rels, "::", idls, null, squeue, smthandler, null);
+			return null;
 		}
+		ListHelper.SetDclsToAllListNodes(ls, new InferredCCType());
 		return ls;
 	}
 

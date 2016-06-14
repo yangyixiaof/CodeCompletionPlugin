@@ -136,6 +136,10 @@ public class CodeSynthesisHelper {
 			while (clsitr.hasNext())
 			{
 				CCType cct = clsitr.next();
+				if (concator.equals("::"))
+				{
+					cct = new InferredCCType();
+				}
 				result.add(new FlowLineNode<CSFlowLineData>(new CSFlowLineData(squeue.GenerateNewNodeId(), smthandler.getSete(), ref + concator + member, cct, null, squeue.GetLastHandler()), smthandler.getProb()));
 			}
 		}
