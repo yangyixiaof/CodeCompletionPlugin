@@ -41,11 +41,11 @@ public class PartialProcessVisitor extends SimplifiedCodeGenerateASTVisitor {
 	@Override
 	public boolean preVisit2(ASTNode node) {
 		// TODO here changes.
-		if (offset > node.getStartPosition())
+		boolean couldcontinue = couldContinue(node);
+		if (couldcontinue) // offset > node.getStartPosition()
 		{
 			fotp.PostIsBegin(node);
 		}
-		boolean couldcontinue = couldContinue(node);
 		RecordCouldContinue(node, couldcontinue);
 		if (NeedSpecialTreat(node))
 		{
