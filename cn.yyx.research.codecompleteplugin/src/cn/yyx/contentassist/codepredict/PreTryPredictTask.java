@@ -105,10 +105,24 @@ public class PreTryPredictTask implements Runnable {
 			{
 				if (ExactSameExists())
 				{
-					double exactprob = ((fln.getKeylen()+2)*1.0)/(oraclesmtlist.size()*1.0);
-					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(ons, fln.getProbability(), exactprob, fln, key.getKey() + " " + ons.getSentence(), flnwholekey + " " + ons.getSentence(), fln.getKeylen()+1);
+					statement onssmt = ons.getSmt();
+					triedcmp.add(onssmt);
+					if (ClassInstanceOfUtil.ObjectInstanceOf(onssmt, methodInvocationStatement.class))
+					{
+						triedcmpsmi.add(onssmt);
+					}
+					double mtsim = LCSComparison.LCSSimilarity(oraclesmtlist.size(), oraclesmtlist, triedcmp);
+					double misim = LCSComparison.LCSSimilarity(oraclesmtmilist.size(), oraclesmtmilist, triedcmpsmi);
+					double sim = 0.875*mtsim + 0.125*misim + PredictMetaInfo.ExactSameCompensate;
+					PreTryFlowLineNode<Sentence> nf = new PreTryFlowLineNode<Sentence>(ons, fln.getProbability(), sim, fln, key.getKey() + " " + ons.getSentence(), flnwholekey + " " + ons.getSentence(), fln.getKeylen()+1);
 					nf.setIsexactsame(true);
 					result.add(nf);
+					
+					((LinkedList<statement>)triedcmp).removeLast();
+					if (ClassInstanceOfUtil.ObjectInstanceOf(onssmt, methodInvocationStatement.class))
+					{
+						((LinkedList<statement>)triedcmpsmi).removeLast();
+					}
 				}
 			}
 		}
