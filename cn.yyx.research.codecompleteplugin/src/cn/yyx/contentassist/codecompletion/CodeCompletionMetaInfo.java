@@ -4,7 +4,7 @@ public class CodeCompletionMetaInfo {
 	
 	public static String ServerIp = "192.168.1.101"; // 127.0.0.1
 	
-	public static final boolean DebugMode = true;
+	public static final boolean DebugMode = false;
 	
 	public static final boolean SerialMode = false;
 	
