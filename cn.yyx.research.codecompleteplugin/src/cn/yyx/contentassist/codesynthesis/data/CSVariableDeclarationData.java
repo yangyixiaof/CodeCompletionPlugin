@@ -9,7 +9,10 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
+import cn.yyx.contentassist.codesynthesis.typeutil.InferredCCType;
 import cn.yyx.contentassist.codesynthesis.typeutil.PrimitiveTypeConflict;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeCheckHelper;
+import cn.yyx.contentassist.codesynthesis.typeutil.TypeComputer;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
@@ -109,9 +112,14 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 			}
 			if (getDcls().getCls() != null && getDcls().getCls().isPrimitive())
 			{
-				if (getDcls().getCls() != d2.getDcls().getCls())
+				if (d2.getDcls() == null || d2.getDcls() instanceof InferredCCType || (TypeComputer.IsStrictNumberBit(d2.getDcls().getClass()) && TypeComputer.IsStrictNumberBit(getDcls().getClass())))
 				{
-					throw new PrimitiveTypeConflict("This type not checked.");
+					
+				} else {
+					if (TypeCheckHelper.NormalizeClass(getDcls().getCls()) != TypeCheckHelper.NormalizeClass(d2.getDcls().getCls()))
+					{
+						throw new PrimitiveTypeConflict("This type not checked.");
+					}
 				}
 			}
 			if (detp.equals("void"))
