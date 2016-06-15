@@ -29,6 +29,7 @@ public class NameConvention {
 			}
 		}
 		sb.append(end);
+		sb.append(StringUtil.getRandomString(3));
 		return sb.toString();
 	}
 	
