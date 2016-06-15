@@ -15,6 +15,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSForIniOverProperty;
 import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.PrimitiveTypeConflict;
 import cn.yyx.contentassist.codesynthesis.typeutil.SameTypeConflictException;
 import cn.yyx.contentassist.commonutils.BackSearchResult;
 import cn.yyx.contentassist.commonutils.ListHelper;
@@ -98,6 +99,8 @@ public class forExpOverStatement extends rawForExpOverStatement implements SWrap
 					} else {
 						throw e;
 					}
+				} catch (PrimitiveTypeConflict e) {
+					continue;
 				}
 			}
 			succeed = true;

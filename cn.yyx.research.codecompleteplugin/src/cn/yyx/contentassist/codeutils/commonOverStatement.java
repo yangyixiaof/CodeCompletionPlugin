@@ -12,6 +12,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.PrimitiveTypeConflict;
 import cn.yyx.contentassist.codesynthesis.typeutil.SameTypeConflictException;
 import cn.yyx.contentassist.commonutils.ListHelper;
 
@@ -49,6 +50,8 @@ public class commonOverStatement extends statement implements SWrapper{
 				} else {
 					throw e;
 				}
+			} catch (PrimitiveTypeConflict e) {
+				continue;
 			}
 			if (rls != null && rls.size() > 0)
 			{

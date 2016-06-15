@@ -15,6 +15,8 @@ import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineStack;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.PrimitiveTypeConflict;
+import cn.yyx.contentassist.codesynthesis.typeutil.SameTypeConflictException;
 import cn.yyx.contentassist.commonutils.ListHelper;
 
 public class lambdaEndStatement extends statement implements SWrapper{
@@ -51,12 +53,14 @@ public class lambdaEndStatement extends statement implements SWrapper{
 			}
 			try {
 				CSFlowLineBackTraceGenerationHelper.GenerateNotYetAddedSynthesisCode(squeue, smthandler, fln, cnode);
-			} catch (Exception e) {
+			} catch (SameTypeConflictException e) {
 				if (succeed) {
 					continue;
 				} else {
 					throw e;
 				}
+			} catch (PrimitiveTypeConflict e) {
+				continue;
 			}
 			// result.addAll();
 			result.add(fln);

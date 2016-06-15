@@ -13,7 +13,6 @@ import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.VirtualCSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
-import cn.yyx.contentassist.codesynthesis.data.CSVariableDeclarationData;
 import cn.yyx.contentassist.codesynthesis.flowline.CodeSynthesisFlowLines;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -26,10 +25,10 @@ import cn.yyx.contentassist.codesynthesis.typeutil.computations.Assignment;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationKind;
 import cn.yyx.contentassist.codeutils.statement;
 import cn.yyx.contentassist.commonutils.ASTOffsetInfo;
-import cn.yyx.contentassist.commonutils.LevelArrayHelper;
 import cn.yyx.contentassist.commonutils.ClassInstanceOfUtil;
 import cn.yyx.contentassist.commonutils.EmergencyBack;
 import cn.yyx.contentassist.commonutils.GenBlock;
+import cn.yyx.contentassist.commonutils.LevelArrayHelper;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 
 public class CodeSynthesisPredictTask implements Runnable {
@@ -112,10 +111,6 @@ public class CodeSynthesisPredictTask implements Runnable {
 				} else {
 					start.getData().setTck(null);
 				}
-			}
-			if (start.getData() instanceof CSVariableDeclarationData)
-			{
-				((CSVariableDeclarationData)start.getData()).Reset();
 			}
 
 			if (level == 0) {

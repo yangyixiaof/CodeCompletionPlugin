@@ -15,6 +15,7 @@ import cn.yyx.contentassist.codesynthesis.data.CSForProperty;
 import cn.yyx.contentassist.codesynthesis.data.DataStructureSignalMetaInfo;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
+import cn.yyx.contentassist.codesynthesis.typeutil.PrimitiveTypeConflict;
 import cn.yyx.contentassist.codesynthesis.typeutil.SameTypeConflictException;
 import cn.yyx.contentassist.commonutils.BackSearchResult;
 
@@ -94,6 +95,8 @@ public class forIniOverStatement extends rawForIniOverStatement implements SWrap
 					} else {
 						throw e;
 					}
+				} catch (PrimitiveTypeConflict e) {
+					continue;
 				}
 			}
 			smtdata.setCsep(new CSForIniOverProperty(null));

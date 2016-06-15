@@ -9,6 +9,7 @@ import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
 import cn.yyx.contentassist.codesynthesis.statementhandler.CSStatementHandler;
 import cn.yyx.contentassist.codesynthesis.typeutil.CCType;
+import cn.yyx.contentassist.codesynthesis.typeutil.PrimitiveTypeConflict;
 import cn.yyx.contentassist.codesynthesis.typeutil.computations.TypeComputationKind;
 import cn.yyx.contentassist.commonutils.SynthesisHandler;
 import cn.yyx.research.language.simplified.JDTManager.ScopeOffsetRefHandler;
@@ -19,7 +20,6 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 	 *		boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
 	 *	super(id, sete, data, dcls, haspre, hashole, pretck, posttck, handler);
 	}*/
-	private final String consttypecode;
 	private String typecode = null;
 	
 	@Override
@@ -35,7 +35,6 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 			this.setHashole(true);
 		}
 		this.setTypecode(typecode);
-		this.consttypecode = typecode;
 		// this.setCsep(cd.getCsep());
 		// this.setScm(cd.getSynthesisCodeManager());
 		// this.setExtraData(cd.getExtraData());
@@ -108,6 +107,13 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 				String vs = vitr.next();
 				clonedsc.NewDeclaredVariable(vs, detp, smthandler.getAoi().isInFieldLevel());
 			}
+			if (getDcls().getCls() != null && getDcls().getCls().isPrimitive())
+			{
+				if (getDcls().getCls() != d2.getDcls().getCls())
+				{
+					throw new PrimitiveTypeConflict("This type not checked.");
+				}
+			}
 			if (detp.equals("void"))
 			{
 				throw new CodeSynthesisException("void can not be generated as type declaration.");
@@ -150,7 +156,6 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 		}*/
 		String pdnewdata = changetotypecode + pdwsdata; // pddata.substring(typecode.length())
 		pd.setData(pdnewdata);
-		setTypecode(changetotypecode);
 	}
 
 	public String getTypecode() {
@@ -159,15 +164,6 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 
 	private void setTypecode(String typecode) {
 		this.typecode = typecode;
-	}
-
-	public String getConsttypecode() {
-		return consttypecode;
-	}
-	
-	public void Reset()
-	{
-		this.setTypecode(consttypecode);
 	}
 	
 }
