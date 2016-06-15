@@ -13,6 +13,7 @@ import cn.yyx.contentassist.codecompletion.PredictMetaInfo;
 import cn.yyx.contentassist.codesynthesis.CSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.VirtualCSFlowLineQueue;
 import cn.yyx.contentassist.codesynthesis.data.CSFlowLineData;
+import cn.yyx.contentassist.codesynthesis.data.CSVariableDeclarationData;
 import cn.yyx.contentassist.codesynthesis.flowline.CodeSynthesisFlowLines;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineHelper;
 import cn.yyx.contentassist.codesynthesis.flowline.FlowLineNode;
@@ -111,6 +112,10 @@ public class CodeSynthesisPredictTask implements Runnable {
 				} else {
 					start.getData().setTck(null);
 				}
+			}
+			if (start.getData() instanceof CSVariableDeclarationData)
+			{
+				((CSVariableDeclarationData)start.getData()).Reset();
 			}
 
 			if (level == 0) {

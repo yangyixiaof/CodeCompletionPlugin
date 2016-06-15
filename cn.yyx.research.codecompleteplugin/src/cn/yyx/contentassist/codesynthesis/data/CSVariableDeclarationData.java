@@ -19,7 +19,7 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 	 *		boolean hashole, TypeComputationKind pretck, TypeComputationKind posttck, SynthesisHandler handler) {
 	 *	super(id, sete, data, dcls, haspre, hashole, pretck, posttck, handler);
 	}*/
-	
+	private final String consttypecode;
 	private String typecode = null;
 	
 	@Override
@@ -35,6 +35,7 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 			this.setHashole(true);
 		}
 		this.setTypecode(typecode);
+		this.consttypecode = typecode;
 		// this.setCsep(cd.getCsep());
 		// this.setScm(cd.getSynthesisCodeManager());
 		// this.setExtraData(cd.getExtraData());
@@ -149,6 +150,7 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 		}*/
 		String pdnewdata = changetotypecode + pdwsdata; // pddata.substring(typecode.length())
 		pd.setData(pdnewdata);
+		setTypecode(changetotypecode);
 	}
 
 	public String getTypecode() {
@@ -157,6 +159,15 @@ public class CSVariableDeclarationData extends CSFlowLineData {
 
 	private void setTypecode(String typecode) {
 		this.typecode = typecode;
+	}
+
+	public String getConsttypecode() {
+		return consttypecode;
+	}
+	
+	public void Reset()
+	{
+		this.setTypecode(consttypecode);
 	}
 	
 }
