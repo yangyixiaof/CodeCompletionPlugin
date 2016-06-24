@@ -50,6 +50,10 @@ public class PreTryPredictTask implements Runnable {
 			List<statement> triedcmp = smi.getSmts();
 			// List<statement> triedcmpsmi = smi.getSmis();
 			int needsize = PredictMetaInfo.PreTryMaxSmallParSize;
+			if (key.getKeylen() == 1)
+			{
+				needsize = PredictMetaInfo.PreTryOneMaxBigParSize;
+			}
 			if (key.getKeylen() == 2)
 			{
 				needsize = PredictMetaInfo.PreTryMaxBigParSize;

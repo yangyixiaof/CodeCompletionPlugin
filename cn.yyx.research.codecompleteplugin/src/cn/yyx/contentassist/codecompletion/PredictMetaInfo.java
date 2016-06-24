@@ -4,7 +4,7 @@ public class PredictMetaInfo {
 	
 	public static final double NotExistProbability = 0;
 	
-	public static final double SequenceSimilarThreshold = 0.6;
+	public static final double SequenceSimilarThreshold = 0.49;
 	public static final double OneSentenceSimilarThreshold = 0.7;
 	
 	public static final double TwoStringSimilarThreshold = 0.75;
@@ -14,9 +14,10 @@ public class PredictMetaInfo {
 	
 	// public static final int PredictMaxSequence = 15;
 	public static final int PrePredictWindow = 9;
-	public static final int PreTryTotalMaxParSize = 8;
-	public static final int PreTryMaxBigParSize = 4;
-	public static final int PreTryMaxSmallParSize = 2;
+	public static final int PreTryTotalMaxParSize = 32;
+	public static final int PreTryOneMaxBigParSize = 8;
+	public static final int PreTryMaxBigParSize = 8;
+	public static final int PreTryMaxSmallParSize = 4;
 	public static final int PreTryMinExtendStep = 10;
 	public static final int PreTryMaxExtendStep = 15;
 	public static final int PreTryNeedSize = 2;
@@ -45,7 +46,7 @@ public class PredictMetaInfo {
 	
 	public static final double ExactSameCompensate = 0.00001;
 	
-	public static final double LeastMinSimilarity = 0.085;
-	public static final double HighestMinSimilarity = 0.5;
+	public static final double LeastMinSimilarity = 0.025;
+	public static final double HighestMinSimilarity = 0.4;
 	
 }
