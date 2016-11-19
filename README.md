@@ -32,9 +32,10 @@ Then a new folder named "results" will be generated in which the n-gram model is
 Before put the model into AeroSpike, an AeroSpike database must be running! To install and configure the AeroSpike database, pelease refer to www.aerospike.com. Note that a namespace (a database in my understanding) with name 'yyx' must be configured in /etc/aerospike/aerospike.conf.
 
 Then dowkload the project from https://github.com/yangyixiaof/ModelIntoAeroSpike.
-The normal way to use it is using the following command:
+Currently you'd better run ModelIntoAeroSpike project in eclipse, because ModelIntoAeroSpike project is depedent on this Code Completion Plugin Project, so this Code Completion Plugin must be imported when you use the ModelIntoAeroSpike project. We will soon decouple these two projects. The normal way to use it is using the following command:
 "java -jar ModelIntoAeroSpike.jar"
-After the program is up, you type the command in command line:
+In eclipse, find the main class cn.yyx.research.PutModelIntoAeroSpike.ModelSerialize and run it as Java application.
+After the program is up, you type the command in command line or console:
 "start PathToResults"
 where "PathToResults" is the directory in which the m-gram model is put and has been defined before.
 
