@@ -19,13 +19,13 @@ type the command in console of eclipse:
 "start PathToSourceRepository PathToWhereIRIsPut"
 where "PathToSourceRepository" and "PathToWhereIRIsPut" have been defined before.
 
-After IR is generated, we need to train the model. We use Srilm to train the model. To install Srilm, please refer to http://www.speech.sri.com/projects/srilm/. Do not forget to add the bin folder of Srilm to your PATH environment.
+After IR is generated, we need to train the model. We use Srilm to train the model. To install Srilm, please refer to http://www.speech.sri.com/projects/srilm/. Do not forget to add the bin folder and the subfolder of bin folder of Srilm to your PATH environment.
 
 Download the ngram-train-scripts folder in https://github.com/yangyixiaof/gitcrawler/tree/master/programprocessor/ngram-train-scripts
 
 The script ngramCountSpanLineBreaks.sh is important. The script must be run in linux. Then cd to the path where you put the IR which we call "PathToWhereIRIsPut".
 
-Create an empty directory with exact name 'ClassWorkSpace' in directory PathToWhereIRIsPut/BigClassDetail. Note that the directory "BigClassDetail" will surely generated if all previous steps are ok. Copy the ngramCountSpanLineBreaks.sh to the newly created directory 'ClassWorkSpace'. You may need to add execution priviledge to that bash file using the following command: "chmod a+x ngramCountSpanLineBreaks.sh". Cd to the 'ClassWorkSpace' directory. Create a text file named with exact name 'path.txt'. In path.txt, you need to specify the files you want to analyse in directory PathToWhereIRIsPut/BigClassDetail. Then run command './ngramCountSpanLineBreaks.sh'.
+Create an empty directory with exact name 'ClassWorkSpace' in directory PathToWhereIRIsPut/BigClassDetail. Note that the directory "BigClassDetail" will be surely generated if all previous steps are ok. Copy the ngramCountSpanLineBreaks.sh to the newly created directory 'ClassWorkSpace'. You may need to add execution priviledge to that bash file using the following command: "chmod a+x ngramCountSpanLineBreaks.sh". Cd to the 'ClassWorkSpace' directory. Create a text file named with exact name 'path.txt'. In path.txt, you need to specify the files you want to analyse in directory PathToWhereIRIsPut/BigClassDetail. Then run command './ngramCountSpanLineBreaks.sh'.
 
 Then a new folder named "results" will be generated in which the n-gram model is put. The path of directory 'results' will be needed in the program which is used to put the model into AeroSpike database. We call the path of directory "results" the name "PathToResults".
 
