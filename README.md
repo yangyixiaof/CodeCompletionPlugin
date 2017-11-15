@@ -1,6 +1,6 @@
 # CodeCompletionPlugin
 
-The video link:  https://youtu.be/w60V-G0CAd4
+The full video (17min) link:  https://youtu.be/w60V-G0CAd4
 
 We assume that users have the codes waited to be trained. The codes which consists of Java files in different sub-directories are put in a folder. we call the path to that folder  "PathToSourceRepository".
 
