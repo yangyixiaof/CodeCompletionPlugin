@@ -25,7 +25,7 @@ public class PreferenceManager {
 		}
 		PreferenceStore preferenceStore = null;
 		preferenceStore = new PreferenceStore(f_path);
-		preferenceStore.setDefault(IPPreference, "192.168.1.101");
+		preferenceStore.setDefault(IPPreference, "127.0.0.1");
 		try {
 			preferenceStore.save();
 		} catch (IOException e) {
